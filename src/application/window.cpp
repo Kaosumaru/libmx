@@ -3,6 +3,7 @@
 #include "devices/Keyboard.h"
 #include "SDL_video.h"
 #include "SDL_render.h"
+#include "SDL_opengl.h"
 
 using namespace MX;
 
@@ -30,16 +31,22 @@ Window::Window(unsigned width, unsigned height, bool fullscreen)
 	));
 	if (!_window) throw std::runtime_error("SDL_CreateWindow");
 
-	_renderer.reset(SDL_CreateRenderer(_window.get(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC));
-	if (!_renderer) throw std::runtime_error("SDL_CreateRenderer");
+	//_renderer.reset(SDL_CreateRenderer(_window.get(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC));
+	//if (!_renderer) throw std::runtime_error("SDL_CreateRenderer");
 
 	_mouse = Mouse::CreateForWindow(this);	
 	_keyboard = Keyboard::CreateForWindow(this);
+
+	_glcontext = SDL_GL_CreateContext(_window.get());
+	if (!_renderer) throw std::runtime_error("SDL_GL_CreateContext");
+
+	SDL_GL_SetSwapInterval(1);
 }
 
 Window::~Window()
 {
-
+	if (_glcontext)
+		SDL_GL_DeleteContext(_glcontext);
 }
 
 void Window::Init()
@@ -49,13 +56,14 @@ void Window::Init()
 
 void Window::OnRender()
 {
-	SDL_SetRenderDrawColor(_renderer.get(), 255, 0, 255, 255);
-	SDL_RenderClear(_renderer.get());
+	glClearColor ( 1.0, 0.0, 0.0, 1.0 );
+	glClear ( GL_COLOR_BUFFER_BIT );
 }
 
 void Window::AfterRender()
 {
-	SDL_RenderPresent(_renderer.get());
+	SDL_GL_SwapWindow(_window.get());
+	//SDL_RenderPresent(_renderer.get());
 }
 
 bool Window::OnLoop()

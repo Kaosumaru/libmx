@@ -6,6 +6,7 @@ project (BootstrapProject)
 add_subdirectory(../ "${CMAKE_CURRENT_BINARY_DIR}/MXLib")
 set(CMAKE_MODULE_PATH ${MX_MODULES} CACHE TYPE STRING FORCE)
 
+add_definitions(-DMX_DEBUG_RES_PATH="${PROJECT_SOURCE_DIR}/res/")
 
 if (MSVC)
 configure_msvc_runtime()

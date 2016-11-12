@@ -180,10 +180,10 @@ void Rectangle::Draw()
 std::pair < float, int >  Rectangle::closestEdge(const glm::vec2& point) const
 {
 	using Pair = std::pair < float, int >;
-	auto m = std::min<Pair>({ { abs(point.x - x1), 3 },
-	{ abs(point.x - x2), 1 },
-	{ abs(point.y - y1), 0 },
-	{ abs(point.y - y2), 2 }
+	auto m = std::min<Pair>({ { std::abs(point.x - x1), 3 },
+	{ std::abs(point.x - x2), 1 },
+	{ std::abs(point.y - y1), 0 },
+	{ std::abs(point.y - y2), 2 }
 	});
 
 	return m;

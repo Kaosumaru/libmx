@@ -20,11 +20,15 @@ if (EMSCRIPTEN)
   set(MX_LINK_FLAGS "-s USE_SDL=2 --use-preload-plugins --preload-file ../res/" PARENT_SCOPE)
   set(MX_LIBS MXLib PARENT_SCOPE)
 else(EMSCRIPTEN)
+  #find_package(GLEW REQUIRED)
   find_package(Boost REQUIRED)
   find_package(SDL2 REQUIRED)
 
+#message("Building for emscripten ${OPENGL_INCLUDE_DIR}")
+
+
   set(MX_LINK_FLAGS "" PARENT_SCOPE)
-  set(MX_LIBS MXLib ${SDL_LIBRARY}/SDL2.lib PARENT_SCOPE)
+  set(MX_LIBS MXLib ${SDL_LIBRARY}/SDL2.lib ${OPENGL_LIBRARIES} PARENT_SCOPE)
 endif(EMSCRIPTEN)
 
 

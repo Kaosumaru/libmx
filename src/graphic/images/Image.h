@@ -117,7 +117,7 @@ public:
 
 };
 
-typedef std::shared_ptr<Image> ImagePtr;
+using ImagePtr = std::shared_ptr<Image>;
 
 }
 }

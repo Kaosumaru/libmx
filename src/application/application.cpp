@@ -110,6 +110,13 @@ bool App::OnInit()
 	if (SDL_Init(flags) != 0)
 		return false;
 
+
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+
 	if (SDL_VideoInit(NULL) != 0)
 	{
 		SDL_Quit();
