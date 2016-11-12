@@ -1,4 +1,6 @@
 #include "Window.h"
+#include "devices/Mouse.h"
+#include "devices/Keyboard.h"
 #include "SDL_video.h"
 
 using namespace MX;
@@ -22,6 +24,8 @@ Window::Window(unsigned width, unsigned height, bool fullscreen)
 		flags                  // flags - see below
 	);
 
+	_mouse = Mouse::CreateForWindow(this);
+	_keyboard = Keyboard::CreateForWindow(this);
 }
 
 Window::~Window()
