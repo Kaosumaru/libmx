@@ -31,7 +31,7 @@ namespace MX
 		static const MX::Version& version() { return _version; }
 		static const std::string& programName() { return _programName; }
 
-		bool OpenWindow(unsigned width, unsigned height, bool fullscreen = true);
+		bool OpenMainWindow(unsigned width, unsigned height, bool fullscreen = true);
 		inline bool IsRunning() { return running; }
 		void Quit();
 

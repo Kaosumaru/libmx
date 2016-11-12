@@ -2,6 +2,7 @@
 #include "Window.h"
 #include "utils/Random.h"
 #include <SDL.h>
+#include <iostream>
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -25,8 +26,10 @@ App::~App()
 
 }
 
-bool App::OpenWindow(unsigned width, unsigned height, bool fullscreen)
+bool App::OpenMainWindow(unsigned width, unsigned height, bool fullscreen)
 {
+	if (_window)
+		return false;
 	_window = std::make_shared<Window>(width, height, fullscreen);
 	Window::SetCurrent(*_window);
 	return true;
@@ -50,8 +53,15 @@ void App::Loop()
 		}
 	}
 
+	if (_window)
+		_window->OnLoop();
 	OnLoop();
+
+	if (_window)
+		_window->OnRender();
 	OnRender();
+	if (_window)
+		_window->AfterRender();
 }
 
 bool App::Run()
@@ -91,8 +101,15 @@ void App::OnPrepare()
 
 bool App::OnInit()
 {
-	if (SDL_Init(SDL_INIT_EVERYTHING) == -1)
+#ifdef __EMSCRIPTEN__
+	auto flags = SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS;
+#else
+	auto flags = SDL_INIT_EVERYTHING;
+#endif
+
+	if (SDL_Init(flags) != 0)
 		return false;
+
 	if (SDL_VideoInit(NULL) != 0)
 	{
 		SDL_Quit();

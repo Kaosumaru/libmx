@@ -11,7 +11,7 @@ class Bootstrap : public MX::App
 public:
 	void OnPrepare() override
 	{
-		OpenWindow(1280, 800, false);
+		OpenMainWindow(1280, 800, false);
 
 		MX::Window::current().keyboard()->on_specific_key_down[SDLK_ESCAPE].connect([&]() { Quit(); });
 	}
