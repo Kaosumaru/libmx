@@ -43,7 +43,11 @@ public:
 		OpenMainWindow(1280, 800, false);
 
 		auto path = MX::Paths::get().pathToImage("cthulhu.png");
-		_image = std::make_shared<MX::Graphic::Texture>(path);
+		_image = MX::Graphic::Texture::Create(path);
+		if (_image)
+		{
+			std::cout << "Opened image " << _image->width() << "x" << _image->height() << std::endl;
+		}
 
 		MX::Window::current().keyboard()->on_specific_key_down[SDLK_ESCAPE].connect([&]() { Quit(); });
 	}

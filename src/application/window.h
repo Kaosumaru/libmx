@@ -30,7 +30,6 @@ public:
 
 	const auto& mouse() { return _mouse; }
 	const auto& keyboard() { return _keyboard; }
-	auto renderer() { return _renderer.get(); }
 protected:
 	void OnRender();
 	void AfterRender();
@@ -41,7 +40,6 @@ protected:
 	bool _fullscreen;
 
 	std::unique_ptr<SDL_Window, void(*)(SDL_Window*)> _window;
-	std::unique_ptr<SDL_Renderer, void(*)(SDL_Renderer*)> _renderer;
 
 	void* _glcontext = nullptr;
 

@@ -8,8 +8,7 @@
 using namespace MX;
 
 Window::Window(unsigned width, unsigned height, bool fullscreen)
-	:_window{ nullptr, SDL_DestroyWindow },
-	_renderer{ nullptr, SDL_DestroyRenderer }
+	:_window{ nullptr, SDL_DestroyWindow }
 {
 	_width = width;
 	_height = height;
@@ -31,14 +30,11 @@ Window::Window(unsigned width, unsigned height, bool fullscreen)
 	));
 	if (!_window) throw std::runtime_error("SDL_CreateWindow");
 
-	//_renderer.reset(SDL_CreateRenderer(_window.get(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC));
-	//if (!_renderer) throw std::runtime_error("SDL_CreateRenderer");
-
 	_mouse = Mouse::CreateForWindow(this);	
 	_keyboard = Keyboard::CreateForWindow(this);
 
 	_glcontext = SDL_GL_CreateContext(_window.get());
-	if (!_renderer) throw std::runtime_error("SDL_GL_CreateContext");
+	if (!_glcontext) throw std::runtime_error("SDL_GL_CreateContext");
 
 	SDL_GL_SetSwapInterval(1);
 }
@@ -63,7 +59,6 @@ void Window::OnRender()
 void Window::AfterRender()
 {
 	SDL_GL_SwapWindow(_window.get());
-	//SDL_RenderPresent(_renderer.get());
 }
 
 bool Window::OnLoop()
