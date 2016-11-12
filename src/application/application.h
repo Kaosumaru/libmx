@@ -41,6 +41,8 @@ namespace MX
 
 		auto& queue() { return _applicationQueue; }
 	protected:
+		void Loop();
+
 		static void SetProgramName(const std::string& name) { _programName = name; }
 
 		virtual void OnPrepare();

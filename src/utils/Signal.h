@@ -3,9 +3,24 @@
 #include<memory>
 #include<functional>
 #include<cassert>
+#include"Utils.h"
 
 namespace MX
 {
+	template <typename F>
+	struct ScopeExit {
+		ScopeExit(F &&f) : f(std::forward<F>(f)) {}
+		~ScopeExit() { f(); }
+		F f;
+	};
+
+	template <typename F>
+	ScopeExit<F> AtScopeExit(F&&f)
+	{
+		return ScopeExit<F>(std::forward<F>(f));
+	}
+
+
 	template<typename T>
 	class Signal
 	{
@@ -49,7 +64,7 @@ namespace MX
 
 			virtual bool Do(Args... arg) override
 			{
-				if (!_connected)
+				if (!Connection::_connected)
 					return false;
 				_func(std::forward<Args>(arg)...);
 				return true;
@@ -64,7 +79,7 @@ namespace MX
 			FunctorEntryWeak(const typename Signal::Function& func, const std::weak_ptr<T> &ptr) : FunctorEntry(func), _ptr(ptr) {}
 			bool Do(Args... arg) override
 			{
-				if (!_connected)
+				if (!Connection::_connected)
 					return false;
 				if (auto ptr = _ptr.lock())
 				{
@@ -84,7 +99,7 @@ namespace MX
 
 			bool Do(Args... arg) override
 			{
-				if (!_connected)
+				if (!Connection::_connected)
 					return false;
 				_func(*this, std::forward<Args>(arg)...);
 				return true;
@@ -99,7 +114,7 @@ namespace MX
 			FunctorEntryWeakExtended(const typename Signal::FunctionExtended& func, const std::weak_ptr<T> &ptr) : FunctorEntry(func), _ptr(ptr) {}
 			bool Do(Args... arg) override
 			{
-				if (!_connected)
+				if (!Connection::_connected)
 					return false;
 				if (auto ptr = _ptr.lock())
 				{
@@ -138,7 +153,7 @@ namespace MX
 		template<typename T>
 		Connection::pointer connect_extended(const FunctionExtended& func, const std::shared_ptr<T> &ptr)
 		{
-			_functors.emplace_back(std::make_shared<FunctorEntryExtended<T>>(func, ptr));
+			_functors.emplace_back(std::make_shared<FunctorEntryExtended>(func, ptr));
 			return _functors.back();
 		}
 
@@ -147,7 +162,7 @@ namespace MX
 			if (_functors.empty())
 				return;
 			_iterations++;
-			auto &g = AtScopeExit([&]() { _iterations--; }); ///slots can throw, so decrement _iterations at scope exit
+			const auto &g = AtScopeExit([&]() { _iterations--; }); ///slots can throw, so decrement _iterations at scope exit
 
 			auto it = _functors.begin();
 			while (it != _functors.end())

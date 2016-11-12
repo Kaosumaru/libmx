@@ -1,4 +1,5 @@
 cmake_minimum_required (VERSION 2.8)
+set(CMAKE_CXX_STANDARD 14)
 
 set(MX_MODULES ${CMAKE_CURRENT_LIST_DIR}/modules)
 set(MX_INCLUDES ${Boost_INCLUDE_DIRS} ${CMAKE_CURRENT_LIST_DIR}/src ${CMAKE_CURRENT_LIST_DIR}/deps/glm )
@@ -7,13 +8,26 @@ set(MX_MODULES ${MX_MODULES} PARENT_SCOPE)
 set(MX_INCLUDES ${MX_INCLUDES} PARENT_SCOPE)
 
 set(CMAKE_MODULE_PATH ${MX_MODULES} CACHE TYPE STRING FORCE)
-include(enableC11)
 include(CommonFunctions)
 
-find_package(Boost REQUIRED)
-find_package(SDL2 REQUIRED)
+if (EMSCRIPTEN)
+  message("Building for emscripten")
 
-set(MX_LIBS MXLib ${SDL_LIBRARY}/SDL2.lib PARENT_SCOPE)
+  add_definitions("-std=c++14")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=2 --use-preload-plugins")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=2 --use-preload-plugins" PARENT_SCOPE)
+
+  set(MX_LINK_FLAGS "-s USE_SDL=2 --use-preload-plugins --preload-file /res/" PARENT_SCOPE)
+  set(MX_LIBS MXLib PARENT_SCOPE)
+else(EMSCRIPTEN)
+  find_package(Boost REQUIRED)
+  find_package(SDL2 REQUIRED)
+
+  set(MX_LINK_FLAGS "" PARENT_SCOPE)
+  set(MX_LIBS MXLib ${SDL_LIBRARY}/SDL2.lib PARENT_SCOPE)
+endif(EMSCRIPTEN)
+
+
 
 project (MXLib)
 option (GAME_RELEASE "Build release?" FALSE)

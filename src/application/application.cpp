@@ -3,6 +3,10 @@
 #include "utils/Random.h"
 #include <SDL.h>
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
 using namespace MX;
 
 App::App()
@@ -33,6 +37,23 @@ void App::Quit()
 	running = false;
 }
 
+void App::Loop()
+{
+	SDL_Event event;
+	while (SDL_PollEvent(&event)) {
+		switch (event.type)
+		{
+		case SDL_QUIT:
+		case SDL_WINDOWEVENT_CLOSE:
+			Quit();
+			break;
+		}
+	}
+
+	OnLoop();
+	OnRender();
+}
+
 bool App::Run()
 {
 	if (!OnInit())
@@ -40,21 +61,19 @@ bool App::Run()
 
 	OnPrepare();
 
-	while (running) {
-		SDL_Event event;
-		while (SDL_PollEvent(&event)) {
-			switch (event.type)
-			{
-			case SDL_QUIT:
-			case SDL_WINDOWEVENT_CLOSE:
-				Quit();
-				break;
-			}
-		}
+#ifdef __EMSCRIPTEN__
+	auto oneIter = [](void* arg) 
+	{
+		((App*)arg)->Loop();
+	};
 
-		OnLoop();
-		OnRender();
+	emscripten_set_main_loop_arg(oneIter, this, 0, 1);
+#else
+	while (running) 
+	{
+		Loop();
 	}
+#endif
 
 	OnCleanup();
 	return true;

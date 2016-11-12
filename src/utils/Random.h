@@ -96,6 +96,7 @@ protected:
     float _last;
 };
 
+#if 0
 template<typename Type>
 class RandomNonLockedItem : public RandomItem<Type>
 {
@@ -107,3 +108,4 @@ public:
 		RandomItem<Type>::AddItem(item, weight);
 	}
 };
+#endif

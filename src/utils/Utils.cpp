@@ -1,5 +1,6 @@
 #include "Utils.h"
 #include <codecvt>
+#include <locale>
 
 std::wstring stringToWide(const std::string &str)
 {

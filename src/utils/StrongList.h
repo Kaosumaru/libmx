@@ -266,8 +266,8 @@ public:
 		_list.clear();
 	}
 
-    template<typename T>
-    void sort(const T &comp)
+    template<typename X>
+    void sort(const X &comp)
     {
         _list.sort(comp);
     }

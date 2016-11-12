@@ -12,20 +12,6 @@ namespace MX
 		return std::weak_ptr<T>{ ptr };
 	}
 
-	template <typename F>
-	struct ScopeExit {
-		ScopeExit(F &&f) : f(std::forward<F>(f)) {}
-		~ScopeExit() { f(); }
-		F f;
-	};
-
-	template <typename F>
-	ScopeExit<F> AtScopeExit(F&&f)
-	{
-		return ScopeExit<F>(std::forward<F>(f));
-	}
-
-
 	template <template<class, class, class...> class C, typename K, typename V, typename... Args>
 	V get_or_default(const C<K, V, Args...>& m, K const& key, const V & defval)
 	{

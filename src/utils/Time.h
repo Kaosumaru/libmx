@@ -68,7 +68,7 @@ namespace Time
 	public:
 		SubTimer();
 	protected:
-		virtual double max_resolution() { return 5.0f; }
+		double max_resolution() override { return 5.0f; }
 		double get_total() override;
 	};
 

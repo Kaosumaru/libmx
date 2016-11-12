@@ -20,7 +20,6 @@ public:
 	//virtual void AddActor(const Actor::pointer &actor) = 0; TODO?
 	
 
-	virtual void Run() = 0;
 protected:
 
 	void LinkActor(const Actor::pointer &actor);
@@ -37,7 +36,7 @@ public:
 	virtual void AddActor(const Actor::pointer &actor);
 	virtual void AddActorAtFront(const Actor::pointer &actor);
 
-	void Run();
+	void Run() override;
 
 	const StrongList<Actor> &actors() const;
 	bool empty() override { return _actors.empty(); }
