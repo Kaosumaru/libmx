@@ -9,7 +9,7 @@
 #include "graphic/opengl/Program.h"
 #include "graphic/opengl/Buffer.h"
 #include "graphic/opengl/Uniform.h"
-#include "glm/gtc/matrix_transform.hpp"
+#include "graphic/opengl/MVP.h"
 
 #include "devices/Keyboard.h"
 
@@ -92,11 +92,7 @@ public:
 		GLuint mvpLoc = _program.GetUniformLocation("u_mvpMatrix");
 		GLuint colorLoc = _program.GetUniformLocation("u_color");
 
-		float w = MX::Window::current().width();
-		float h = MX::Window::current().height();
-
-		glm::mat4x4 mvpMat = glm::orthoLH(0.0f, w, h, 0.0f, -100.0f, 100.0f);
-		MX::gl::Uniform(mvpLoc, mvpMat);
+		MX::gl::Uniform(mvpLoc, MX::gl::MVP::get().mvp());
 		MX::gl::Uniform(colorLoc, c);
 
 		buffer.Bind();

@@ -4,6 +4,8 @@
 #include "SDL_video.h"
 #include "SDL_render.h"
 #include "graphic/OpenGL.h"
+#include "graphic/opengl/MVP.h"
+#include "glm/gtc/matrix_transform.hpp"
 
 using namespace MX;
 
@@ -63,6 +65,8 @@ void Window::OnRender()
 	glClear ( GL_COLOR_BUFFER_BIT );
 
 	glViewport(0, 0, _width, _height);
+	glm::mat4x4 mvpMat = glm::orthoLH(0.0f, (float)_width, (float)_height, 0.0f, -100.0f, 100.0f);
+	gl::MVP::get().SetProjection(mvpMat);
 }
 
 void Window::AfterRender()
