@@ -5,7 +5,6 @@
 #include "SDL_render.h"
 #include "graphic/OpenGL.h"
 
-
 using namespace MX;
 
 Window::Window(unsigned width, unsigned height, bool fullscreen)
@@ -37,11 +36,9 @@ Window::Window(unsigned width, unsigned height, bool fullscreen)
 	_glcontext = SDL_GL_CreateContext(_window.get());
 	if (!_glcontext) throw std::runtime_error("SDL_GL_CreateContext");
 
-#ifndef __EMSCRIPTEN__
 	GLenum err = glewInit();
 	if (err != GLEW_OK)
 		throw std::runtime_error("glewInit");
-#endif
 
 	SDL_GL_SetSwapInterval(1);
 }
@@ -61,6 +58,15 @@ void Window::OnRender()
 {
 	glClearColor ( 1.0, 0.0, 0.0, 1.0 );
 	glClear ( GL_COLOR_BUFFER_BIT );
+
+#ifndef __EMSCRIPTEN__
+	glViewport(0, 0, _width, _height);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(0, _width, _height, 0, -1, 1);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+#endif
 }
 
 void Window::AfterRender()
