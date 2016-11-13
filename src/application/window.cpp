@@ -3,7 +3,8 @@
 #include "devices/Keyboard.h"
 #include "SDL_video.h"
 #include "SDL_render.h"
-#include "SDL_opengl.h"
+#include "graphic/OpenGL.h"
+
 
 using namespace MX;
 
@@ -35,6 +36,12 @@ Window::Window(unsigned width, unsigned height, bool fullscreen)
 
 	_glcontext = SDL_GL_CreateContext(_window.get());
 	if (!_glcontext) throw std::runtime_error("SDL_GL_CreateContext");
+
+#ifndef __EMSCRIPTEN__
+	GLenum err = glewInit();
+	if (err != GLEW_OK)
+		throw std::runtime_error("glewInit");
+#endif
 
 	SDL_GL_SetSwapInterval(1);
 }

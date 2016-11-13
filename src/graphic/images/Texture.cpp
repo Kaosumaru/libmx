@@ -13,7 +13,7 @@ Texture::Texture(unsigned w, unsigned h, GLint format, const GLvoid *data)
 Texture::Texture(const glm::vec2& size, bool alpha)
 {
 	auto format = alpha ? GL_RGBA : GL_RGB;
-	constructTexture(size.x, size.y, format, nullptr);
+	constructTexture((unsigned)size.x, (unsigned)size.y, format, nullptr);
 }
 
 Texture::Texture(const std::string & path)

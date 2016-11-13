@@ -2,7 +2,7 @@
 #define TEXTURE
 #include "Utils/Utils.h"
 #include "Utils/Vector2.h"
-#include "SDL_opengl.h"
+#include "graphic/OpenGL.h"
 
 namespace MX 
 {
