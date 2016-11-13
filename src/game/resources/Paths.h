@@ -1,5 +1,4 @@
-#ifndef MXPATHS
-#define MXPATHS
+#pragma once
 #include <string>
 #include "utils/Singleton.h"
 
@@ -33,6 +32,3 @@ protected:
 };
 
 }
-
-
-#endif

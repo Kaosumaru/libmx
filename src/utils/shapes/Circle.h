@@ -13,8 +13,6 @@ struct Circle : public Geometry
 	Circle(float radius) : radius(radius) {}
 	Circle(const glm::vec2& center, float radius) : center(center), radius(radius) {}
 
-
-
 	glm::vec2 center = { 0, 0 };
 	float radius = 0.0f;
 

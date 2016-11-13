@@ -52,6 +52,19 @@ namespace gl
 			glGetProgramInfoLog(*this, maxLength, &infoLogLength, &(text[0]));
 			return text;
 		}
+
+
+		GLuint GetAttribLocation(const std::string& name) { return GetAttribLocation(name.c_str()); }
+		GLuint GetAttribLocation(const char* name)
+		{
+			return glGetAttribLocation(*this, name);
+		}
+
+		GLuint GetUniformLocation(const std::string& name) { return GetAttribLocation(name.c_str()); }
+		GLuint GetUniformLocation(const char* name)
+		{
+			return glGetUniformLocation(*this, name);
+		}
 	};
 
 	Program createProgram(const std::string& vertexShader, const std::string& fragmentShader, std::string& errorLog);

@@ -8,6 +8,8 @@ set(CMAKE_MODULE_PATH ${MX_MODULES} CACHE TYPE STRING FORCE)
 
 add_definitions(-DMX_DEBUG_RES_PATH="${PROJECT_SOURCE_DIR}/res/")
 
+add_definitions("${MX_DEFINES}")
+
 if (MSVC)
 configure_msvc_runtime()
 add_definitions( "/DMX_PLATFORM_MSVC  /DUNICODE /D_UNICODE" )

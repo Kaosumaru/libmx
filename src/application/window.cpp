@@ -41,6 +41,9 @@ Window::Window(unsigned width, unsigned height, bool fullscreen)
 		throw std::runtime_error("glewInit");
 
 	SDL_GL_SetSwapInterval(1);
+
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_CULL_FACE);
 }
 
 Window::~Window()
@@ -59,14 +62,7 @@ void Window::OnRender()
 	glClearColor ( 1.0, 0.0, 0.0, 1.0 );
 	glClear ( GL_COLOR_BUFFER_BIT );
 
-#ifndef __EMSCRIPTEN__
 	glViewport(0, 0, _width, _height);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0, _width, _height, 0, -1, 1);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-#endif
 }
 
 void Window::AfterRender()
