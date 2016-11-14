@@ -54,7 +54,7 @@ InstancedRenderer::InstancedRenderer()
 	{
 		std::cout << "Shader compiled" << std::endl;
 
-		_mvp_uniform = _program.GetAttribLocation("MVP");
+		_mvp_uniform = _program.GetUniformLocation("MVP");
 		//shader->uniform("tex0", 0);
 		_vertices_attribute = _program.GetAttribLocation("squareVertices");
 		_position_attribute = _program.GetAttribLocation("xywh");
@@ -82,7 +82,7 @@ void InstancedRenderer::Draw(const Texture& tex, const Rectangle& srcArea, const
 	}
 	auto &instance = nextInstance();
 
-	instance.pos = { pos.x, pos.y, scale.x, scale.y }; //add 0.5 to achieve pixel perfectness
+	instance.pos = { pos.x, pos.y, scale.x, scale.y };
 	instance.center = { relativeCenter.x, relativeCenter.y };
 
 	instance.color[0] = color.r();
@@ -109,11 +109,14 @@ void InstancedRenderer::DrawBatched()
 	if (_currentInstance == 0)
 		return;
 
+#ifdef WIP
+	//glBindTexture(GL_TEXTURE_2D, _lastTex);
+#endif
 
-	glBindTexture(GL_TEXTURE_2D, _lastTex);
 	_program.Use();
 
-	MX::gl::Uniform(_mvp_uniform, MX::gl::MVP::get().mvp());
+	auto& mvp = MX::gl::MVP::get().mvp();
+	MX::gl::Uniform(_mvp_uniform, mvp);
 
 
 
