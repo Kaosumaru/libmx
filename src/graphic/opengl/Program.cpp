@@ -1,5 +1,6 @@
 #include "Shader.h"
 #include "Program.h"
+#include "game/resources/Resources.h"
 
 using namespace MX;
 using namespace MX::gl;
@@ -8,6 +9,13 @@ namespace MX
 {
 	namespace gl
 	{
+		Program createProgramFromFiles(const std::string& vertexShader, const std::string& fragmentShader, std::string& errorLog)
+		{
+			std::string vertex = MX::Resources::get().openTextFile(vertexShader);
+			std::string fragment = MX::Resources::get().openTextFile(fragmentShader);
+			return createProgram(vertex, fragment, errorLog);
+		}
+
 		Program createProgram(const std::string& vertexShader, const std::string& fragmentShader, std::string& errorLog)
 		{
 			Program program;

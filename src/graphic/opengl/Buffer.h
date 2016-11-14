@@ -24,6 +24,11 @@ namespace gl
 
 		}
 
+		Buffer(Type type)
+		{
+			Create(type);
+		}
+
 		void Create(Type type)
 		{
 			_type = type;

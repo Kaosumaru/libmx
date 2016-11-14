@@ -13,6 +13,8 @@
 
 #include "devices/Keyboard.h"
 
+#include "graphic/renderer/InstancedRenderer.h"
+
 class Bootstrap : public MX::App
 {
 public:
@@ -58,11 +60,8 @@ public:
 
 
 		{
-			std::string vertex = MX::Resources::get().openTextFile("shader/test.vertex");
-			std::string fragment = MX::Resources::get().openTextFile("shader/test.fragment");
-
 			std::string out;
-			_program = MX::gl::createProgram(vertex, fragment, out);
+			_program = MX::gl::createProgramFromFiles("shader/test.vertex", "shader/test.fragment", out);
 
 			if (_program)
 			{
@@ -81,6 +80,8 @@ public:
 			_vbo.Bind();
 			_vbo.Data(vertices, GL_STATIC_DRAW);
 		}
+
+		_renderer = std::make_shared<MX::Graphic::InstancedRenderer>();
 
 		MX::Window::current().keyboard()->on_specific_key_down[SDLK_ESCAPE].connect([&]() { Quit(); });
 	}
@@ -105,10 +106,16 @@ public:
 	void OnRender() override
 	{
 		drawTriangle(_vbo, { 1.0f, 0.0f, 1.0f, 1.0f });
+
+		{
+			_renderer->Draw(*_image, MX::Rectangle{}, { 100.0f,100.0f }, { 0.0f, 0.0f }, { 1.0f, 1.0f }, MX::Color{}, 0.0f);
+			_renderer->Flush();
+		}
 	}
 
 	MX::gl::Buffer  _vbo;
 	MX::gl::Program _program;
+	std::shared_ptr<MX::Graphic::InstancedRenderer> _renderer;
 	std::shared_ptr<MX::Graphic::Texture> _image;
 };
 
