@@ -68,8 +68,8 @@ public:
 		//drawTriangle(_vbo, { 1.0f, 0.0f, 1.0f, 1.0f });
 
 		{
-			_renderer->Draw(*_image, MX::Rectangle{}, { 100.0f,100.0f }, { 0.0f, 0.0f }, { 50.0f, 50.0f }, MX::Color{}, 0.0f);
-			_renderer->Draw(*_image, MX::Rectangle{}, { 200.0f,200.0f }, { 0.0f, 0.0f }, { 50.0f, 50.0f }, MX::Color{}, 0.0f);
+			_renderer->Draw(*_image, MX::Rectangle{0.0f, 0.0f, 1.0f, 1.0f}, { 100.0f,100.0f }, { 0.0f, 0.0f }, { 256.0f, 256.0f }, MX::Color{}, 0.0f);
+			_renderer->Draw(*_image, MX::Rectangle{0.0f, 0.0f, 0.5f, 0.5f}, { 600.0f,300.0f }, { 0.0f, 0.0f }, { 256.0f, 256.0f }, MX::Color{}, 0.0f);
 			_renderer->Flush();
 		}
 	}

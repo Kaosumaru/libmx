@@ -29,12 +29,10 @@ protected:
 	{
 		glm::vec4 pos; //0
 		glm::vec2 center; //4
-		glm::vec4 uv; //6
-		glm::vec4 color; //10
-		float angle; //14
+		glm::vec4 color; //6
+		float angle; //10
+		glm::vec2 uv[4]; //11
 	};
-
-
 
 	InstanceData &nextInstance() { return instances[_currentInstance++]; }
 
