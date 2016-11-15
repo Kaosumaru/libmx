@@ -58,63 +58,22 @@ public:
 			}
 		}
 
-
-		{
-			std::string out;
-			_program = MX::gl::createProgramFromFiles("shader/test.vertex", "shader/test.fragment", out);
-
-			if (_program)
-			{
-				std::cout << "Shader compiled" << std::endl;
-			}
-			else
-			{
-				std::cout << "Shader error: " << out << std::endl;
-			}
-
-			static GLfloat vertices[] = { 250.f,  500.f, 0.0f, 
-				250.f, 250.f, 0.0f,
-				500.f, 250.f, 0.0f };
-
-			_vbo.Create(MX::gl::Buffer::Type::Array);
-			_vbo.Bind();
-			_vbo.Data(vertices, GL_STATIC_DRAW);
-		}
-
 		_renderer = std::make_shared<MX::Graphic::InstancedRenderer>();
 
 		MX::Window::current().keyboard()->on_specific_key_down[SDLK_ESCAPE].connect([&]() { Quit(); });
 	}
 
-	void drawTriangle(MX::gl::Buffer& buffer, const glm::vec4& c) 
-	{
-		_program.Use();
-		GLuint posLoc = _program.GetAttribLocation("a_position");
-		GLuint mvpLoc = _program.GetUniformLocation("u_mvpMatrix");
-		GLuint colorLoc = _program.GetUniformLocation("u_color");
-
-		MX::gl::Uniform(mvpLoc, MX::gl::MVP::get().mvp());
-		MX::gl::Uniform(colorLoc, c);
-
-		buffer.Bind();
-		glEnableVertexAttribArray(posLoc);
-		glVertexAttribPointer(posLoc, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), 0);
-
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-	}
-
 	void OnRender() override
 	{
-		drawTriangle(_vbo, { 1.0f, 0.0f, 1.0f, 1.0f });
+		//drawTriangle(_vbo, { 1.0f, 0.0f, 1.0f, 1.0f });
 
 		{
-			_renderer->Draw(*_image, MX::Rectangle{}, { 100.0f,100.0f }, { 0.0f, 0.0f }, { 1.0f, 1.0f }, MX::Color{}, 0.0f);
+			_renderer->Draw(*_image, MX::Rectangle{}, { 100.0f,100.0f }, { 0.0f, 0.0f }, { 50.0f, 50.0f }, MX::Color{}, 0.0f);
+			_renderer->Draw(*_image, MX::Rectangle{}, { 200.0f,200.0f }, { 0.0f, 0.0f }, { 50.0f, 50.0f }, MX::Color{}, 0.0f);
 			_renderer->Flush();
 		}
 	}
 
-	MX::gl::Buffer  _vbo;
-	MX::gl::Program _program;
 	std::shared_ptr<MX::Graphic::InstancedRenderer> _renderer;
 	std::shared_ptr<MX::Graphic::Texture> _image;
 };

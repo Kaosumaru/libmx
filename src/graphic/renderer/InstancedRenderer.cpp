@@ -73,7 +73,7 @@ void InstancedRenderer::Flush()
 {
 	DrawBatched();
 }
-void InstancedRenderer::Draw(const Texture& tex, const Rectangle& srcArea, const glm::vec2& pos, const glm::vec2& relativeCenter, const glm::vec2& scale, const MX::Color& color, float angle)
+void InstancedRenderer::Draw(const Texture& tex, const Rectangle& srcArea, const glm::vec2& pos, const glm::vec2& relativeCenter, const glm::vec2& size, const MX::Color& color, float angle)
 {
 	if (tex.getId() != _lastTex || _currentInstance + 4 > _maxInstances)
 	{
@@ -82,7 +82,7 @@ void InstancedRenderer::Draw(const Texture& tex, const Rectangle& srcArea, const
 	}
 	auto &instance = nextInstance();
 
-	instance.pos = { pos.x, pos.y, scale.x, scale.y };
+	instance.pos = { pos.x, pos.y, size.x, size.y };
 	instance.center = { relativeCenter.x, relativeCenter.y };
 
 	instance.color[0] = color.r();
@@ -214,12 +214,12 @@ void InstancedRenderer::DrawBatched()
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 
-
+	
 	if (_data == _d1)
 		_data = _d2;
 	else
 		_data = _d1;
-
+	
 	_lastTex = -1;
 	_currentInstance = 0;
 }
