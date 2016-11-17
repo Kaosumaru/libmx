@@ -60,7 +60,7 @@ InstancedRenderer::InstancedRenderer()
 		_position_attribute = _program.GetAttribLocation("xywh");
 		_color_attribute = _program.GetAttribLocation("instance_color");
 		_angle_attribute = _program.GetAttribLocation("instance_angle");
-		_uv_attribute = _program.GetAttribLocation("verticeUV");
+		_uv_attribute = _program.GetAttribLocation("instance_uv");
 		_center_attribute = _program.GetAttribLocation("instance_center");
 	}
 	else
@@ -92,17 +92,8 @@ void InstancedRenderer::Draw(const Texture& tex, const Rectangle& srcArea, const
 
 	instance.angle = angle;
 
-
-	instance.uv[0] = { srcArea.x1, srcArea.y1 };
-	instance.uv[1] = { srcArea.x2, srcArea.y1 };
-	instance.uv[2] = { srcArea.x1, srcArea.y2 };
-	instance.uv[3] = { srcArea.x2, srcArea.y2 };
-
+	instance.uv = { srcArea.x1, srcArea.y1, srcArea.x2, srcArea.y2 };
 #ifdef WIP
-	//auto coords = tex->getAreaTexCoords(srcArea);
-	//instance.uv = { coords.x1, coords.y1, coords.x2, coords.y2 };
-
-
 	if (Image::Settings::flipX)
 		std::swap(instance.uv[0], instance.uv[2]);
 	if (Image::Settings::flipY)
@@ -118,7 +109,6 @@ void InstancedRenderer::DrawBatched()
 	glBindTexture(GL_TEXTURE_2D, _lastTex);
 
 	_program.Use();
-
 	auto& mvp = MX::gl::MVP::get().mvp();
 	MX::gl::Uniform(_mvp_uniform, mvp);
 
@@ -159,6 +149,16 @@ void InstancedRenderer::DrawBatched()
 		(void*)(4 * 4)            // array buffer offset
 	);
 
+	glEnableVertexAttribArray(_uv_attribute);
+	glVertexAttribPointer(
+		_uv_attribute,
+		4,                  // size
+		GL_FLOAT,           // type
+		GL_FALSE,           // normalized?
+		sizeof(InstanceData),                  // stride
+		(void*)(6 * 4)            // array buffer offset
+	);
+
 	glEnableVertexAttribArray(_color_attribute);
 	glVertexAttribPointer(
 		_color_attribute,                  
@@ -166,7 +166,7 @@ void InstancedRenderer::DrawBatched()
 		GL_FLOAT,           // type
 		GL_FALSE,           // normalized?
 		sizeof(InstanceData),                  // stride
-		(void*)(6*4)            // array buffer offset
+		(void*)(10*4)            // array buffer offset
 	);
 
 	glEnableVertexAttribArray(_angle_attribute);
@@ -176,17 +176,7 @@ void InstancedRenderer::DrawBatched()
 		GL_FLOAT,           // type
 		GL_FALSE,           // normalized?
 		sizeof(InstanceData),                  // stride
-		(void*)(10 * 4)            // array buffer offset
-	);
-
-	glEnableVertexAttribArray(_uv_attribute);
-	glVertexAttribPointer(
-		_uv_attribute,
-		2,                  // size
-		GL_FLOAT,           // type
-		GL_FALSE,           // normalized?
-		0,                  // stride
-		(void*)(11 * 4)            // array buffer offset
+		(void*)(14 * 4)            // array buffer offset
 	);
 
 
@@ -195,7 +185,7 @@ void InstancedRenderer::DrawBatched()
 	glVertexAttribDivisor(_vertices_attribute, 0);
 	glVertexAttribDivisor(_position_attribute, 1);
 	glVertexAttribDivisor(_center_attribute, 1);
-	glVertexAttribDivisor(_uv_attribute, 0);
+	glVertexAttribDivisor(_uv_attribute, 1);
 	glVertexAttribDivisor(_color_attribute, 1);
 	glVertexAttribDivisor(_angle_attribute, 1);
 
