@@ -1,7 +1,6 @@
 #pragma once
 #include "Image.h"
 
-#if 0
 namespace MX{
 
 struct Quad;
@@ -14,18 +13,19 @@ class Display;
 class Surface : public Image, public TargetSurface, public disable_copy_constructors, public shared_ptr_init<Surface>
 {
 public:
-	Surface(const Surface& parent, int x, int y, int w, int h);
+	using TexturePointer = std::shared_ptr< class Texture >;
+
+	Surface(const Surface& parent, float x, float y, float w, float h);
 	Surface(const Surface& parent, const MX::Rectangle& rect);
 	Surface(unsigned width, unsigned height, bool alpha = true);
 
-	Surface(const ci::gl::TextureRef &texture);
+	Surface(const TexturePointer& texture);
 	~Surface();
 
 
 	void Clear(const Color &color);
 
-	void Draw(float x, float y);
-	void DrawCentered(float cx, float cy, float x, float y, float sx = 1.0f, float sy = 1.0f, float angle = 0.0f, const Color &color = Color());
+	void DrawCentered(const glm::vec2& offset, const glm::vec2& pos, const glm::vec2& scale = { 1.0f, 1.0f }, float angle = 0.0f, const Color &color = Color());
 	void Draw(const MX::Rectangle &destination, const MX::Rectangle &source, const Color &color = Color());
 
 
@@ -36,11 +36,11 @@ public:
 
 	bool save(const std::string &path);
 
-	const ci::gl::TextureRef &native_bitmap_handle() const { return _texture; };
+	const TexturePointer &texture() const { return _texture; };
 
 	virtual void SetCenter(const glm::vec2& center) { _center = center; }
 
-	static pointer Create(const Surface::pointer& parent, int x, int y, int w, int h)
+	static pointer Create(const Surface::pointer& parent, float x, float y, float w, float h)
 	{
 		auto bit = std::make_shared<Surface>(*parent, x, y, w, h);
 		if (bit->empty())
@@ -50,7 +50,7 @@ public:
 
 	static pointer Create(const Surface::pointer& parent, const MX::Rectangle& rect)
 	{
-		return Create(parent, (int)rect.x1, (int)rect.y1, (int)rect.width(), (int)rect.height());
+		return Create(parent, rect.x1, rect.y1, rect.width(), rect.height());
 	}
 
 	static pointer Create(unsigned width, unsigned height, bool alpha = true)
@@ -61,21 +61,20 @@ public:
 		return bit;
 	}
 
-	static pointer Create(void *data, GLenum dataFormat, unsigned width, unsigned height);
+	static pointer Create(void *data, unsigned int dataFormat, unsigned width, unsigned height);
 	
 
 protected:
-	ci::Area subCoords(int x, int y, int w, int h) const;
-	ci::Area subCoords(ci::Area &sub) const { return subCoords(sub.x1, sub.y1, sub.getWidth(), sub.getHeight()); }
+	Rectangle subCoords(float x, float y, float w, float h) const;
+	Rectangle subCoords(const Rectangle &sub) const { return subCoords(sub.x1, sub.y1, sub.width(), sub.height()); }
 
 
-	void SetTexture(const ci::gl::TextureRef& texture);
-	ci::gl::TextureRef _texture;
-	ci::Area           _texCoords;
-	MX::glm::vec2 _center;
+	void SetTexture(const TexturePointer& texture);
+	TexturePointer _texture;
+	Rectangle      _texCoords;
+	glm::vec2      _center;
 };
 
 }
 }
 
-#endif

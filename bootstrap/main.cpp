@@ -14,6 +14,7 @@
 #include "devices/Keyboard.h"
 
 #include "graphic/renderer/InstancedRenderer.h"
+#include "graphic/images/Surface.h"
 
 class Bootstrap : public MX::App
 {
@@ -51,31 +52,35 @@ public:
 
 		{
 			auto path = MX::Paths::get().pathToImage("cthulhu.png");
-			_image = MX::Graphic::Texture::Create(path);
-			if (_image)
+			auto texture = MX::Graphic::Texture::Create(path);
+			if (texture)
 			{
-				std::cout << "Opened image " << _image->width() << "x" << _image->height() << std::endl;
+				std::cout << "Opened image " << texture->width() << "x" << texture->height() << std::endl;
 			}
-		}
 
-		_renderer = std::make_shared<MX::Graphic::InstancedRenderer>();
+			_image = std::make_shared<MX::Graphic::Surface>(texture);
+		}
 
 		MX::Window::current().keyboard()->on_specific_key_down[SDLK_ESCAPE].connect([&]() { Quit(); });
 	}
 
 	void OnRender() override
 	{
+		glClearColor ( 1.0, 0.0, 0.0, 1.0 );
+		glClear ( GL_COLOR_BUFFER_BIT );
+
+		_image->DrawCentered({}, {});
+
 		//drawTriangle(_vbo, { 1.0f, 0.0f, 1.0f, 1.0f });
 
 		{
-			_renderer->Draw(*_image, MX::Rectangle{0.0f, 0.0f, 1.0f, 1.0f}, { 100.0f,100.0f }, { 0.0f, 0.0f }, { 256.0f, 256.0f }, MX::Color{}, 0.0f);
-			_renderer->Draw(*_image, MX::Rectangle{0.0f, 0.0f, 0.5f, 0.5f}, { 600.0f,300.0f }, { 0.0f, 0.0f }, { 256.0f, 256.0f }, MX::Color{}, 0.0f);
-			_renderer->Flush();
+			//auto &renderer = MX::Graphic::TextureRenderer::current();
+			//renderer.Draw(*_image, MX::Rectangle{0.0f, 0.0f, 1.0f, 1.0f}, { 100.0f,100.0f }, { 0.0f, 0.0f }, { 256.0f, 256.0f }, MX::Color{}, 0.0f);
+			//renderer.Draw(*_image, MX::Rectangle{0.0f, 0.0f, 0.5f, 0.5f}, { 600.0f,300.0f }, { 0.0f, 0.0f }, { 256.0f, 256.0f }, MX::Color{}, 0.0f);
 		}
 	}
 
-	std::shared_ptr<MX::Graphic::InstancedRenderer> _renderer;
-	std::shared_ptr<MX::Graphic::Texture> _image;
+	std::shared_ptr<MX::Graphic::Surface> _image;
 };
 
 int main(int argc, char* argv[])

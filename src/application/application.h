@@ -15,6 +15,7 @@ namespace MX
 	namespace Graphic
 	{
 		class Image;
+		class TextureRenderer;
 	}
 
 	struct RenderQueue {};
@@ -60,5 +61,6 @@ namespace MX
 		FunctorsQueue _applicationQueue;
 
 		std::shared_ptr<MX::Graphic::Image> _cursor;
+		std::shared_ptr<MX::Graphic::TextureRenderer> _defaultRenderer;
 	};
 }

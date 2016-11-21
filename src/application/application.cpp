@@ -3,6 +3,8 @@
 #include "utils/Random.h"
 #include <SDL.h>
 #include <iostream>
+#include "graphic/renderer/TextureRenderer.h"
+#include "graphic/renderer/InstancedRenderer.h"
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -60,6 +62,9 @@ void App::Loop()
 	if (_window)
 		_window->OnRender();
 	OnRender();
+
+	Graphic::TextureRenderer::current().Flush();
+
 	if (_window)
 		_window->AfterRender();
 }
@@ -70,6 +75,9 @@ bool App::Run()
 		return false;
 
 	OnPrepare();
+
+	_defaultRenderer = std::make_shared<Graphic::InstancedRenderer>();
+	Graphic::TextureRenderer::SetCurrent(*_defaultRenderer);
 
 #ifdef __EMSCRIPTEN__
 	auto oneIter = [](void* arg) 
@@ -123,8 +131,7 @@ bool App::OnInit()
 		SDL_Quit();
 		return false;
 	}
-		
-
+	
 	return true;
 }
 

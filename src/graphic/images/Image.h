@@ -71,16 +71,17 @@ public:
 
 
 	//draw
-	virtual void Draw(float x, float y);
-	virtual void DrawTinted(float x, float y, const Color &color) ;
-	virtual void DrawRotated(float cx, float cy, float x, float y, float angle);
-	virtual void DrawScaled(float cx, float cy, float x, float y, float sx, float sy);
-	virtual void DrawCentered(float cx, float cy, float x, float y, float sx = 1.0f, float sy = 1.0f, float angle = 0.0f, const Color &color = Color()) = 0;
+	virtual void Draw(const glm::vec2& pos);
+	virtual void DrawTinted(const glm::vec2& pos, const Color &color) ;
+	virtual void DrawRotated(const glm::vec2& offset, const glm::vec2& pos, float angle);
+	virtual void DrawScaled(const glm::vec2& offset,const glm::vec2& pos, const glm::vec2& scale);
+	virtual void DrawCentered(const glm::vec2& offset, const glm::vec2& pos, const glm::vec2& scale = { 1.0f, 1.0f }, float angle = 0.0f, const Color &color = Color()) = 0;
 
 	virtual void DrawTiled(const MX::Rectangle &destination, const Color &color = Color());
 	virtual void Draw(const MX::Rectangle &destination, const MX::Rectangle &source, const Color &color = Color()) {};
 	virtual void Draw(const MX::Rectangle &destination, const Color &color = Color());
 
+	glm::ivec2 dimensions() { return glm::ivec2{ Height(), Width() }; }
 	virtual unsigned Height() = 0;
 	virtual unsigned Width() = 0;
 
@@ -108,9 +109,6 @@ public:
 		static bool mipmap;
 
 		static const Color &modifyColor(const Color &color);
-		static const float& modifyScaleX(const float & scaleX);
-		static const float& modifyScaleY(const float & scaleY);
-
 	};
 
 	virtual unsigned int get_opengl_texture() { return 0; }

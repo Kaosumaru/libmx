@@ -61,9 +61,6 @@ void Window::Init()
 
 void Window::OnRender()
 {
-	glClearColor ( 1.0, 0.0, 0.0, 1.0 );
-	glClear ( GL_COLOR_BUFFER_BIT );
-
 	glViewport(0, 0, _width, _height);
 	glm::mat4x4 mvpMat = glm::orthoLH(0.0f, (float)_width, (float)_height, 0.0f, -100.0f, 100.0f);
 	gl::MVP::get().SetProjection(mvpMat);

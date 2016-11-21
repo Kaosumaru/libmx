@@ -98,21 +98,21 @@ MX::Rectangle ClippingContext::_rect;
 
 
 
-void Image::Draw(float x, float y)
+void Image::Draw(const glm::vec2& pos)
 {
-	DrawCentered(0.0f,0.0f,x,y);
+	DrawCentered({}, pos);
 }
-void Image::DrawTinted(float x, float y, const Color &color)
+void Image::DrawTinted(const glm::vec2& pos, const Color &color)
 {
-	DrawCentered(0.0f,0.0f,x,y, 1.0f, 1.0f, 0.0f, color);
+	DrawCentered({}, pos, { 1.0f, 1.0f }, 0.0f, color);
 }
-void Image::DrawRotated(float cx, float cy, float x, float y, float angle)
+void Image::DrawRotated(const glm::vec2& offset, const glm::vec2& pos, float angle)
 {
-	DrawCentered(cx,cy,x,y, 1.0f, 1.0f, angle);
+	DrawCentered(offset, pos, { 1.0f, 1.0f }, angle);
 }
-void Image::DrawScaled(float cx, float cy, float x, float y, float sx, float sy)
+void Image::DrawScaled(const glm::vec2& offset, const glm::vec2& pos, const glm::vec2& scale)
 {
-	DrawCentered(cx,cy,x,y, sx, sy);
+	DrawCentered(offset, pos, scale);
 }
 
 void Image::Draw(const MX::Rectangle &destination, const Color &color)
@@ -120,7 +120,7 @@ void Image::Draw(const MX::Rectangle &destination, const Color &color)
 	float sx = (float)destination.width()/(float)Width();
 	float sy = (float)destination.height()/(float)Height();
 
-	DrawCentered(0.0f,0.0f,(float)destination.x1, (float)destination.y1, sx, sy, 0.0f, color);
+	DrawCentered({}, { (float)destination.x1, (float)destination.y1 }, { sx, sy }, 0.0f, color);
 }
 
 
@@ -162,30 +162,4 @@ const Color &Image::Settings::modifyColor(const Color &color)
 	}
 
 	return color;
-}
-const float& Image::Settings::modifyScaleX(const float & scaleX)
-{
-	typedef Context<glm::vec2, Image::Settings::ScaleMultiplier> ScopeMultiplier;
-
-	if (ScopeMultiplier::isCurrent())
-	{
-		static float sscale;
-		sscale = scaleX * ScopeMultiplier::current().x;
-		return sscale;
-	}
-
-	return scaleX;
-}
-const float& Image::Settings::modifyScaleY(const float & scaleY)
-{
-	typedef Context<glm::vec2, Image::Settings::ScaleMultiplier> ScopeMultiplier;
-
-	if (ScopeMultiplier::isCurrent())
-	{
-		static float sscale;
-		sscale = scaleY * ScopeMultiplier::current().y;
-		return sscale;
-	}
-
-	return scaleY;
 }
