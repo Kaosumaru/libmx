@@ -1,4 +1,4 @@
-#include "Surface.h"
+#include "TextureImage.h"
 #include "graphic/renderer/TextureRenderer.h"
 
 using namespace MX;
@@ -7,18 +7,18 @@ using namespace MX::Graphic;
 
 
 
-Surface::~Surface()
+TextureImage::~TextureImage()
 {
 	_texture = nullptr;
 }
 
-Surface::Surface(const Surface& parent, float x, float y, float w, float h)
+TextureImage::TextureImage(const TextureImage& parent, float x, float y, float w, float h)
 {
 	_texture = parent._texture;
 	_texCoords = parent.subCoords(x, y, w, h);
 }
 
-Rectangle Surface::subCoords(float x, float y, float w, float h) const
+Rectangle TextureImage::subCoords(float x, float y, float w, float h) const
 {
 	Rectangle otherCoords;
 
@@ -31,7 +31,7 @@ Rectangle Surface::subCoords(float x, float y, float w, float h) const
 }
 
 
-Surface::Surface(unsigned width, unsigned height, bool alpha)
+TextureImage::TextureImage(unsigned width, unsigned height, bool alpha)
 {
 	assert(false);
 	//WIP
@@ -42,18 +42,18 @@ Surface::Surface(unsigned width, unsigned height, bool alpha)
 	*/
 }
 
-Surface::Surface(const Surface& parent, const MX::Rectangle& rect) : Surface(parent, rect.x1, rect.y1, rect.width(), rect.height())
+TextureImage::TextureImage(const TextureImage& parent, const MX::Rectangle& rect) : TextureImage(parent, rect.x1, rect.y1, rect.width(), rect.height())
 {
 
 }
 
-Surface::Surface(const TexturePointer& texture)
+TextureImage::TextureImage(const TexturePointer& texture)
 {
 	SetTexture(texture);
 }
 
 
-void Surface::SetTexture(const TexturePointer& texture)
+void TextureImage::SetTexture(const TexturePointer& texture)
 {
 	if (!texture)
 		return;
@@ -62,14 +62,14 @@ void Surface::SetTexture(const TexturePointer& texture)
 }
 
 
-Surface::pointer Surface::Create(void *data, unsigned int dataFormat, unsigned width, unsigned height)
+TextureImage::pointer TextureImage::Create(void *data, unsigned int dataFormat, unsigned width, unsigned height)
 {
 #if 0
 	ci::gl::Texture::Format format;
 	format.setInternalFormat(GL_RGBA);
 	format.loadTopDown();
 	auto txt = ci::gl::Texture::create(data, dataFormat, width, height, format);
-	return std::make_shared<Surface>(txt);
+	return std::make_shared<TextureImage>(txt);
 #endif
 	assert(false);
 	//WIP
@@ -81,20 +81,20 @@ Surface::pointer Surface::Create(void *data, unsigned int dataFormat, unsigned w
 
 
 
-void Surface::Clear(const Color &color)
+void TextureImage::Clear(const Color &color)
 {
 	TargetContext c(*this);
 	assert(false);
 	//ci::gl::clear(color.toColorA(), false);
 }
 
-void Surface::DrawCentered(const glm::vec2& offset, const glm::vec2& pos, const glm::vec2& scale, float angle, const Color &color)
+void TextureImage::DrawCentered(const glm::vec2& offset, const glm::vec2& pos, const glm::vec2& scale, float angle, const Color &color)
 {
 	auto &calculated_color = Settings::modifyColor(color);
 	Graphic::TextureRenderer::current().Draw(*_texture, _texCoords, pos, offset + _center, scale * glm::vec2{ dimensions() }, calculated_color, angle);
 }
 
-void Surface::Draw(const MX::Rectangle &destination, const MX::Rectangle &source, const Color &color)
+void TextureImage::Draw(const MX::Rectangle &destination, const MX::Rectangle &source, const Color &color)
 {
 	glm::vec2 pos = { destination.x1, destination.y1 };
 	auto &calculated_color = Settings::modifyColor(color);
@@ -102,22 +102,22 @@ void Surface::Draw(const MX::Rectangle &destination, const MX::Rectangle &source
 	Graphic::TextureRenderer::current().Draw(*_texture, coords, { pos.x, pos.y }, { 0.0f, 0.0f }, { destination.width(), destination.height() }, color, 0.0f);
 }
 
-unsigned Surface::Height()
+unsigned TextureImage::Height()
 {
 	return (unsigned)(_texCoords.height() * _texture->height());
 }
-unsigned Surface::Width()
+unsigned TextureImage::Width()
 {
 	return (unsigned)(_texCoords.width() * _texture->width());
 }
 
 
-bool Surface::empty()
+bool TextureImage::empty()
 {
 	return _texture ? false : true;
 }
 
-bool Surface::save(const std::string &path)
+bool TextureImage::save(const std::string &path)
 {
 	//ci::writeImage(path, _texture->createSource());
 	return false;

@@ -15,7 +15,7 @@ namespace MX
 
 		static pointer CreateForWindow(Window* window);
 
-		const static int MaxKey = (int)1024;
+		const static int MaxKey = (int)SDL_NUM_SCANCODES;
 		Signal<void(int keycode)> on_key_up;
 		Signal<void(int keycode)> on_key_down;
 

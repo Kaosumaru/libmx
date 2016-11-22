@@ -5,7 +5,6 @@
 #include "game/resources/Paths.h"
 #include "game/resources/Resources.h"
 #include "graphic/images/Image.h"
-#include "graphic/images/Texture.h"
 #include "graphic/opengl/Program.h"
 #include "graphic/opengl/Buffer.h"
 #include "graphic/opengl/Uniform.h"
@@ -14,7 +13,7 @@
 #include "devices/Keyboard.h"
 
 #include "graphic/renderer/InstancedRenderer.h"
-#include "graphic/images/Surface.h"
+#include "graphic/images/TextureImage.h"
 
 class Bootstrap : public MX::App
 {
@@ -58,10 +57,10 @@ public:
 				std::cout << "Opened image " << texture->width() << "x" << texture->height() << std::endl;
 			}
 
-			_image = std::make_shared<MX::Graphic::Surface>(texture);
+			_image = std::make_shared<MX::Graphic::TextureImage>(texture);
 		}
 
-		MX::Window::current().keyboard()->on_specific_key_down[SDLK_ESCAPE].connect([&]() { Quit(); });
+		MX::Window::current().keyboard()->on_specific_key_down[SDL_SCANCODE_ESCAPE].connect([&]() { Quit(); });
 	}
 
 	void OnRender() override
@@ -80,7 +79,7 @@ public:
 		}
 	}
 
-	std::shared_ptr<MX::Graphic::Surface> _image;
+	std::shared_ptr<MX::Graphic::TextureImage> _image;
 };
 
 int main(int argc, char* argv[])

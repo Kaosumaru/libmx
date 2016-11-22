@@ -10,17 +10,17 @@ namespace Graphic
 
 class Display;
 
-class Surface : public Image, public TargetSurface, public disable_copy_constructors, public shared_ptr_init<Surface>
+class TextureImage : public Image, public TargetSurface, public disable_copy_constructors, public shared_ptr_init<TextureImage>
 {
 public:
 	using TexturePointer = std::shared_ptr< class Texture >;
 
-	Surface(const Surface& parent, float x, float y, float w, float h);
-	Surface(const Surface& parent, const MX::Rectangle& rect);
-	Surface(unsigned width, unsigned height, bool alpha = true);
+	TextureImage(const TextureImage& parent, float x, float y, float w, float h);
+	TextureImage(const TextureImage& parent, const MX::Rectangle& rect);
+	TextureImage(unsigned width, unsigned height, bool alpha = true);
 
-	Surface(const TexturePointer& texture);
-	~Surface();
+	TextureImage(const TexturePointer& texture);
+	~TextureImage();
 
 
 	void Clear(const Color &color);
@@ -40,22 +40,22 @@ public:
 
 	virtual void SetCenter(const glm::vec2& center) { _center = center; }
 
-	static pointer Create(const Surface::pointer& parent, float x, float y, float w, float h)
+	static pointer Create(const TextureImage::pointer& parent, float x, float y, float w, float h)
 	{
-		auto bit = std::make_shared<Surface>(*parent, x, y, w, h);
+		auto bit = std::make_shared<TextureImage>(*parent, x, y, w, h);
 		if (bit->empty())
 			return nullptr;
 		return bit;
 	}
 
-	static pointer Create(const Surface::pointer& parent, const MX::Rectangle& rect)
+	static pointer Create(const TextureImage::pointer& parent, const MX::Rectangle& rect)
 	{
 		return Create(parent, rect.x1, rect.y1, rect.width(), rect.height());
 	}
 
 	static pointer Create(unsigned width, unsigned height, bool alpha = true)
 	{
-		auto bit = std::make_shared<Surface>(width, height, alpha);
+		auto bit = std::make_shared<TextureImage>(width, height, alpha);
 		if (bit->empty())
 			return nullptr;
 		return bit;

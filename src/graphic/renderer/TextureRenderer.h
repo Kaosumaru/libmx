@@ -5,7 +5,7 @@
 #include "utils/Utils.h"
 #include "utils/shapes/Rectangle.h"
 #include "graphic/Color.h"
-#include "graphic/images/Texture.h"
+#include "graphic/opengl/Texture.h"
 
 namespace MX{
 namespace Graphic

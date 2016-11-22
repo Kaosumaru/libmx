@@ -43,11 +43,11 @@ public:
 	{
 		if (event.type == SDL_KEYDOWN)
 		{
-			OnKeyDown(event.key.keysym.sym);
+			OnKeyDown(event.key.keysym.scancode);
 		}
 		else if (event.type == SDL_KEYUP)
 		{
-			OnKeycodeUp(event.key.keysym.sym);
+			OnKeycodeUp(event.key.keysym.scancode);
 		}
 	}
 };
