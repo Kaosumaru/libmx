@@ -29,8 +29,8 @@ public:
 	void Draw(const MX::Rectangle &destination, const MX::Rectangle &source, const Color &color = Color());
 
 
-	unsigned Height();
-	unsigned Width();
+	unsigned Height() override;
+	unsigned Width() override;
 
 	bool empty();
 
@@ -65,13 +65,15 @@ public:
 	
 
 protected:
-	Rectangle subCoords(float x, float y, float w, float h) const;
-	Rectangle subCoords(const Rectangle &sub) const { return subCoords(sub.x1, sub.y1, sub.width(), sub.height()); }
+	glm::vec2 dimensionToUV(const glm::vec2& v);
+	glm::vec4 subDimensions(float x, float y, float w, float h) const;
+	glm::vec4 subDimensions(const Rectangle &sub) const { return subDimensions(sub.x1, sub.y1, sub.width(), sub.height()); }
 
 
 	void SetTexture(const TexturePointer& texture);
 	TexturePointer _texture;
-	Rectangle      _texCoords;
+	Rectangle      _uvCoords;
+	glm::vec4      _dimensions;
 	glm::vec2      _center;
 };
 

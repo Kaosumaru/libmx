@@ -15,19 +15,31 @@ TextureImage::~TextureImage()
 TextureImage::TextureImage(const TextureImage& parent, float x, float y, float w, float h)
 {
 	_texture = parent._texture;
-	_texCoords = parent.subCoords(x, y, w, h);
+	_dimensions = parent.subDimensions(x, y, w, h);
+
+	auto coord1 = dimensionToUV({_dimensions.x, _dimensions.y});
+	auto coord2 = dimensionToUV({_dimensions.x + w, _dimensions.y + h});
+	_uvCoords.x1 = coord1.x;
+	_uvCoords.y1 = coord1.y;
+	_uvCoords.x2 = coord2.x;
+	_uvCoords.y2 = coord2.y;
 }
 
-Rectangle TextureImage::subCoords(float x, float y, float w, float h) const
+glm::vec2 TextureImage::dimensionToUV(const glm::vec2& v)
 {
-	Rectangle otherCoords;
+	return v / _texture->size();
+}
 
-	otherCoords.x1 = _texCoords.x1 + x;
-	otherCoords.y1 = _texCoords.y1 + y;
+glm::vec4 TextureImage::subDimensions(float x, float y, float w, float h) const
+{
+	glm::vec4 otherDimensions;
 
-	otherCoords.x2 = otherCoords.x1 + w;
-	otherCoords.y2 = otherCoords.y1 + h;
-	return otherCoords;
+	otherDimensions.x = _dimensions.x + x;
+	otherDimensions.y = _dimensions.y + y;
+
+	otherDimensions.z = w;
+	otherDimensions.w = h;
+	return otherDimensions;
 }
 
 
@@ -58,7 +70,8 @@ void TextureImage::SetTexture(const TexturePointer& texture)
 	if (!texture)
 		return;
 	_texture = texture;
-	_texCoords = Rectangle{ 0.0f, 0.0f, 1.0f, 1.0f };
+	_dimensions = { 0.0f, 0.0f, texture->size() };
+	_uvCoords = Rectangle{ 0.0f, 0.0f, 1.0f, 1.0f };
 }
 
 
@@ -91,24 +104,33 @@ void TextureImage::Clear(const Color &color)
 void TextureImage::DrawCentered(const glm::vec2& offset, const glm::vec2& pos, const glm::vec2& scale, float angle, const Color &color)
 {
 	auto &calculated_color = Settings::modifyColor(color);
-	Graphic::TextureRenderer::current().Draw(*_texture, _texCoords, pos, offset + _center, scale * glm::vec2{ dimensions() }, calculated_color, angle);
+	Graphic::TextureRenderer::current().Draw(*_texture, _uvCoords, pos, offset + _center, glm::vec2{ scale.x * _dimensions.z, scale.y * _dimensions.w }, calculated_color, angle);
 }
 
 void TextureImage::Draw(const MX::Rectangle &destination, const MX::Rectangle &source, const Color &color)
 {
+	auto dimensions = subDimensions(source.x1, source.y1, source.width(), source.height());
+	Rectangle uvCoords;
+
+	auto coord1 = dimensionToUV({_dimensions.x, _dimensions.y});
+	auto coord2 = dimensionToUV({_dimensions.x + source.width(), _dimensions.y + source.height()});
+	uvCoords.x1 = coord1.x;
+	uvCoords.y1 = coord1.y;
+	uvCoords.x2 = coord2.x;
+	uvCoords.y2 = coord2.y;
+
 	glm::vec2 pos = { destination.x1, destination.y1 };
 	auto &calculated_color = Settings::modifyColor(color);
-	auto coords = subCoords(source.x1, source.y1, source.width(), source.height());
-	Graphic::TextureRenderer::current().Draw(*_texture, coords, { pos.x, pos.y }, { 0.0f, 0.0f }, { destination.width(), destination.height() }, color, 0.0f);
+	Graphic::TextureRenderer::current().Draw(*_texture, uvCoords, { pos.x, pos.y }, { 0.0f, 0.0f }, { destination.width(), destination.height() }, color, 0.0f);
 }
 
 unsigned TextureImage::Height()
 {
-	return (unsigned)(_texCoords.height() * _texture->height());
+	return (unsigned)_dimensions.z;
 }
 unsigned TextureImage::Width()
 {
-	return (unsigned)(_texCoords.width() * _texture->width());
+	return (unsigned)_dimensions.w;
 }
 
 

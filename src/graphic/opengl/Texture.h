@@ -24,7 +24,7 @@ namespace Graphic
 
 		bool empty() const { return getId() == -1; }
 		GLuint getId() const { return _textureID; }
-		glm::vec2 originalSize() { return glm::vec2{ _width, _height }; }
+		glm::vec2 size() { return glm::vec2{ _width, _height }; }
 
 		auto width() { return _width; }
 		auto height() { return _height; }

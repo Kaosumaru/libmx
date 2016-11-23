@@ -68,8 +68,12 @@ public:
 		glClearColor ( 1.0, 0.0, 0.0, 1.0 );
 		glClear ( GL_COLOR_BUFFER_BIT );
 
-		_image->DrawCentered({}, {});
+		//_image->DrawCentered({}, {});
 
+		MX::Rectangle dest{ 0.0f, 0.0f, 200.0f, 200.0f };
+		MX::Rectangle src{ 0.0f, 0.0f, 100.0f, 100.0f };
+
+		_image->Draw(dest, src);
 		//drawTriangle(_vbo, { 1.0f, 0.0f, 1.0f, 1.0f });
 
 		{
