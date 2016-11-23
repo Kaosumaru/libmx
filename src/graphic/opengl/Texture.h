@@ -6,7 +6,7 @@
 
 namespace MX 
 {
-namespace Graphic
+namespace gl
 {
 
 
@@ -14,7 +14,7 @@ namespace Graphic
 	{
 	public:
 		Texture(unsigned w, unsigned h, GLint format, const GLvoid *data);
-		Texture(const glm::vec2& size, bool alpha = true);
+		Texture(const glm::ivec2& size, bool alpha = true);
 		Texture(const std::string& path);
 		~Texture();
 

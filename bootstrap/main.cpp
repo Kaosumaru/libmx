@@ -51,7 +51,7 @@ public:
 
 		{
 			auto path = MX::Paths::get().pathToImage("cthulhu.png");
-			auto texture = MX::Graphic::Texture::Create(path);
+			auto texture = MX::gl::Texture::Create(path);
 			if (texture)
 			{
 				std::cout << "Opened image " << texture->width() << "x" << texture->height() << std::endl;

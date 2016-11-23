@@ -3,17 +3,17 @@
 #include "lodepng.h"
 
 using namespace MX;
-using namespace MX::Graphic;
+using namespace MX::gl;
 
 Texture::Texture(unsigned w, unsigned h, GLint format, const GLvoid *data)
 {
 	constructTexture(w, h, format, data);
 }
 
-Texture::Texture(const glm::vec2& size, bool alpha)
+Texture::Texture(const glm::ivec2& size, bool alpha)
 {
 	auto format = alpha ? GL_RGBA : GL_RGB;
-	constructTexture((unsigned)size.x, (unsigned)size.y, format, nullptr);
+	constructTexture(size.x, size.y, format, nullptr);
 }
 
 Texture::Texture(const std::string & path)

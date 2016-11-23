@@ -3,6 +3,10 @@
 
 namespace MX{
 
+namespace gl
+{
+	class Texture;
+}
 struct Quad;
 
 namespace Graphic
@@ -13,7 +17,7 @@ class Display;
 class TextureImage : public Image, public TargetSurface, public disable_copy_constructors, public shared_ptr_init<TextureImage>
 {
 public:
-	using TexturePointer = std::shared_ptr< class Texture >;
+	using TexturePointer = std::shared_ptr< gl::Texture >;
 
 	TextureImage(const TextureImage& parent, float x, float y, float w, float h);
 	TextureImage(const TextureImage& parent, const MX::Rectangle& rect);
@@ -61,7 +65,7 @@ public:
 		return bit;
 	}
 
-	static pointer Create(void *data, unsigned int dataFormat, unsigned width, unsigned height);
+	static pointer Create(unsigned width, unsigned height, unsigned int dataFormat, void *data);
 	
 
 protected:

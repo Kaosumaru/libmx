@@ -73,7 +73,7 @@ void InstancedRenderer::Flush()
 {
 	DrawBatched();
 }
-void InstancedRenderer::Draw(const Texture& tex, const Rectangle& srcArea, const glm::vec2& pos, const glm::vec2& relativeCenter, const glm::vec2& size, const MX::Color& color, float angle)
+void InstancedRenderer::Draw(const gl::Texture& tex, const Rectangle& srcArea, const glm::vec2& pos, const glm::vec2& relativeCenter, const glm::vec2& size, const MX::Color& color, float angle)
 {
 	if (tex.getId() != _lastTex || _currentInstance + 4 > _maxInstances)
 	{

@@ -1,5 +1,6 @@
 #include "TextureImage.h"
 #include "graphic/renderer/TextureRenderer.h"
+#include "graphic/opengl/Utils.h"
 
 using namespace MX;
 using namespace MX::Graphic;
@@ -45,13 +46,9 @@ glm::vec4 TextureImage::subDimensions(float x, float y, float w, float h) const
 
 TextureImage::TextureImage(unsigned width, unsigned height, bool alpha)
 {
-	assert(false);
-	//WIP
-	/*
-	ci::gl::Texture::Format format;
-	format.setInternalFormat(alpha ? GL_RGBA : GL_RGB);
-	SetTexture(ci::gl::Texture::create(width, height, format));
-	*/
+	_texture = std::make_shared<gl::Texture>(glm::ivec2{ width, height }, alpha);
+	_dimensions = { 0.0f, 0.0f, _texture->size() };
+	_uvCoords = Rectangle{ 0.0f, 0.0f, 1.0f, 1.0f };
 }
 
 TextureImage::TextureImage(const TextureImage& parent, const MX::Rectangle& rect) : TextureImage(parent, rect.x1, rect.y1, rect.width(), rect.height())
@@ -75,30 +72,16 @@ void TextureImage::SetTexture(const TexturePointer& texture)
 }
 
 
-TextureImage::pointer TextureImage::Create(void *data, unsigned int dataFormat, unsigned width, unsigned height)
+TextureImage::pointer TextureImage::Create(unsigned width, unsigned height, unsigned int dataFormat, void *data)
 {
-#if 0
-	ci::gl::Texture::Format format;
-	format.setInternalFormat(GL_RGBA);
-	format.loadTopDown();
-	auto txt = ci::gl::Texture::create(data, dataFormat, width, height, format);
+	auto txt = std::make_shared<gl::Texture>(width, height, dataFormat, data);
 	return std::make_shared<TextureImage>(txt);
-#endif
-	assert(false);
-	//WIP
-	return nullptr;
 }
-
-
-
-
-
 
 void TextureImage::Clear(const Color &color)
 {
 	TargetContext c(*this);
-	assert(false);
-	//ci::gl::clear(color.toColorA(), false);
+	gl::Clear(color);
 }
 
 void TextureImage::DrawCentered(const glm::vec2& offset, const glm::vec2& pos, const glm::vec2& scale, float angle, const Color &color)

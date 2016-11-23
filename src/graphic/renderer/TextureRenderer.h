@@ -19,7 +19,7 @@ public:
 	virtual ~TextureRenderer(){}
 
 	virtual void Flush() {};
-	virtual void Draw(const Texture& tex, const Rectangle& srcArea, const glm::vec2& pos, const glm::vec2& relativeCenter, const glm::vec2& size, const MX::Color& color, float angle) = 0;
+	virtual void Draw(const gl::Texture& tex, const Rectangle& srcArea, const glm::vec2& pos, const glm::vec2& relativeCenter, const glm::vec2& size, const MX::Color& color, float angle) = 0;
 
 protected:
 	void StartBatch()
