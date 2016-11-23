@@ -5,6 +5,11 @@
 #include "utils/shapes/Rectangle.h"
 
 namespace MX{
+namespace gl
+{
+	class Texture;
+	class Framebuffer;
+}
 
 struct Quad;
 
@@ -20,9 +25,7 @@ public:
 
 	virtual ~TargetSurface(){}
 	
-#if WIP	
-	virtual const ci::gl::TextureRef &native_bitmap_handle() const = 0;
-#endif
+	virtual const std::shared_ptr<gl::Texture> &texture() const = 0;
 
 	virtual unsigned Height() = 0;
 	virtual unsigned Width() = 0;
@@ -31,6 +34,8 @@ public:
 protected:
 	void bindAsTarget();
 	void unbindAsTarget();
+
+	std::shared_ptr<gl::Framebuffer> _fbo;
 };
 
 class TargetContext

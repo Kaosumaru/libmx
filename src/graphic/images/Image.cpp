@@ -1,4 +1,5 @@
 #include "Image.h"
+#include "graphic/opengl/Framebuffer.h"
 
 using namespace MX;
 using namespace MX::Graphic;
@@ -6,20 +7,27 @@ using namespace MX::Graphic;
 
 void TargetSurface::bindAsTarget()
 {
-#ifdef WIP
 	if (!_fbo)
 	{
-		_fbo = std::make_shared<Graphic::RenderToTextureFBO>();
-		_fbo->attachTexture(native_bitmap_handle());
+		_fbo = std::make_shared<gl::Framebuffer>();
+		_fbo->Bind();
+		_fbo->AttachTexture(*texture());
+		return;
 	}
-	_fbo->bind();
+	_fbo->Bind();
+#if WIP
+	ci::gl::pushViewport({ 0,0 }, _textureArea.getSize());
+	ci::gl::pushMatrices();
+	ci::gl::setMatricesWindow(_textureArea.getWidth(),_textureArea.getHeight(), true);
 #endif
 }
 
 void TargetSurface::unbindAsTarget()
 {
-#ifdef WIP
-	_fbo->unbind();
+	_fbo->Unbind();
+#if WIP
+	ci::gl::popMatrices();
+	ci::gl::popViewport();;
 #endif
 }
 
