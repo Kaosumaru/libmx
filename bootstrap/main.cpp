@@ -9,6 +9,7 @@
 #include "graphic/opengl/Buffer.h"
 #include "graphic/opengl/Uniform.h"
 #include "graphic/opengl/MVP.h"
+#include "graphic/opengl/Utils.h"
 
 #include "devices/Keyboard.h"
 
@@ -65,8 +66,7 @@ public:
 
 	void OnRender() override
 	{
-		glClearColor ( 1.0, 0.0, 0.0, 1.0 );
-		glClear ( GL_COLOR_BUFFER_BIT );
+		MX::gl::Clear({ 1.0f, 0.0f, 0.0f, 1.0f });
 
 		//_image->DrawCentered({}, {});
 
