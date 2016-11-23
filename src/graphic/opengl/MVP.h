@@ -14,12 +14,12 @@ namespace gl
 		void SetProjection(const glm::mat4& m)
 		{
 			current()._projection = m;
-			UpdateMVP();
+			current().UpdateMVP();
 		}
 
 		const auto& mvp()
 		{
-			return _mvp;
+			return current()._mvp;
 		}
 
 		void Push()
@@ -31,26 +31,26 @@ namespace gl
 		void Pop()
 		{
 			_stack.pop_back();
-			UpdateMVP();
 		}
 
 	protected:
-		void UpdateMVP()
-		{
-			_mvp = current()._projection * current()._view * current()._model;
-		}
 
 		struct Data
 		{
 			glm::mat4 _projection;
 			glm::mat4 _view;
 			glm::mat4 _model;
+			glm::mat4 _mvp;
+
+			void UpdateMVP()
+			{
+				_mvp = _projection * _view * _model;
+			}
 		};
 
 		Data& current() { return _stack.back(); }
 
 		std::vector<Data> _stack{ 1 };
-		glm::mat4 _mvp;
 	};
 
 }
