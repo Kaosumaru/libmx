@@ -2,6 +2,7 @@
 #include "graphic/OpenGL.h"
 #include "glm/glm.hpp"
 #include "utils/Singleton.h"
+#include <vector>
 
 namespace MX
 {
@@ -12,7 +13,7 @@ namespace gl
 	public:
 		void SetProjection(const glm::mat4& m)
 		{
-			_projection = m;
+			current()._projection = m;
 			UpdateMVP();
 		}
 
@@ -21,16 +22,34 @@ namespace gl
 			return _mvp;
 		}
 
+		void Push()
+		{
+			auto c = current();
+			_stack.push_back(c);
+		}
+
+		void Pop()
+		{
+			_stack.pop_back();
+			UpdateMVP();
+		}
+
 	protected:
 		void UpdateMVP()
 		{
-			_mvp = _projection * _view * _model;
+			_mvp = current()._projection * current()._view * current()._model;
 		}
 
-		glm::mat4 _projection;
-		glm::mat4 _view;
-		glm::mat4 _model;
+		struct Data
+		{
+			glm::mat4 _projection;
+			glm::mat4 _view;
+			glm::mat4 _model;
+		};
 
+		Data& current() { return _stack.back(); }
+
+		std::vector<Data> _stack{ 1 };
 		glm::mat4 _mvp;
 	};
 
