@@ -44,6 +44,8 @@ MACRO(ADDFILES result dir)
       "${dir}/*.cpp"
   )
 
+  LIST(FILTER source_list EXCLUDE REGEX "ex\\_")
+
   foreach(source IN LISTS source_list)
     if (IS_ABSOLUTE "${source}")
         file(RELATIVE_PATH source_rel "${dir}" "${source}")
