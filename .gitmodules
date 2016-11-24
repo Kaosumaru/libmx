@@ -1,3 +1,9 @@
 [submodule "deps/glm"]
 	path = deps/glm
 	url = https://github.com/g-truc/glm.git
+[submodule "deps/MSL"]
+	path = deps/MSL
+	url = https://github.com/Kaosumaru/MSL.git
+[submodule "deps/RPNParser"]
+	path = deps/RPNParser
+	url = https://github.com/Kaosumaru/RPNParser.git
