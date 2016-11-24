@@ -1,5 +1,9 @@
 #include "Image.h"
 #include "graphic/opengl/Framebuffer.h"
+#include "graphic/renderer/MVP.h"
+#include "graphic/renderer/Viewport.h"
+#include "graphic/renderer/TextureRenderer.h"
+#include "glm/gtc/matrix_transform.hpp"
 
 using namespace MX;
 using namespace MX::Graphic;
@@ -12,23 +16,21 @@ void TargetSurface::bindAsTarget()
 		_fbo = std::make_shared<gl::Framebuffer>();
 		_fbo->Bind();
 		_fbo->AttachTexture(*texture());
-		return;
 	}
-	_fbo->Bind();
-#if WIP
-	ci::gl::pushViewport({ 0,0 }, _textureArea.getSize());
-	ci::gl::pushMatrices();
-	ci::gl::setMatricesWindow(_textureArea.getWidth(),_textureArea.getHeight(), true);
-#endif
+	else
+		_fbo->Bind();
+
+	Viewport::Push(texture()->width(), texture()->height());
+	MVP::Push();
+	glm::mat4x4 projection = glm::orthoLH(0.0f, (float)texture()->width(), 0.0f, (float)texture()->height(), -100.0f, 100.0f);
+	MVP::SetProjection(projection);
 }
 
 void TargetSurface::unbindAsTarget()
 {
 	_fbo->Unbind();
-#if WIP
-	ci::gl::popMatrices();
-	ci::gl::popViewport();;
-#endif
+	MVP::Pop();
+	Viewport::Pop();
 }
 
 TargetContext::TargetContext(const std::shared_ptr<TargetSurface>& target) : TargetContext(*target)
@@ -51,9 +53,7 @@ void TargetContext::SetTarget(TargetSurface& target)
 		return;
 
 
-#ifdef WIP
 	Graphic::TextureRenderer::current().Flush();
-#endif
 
 	if (_current_target)
 		_current_target->unbindAsTarget();
@@ -84,21 +84,17 @@ ClippingContext::ClippingContext(const MX::Rectangle& rect)
 {
 	assert(_rect.empty());
 	_rect = rect;
-#ifdef WIP
 	Graphic::TextureRenderer::current().Flush();
 	glEnable(GL_SCISSOR_TEST);
-	auto viewPortHeight = ci::gl::getViewport().second.y;
-	glScissor((int)rect.x1, (int)(viewPortHeight - rect.y1 - rect.height()), rect.width(), rect.height());
-#endif
-
+	auto viewPortHeight = Viewport::current().height();
+	glScissor((int)rect.x1, (int)(viewPortHeight - rect.y1 - rect.height()), (int)rect.width(), (int)rect.height());
 }
+
 ClippingContext::~ClippingContext()
 {
-#ifdef WIP
 	Graphic::TextureRenderer::current().Flush();
 	glDisable(GL_SCISSOR_TEST);
 	_rect.x1 = _rect.x2 = _rect.y1 = _rect.y2 = 0.0f;
-#endif
 }
 
 
@@ -140,17 +136,6 @@ void Image::DrawTiled(const MX::Rectangle &destination, const Color &color)
 }
 
 
-
-
-
-void Image::Hold::Locked()
-{
-	//currently, drawing is implicitly locked
-}
-void Image::Hold::Unlocked()
-{
-
-}
 
 bool Image::Settings::flipX = false;
 bool Image::Settings::flipY = false;

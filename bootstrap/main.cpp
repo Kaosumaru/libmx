@@ -8,7 +8,7 @@
 #include "graphic/opengl/Program.h"
 #include "graphic/opengl/Buffer.h"
 #include "graphic/opengl/Uniform.h"
-#include "graphic/opengl/MVP.h"
+#include "graphic/renderer/MVP.h"
 #include "graphic/opengl/Utils.h"
 
 #include "devices/Keyboard.h"
@@ -68,12 +68,18 @@ public:
 	{
 		MX::gl::Clear({ 1.0f, 0.0f, 0.0f, 1.0f });
 
+		if ( !_target )
+		{
+			_target = std::make_shared<MX::Graphic::TextureImage>(512,512);
+			MX::Graphic::TargetContext context(*_target);
+			MX::gl::Clear({ 1.0f, 0.0f, 1.0f, 1.0f });
+			_image->DrawCentered({}, {});
+		}
+
+		_target->DrawCentered({}, {});
+
 		//_image->DrawCentered({}, {});
 
-		MX::Rectangle dest{ 0.0f, 0.0f, 200.0f, 200.0f };
-		MX::Rectangle src{ 0.0f, 0.0f, 100.0f, 100.0f };
-
-		_image->Draw(dest, src);
 		//drawTriangle(_vbo, { 1.0f, 0.0f, 1.0f, 1.0f });
 
 		{
@@ -84,6 +90,7 @@ public:
 	}
 
 	std::shared_ptr<MX::Graphic::TextureImage> _image;
+	std::shared_ptr<MX::Graphic::TextureImage> _target;
 };
 
 int main(int argc, char* argv[])

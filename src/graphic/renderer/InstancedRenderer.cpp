@@ -1,7 +1,7 @@
 #include "InstancedRenderer.h"
 #include <iostream>
 #include "graphic/opengl/Uniform.h"
-#include "graphic/opengl/MVP.h"
+#include "graphic/renderer/MVP.h"
 
 using namespace MX;
 using namespace MX::Graphic;
@@ -109,8 +109,8 @@ void InstancedRenderer::DrawBatched()
 	glBindTexture(GL_TEXTURE_2D, _lastTex);
 
 	_program.Use();
-	auto& mvp = MX::gl::MVP::get().mvp();
-	MX::gl::Uniform(_mvp_uniform, mvp);
+	auto& mvp = MVP::mvp();
+	gl::Uniform(_mvp_uniform, mvp);
 
 
 

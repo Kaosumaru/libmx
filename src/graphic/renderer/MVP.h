@@ -6,32 +6,22 @@
 
 namespace MX
 {
-namespace gl
-{
 	class MVP : public Singleton<MVP>
 	{
 	public:
-		void SetProjection(const glm::mat4& m)
+		static void SetProjection(const glm::mat4& m)
 		{
-			current()._projection = m;
-			current().UpdateMVP();
+			get().current()._projection = m;
+			get().current().UpdateMVP();
 		}
 
-		const auto& mvp()
+		static const auto& mvp()
 		{
-			return current()._mvp;
+			return get().current()._mvp;
 		}
 
-		void Push()
-		{
-			auto c = current();
-			_stack.push_back(c);
-		}
-
-		void Pop()
-		{
-			_stack.pop_back();
-		}
+		static void Push();
+		static void Pop();
 
 	protected:
 
@@ -52,6 +42,4 @@ namespace gl
 
 		std::vector<Data> _stack{ 1 };
 	};
-
-}
 }

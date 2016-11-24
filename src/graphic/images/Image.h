@@ -30,7 +30,6 @@ public:
 	virtual unsigned Height() = 0;
 	virtual unsigned Width() = 0;
 
-
 protected:
 	void bindAsTarget();
 	void unbindAsTarget();
@@ -74,7 +73,6 @@ public:
 
 	virtual void Clear(const Color &color){};
 
-
 	//draw
 	virtual void Draw(const glm::vec2& pos);
 	virtual void DrawTinted(const glm::vec2& pos, const Color &color) ;
@@ -94,13 +92,6 @@ public:
 
 	//TODO
 	virtual void AdvanceTime(float seconds) {}
-    
-    class Hold : public StaticLocker<Hold>
-    {
-        friend class StaticLocker<Hold>;
-        static void Locked();
-        static void Unlocked();
-    };
 
 	struct Settings
 	{
@@ -115,9 +106,6 @@ public:
 
 		static const Color &modifyColor(const Color &color);
 	};
-
-	virtual unsigned int get_opengl_texture() { return 0; }
-
 };
 
 using ImagePtr = std::shared_ptr<Image>;
