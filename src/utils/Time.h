@@ -1,6 +1,7 @@
 #pragma once
 #include<memory>
 #include<utils/Utils.h>
+#include<utils/Singleton.h>
 
 namespace MX
 {

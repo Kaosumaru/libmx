@@ -3,6 +3,7 @@
 #include "glm/geometric.hpp"
 
 #include<cmath>
+#include<algorithm>
 
 #define MX_PI        3.14159265358979323846
 #define MX_2PI       6.28318530717958647692
@@ -30,6 +31,13 @@ namespace MX
 		return glm::vec2(sinf(a), -cosf(a));
 	}
 
+	inline glm::vec2 vectorByRotation(const glm::vec2&o, float a)
+	{
+		auto cs = cosf(a);
+		auto sn = sinf(a);
+		return glm::vec2(o.x * cs - o.y * sn, o.x * sn + o.y * cs);
+	}
+
 	inline glm::vec2 lerp(const glm::vec2& a, const glm::vec2& b, float p)
 	{
 		return glm::vec2(a.x + (b.x-a.x)*p, a.y + (b.y-a.y)*p);
@@ -55,6 +63,11 @@ namespace MX
 		return (v1.x*v2.y) - (v1.y*v2.x);
 	}
 
+	inline void clamp(float &v, float min, float max)
+	{
+		v = std::max(v, min);
+		v = std::min(v, max);
+	}
 
 	template <typename T>
 	T angle_difference(T firstAngle, T secondAngle)

@@ -2,7 +2,7 @@
 
 #include<memory>
 #include<set>
-#include "Singleton.h"
+#include"ClassID.h"
 
 namespace MX
 {
@@ -112,16 +112,6 @@ namespace MX
 		}
 	};
 
-
-
-	template<typename T=void>
-	class ClassID 
-	{
-		T *t;
-	public:
-		typedef intptr_t type;
-		static inline type id() {return (type)&ClassID::id;}
-	};
 
 	class ClassTraits
 	{

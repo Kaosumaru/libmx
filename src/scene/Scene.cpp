@@ -1,4 +1,6 @@
 #include "Scene.h"
+#include "utils/Utils.h"
+#include "utils/Singleton.h"
 #include <iostream>
 using namespace std;
 

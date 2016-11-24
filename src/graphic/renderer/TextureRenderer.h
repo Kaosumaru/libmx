@@ -3,6 +3,7 @@
 
 #include "utils/Vector2.h"
 #include "utils/Utils.h"
+#include "utils/Singleton.h"
 #include "utils/shapes/Rectangle.h"
 #include "graphic/Color.h"
 #include "graphic/opengl/Texture.h"

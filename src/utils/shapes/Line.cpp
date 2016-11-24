@@ -133,7 +133,7 @@ glm::vec2 Line::lineVector() const
 void Line::Shrink(float percent)
 {
 	auto p1 = pointBetween(percent/2.f);
-	auto p2 = pointBetween(1.0 - percent/2.f);
+	auto p2 = pointBetween(1.0f - percent/2.f);
 	point1 = p1;
 	point2 = p2;
 }

@@ -1,0 +1,2 @@
+#include "SignalizingShape.h"
+

@@ -1,7 +1,7 @@
 #pragma once
 #include<list>
 #include<memory>
-
+#include"ClassID.h"
 
 namespace MX
 {
@@ -467,7 +467,7 @@ public:
 		return _list.end();
 	}
 
-	unsigned size()
+	auto size()
 	{
 		clean_list();
 		return _list.size();
