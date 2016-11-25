@@ -65,6 +65,7 @@ protected:
 	bool     _enabled = true;
 	bool     _trackCollisions = false;
 	Area* _area = nullptr;
+	int _existingCollisons = 0;
 };
 
 

@@ -11,9 +11,10 @@
 #include <boost/bimap/unordered_multiset_of.hpp>
 namespace bm = boost::bimaps;
 #endif
-#include "Utils/Utils.h"
-#include "Utils/StrongList.h"
-#include "Utils/Vector2.h"
+#include "utils/Bimap.h"
+#include "utils/Utils.h"
+#include "utils/StrongList.h"
+#include "utils/Vector2.h"
 
 
 namespace MX
@@ -29,6 +30,7 @@ class Area : public virtual shared_ptr_init<Area>
 public:
 	friend class Shape;
 
+	using ShapeCollision_bimap = Bimap< Shape*, Shape*, std::shared_ptr<ShapeCollision> >;
 #ifdef WIP
 	typedef bm::bimap<
     bm::unordered_multiset_of< Shape* >,
@@ -61,9 +63,7 @@ protected:
 
 	virtual void ShapeMoved(const std::shared_ptr<Shape> &shape) = 0;
 
-#ifdef WIP
 	ShapeCollision_bimap _existingCollisions;
-#endif
 };
 
 

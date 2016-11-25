@@ -77,28 +77,29 @@ void Area::ProcessCollision(const Shape::pointer &shape, const Shape::pointer &o
 	{
 		Shape* shape1 = std::min(shape.get(), other_shape.get());
 		Shape* shape2 = std::max(shape.get(), other_shape.get());
-#if WIP
 		if (collided)
 		{
-			collision = &(_existingCollisions.insert( ShapeCollisionRelation(shape1, shape2) ).first->info);
+			collision = &(_existingCollisions.insert( shape1, shape2 )->second);
 			if (*collision == nullptr)
 			{
-				*collision = MX::make_shared<ShapeCollision>();
+				*collision = std::make_shared<ShapeCollision>();
 				firstCollision = true;
+				shape1->_existingCollisons++;
+				shape2->_existingCollisons++;
 			}
-
 		}
 		else
 		{
-			auto fit = _existingCollisions.find(ShapeCollisionRelation(shape1, shape2));
+			auto fit = _existingCollisions.find(shape1, shape2);
 			if (fit != _existingCollisions.end())
 			{
-				collision = &(fit->info);
+				collision = &(fit->second);
 				(*collision)->onCollisionEnd();
 				_existingCollisions.erase(fit);
+				shape1->_existingCollisons--;
+				shape2->_existingCollisons--;
 			}
 		}
-#endif
 	}
 
 	//TODO probably needed, as shape->OnCollision(other_shape, *collision); can set shape to null
@@ -122,6 +123,8 @@ void Area::ProcessCollision(const Shape::pointer &shape, const Shape::pointer &o
 
 void Area::ValidateExistingCollisions(Shape *shape, bool unlink)
 {
+	if (shape->_existingCollisons == 0)
+		return;
 #if WIP
 	{
 		auto left_range = _existingCollisions.left.equal_range(shape);

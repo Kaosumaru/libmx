@@ -13,4 +13,3 @@ namespace MX
 		static inline type id() {return (type)&ClassID::id;}
 	};
 }
-
