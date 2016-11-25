@@ -1,7 +1,6 @@
-#include "MXSpriteActor.h"
+#include "SpriteActor.h"
 #include <iostream>
-#include "Utils/MXTime.h"
-#include "Scene/Sprites/MXSpriteScene.h"
+#include "scene/sprites/SpriteScene.h"
 using namespace MX;
 
 
@@ -15,7 +14,7 @@ SpriteActor::SpriteActor()
 #ifdef _DEBUG
 	_liveCounter++;
 #endif
-	geometry.scale = Vector2(1.0f, 1.0f);
+	geometry.scale = { 1.0f, 1.0f };
 	geometry.angle = 0.0f;
 }
 
@@ -31,7 +30,7 @@ SpriteScene &SpriteActor::sprite_scene()
     return *(static_cast<SpriteScene *>(_scene));
 }
 
-MX::Vector2 SpriteActor::absolute_position()
+glm::vec2 SpriteActor::absolute_position()
 {
 	auto position = geometry.position;
 	if (_scene)

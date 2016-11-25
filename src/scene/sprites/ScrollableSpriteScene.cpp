@@ -1,10 +1,10 @@
-#include "MXScrollableSpriteScene.h"
+#include "ScrollableSpriteScene.h"
 
 
 using namespace std;
 using namespace MX;
 
-ScrollableSpriteScene::ScrollableSpriteScene(const Vector2 &viewDimensions, const Vector2 &sceneDimensions)
+ScrollableSpriteScene::ScrollableSpriteScene(const glm::vec2& viewDimensions, const glm::vec2& sceneDimensions)
 {
 	_viewDimensions = viewDimensions;
 	_sceneDimensions = sceneDimensions;
@@ -15,12 +15,12 @@ void ScrollableSpriteScene::Run()
 	_cameraPositionOnLastRun = _cameraPosition;
 }
 
-unsigned ScrollableSpriteScene::Width()
+float ScrollableSpriteScene::Width()
 {
 	return _viewDimensions.x;
 }
 
-unsigned ScrollableSpriteScene::Height()
+float ScrollableSpriteScene::Height()
 {
 	return _viewDimensions.y;
 }
@@ -35,15 +35,15 @@ float ScrollableSpriteScene::viewHeight()
     return _viewDimensions.y / _scale;
 }
 
-void ScrollableSpriteScene::SetCameraPosition(const Vector2& position)
+void ScrollableSpriteScene::SetCameraPosition(const glm::vec2& position)
 {
     auto vWidth = viewWidth();
     auto vHeight = viewHeight();
     
     
 	_cameraPosition = position;
-	_cameraPosition.clampX(0.0f, _sceneDimensions.x - vWidth);
-	_cameraPosition.clampY(0.0f, _sceneDimensions.y - vHeight);
+	clamp(_cameraPosition.x, 0.0f, _sceneDimensions.x - vWidth);
+	clamp(_cameraPosition.y, 0.0f, _sceneDimensions.y - vHeight);
 
 	if (_sceneDimensions.x < vWidth)
 		_cameraPosition.x = -(vWidth - _sceneDimensions.x) / 2.0f;
@@ -60,24 +60,24 @@ MX::Rectangle ScrollableSpriteScene::absoluteSceneBounds()
 }
 
 
-void ScrollableSpriteScene::centerCameraOn(const Vector2& position)
+void ScrollableSpriteScene::centerCameraOn(const glm::vec2& position)
 {
 	SetCameraPosition(position - screenCenter());
 }
 
-Vector2 ScrollableSpriteScene::screenCenter()
+glm::vec2 ScrollableSpriteScene::screenCenter()
 {
 	return (_viewDimensions / _scale) /2.0f;
 }
 
 
-MX::Vector2 ScrollableSpriteScene::from_screen_point(const MX::Vector2& outside)
+glm::vec2 ScrollableSpriteScene::from_screen_point(const glm::vec2& outside)
 {
 	auto inside = outside / _scale;
 	inside += _cameraPosition;
 	return inside;
 }
-MX::Vector2 ScrollableSpriteScene::to_screen_point(const MX::Vector2& inside)
+glm::vec2 ScrollableSpriteScene::to_screen_point(const glm::vec2& inside)
 {
 	auto outside = inside;
 	outside -= _cameraPosition;
@@ -85,7 +85,7 @@ MX::Vector2 ScrollableSpriteScene::to_screen_point(const MX::Vector2& inside)
 }
 
 
-ScrollableBaseGraphicScene::ScrollableBaseGraphicScene(const Vector2 &viewDimensions, const Vector2 &sceneDimensions) : ScrollableSpriteScene(viewDimensions, sceneDimensions)
+ScrollableBaseGraphicScene::ScrollableBaseGraphicScene(const glm::vec2& viewDimensions, const glm::vec2& sceneDimensions) : ScrollableSpriteScene(viewDimensions, sceneDimensions)
 {
 
 }
@@ -103,8 +103,8 @@ void ScrollableBaseGraphicScene::Draw(float x, float y)
 
 
 
-
-ScrollableBitmapScene::ScrollableBitmapScene(const Vector2 &viewDimensions, const Vector2 &sceneDimensions) : BitmapScene(viewDimensions), ScrollableSpriteScene(viewDimensions, sceneDimensions)
+#if WIP
+ScrollableBitmapScene::ScrollableBitmapScene(const glm::vec2& viewDimensions, const glm::vec2& sceneDimensions) : BitmapScene(viewDimensions), ScrollableSpriteScene(viewDimensions, sceneDimensions)
 {
 }
 
@@ -136,3 +136,4 @@ unsigned ScrollableBitmapScene::Height()
 {
 	return _viewDimensions.x;
 }
+#endif

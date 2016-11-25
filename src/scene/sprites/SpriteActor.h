@@ -1,11 +1,13 @@
-#ifndef MXSPRITEACTOR
-#define MXSPRITEACTOR
+#pragma once
 #include <memory>
-#include "Graphic/Animation/MXAnimation.h"
-#include "Utils/MXVector2.h"
-#include "Scene/MXActor.h"
-#include "Graphic/Images/MXImage.h"
-#include "Utils/MXTime.h"
+#include "Utils/Vector2.h"
+#include "Scene/Actor.h"
+#include "graphic/images/Image.h"
+#include "utils/Time.h"
+
+#if WIP
+#  include "Graphic/Animation/MXAnimation.h"
+#endif
 
 namespace MX
 {
@@ -23,7 +25,7 @@ public:
 	virtual void Draw(float x, float y) {}
 	virtual void DrawCustom(float x, float y) {}
 	SpriteScene &sprite_scene();
-	MX::Vector2 absolute_position();
+	glm::vec2 absolute_position();
 
 	virtual SpriteActorPtr clone() { return nullptr; }
 	std::shared_ptr<Actor> cloneActor() { return clone(); }
@@ -34,8 +36,8 @@ public:
 
 	struct Geometry
 	{
-		Vector2 position;
-		Vector2 scale;
+		glm::vec2 position;
+		glm::vec2 scale;
 		float z = 0.0f;
 		float angle = 0.0f;
 		ColorExtended color;
@@ -76,6 +78,7 @@ protected:
 	std::shared_ptr<Graphic::Image> _image;
 };
 
+#if WIP
 template <typename T>
 class AnimatedSpriteAdapter : public T
 {
@@ -156,9 +159,9 @@ protected:
 
 typedef SingleRunAnimatedSpriteAdapter<SpriteActor> SingleRunAnimatedSpriteActor;
 typedef AnimatedSpriteAdapter<SpriteActor> AnimatedSpriteActor;
-typedef ImageSpriteAdapter<SpriteActor> ImageSpriteActor;
+#endif
+
+
+using ImageSpriteActor = ImageSpriteAdapter<SpriteActor>;
 
 }
-
-
-#endif

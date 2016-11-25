@@ -1,6 +1,5 @@
-#include "MXSpriteScene.h"
-#include "Application/MXWindow.h"
-#include "Graphic/MXDisplay.h"
+#include "SpriteScene.h"
+#include "Application/Window.h"
 
 using namespace std;
 using namespace MX;
@@ -91,7 +90,7 @@ void SpriteScene::onBecameInvisible()
 {
 }
 
-void SpriteScene::translate_child_position(MX::Vector2 & position)
+void SpriteScene::translate_child_position(glm::vec2& position)
 {
 	position += geometry.position;
 	if (_scene)
@@ -112,7 +111,7 @@ BaseGraphicScene::BaseGraphicScene()
 
 
 
-DisplayScene::DisplayScene(const Vector2& size) : _size(size)
+DisplayScene::DisplayScene(const glm::vec2& size) : _size(size)
 {
 	
 }
@@ -123,29 +122,29 @@ void DisplayScene::Draw(float x, float y)
 	BaseGraphicScene::Draw(x,y);
 }
 
-unsigned DisplayScene::Width()
+float DisplayScene::Width()
 {
 	return _size.x;
 }
-unsigned DisplayScene::Height()
+float DisplayScene::Height()
 {
 	return _size.y;
 }
 
 
-FullscreenDisplayScene::FullscreenDisplayScene() : DisplaySceneTimer(MX::Window::current().display()->size())
+FullscreenDisplayScene::FullscreenDisplayScene() : DisplaySceneTimer(MX::Window::current().size())
 {
 
 }
 
 void FullscreenDisplayScene::Run()
 {
-	_size = MX::Window::current().display()->size();
+	_size = MX::Window::current().size();
 	DisplaySceneTimer::Run();
 }
 
 
-DisplaySceneTimer::DisplaySceneTimer(const Vector2& size) : DisplayScene(size)
+DisplaySceneTimer::DisplaySceneTimer(const glm::vec2& size) : DisplayScene(size)
 {
 	_paused = false;
 }
@@ -194,8 +193,8 @@ bool DisplaySceneTimer::paused()
 }
 
 
-
-BitmapDisplaySceneTimer::BitmapDisplaySceneTimer(const Vector2& size) : DisplaySceneTimer(size)
+#if WIP
+BitmapDisplaySceneTimer::BitmapDisplaySceneTimer(const glm::vec2& size) : DisplaySceneTimer(size)
 {
 	_bitmap = Graphic::Surface::Create(size.x, size.y);
 }
@@ -244,3 +243,4 @@ unsigned BitmapScene::Height()
 {
 	return _bitmap->Height();
 }
+#endif

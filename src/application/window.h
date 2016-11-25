@@ -2,6 +2,7 @@
 #include "utils/Singleton.h"
 #include "utils/Utils.h"
 #include "utils/Time.h"
+#include "glm/vec2.hpp"
 
 struct SDL_Window;
 struct SDL_Renderer;
@@ -26,6 +27,7 @@ public:
 
 	unsigned width() { return _width; }
 	unsigned height() { return _height; }
+	glm::vec2 size() { return glm::vec2{_width, _height}; }
 	bool fullscreen() { return _fullscreen; }
 
 	const auto& mouse() { return _mouse; }

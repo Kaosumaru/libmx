@@ -1,11 +1,9 @@
-#ifndef MXSPRITESCENE
-#define MXSPRITESCENE
+#pragma once
 
-#include "Graphic/Images/MXImage.h"
-#include "Graphic/Images/MXBitmap.h"
-#include "Scene/MXScene.h"
-#include "Utils/MXFunctorsQueue.h"
-#include "MXSpriteActor.h"
+#include "graphic/images/Image.h"
+#include "Scene/Scene.h"
+#include "utils/FunctorsQueue.h"
+#include "SpriteActor.h"
 #include <list>
 
 namespace MX
@@ -26,8 +24,8 @@ public:
     virtual void AddActor(const SpriteActorPtr &actor);
 	virtual void AddActorAtFront(const SpriteActorPtr &actor);
 
-	virtual unsigned Width() { return 1; }
-	virtual unsigned Height() { return 1; }
+	virtual float Width() { return 0.0f; } //WIP unsigned
+	virtual float Height() { return 0.0f; }
 
 	virtual void Clear() {}
 
@@ -39,7 +37,7 @@ public:
 
 	bool position_relative() { return true; }
 
-	virtual void translate_child_position(MX::Vector2 & position);
+	virtual void translate_child_position(glm::vec2& position);
 
 	virtual void for_each_child(const std::function<void(const std::shared_ptr<SpriteActor>&)> &functor) {};
 
@@ -211,14 +209,14 @@ public:
 class DisplayScene : public BaseGraphicScene
 {
 public:
-	DisplayScene(const Vector2& size);
+	DisplayScene(const glm::vec2& size);
 	void Draw(float x = 0.0f, float y = 0.0f) override;
-	unsigned Width();
-	unsigned Height();
+	float Width() override;
+	float Height() override;
 
-	void translate_child_position(MX::Vector2 & position) {};
+	void translate_child_position(glm::vec2 & position) {};
 protected:
-	Vector2 _size;
+	glm::vec2 _size;
 
 };
 
@@ -226,7 +224,7 @@ protected:
 class DisplaySceneTimer : public DisplayScene
 {
 public:
-	DisplaySceneTimer(const Vector2& size);
+	DisplaySceneTimer(const glm::vec2& size);
 	void Run();
     void Run(float timeMultiplier);
 	void Draw(float x, float y);
@@ -250,11 +248,11 @@ public:
 };
 
 
-
+#if WIP
 class BitmapDisplaySceneTimer : public DisplaySceneTimer
 {
 public:
-	BitmapDisplaySceneTimer(const Vector2& size);
+	BitmapDisplaySceneTimer(const glm::vec2& size);
 	void Draw(float x, float y);
 	unsigned Width();
 	unsigned Height();
@@ -265,7 +263,7 @@ protected:
 class BitmapScene : public virtual BaseGraphicScene
 {
 public:
-	BitmapScene(const Vector2& size, const Color &backgroundColor = 0x00000000, bool alpha = false);
+	BitmapScene(const glm::vec2& size, const Color &backgroundColor = 0x00000000, bool alpha = false);
 	void Draw(float x, float y);
 	unsigned Width();
 	unsigned Height();
@@ -275,7 +273,6 @@ protected:
 	Graphic::Surface::pointer _bitmap;
 	Color _backgroundColor;
 };
+#endif
 
 }
-
-#endif

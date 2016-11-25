@@ -1,7 +1,6 @@
-#ifndef MXSCROLLABLESPRITESCENE
-#define MXSCROLLABLESPRITESCENE
+#pragma once
 
-#include "MXSpriteScene.h"
+#include "SpriteScene.h"
 
 
 namespace MX
@@ -10,21 +9,21 @@ namespace MX
 class ScrollableSpriteScene : public virtual SpriteScene
 {
 public:
-	ScrollableSpriteScene(const Vector2 &viewDimensions, const Vector2 &sceneDimensions);
+	ScrollableSpriteScene(const glm::vec2& viewDimensions, const glm::vec2& sceneDimensions);
 
 	void Run();
 
-	unsigned Width();
-	unsigned Height();
+	float Width() override;
+	float Height() override;
 
-	const MX::Vector2& cameraPosition() { return _cameraPosition; }
-	void SetCameraPosition(const Vector2& position);
-	void centerCameraOn(const Vector2& position);
-	Vector2 screenCenter();
-	Vector2 cameraOffsetSinceLastRun() { return _cameraPosition - _cameraPositionOnLastRun; }
+	const glm::vec2& cameraPosition() { return _cameraPosition; }
+	void SetCameraPosition(const glm::vec2& position);
+	void centerCameraOn(const glm::vec2& position);
+	glm::vec2 screenCenter();
+	glm::vec2 cameraOffsetSinceLastRun() { return _cameraPosition - _cameraPositionOnLastRun; }
 
-	MX::Vector2 from_screen_point(const MX::Vector2& screen_point);
-	MX::Vector2 to_screen_point(const MX::Vector2& arena_point);
+	glm::vec2 from_screen_point(const glm::vec2& screen_point);
+	glm::vec2 to_screen_point(const glm::vec2& arena_point);
 
     
     float scale() { return _scale; }
@@ -36,10 +35,10 @@ protected:
 	Rectangle absoluteSceneBounds();
 
 	bool isViewLargerThanScene() { return viewWidth() > _sceneDimensions.x || viewHeight() > _sceneDimensions.y; }
-	Vector2 _viewDimensions;
-	Vector2 _sceneDimensions;
-	Vector2 _cameraPosition;
-	Vector2 _cameraPositionOnLastRun;
+	glm::vec2 _viewDimensions;
+	glm::vec2 _sceneDimensions;
+	glm::vec2 _cameraPosition;
+	glm::vec2 _cameraPositionOnLastRun;
     float   _scale = 1.0f;
 
 };
@@ -48,11 +47,12 @@ protected:
 class ScrollableBaseGraphicScene : public BaseGraphicScene, public ScrollableSpriteScene
 {
 public:
-	ScrollableBaseGraphicScene(const Vector2 &viewDimensions, const Vector2 &sceneDimensions);
+	ScrollableBaseGraphicScene(const glm::vec2& viewDimensions, const glm::vec2& sceneDimensions);
 	void Draw(float x = 0.0f, float y = 0.0f);
 	void Run();
 };
 
+#if WIP
 class ScrollableBitmapScene : public BitmapScene, public ScrollableSpriteScene
 {
 public:
@@ -63,7 +63,6 @@ public:
 	unsigned Width();
 	unsigned Height();
 };
+#endif
 
 }
-
-#endif

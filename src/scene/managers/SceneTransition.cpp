@@ -58,9 +58,9 @@ namespace MX
 	void AlphaBitmapTransition::Draw(float x, float y)
 	{
 		if (_scene1)
-			_scene1->DrawTinted(0.0f, 0.0f, Color(1.0f, 1.0f, 1.0f, 1.0f-_stopWatch.percent()));
+			_scene1->DrawTinted({}, Color(1.0f, 1.0f, 1.0f, 1.0f - _stopWatch.percent()));
 		if (_scene2)
-			_scene2->DrawTinted(0.0f, 0.0f, Color(1.0f, 1.0f, 1.0f, _stopWatch.percent()));
+			_scene2->DrawTinted({}, Color(1.0f, 1.0f, 1.0f, _stopWatch.percent()));
 	}
 
 
@@ -79,16 +79,16 @@ namespace MX
 		if (_left)
 		{
 			if (_scene1)
-				_scene1->Image::Draw(-transition*(float)_scene1->Width(), 0.0f);
+				_scene1->Image::Draw(glm::vec2{ -transition*(float)_scene1->Width(), 0.0f });
 			if (_scene2)
-				_scene2->Image::Draw(inverse_transition*(float)_scene1->Width(), 0.0f);
+				_scene2->Image::Draw(glm::vec2{ inverse_transition*(float)_scene1->Width(), 0.0f });
 		}
 		else
 		{
 			if (_scene1)
-				_scene1->Image::Draw(transition*(float)_scene2->Width(), 0.0f);
+				_scene1->Image::Draw(glm::vec2{ transition*(float)_scene2->Width(), 0.0f });
 			if (_scene2)
-				_scene2->Image::Draw(-inverse_transition*(float)_scene2->Width(), 0.0f);
+				_scene2->Image::Draw(glm::vec2{ -inverse_transition*(float)_scene2->Width(), 0.0f });
 		}
 	}
 
