@@ -79,7 +79,7 @@ void Area::ProcessCollision(const Shape::pointer &shape, const Shape::pointer &o
 		Shape* shape2 = std::max(shape.get(), other_shape.get());
 		if (collided)
 		{
-			collision = &(_existingCollisions.insert( shape1, shape2 )->second);
+			collision = &(_existingCollisions.insert( shape1, shape2 ).value);
 			if (*collision == nullptr)
 			{
 				*collision = std::make_shared<ShapeCollision>();
@@ -93,7 +93,7 @@ void Area::ProcessCollision(const Shape::pointer &shape, const Shape::pointer &o
 			auto fit = _existingCollisions.find(shape1, shape2);
 			if (fit != _existingCollisions.end())
 			{
-				collision = &(fit->second);
+				collision = &(fit->value);
 				(*collision)->onCollisionEnd();
 				_existingCollisions.erase(fit);
 				shape1->_existingCollisons--;
@@ -125,41 +125,21 @@ void Area::ValidateExistingCollisions(Shape *shape, bool unlink)
 {
 	if (shape->_existingCollisons == 0)
 		return;
-#if WIP
-	{
-		auto left_range = _existingCollisions.left.equal_range(shape);
-		auto it = left_range.first;
-		while (it != left_range.second)
-		{
-			auto other_shape = it->second;
-			if (unlink || !shape->intersectsWith(*other_shape))
-			{
-				auto collision = &(it->info);
-				(*collision)->onCollisionEnd();
-				it = _existingCollisions.left.erase(it);
-				continue;
-			}
-			++it;
-		}
-	}
 
+	bool found = false;
+	_existingCollisions.enumerate(shape, [shape, unlink, &found](auto &other, auto &data) 
 	{
-		auto right_range = _existingCollisions.right.equal_range(shape);
-		auto it = right_range.first;
-		while (it != right_range.second)
-		{
-			auto other_shape = it->second;
-			if (unlink || !shape->intersectsWith(*other_shape))
-			{
-				auto collision = &(it->info);
-				(*collision)->onCollisionEnd();
-				it = _existingCollisions.right.erase(it);
-				continue;
-			}
-			++it;
-		}
-	}
-#endif
+		auto &other_shape = other;
+
+		if (!unlink && !shape->intersectsWith(*other_shape))
+			return;
+		//mark for erasure
+		data.value->onCollisionEnd();
+		data.value = nullptr;
+		found = true;
+	});
+
+	_existingCollisions.remove_if([](auto &data) { return data.value != nullptr; });
 }
 
 void Area::LinkShape(Shape *shape)

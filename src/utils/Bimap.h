@@ -10,8 +10,6 @@ namespace MX
 	class Bimap 
 	{
 	public:
-		using Map = std::map<std::pair<T1, T2>, Data>;
-
 		struct Element
 		{
 			std::pair<T1, T2> key;
@@ -23,9 +21,19 @@ namespace MX
 			}
 		};
 
-		auto insert(T1 t1, T2 t2)
+		using Container = std::vector<Element>;
+
+		auto& insert(T1 t1, T2 t2)
 		{
-			return _elements.insert(std::make_pair(std::pair<T1,T2>{ t1, t2 }, nullptr)).first;
+			Element e;
+			e.key.first = t1;
+			e.key.second = t2;
+
+			auto it = std::lower_bound(_elements.begin(), _elements.end(), e);
+			if (it != _elements.end() && it->key == e.key)
+				return *it;
+
+			return *(_elements.insert(it, e));
 		}
 
 		auto begin()
@@ -40,21 +48,47 @@ namespace MX
 
 		auto find(T1 t1, T2 t2)
 		{
-			return _elements.find({ t1, t2 });
+			Element e;
+			e.key.first = t1;
+			e.key.second = t2;
+			auto it = std::lower_bound(_elements.begin(), _elements.end(), e);
+
+			if (it != _elements.end() && it->key == e.key)
+				return it;
+			return _elements.end();
 		}
 
-		auto erase(typename Map::iterator it)
+		auto erase(typename Container::iterator it)
 		{
 			return _elements.erase(it);
 		}
 
 		template<typename C>
-		void enumerate_erase(T1 value, C callback)
+		void enumerate(T1 value, C callback)
 		{
+			for (auto &v : _elements)
+			{
+				if (v.key.first == value)
+				{
+					callback(v.key.second, v);
+					continue;
+				}
+				if (v.key.second == value)
+				{
+					callback(v.key.first, v);
+					continue;
+				}
+			}
+		}
 
+		template<typename C>
+		void remove_if(C callback)
+		{
+			auto xit = std::remove_if(_elements.begin(), _elements.end(), callback);
+			_elements.erase(xit, _elements.end());
 		}
 	protected:
-		Map _elements;
+		Container _elements;
 	};
 }
 
