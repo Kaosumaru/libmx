@@ -31,16 +31,6 @@ public:
 	friend class Shape;
 
 	using ShapeCollision_bimap = Bimap< Shape*, Shape*, std::shared_ptr<ShapeCollision> >;
-#ifdef WIP
-	typedef bm::bimap<
-    bm::unordered_multiset_of< Shape* >,
-    bm::unordered_multiset_of< Shape* >,
-	bm::set_of_relation<>,
-	bm::with_info< std::shared_ptr<ShapeCollision> >  // abstract
-	> ShapeCollision_bimap;
-
-	typedef ShapeCollision_bimap::value_type ShapeCollisionRelation;
-#endif
 
 	friend class AreaLink;
 	Area();
