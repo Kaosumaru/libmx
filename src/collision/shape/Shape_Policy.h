@@ -18,30 +18,30 @@ namespace Collision
 	public:
 		PointShape_Policy()
 		{
-			SetID(ClassID<PointShape_Policy_Tag>::id());
+			Parent::SetID(ClassID<PointShape_Policy_Tag>::id());
 			SetPoint({ 0.0f, 0.0f });
 		}
 		PointShape_Policy(const glm::vec2 &point)
 		{
-			SetID(ClassID<PointShape_Policy_Tag>::id());
+			Parent::SetID(ClassID<PointShape_Policy_Tag>::id());
 			SetPoint(point);
 		}
 
 		const glm::vec2 &point() const
 		{
-			return (const glm::vec2 &)_bounds;
+			return (const glm::vec2 &)Parent::_bounds;
 		}
 
 		void SetPoint(const glm::vec2 &point)
 		{
-			_bounds.SetPoint(point.x, point.y);
-			Moved();
+			Parent::_bounds.SetPoint(point.x, point.y);
+			Parent::Moved();
 		}
 
 		void SetPoint(float x, float y)
 		{
-			_bounds.SetPoint(x, y);
-			Moved();
+			Parent::_bounds.SetPoint(x, y);
+			Parent::Moved();
 		}
 
 		void DebugDraw() override
@@ -49,7 +49,7 @@ namespace Collision
 			//TODO draw X
 		}
 
-		const Geometry& geometry() const override { return _bounds; }
+		const Geometry& geometry() const override { return Parent::_bounds; }
 	};
 
 
@@ -60,33 +60,33 @@ namespace Collision
 	public:
 		RectangleShape_Policy()
 		{
-			SetID(ClassID<RectangleShape_Policy_Tag>::id());
+			Parent::SetID(ClassID<RectangleShape_Policy_Tag>::id());
 			Set(0.0f, 0.0f, 0.0f, 0.0f);
 		}
 
 
 		void Set(float x1, float y1, float x2, float y2)
 		{
-			_bounds.x1 = x1;
-			_bounds.y1 = y1;
-			_bounds.x2 = x2;
-			_bounds.y2 = y2;
-			Moved();
+			Parent::_bounds.x1 = x1;
+			Parent::_bounds.y1 = y1;
+			Parent::_bounds.x2 = x2;
+			Parent::_bounds.y2 = y2;
+			Parent::Moved();
 		}
 		void Set(const Rectangle& rectangle)
 		{
-			_bounds = rectangle;
-			Moved();
+			Parent::_bounds = rectangle;
+			Parent::Moved();
 		}
 
-		const Rectangle& rectangle() const { return _bounds; }
+		const Rectangle& rectangle() const { return Parent::_bounds; }
 
 		void DebugDraw() override
 		{
-			_bounds.Draw();
+			Parent::_bounds.Draw();
 		}
 
-		const Geometry& geometry() const override { return _bounds; }
+		const Geometry& geometry() const override { return Parent::_bounds; }
 	};
 
 
@@ -97,11 +97,11 @@ namespace Collision
 	public:
 		CircleShape_Policy()
 		{
-			SetID(ClassID<CircleShape_Policy_Tag>::id());
+			Parent::SetID(ClassID<CircleShape_Policy_Tag>::id());
 		}
 		CircleShape_Policy(const glm::vec2 &point, float r)
 		{
-			SetID(ClassID<CircleShape_Policy_Tag>::id());
+			Parent::SetID(ClassID<CircleShape_Policy_Tag>::id());
 			Set(point, r);
 		}
 
@@ -109,8 +109,8 @@ namespace Collision
 		{
 			_circle.center = point;
 			_circle.radius = r;
-			_bounds.SetPointWH(point.x - r, point.y - r, r * 2, r * 2);
-			Moved();
+			Parent::_bounds.SetPointWH(point.x - r, point.y - r, r * 2, r * 2);
+			Parent::Moved();
 		}
 
 		void SetRadius(float r)
@@ -139,19 +139,19 @@ namespace Collision
 	public:
 		OrientedRectangleShape_Policy()
 		{
-			SetID(ClassID<OrientedRectangle_Policy_Tag>::id());
+			Parent::SetID(ClassID<OrientedRectangle_Policy_Tag>::id());
 		}
 		OrientedRectangleShape_Policy(const OrientedRectangle& rectangle)
 		{
-			SetID(ClassID<OrientedRectangle_Policy_Tag>::id());
+			Parent::SetID(ClassID<OrientedRectangle_Policy_Tag>::id());
 			Set(rectangle);
 		}
 
 		void Set(const OrientedRectangle& rectangle)
 		{
 			_orientedRectangle = rectangle;
-			_bounds = _orientedRectangle.bounds();
-			Moved();
+			Parent::_bounds = _orientedRectangle.bounds();
+			Parent::Moved();
 		}
 
 		const OrientedRectangle& orientedRectangle() const { return _orientedRectangle; }

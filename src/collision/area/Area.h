@@ -65,10 +65,10 @@ class SimplestArea : public Area
 public:
 	~SimplestArea();
 
-	void TestForeignShape(const std::shared_ptr<Shape> &shape);
-	void AddShape(const std::shared_ptr<Shape> &shape);
+	void TestForeignShape(const std::shared_ptr<Shape> &shape) override;
+	void AddShape(const std::shared_ptr<Shape> &shape) override;
 protected:
-	void ShapeMoved(const std::shared_ptr<Shape> &shape);
+	void ShapeMoved(const std::shared_ptr<Shape> &shape) override;
 	StrongList<Shape> _shapes;
 	
 };
@@ -78,10 +78,10 @@ class SimplestWeakArea : public Area
 public:
 	~SimplestWeakArea();
 
-	void TestForeignShape(const std::shared_ptr<Shape> &shape);
-	void AddShape(const std::shared_ptr<Shape> &shape);
+	void TestForeignShape(const std::shared_ptr<Shape> &shape) override;
+	void AddShape(const std::shared_ptr<Shape> &shape) override;
 protected:
-	void ShapeMoved(const std::shared_ptr<Shape> &shape);
+	void ShapeMoved(const std::shared_ptr<Shape> &shape) override;
 	WeakList<Shape> _shapes;
 	
 };
@@ -122,7 +122,7 @@ public:
 
 
 protected:
-	void ShapeMoved(const std::shared_ptr<Shape> &shape);
+	void ShapeMoved(const std::shared_ptr<Shape> &shape) override;
 	
 	Layers _layers;
 };

@@ -1,13 +1,10 @@
 #pragma once
 #include <memory>
-#include "Utils/Vector2.h"
-#include "Scene/Actor.h"
+#include "utils/Vector2.h"
+#include "scene/Actor.h"
 #include "graphic/images/Image.h"
 #include "utils/Time.h"
-
-#if WIP
-#  include "Graphic/Animation/MXAnimation.h"
-#endif
+#include "graphic/animation/Animation.h"
 
 namespace MX
 {
@@ -67,7 +64,7 @@ public:
 	void Draw(float x, float y)
 	{
 		if (_image)
-			_image->DrawCentered(0.0f, 0.0f, x, y, T::geometry.scale.x, T::geometry.scale.y, T::geometry.angle, T::geometry.color);
+			_image->DrawCentered({}, { x, y }, T::geometry.scale, T::geometry.angle, T::geometry.color);
 	}
 
 	void SetImage(const std::shared_ptr<Graphic::Image> &image)
@@ -78,7 +75,6 @@ protected:
 	std::shared_ptr<Graphic::Image> _image;
 };
 
-#if WIP
 template <typename T>
 class AnimatedSpriteAdapter : public T
 {
@@ -99,7 +95,7 @@ public:
 	}
 	void Draw(float x, float y)
 	{
-		_animation->DrawCentered(0.0f, 0.0f, x, y, T::geometry.scale.x, T::geometry.scale.y, T::geometry.angle, T::geometry.color);
+		_animation->DrawCentered({}, { x, y }, T::geometry.scale, T::geometry.angle, T::geometry.color);
 	}
 
 	void SetAnimation(const std::shared_ptr<Graphic::Animation> &animation)
@@ -140,7 +136,7 @@ public:
 	}
 	void Draw(float x, float y)
 	{
-		_animation->DrawCentered(0.0f, 0.0f, x, y, T::geometry.scale.x, T::geometry.scale.y, T::geometry.angle, T::geometry.color);
+		_animation->DrawCentered({}, { x, y }, T::geometry.scale, T::geometry.angle, T::geometry.color);
 	}
 
 	void SetImage(const std::shared_ptr<Graphic::Animation> &animation)
@@ -157,11 +153,8 @@ protected:
 	bool _freeze_last_frame;
 };
 
-typedef SingleRunAnimatedSpriteAdapter<SpriteActor> SingleRunAnimatedSpriteActor;
-typedef AnimatedSpriteAdapter<SpriteActor> AnimatedSpriteActor;
-#endif
-
-
 using ImageSpriteActor = ImageSpriteAdapter<SpriteActor>;
+using SingleRunAnimatedSpriteActor = SingleRunAnimatedSpriteAdapter<SpriteActor> ;
+using AnimatedSpriteActor = AnimatedSpriteAdapter<SpriteActor>;
 
 }

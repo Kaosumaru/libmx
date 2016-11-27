@@ -68,6 +68,7 @@ public:
 	{
 		MX::gl::Clear({ 1.0f, 0.0f, 0.0f, 1.0f });
 
+		/*
 		if ( !_target )
 		{
 			_target = std::make_shared<MX::Graphic::TextureImage>(512,512);
@@ -77,8 +78,9 @@ public:
 		}
 
 		_target->DrawCentered({}, {});
+		*/
 
-		//_image->DrawCentered({}, {});
+		_image->DrawCentered({}, {});
 
 		//drawTriangle(_vbo, { 1.0f, 0.0f, 1.0f, 1.0f });
 

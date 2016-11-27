@@ -15,7 +15,7 @@ namespace MX
 			std::pair<T1, T2> key;
 			Data value;
 
-			bool operator < (const Element &e)
+			bool operator < (const Element &e) const
 			{
 				return key < e.key;
 			}

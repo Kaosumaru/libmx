@@ -133,7 +133,7 @@ namespace Scriptable
 		template< typename T>
 		std::shared_ptr<T> to_raw_object() const
 		{
-			return std::dynamic_cast<T*>(_member->createRawObject());
+			return dynamic_cast<T*>(_member->createRawObject());
 		}
 //virtuals
 		auto type() { return _member->type(); }

@@ -179,8 +179,8 @@ public:
     
     unsigned shapes_count();
 	void DefineLayerCollision(ClassID<>::type layerType1, ClassID<>::type layerType2);
-    void TestForeignShape(ClassID<>::type type, const std::shared_ptr<Shape> &shape);
-    void AddShape(ClassID<>::type type, const std::shared_ptr<Shape> &shape);
+    void TestForeignShape(ClassID<>::type type, const std::shared_ptr<Shape> &shape) override;
+    void AddShape(ClassID<>::type type, const std::shared_ptr<Shape> &shape) override;
 	std::shared_ptr<Shape> ClosestNeighbor(ClassID<>::type layerType, const glm::vec2 &point, float max_range = -1, const MatchingFunction& acceptableShapes = nullptr) override;
 
 	void for_each(const std::function<void(const std::shared_ptr<Shape>&)> &functor) override
@@ -191,7 +191,7 @@ public:
 protected:
 	std::shared_ptr<Layer>& layer(ClassID<>::type layerType);
 	
-	void ShapeMoved(const std::shared_ptr<Shape> &shape);
+	void ShapeMoved(const std::shared_ptr<Shape> &shape) override;
     
 	bool _excludeShapesOutsideBounds = false;
 	Rectangle               _rectangle;

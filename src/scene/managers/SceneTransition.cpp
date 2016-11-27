@@ -18,7 +18,7 @@ namespace MX
 #endif
 		if (old_scene)
 		{
-			_scene1 = TextureImage::Create(old_scene->Width(), old_scene->Height());
+			_scene1 = TextureImage::Create((unsigned)old_scene->Width(), (unsigned)old_scene->Height());
 			{
 				Graphic::TargetContext context(*_scene1);
 				_scene1->Clear(MX::Color(0.0f, 0.0f, 0.0f));
@@ -28,7 +28,7 @@ namespace MX
 
 		if (new_scene)
 		{
-			_scene2 = TextureImage::Create(new_scene->Width(), new_scene->Height());
+			_scene2 = TextureImage::Create((unsigned)new_scene->Width(), (unsigned)new_scene->Height());
 			{
 				Graphic::TargetContext context(*_scene2);
 				_scene2->Clear(MX::Color(0.0f, 0.0f, 0.0f));
@@ -58,9 +58,9 @@ namespace MX
 	void AlphaBitmapTransition::Draw(float x, float y)
 	{
 		if (_scene1)
-			_scene1->DrawTinted({}, Color(1.0f, 1.0f, 1.0f, 1.0f - _stopWatch.percent()));
+			_scene1->DrawTinted({}, Color(1.0f, 1.0f, 1.0f, (float)_stopWatch.inverse_percent()));
 		if (_scene2)
-			_scene2->DrawTinted({}, Color(1.0f, 1.0f, 1.0f, _stopWatch.percent()));
+			_scene2->DrawTinted({}, Color(1.0f, 1.0f, 1.0f, (float)_stopWatch.percent()));
 	}
 
 
