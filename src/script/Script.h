@@ -3,9 +3,10 @@
 #include "utils/Singleton.h"
 #include "scriptable/ScriptableValue.h"
 
-
+#if SCRIPTWIP
 #ifdef _DEBUG
 #define MX_MT_IMPL
+#endif
 #endif
 
 namespace MX{

@@ -6,6 +6,7 @@
 #include <sstream>
 #include <iostream>
 #include <thread>
+#include "utils/ListFiles.h"
 
 #if WIP
 #include "Utils/ThreadPool.h"
@@ -110,8 +111,8 @@ void Script::ParseDirs(const std::list<std::string>& paths, bool reset)
 	}
 
 	//last_write_time(
-#if SCRIPTWIP
-	static std::map<boost::filesystem::path, std::time_t> _fileStamps;
+
+	static std::map<std::string, std::time_t> _fileStamps;
 
 	if (reset)
 	{
@@ -127,12 +128,12 @@ void Script::ParseDirs(const std::list<std::string>& paths, bool reset)
 		{
 			auto &path = pair.first;
 			auto &last_stamp = pair.second;
-			auto now_stamp = boost::filesystem::last_write_time(path);
+			auto now_stamp = MX::FileModificationTime(path);
 
 			if (last_stamp != now_stamp)
 			{
 				last_stamp = now_stamp;
-				Script::loadScript(path.generic_string());
+				Script::loadScript(path);
 			}
 		}
 
@@ -146,27 +147,25 @@ void Script::ParseDirs(const std::list<std::string>& paths, bool reset)
 	const auto &i_paths = paths.empty() ? previousPaths : paths;
 	for (auto &p : i_paths)
 	{
-
-		boost::filesystem::path path = Paths::get().pathToResource(p);
-		if (!boost::filesystem::exists(path))
-			continue;
-
-		for (auto &entry : boost::filesystem::recursive_directory_iterator(path))
+		auto iterator = [&]( const FileData& data )
 		{
-			auto path = entry.path();
+			//auto path = entry.path();
 
-			if (path.extension() == ".json" || path.extension() == ".msl")
+			if (data.extension() == "json" || data.extension() == "msl")
 			{
-				auto &last_stamp = _fileStamps[path];
-				auto now_stamp = boost::filesystem::last_write_time(path);
+				auto &last_stamp = _fileStamps[data.path];
+				auto now_stamp = MX::FileModificationTime(data.path);
 
 				if (last_stamp != now_stamp)
 				{
 					last_stamp = now_stamp;
-					file_paths.emplace_back(path.generic_string());
+					file_paths.emplace_back(data.path);
 				}
 			}
-		}
+		};
+
+		MX::ListFilesRecursively(Paths::get().pathToResource(p), iterator);
+
 	}
 
 #ifdef MX_MT_IMPL
@@ -199,7 +198,6 @@ void Script::ParseDirs(const std::list<std::string>& paths, bool reset)
 	Scriptable::Detail::ValueMember::isOnMainThread = true;
 	for (auto& path : file_paths)
 		Script::loadScript(path);
-#endif
 #endif
 	
 
@@ -337,8 +335,6 @@ const Scriptable::Value::pointer& Script::SetPair(const std::string &key, float 
 
 const Scriptable::Value::pointer& Script::SetPair(const std::string &key, const std::wstring &value)
 {
-	//auto guard = Context<std::string, KeyContext>::Lock(const_cast<std::string &>(key));
-
 	const auto &object = _object(key);
 	object->Update(value);
 	return object;
@@ -388,7 +384,6 @@ std::wstring formatToValue(const std::string& path, const std::string& label)
 const std::wstring Script::parseString(const std::string& path, const std::wstring& text)
 {
 	std::wstringstream ss;
-	//std::wregex ws_re(L"\\{([^\\{][^\\}]*)\\}"); // "\{([^\{][^\}]*)\}"  {xxx}
 	TokenizeByRegex(text, [&](const std::wstring &t, const std::wstring &match, bool matched)
 	{
 		ss << t;

@@ -65,9 +65,10 @@ public:
 
 		{
 			auto path = MX::Paths::get().pathToImage("");
-			auto files = MX::ListFiles(path);
-			for (auto& file : files)
-				std::cout << file << std::endl;
+			MX::ListFilesRecursively( path, []( auto &d ) 
+			{
+				std::cout << d.path << " " << d.extension() << std::endl;
+			} );
 		}
 
 		MX::Window::current().keyboard()->on_specific_key_down[SDL_SCANCODE_ESCAPE].connect([&]() { Quit(); });
