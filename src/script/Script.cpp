@@ -7,12 +7,11 @@
 #include <iostream>
 #include <thread>
 #include "utils/ListFiles.h"
+#include "ScriptParser.h"
 
 #if WIP
 #include "Utils/ThreadPool.h"
-#include "MXScriptParser.h"
-#include "MXScriptClassParser.h"
-#include <boost/filesystem.hpp>
+
 #endif
 
 
@@ -76,17 +75,17 @@ using namespace MX;
 
 const std::wstring Script::localize(const std::string& label)
 {
-	return Script::get()._localize(label);
+	return Script::current()._localize(label);
 }
 
 bool Script::loadScript(const std::string& file)
 {
-	return Script::get()._loadScript(file);
+	return Script::current()._loadScript(file);
 }
 
 void Script::Clear()
 {
-	return Script::get()._localized_values.clear();
+	return Script::current()._localized_values.clear();
 }
 
 Signal<void(void)> Script::onParsed;
@@ -183,7 +182,7 @@ void Script::ParseDirs(const std::list<std::string>& paths, bool reset)
 		pool.join();
 		Scriptable::Detail::ValueMember::isOnMainThread = true;
 
-		auto &s = Script::get();
+		auto &s = Script::current();
 		for (auto& pair : s._localized_values)
 			pair.second->member()->finalizeOnMainThread();
 	}
@@ -244,7 +243,7 @@ const Scriptable::Value& Script::_valueOf(const std::string& label)
 
 const Scriptable::Value& Script::valueOf(const std::string& label)
 {
-	return Script::get()._valueOf(label);
+	return Script::current()._valueOf(label);
 }
 
 const Scriptable::Value::pointer& Script::_object(const std::string& label)
@@ -293,12 +292,12 @@ const Scriptable::Value::pointer& Script::_objectOrNull(const std::string& label
 
 const Scriptable::Value::pointer& Script::object(const std::string& label)
 {
-	return Script::get()._object(label);
+	return Script::current()._object(label);
 }
 
 const Scriptable::Value::pointer& Script::objectOrNull(const std::string& label)
 {
-	return Script::get()._objectOrNull(label);
+	return Script::current()._objectOrNull(label);
 }
 
 bool Script::_valueExists(const std::string& label)
@@ -308,7 +307,7 @@ bool Script::_valueExists(const std::string& label)
 
 bool Script::valueExists(const std::string& label)
 {
-	return Script::get()._valueExists(label); 
+	return Script::current()._valueExists(label); 
 }
 
 
@@ -401,9 +400,7 @@ const std::wstring Script::parseString(const std::string& path, const std::wstri
 
 bool Script::_loadScript(const std::string& file)
 {
-#if SCRIPTWIP
 	ScriptParser::ParseFileToScript(file, *this);
-#endif
 
 	return true;
 }

@@ -260,6 +260,3 @@ public:
 	ModificableVariable<T> base;
 	ModificableVariable<float> multiplier;
 };
-
-
-#endif

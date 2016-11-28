@@ -50,12 +50,17 @@ namespace MX
 		return t_stat.st_mtime;
 	}
 
-	std::string FileData::extension() const
+	std::string FileExtension(const std::string& path)
 	{
 		auto idx = path.rfind('.');
 
 		if(idx != std::string::npos)
 			return path.substr(idx+1);
 		return "";
+	}
+
+	std::string FileData::extension() const
+	{
+		return FileExtension(path);
 	}
 }

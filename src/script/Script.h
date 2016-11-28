@@ -13,7 +13,7 @@ namespace MX{
 struct KeyContext {};
 class ScriptParser;
 
-class Script : virtual public disable_copy_constructors, public Singleton<Script>
+class Script : virtual public disable_copy_constructors, public ScopeSingleton<Script>
 {
 public:
 

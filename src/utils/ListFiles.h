@@ -19,5 +19,6 @@ namespace MX
 	bool ListFilesRecursively(const std::string& path, const ListFileCallback& callback);
 
 	std::time_t FileModificationTime(const std::string& path);
+	std::string FileExtension(const std::string& path);
 }
 

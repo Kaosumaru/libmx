@@ -1,0 +1,110 @@
+#include "ScriptObject.h"
+#include "Script.h"
+#include <string>
+using namespace MX;
+
+
+ScriptString::ScriptString(const char *label) : _label(label)
+{
+}
+
+ScriptString::ScriptString(const std::string &label) : _data(label), _label(_data.c_str())
+{
+}
+
+ScriptString::ScriptString(ScriptString &&Script)
+{
+}
+
+ScriptString::ScriptString(std::string &&label) : _data(std::move(label)), _label(_data.c_str())
+{
+
+}
+
+ScriptString::operator const std::wstring () const
+{
+	return text();
+}
+
+ScriptString::operator const std::string() const
+{
+	return atext();
+}
+
+std::wstring ScriptString::text() const
+{
+	return MX::loc(_label);
+}
+
+std::string ScriptString::atext() const
+{
+	static std::wstring_convert<std::codecvt_utf8<wchar_t>> convert;
+	std::string smatch = convert.to_bytes(MX::loc(_label));
+	return smatch;
+}
+
+
+
+std::wostream & operator<< (std::wostream &out, ScriptString const &t)
+{
+	out << t.operator const std::wstring();
+	return out;
+}
+
+ScriptObject::~ScriptObject()
+{
+}
+
+const Scriptable::Value& ScriptObject::property(const std::string &name)
+{
+	std::string obj = object();
+	return Script::valueOf(obj + "." + name);
+}
+
+const Scriptable::Value::pointer& ScriptObject::property_object(const std::string &name)
+{
+	return Script::propertyOrNull(object(), name);
+}
+
+std::string ScriptObject::object()
+{
+	return "Misc.UnsetValue";
+}
+
+std::wstring ScriptObject::name()
+{
+	auto obj = property_object("Name");
+	if (obj)
+		return obj->text();
+	return L"Misc.UnsetValue";
+}
+std::wstring ScriptObject::description()
+{
+	auto obj = property_object("Description");
+	if (obj)
+		return obj->text();
+	return L"Misc.UnsetValue";
+}
+
+#ifdef WIP
+ScriptSettings::ScriptSettings(const std::string& objectName, const std::string& prefix) : ScriptObjectString(prefix + objectName) 
+{
+
+}
+
+ScriptSettings::~ScriptSettings()
+{
+	if (_started)
+		MX::Scriptable::VariableSerializer::current().CommitTransaction();
+}
+
+Scriptable::Variable ScriptSettings::variable(const std::string &name)
+{
+	if (!_started)
+	{
+		_started = true;
+		MX::Scriptable::VariableSerializer::current().BeginTransaction();
+	}
+	return ScriptObjectString::variable(name);
+}
+#endif
