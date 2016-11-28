@@ -18,9 +18,9 @@ class BaseBitmapTransition : public virtual SceneTransition
 {
 public:
 	BaseBitmapTransition(float time = 0.5f);
-	void SetScenes(const std::shared_ptr<SpriteScene> &old_scene, const std::shared_ptr<SpriteScene> &new_scene);
-	void Run();
-	void Draw(float x, float y);
+	void SetScenes(const std::shared_ptr<SpriteScene> &old_scene, const std::shared_ptr<SpriteScene> &new_scene) override;
+	void Run() override;
+	void Draw(float x, float y) override;
 protected:
 	Graphic::TextureImage::pointer _scene1;
 	Graphic::TextureImage::pointer _scene2;
@@ -32,14 +32,14 @@ class AlphaBitmapTransition : public virtual BaseBitmapTransition
 {
 public:
 	AlphaBitmapTransition(float time = 0.5f);
-	void Draw(float x, float y);
+	void Draw(float x, float y) override;
 };
 
 class MoveBitmapTransition : public virtual BaseBitmapTransition
 {
 public:
 	MoveBitmapTransition(bool left = true, float time = 0.5f);
-	void Draw(float x, float y);
+	void Draw(float x, float y) override;
 protected:
 	bool _left;
 };

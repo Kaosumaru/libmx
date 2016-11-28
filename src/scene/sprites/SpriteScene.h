@@ -88,24 +88,24 @@ public:
 
 	}
 
-	void AddActor(const ChildPointer &actor)
+	void AddActor(const ChildPointer &actor) override
 	{
 		_actors.push_back(actor);
 		LinkActor(actor);
 	}
 
-	void AddActorAtFront(const ChildPointer &actor)
+	void AddActorAtFront(const ChildPointer &actor) override
 	{
 		_actors.push_front(actor);
 		LinkActor(actor);
 	}
 
-	void Clear()
+	void Clear() override
 	{
 		_actors.clear();
 	}
 
-	void Run()
+	void Run() override
 	{
 		if (!visible())
 			return;
@@ -120,7 +120,7 @@ public:
 		}
 	}
 
-	void Draw(float x, float y)
+	void Draw(float x, float y) override
 	{
 		if (!visible())
 			return;
@@ -214,7 +214,7 @@ public:
 	float Width() override;
 	float Height() override;
 
-	void translate_child_position(glm::vec2 & position) {};
+	void translate_child_position(glm::vec2 & position) override {};
 protected:
 	glm::vec2 _size;
 
@@ -225,9 +225,9 @@ class DisplaySceneTimer : public DisplayScene
 {
 public:
 	DisplaySceneTimer(const glm::vec2& size);
-	void Run();
+	void Run() override;
     void Run(float timeMultiplier);
-	void Draw(float x, float y);
+	void Draw(float x, float y) override;
 	virtual void Pause(bool pause);
     bool paused();
 	void PauseResume() { Pause(!paused()); }

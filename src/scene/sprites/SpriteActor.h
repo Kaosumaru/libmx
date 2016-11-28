@@ -25,7 +25,7 @@ public:
 	glm::vec2 absolute_position();
 
 	virtual SpriteActorPtr clone() { return nullptr; }
-	std::shared_ptr<Actor> cloneActor() { return clone(); }
+	std::shared_ptr<Actor> cloneActor() override { return clone(); }
 
 	//Implementations can mark this element as inactive, and Unlink it later
 	//(ie particle effects can unlink self after all particles are dead)
@@ -61,7 +61,7 @@ public:
 	}
 
 
-	void Draw(float x, float y)
+	void Draw(float x, float y) override
 	{
 		if (_image)
 			_image->DrawCentered({}, { x, y }, T::geometry.scale, T::geometry.angle, T::geometry.color);
@@ -88,12 +88,12 @@ public:
 	{
 	}
 
-	void Run()
+	void Run() override
 	{
 		_animation->AdvanceTime(Time::Timer::current().elapsed_seconds());
 		T::Run();
 	}
-	void Draw(float x, float y)
+	void Draw(float x, float y) override
 	{
 		_animation->DrawCentered({}, { x, y }, T::geometry.scale, T::geometry.angle, T::geometry.color);
 	}
@@ -123,7 +123,7 @@ public:
 
 
 
-	void Run()
+	void Run() override
 	{
 		_animation->AdvanceTime(Time::Timer::current().elapsed_seconds());
 		if (!_animation->running())
@@ -134,7 +134,7 @@ public:
 		}
 		T::Run();
 	}
-	void Draw(float x, float y)
+	void Draw(float x, float y) override
 	{
 		_animation->DrawCentered({}, { x, y }, T::geometry.scale, T::geometry.angle, T::geometry.color);
 	}

@@ -18,8 +18,8 @@ public:
 	void PushScene(const std::shared_ptr<SpriteScene> &scene, const std::shared_ptr<SceneTransition> &transition = nullptr);
 	void PopScene(const std::shared_ptr<SceneTransition> &transition = nullptr);
 
-	void Run() { BaseSpriteSceneManager::Run();  }
-	void Draw(float x = 0.0f, float y = 0.0f) { BaseSpriteSceneManager::Draw(x,y); }
+	void Run() override { BaseSpriteSceneManager::Run();  }
+	void Draw(float x = 0.0f, float y = 0.0f) override { BaseSpriteSceneManager::Draw(x,y); }
 
 
 	
