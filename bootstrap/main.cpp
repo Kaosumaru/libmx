@@ -15,6 +15,8 @@
 
 #include "graphic/renderer/InstancedRenderer.h"
 #include "graphic/images/TextureImage.h"
+#include "utils/ListFiles.h"
+
 
 class Bootstrap : public MX::App
 {
@@ -59,6 +61,13 @@ public:
 			}
 
 			_image = std::make_shared<MX::Graphic::TextureImage>(texture);
+		}
+
+		{
+			auto path = MX::Paths::get().pathToImage("");
+			auto files = MX::ListFiles(path);
+			for (auto& file : files)
+				std::cout << file << std::endl;
 		}
 
 		MX::Window::current().keyboard()->on_specific_key_down[SDL_SCANCODE_ESCAPE].connect([&]() { Quit(); });
