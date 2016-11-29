@@ -1,9 +1,8 @@
 #include "Event.h"
 #include "Script/ScriptClassParser.h"
 #include "Scene/Managers/SceneStackManager.h"
-
-#ifdef WIP
 #include "Scene/Sprites/ScriptableSpriteActor.h"
+#ifdef WIP
 #include "Widgets/Widget.h"
 #include "Widgets/Layouters/MXStackWidget.h"
 #endif
@@ -77,7 +76,7 @@ protected:
 	Scriptable::Value::pointer _do;
 };
 
-#ifdef WIP
+
 class OnRunEvent : public Event
 {
 public:
@@ -96,6 +95,7 @@ protected:
 	CommandSignal onRun;
 };
 
+#ifdef WIP
 class StackWidgetPopEvent : public Event
 {
 public:
@@ -110,6 +110,7 @@ public:
 	}
 
 };
+#endif
 
 class SpriteSceneStackManagerPopEvent : public Event
 {
@@ -118,8 +119,8 @@ public:
 
 	void Do() override
 	{
-		auto &widget = Context<MX::Widgets::Widget>::current();
-		SpriteSceneStackManager::PopOnManagerOf(&widget);
+		auto &sprite = ScriptableSpriteActor::current();
+		SpriteSceneStackManager::PopOnManagerOf(&sprite);
 	}
 
 };
@@ -156,7 +157,7 @@ protected:
     std::shared_ptr<MX::ScriptableSpriteActor> _actor;
     bool _rotateToCurrent = false;
 };
-#endif
+
 
 class SoundEffectEvent : public Event
 {
@@ -181,14 +182,14 @@ void EventInit::Init()
 	ScriptClassParser::AddCreator(L"Event.Return", new DefaultClassCreatorContructor<ReturnEvent>());
 	ScriptClassParser::AddCreator(L"Event.If", new DefaultClassCreatorContructor<IfEvent>());
 	ScriptClassParser::AddCreator(L"Event.Do", new DefaultClassCreatorContructor<DoEvent>());
-
-#ifdef WIP
 	ScriptClassParser::AddCreator(L"Event.OnRun", new DefaultClassCreatorContructor<OnRunEvent>());
 
+#ifdef WIP
 	ScriptClassParser::AddCreator(L"Event.StackWidget.Pop", new DefaultClassCreatorContructor<StackWidgetPopEvent>());
+#endif
+
 	ScriptClassParser::AddCreator(L"Event.Scene.StackManager.Pop", new DefaultClassCreatorContructor<SpriteSceneStackManagerPopEvent>());
     ScriptClassParser::AddCreator(L"Event.Sprite.CreateSprite", new DefaultClassCreatorContructor<CreateSpriteAtSprite>());
-#endif
 
     ScriptClassParser::AddCreator(L"Event.PlaySound", new DefaultClassCreatorContructor<SoundEffectEvent>());
 }
