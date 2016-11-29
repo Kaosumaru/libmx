@@ -2,10 +2,10 @@
 #include<memory>
 #include<vector>
 #include "cinder/gl/GlslProg.h"
-#include "Graphic/Shader/MXShader.h"
-#include "Graphic/Renderers/MXInstancedGLRenderer.h"
-#include "Graphic/Images/MXSurface.h"
-#include "Utils/MXTime.h"
+#include "Graphic/Shader/Shader.h"
+#include "Graphic/Renderers/InstancedGLRenderer.h"
+#include "Graphic/Images/Surface.h"
+#include "Utils/Time.h"
 
 namespace cinder {
 

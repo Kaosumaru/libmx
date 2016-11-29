@@ -1,7 +1,7 @@
-#include "MXDrawerUtils.h"
-#include "Widgets/MXWidget.h"
-#include "Script/MXScriptClassParser.h"
-#include "Utils/MXRectangle.h"
+#include "DrawerUtils.h"
+#include "Widgets/Widget.h"
+#include "Script/ScriptClassParser.h"
+#include "Utils/Rectangle.h"
 
 using namespace MX;
 using namespace MX::Widgets;

@@ -1,9 +1,9 @@
 #ifndef MXTOOLTIPSTRATEGY
 #define MXTOOLTIPSTRATEGY
-#include "MXStrategy.h"
-#include "Widgets/Systems/MXTooltipSystem.h"
-#include "Utils/MXVector2.h"
-#include "Widgets/MXWidget.h"
+#include "Strategy.h"
+#include "Widgets/Systems/TooltipSystem.h"
+#include "Utils/Vector2.h"
+#include "Widgets/Widget.h"
 
 namespace MX
 {

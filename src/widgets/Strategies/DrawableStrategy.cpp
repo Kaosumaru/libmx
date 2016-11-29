@@ -1,10 +1,10 @@
-#include "MXDrawableStrategy.h"
-#include "../MXWidget.h"
-#include "Application/MXWindow.h"
-#include "Game/Resources/MXResources.h"
-#include "Utils/MXContextStack.h"
-#include "HTML/MXHTMLRendererCairo.h"
-#include "Graphic/Fonts/MXFont.h"
+#include "DrawableStrategy.h"
+#include "../Widget.h"
+#include "Application/Window.h"
+#include "Game/Resources/Resources.h"
+#include "Utils/ContextStack.h"
+#include "HTML/HTMLRendererCairo.h"
+#include "Graphic/Fonts/Font.h"
 #include <iostream>
 
 using namespace MX;

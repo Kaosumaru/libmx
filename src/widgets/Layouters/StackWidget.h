@@ -1,6 +1,6 @@
 #ifndef MXSTACKWIDGET
 #define MXSTACKWIDGET
-#include "Widgets/MXWidget.h"
+#include "Widgets/Widget.h"
 namespace MX
 {
 namespace Widgets
@@ -24,7 +24,7 @@ public:
 	unsigned stackSize() { return _stackSize; }
 
 	const std::shared_ptr<Widget>& top() { return _top; }
-	default_signal<void(const std::shared_ptr<Widget> &)> onTopWidgetChanged;
+	Signal<void(const std::shared_ptr<Widget> &)> onTopWidgetChanged;
 protected:
 	void OnAreaInsideChanged() override;
 	void AddWidget(const std::shared_ptr<Widget> &widget) override { return Widget::AddWidget(widget);  }

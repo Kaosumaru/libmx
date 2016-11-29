@@ -1,6 +1,6 @@
 #ifndef MXSCRIPTDRAWERLAYOUTERS
 #define MXSCRIPTDRAWERLAYOUTERS
-#include "Widgets/MXWidget.h"
+#include "Widgets/Widget.h"
 namespace MX
 {
 namespace Widgets

@@ -1,7 +1,7 @@
-#include "MXWidgetFactory.h"
-#include "Script/MXScriptClassParser.h"
-#include "Scene/Script/MXEvent.h"
-#include "Widgets/MXLabel.h"
+#include "WidgetFactory.h"
+#include "Script/ScriptClassParser.h"
+#include "Scene/Script/Event.h"
+#include "Widgets/Label.h"
 
 
 using namespace MX;
@@ -30,11 +30,12 @@ public:
 		script.load_property(_text, "Text");
 	}
 
-
+#ifdef WIP
 	WidgetPtr WidgetCreate() override
 	{ 
 		return MX::make_shared<MX::Widgets::Label>(_text ? _text->text() : L"");
 	}
+#endif
 protected:
 	Scriptable::Value::pointer _text;
 };

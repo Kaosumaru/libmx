@@ -12,7 +12,7 @@
 #if 0
 #include <boost/algorithm/string/predicate.hpp>
 #include "msl/msl.h"
-#include "Script/MXScriptClassParser.h"
+#include "Script/ScriptClassParser.h"
 #endif
 
 using namespace MX;

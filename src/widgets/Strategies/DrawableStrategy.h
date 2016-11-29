@@ -1,8 +1,8 @@
 #ifndef MXDRAWABLESTRATEGY
 #define MXDRAWABLESTRATEGY
-#include "MXStrategy.h"
-#include "Graphic/Images/MXImage.h"
-#include "Graphic/Fonts/MXFont.h"
+#include "Strategy.h"
+#include "Graphic/Images/Image.h"
+#include "Graphic/Fonts/Font.h"
 
 namespace MX
 {

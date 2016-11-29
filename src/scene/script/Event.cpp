@@ -4,7 +4,7 @@
 #include "Scene/Sprites/ScriptableSpriteActor.h"
 #ifdef WIP
 #include "Widgets/Widget.h"
-#include "Widgets/Layouters/MXStackWidget.h"
+#include "Widgets/Layouters/StackWidget.h"
 #endif
 
 using namespace MX;

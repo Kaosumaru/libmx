@@ -1,6 +1,6 @@
-#include "MXStackWidget.h"
-#include "Application/MXWindow.h"
-#include "Game/Resources/MXResources.h"
+#include "StackWidget.h"
+#include "Application/Window.h"
+#include "Game/Resources/Resources.h"
 #include <iostream>
 
 using namespace MX;

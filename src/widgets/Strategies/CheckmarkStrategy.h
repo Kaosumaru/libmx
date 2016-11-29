@@ -1,6 +1,6 @@
 #ifndef MXCHECKMARKSTRATEGY
 #define MXCHECKMARKSTRATEGY
-#include "Devices/MXTouches.h"
+#include "Devices/Touches.h"
 #include "Strategy.h"
 
 namespace MX

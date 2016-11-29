@@ -7,7 +7,7 @@ using namespace MX;
 using namespace MX::Widgets;
 
 #ifdef WIP
-#include "HTML/MXHTMLRendererCairo.h"
+#include "HTML/HTMLRendererCairo.h"
 
 MX::Widgets::Label::Label(const std::wstring &text)
 {

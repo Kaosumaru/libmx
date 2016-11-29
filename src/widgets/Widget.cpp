@@ -1,10 +1,10 @@
-#include "MXWidget.h"
-#include "Application/MXWindow.h"
-#include "Game/Resources/MXResources.h"
+#include "Widget.h"
+#include "Application/Window.h"
+#include "Game/Resources/Resources.h"
 #include <iostream>
 #include <cmath>
 
-#include "Graphic/Renderers/MXTextureRenderer.h"
+#include "Graphic/Renderers/TextureRenderer.h"
 
 using namespace MX;
 using namespace MX::Widgets;

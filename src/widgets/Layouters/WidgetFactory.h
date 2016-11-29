@@ -1,7 +1,7 @@
 #ifndef MXWIDGETFACTORY
 #define MXWIDGETFACTORY
-#include "Widgets/MXWidget.h"
-#include "Script/MXPropertyLoaders.h"
+#include "Widgets/Widget.h"
+#include "Script/PropertyLoaders.h"
 
 namespace MX
 {
@@ -17,7 +17,7 @@ namespace Widgets
 		WidgetPtr Create();
 
 	protected:
-		virtual WidgetPtr WidgetCreate() { return MX::make_shared<MX::Widgets::Widget>(); }
+		virtual WidgetPtr WidgetCreate() { return std::make_shared<MX::Widgets::Widget>(); }
 
 		std::shared_ptr<Drawer> _drawer;
 	};

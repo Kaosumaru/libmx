@@ -3,7 +3,7 @@
 #include "utils/Random.h"
 
 #if WIP
-#include "Graphic/Fonts/MXFont.h"
+#include "Graphic/Fonts/Font.h"
 #endif
 #include <array>
 

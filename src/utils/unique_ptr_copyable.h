@@ -133,7 +133,7 @@ protected:
 	CopyingFunction    _copying_function;
 };
 
-#include "Script/MXScriptObject.h"
+#include "Script/ScriptObject.h"
 
 namespace MX
 {

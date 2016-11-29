@@ -1,10 +1,10 @@
-#include "MXScriptLayoutersCommon.h"
-#include "Application/MXWindow.h"
-#include "Game/Resources/MXResources.h"
+#include "ScriptLayoutersCommon.h"
+#include "Application/Window.h"
+#include "Game/Resources/Resources.h"
 #include <iostream>
-#include "Script/MXPropertyLoaders.h"
-#include "Script/MXScriptClassParser.h"
-#include "MXScriptLayouters.h"
+#include "Script/PropertyLoaders.h"
+#include "Script/ScriptClassParser.h"
+#include "ScriptLayouters.h"
 
 using namespace MX::Widgets;
 

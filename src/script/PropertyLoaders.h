@@ -13,7 +13,7 @@
 #include "Script/Class/ScriptImageClass.h"
 #include "Script/Class/ScriptAnimationClass.h"
 #if WIP
-#include "Graphic/Fonts/MXFont.h"
+#include "Graphic/Fonts/Font.h"
 #endif
 #include <array>
 

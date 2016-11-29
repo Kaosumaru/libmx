@@ -1,12 +1,11 @@
 #ifndef MXSTRATEGY
 #define MXSTRATEGY
-#include "Utils/MXUtils.h"
-#include "Utils/MXVector2.h"
-#include <boost/signals2/signal.hpp>
-#include "Devices/MXTouches.h"
-#include "Widgets/Systems/MXDragSystem.h"
-#include "Widgets/Drawers/MXDrawer.h"
-#include "Collision/Shape/MXShape.h"
+#include "Utils/Utils.h"
+#include "Utils/Vector2.h"
+#include "Devices/Touches.h"
+#include "Widgets/Systems/DragSystem.h"
+#include "Widgets/Drawers/Drawer.h"
+#include "Collision/Shape/Shape.h"
 
 namespace MX
 {
@@ -21,7 +20,7 @@ namespace Strategy
 
 
 
-class Strategy : public shared_ptr_init<Strategy>, public boost::signals2::trackable
+class Strategy : public shared_ptr_init<Strategy>
 {
 public:
 	Strategy(bool interactive = false) : _interactive(interactive)

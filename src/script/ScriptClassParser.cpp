@@ -2,9 +2,9 @@
 #include "Script.h"
 
 #if WIP
-#include "Class/MXScriptAnimationClass.h"
-#include "Class/MXScriptSoundClass.h"
-#include "Class/MXScriptImageClass.h"
+#include "Class/ScriptAnimationClass.h"
+#include "Class/ScriptSoundClass.h"
+#include "Class/ScriptImageClass.h"
 #endif
 
 using namespace MX;

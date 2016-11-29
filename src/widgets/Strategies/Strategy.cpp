@@ -1,10 +1,10 @@
-#include "MXStrategy.h"
-#include "../MXWidget.h"
-#include "Application/MXWindow.h"
-#include "Game/Resources/MXResources.h"
-#include "Collision/Area/MXEventsToCollisions.h"
+#include "Strategy.h"
+#include "../Widget.h"
+#include "Application/Window.h"
+#include "Game/Resources/Resources.h"
+#include "Collision/Area/EventsToCollisions.h"
 #include <iostream>
-#include "Devices/MXTouches.h"
+#include "Devices/Touches.h"
 
 using namespace MX;
 using namespace MX::Widgets;

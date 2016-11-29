@@ -1,7 +1,7 @@
 #ifndef MXSCRIPTLAYOUTERS
 #define MXSCRIPTLAYOUTERS
-#include "Widgets/MXWidget.h"
-#include "MXWidgetFactory.h"
+#include "Widgets/Widget.h"
+#include "WidgetFactory.h"
 
 namespace MX
 {

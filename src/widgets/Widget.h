@@ -3,7 +3,6 @@
 #include "Utils/Utils.h"
 #include "Utils/Vector2.h"
 #include "Drawers/Drawer.h"
-#include "Drawers/SimpleDrawers.h"
 #include "Scene/Sprites/SpriteScene.h"
 #include "Collision/Shape/SignalizingShape.h"
 #include "Strategies/Strategy.h"
