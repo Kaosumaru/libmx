@@ -1,6 +1,6 @@
-#include "MXTooltipSystem.h"
-#include "Application/MXWindow.h"
-#include "Game/Resources/MXResources.h"
+#include "TooltipSystem.h"
+#include "Application/Window.h"
+#include "Game/Resources/Resources.h"
 #include <iostream>
 
 

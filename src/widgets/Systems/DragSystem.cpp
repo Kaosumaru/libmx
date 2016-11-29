@@ -1,6 +1,6 @@
-#include "MXDragSystem.h"
-#include "Application/MXWindow.h"
-#include "Game/Resources/MXResources.h"
+#include "DragSystem.h"
+#include "Application/Window.h"
+#include "Game/Resources/Resources.h"
 #include <iostream>
 
 
@@ -9,7 +9,7 @@ using namespace MX;
 using namespace MX::Widgets;
 
 
-bool DragTarget::InitiateDrag(const Vector2 &position, const Vector2& offset)
+bool DragTarget::InitiateDrag(const glm::vec2 &position, const glm::vec2& offset)
 {
 	if (DragSystem::current().StartDragging(this, position, offset))
 	{
@@ -20,7 +20,7 @@ bool DragTarget::InitiateDrag(const Vector2 &position, const Vector2& offset)
 	return false;
 }
 
-void DragTarget::ChangedDragPosition(const Vector2 &position)
+void DragTarget::ChangedDragPosition(const glm::vec2 &position)
 {
 	if (_dragging)
 		DragSystem::current().ChangedDragPosition(this, position);
@@ -78,7 +78,7 @@ void DragSystem::Draw()
 }
 
 
-bool DragSystem::StartDragging(DragTarget* object, const Vector2 &initialPosition, const Vector2& offset)
+bool DragSystem::StartDragging(DragTarget* object, const glm::vec2 &initialPosition, const glm::vec2& offset)
 {
 	if (_draggedObject)
 		return false;
@@ -89,7 +89,7 @@ bool DragSystem::StartDragging(DragTarget* object, const Vector2 &initialPositio
 	return true;
 }
 
-void DragSystem::ChangedDragPosition(DragTarget* object, const Vector2 &position)
+void DragSystem::ChangedDragPosition(DragTarget* object, const glm::vec2 &position)
 {
 	_position = position;
 	on_moved_drag(_position);

@@ -1,11 +1,8 @@
-#include "MXShapes.h"
-#include "Widgets/MXWidget.h"
-#include "Application/MXWindow.h"
-#include "Collision/Area/MXArea.h"
-#include "Script/MXScriptClassParser.h"
-#include "cinder/Shape2d.h"
-
-
+#include "Shapes.h"
+#include "Widgets/Widget.h"
+#include "Application/Window.h"
+#include "Collision/Area/Area.h"
+#include "Script/ScriptClassParser.h"
 #include <glm/gtx/transform.hpp>
 
 using namespace MX;
@@ -91,7 +88,7 @@ public:
 
 	void OnEnabled() override
 	{
-		_shape = MX::make_shared<Collision::SignalizingCircleShape>();
+		_shape = std::make_shared<Collision::SignalizingCircleShape>();
 		_shape->SetTrackCollisions(true);
 	}
 	void OnDisabled() override
@@ -115,7 +112,7 @@ public:
 };
 
 
-
+#ifdef WIP
 class ScriptPolygonShapePolicy : public ScriptShapePolicy
 {
 public:
@@ -181,6 +178,7 @@ protected:
 	cinder::Shape2d _polygon;
 };
 
+
 class ScriptPolygonRectangleShapePolicy : public ScriptPolygonShapePolicy
 {
 public:
@@ -230,19 +228,23 @@ public:
 	}
 
 };
-
+#endif
 
 void MX::Widgets::ShapePolicyInit::Init()
 {
 	ScriptClassParser::AddCreator(L"Widget.Shape.Circle", new OutsideScriptClassCreatorContructor<ScriptCirclePolicy>());
+
+#ifdef WIP
 	ScriptClassParser::AddCreator(L"Widget.Shape.Polygon", new OutsideScriptClassCreatorContructor<ScriptPolygonShapePolicy>());
 	ScriptClassParser::AddCreator(L"Widget.Shape.Polygon.Rectangle", new OutsideScriptClassCreatorContructor<ScriptPolygonRectangleShapePolicy>());
+#endif
 }
 
 
 
-
+#ifdef WIP
 ShapePolicy::pointer ShapePolicy::createPolygon(const cinder::Shape2d &polygon)
 {
 	return std::make_unique<ScriptPolygonShapePolicy>(polygon);
 }
+#endif

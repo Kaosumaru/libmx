@@ -1,9 +1,7 @@
-#ifndef MXWIDGETSHAPES
-#define MXWIDGETSHAPES
+#pragma once
 #include <glm/glm.hpp>
 #include <memory>
-#include "cinder/Shape2d.h"
-#include "Collision/Shape/MXSignalizingShape.h"
+#include "Collision/Shape/SignalizingShape.h"
 
 
 namespace MX
@@ -37,7 +35,9 @@ public:
 	const auto& shape() { return _shape; }
 	virtual pointer clone() = 0;
 
+#ifdef WIP
 	static pointer createPolygon(const cinder::Shape2d &polygon);
+#endif
 protected:
 	std::shared_ptr<Collision::SignalizingShape> _shape;
 };
@@ -47,7 +47,7 @@ class DefaultRectanglePolicy : public ShapePolicy
 public:
 	void OnEnabled() override
 	{
-		_shape = MX::make_shared<Collision::SignalizingRectangleShape>();
+		_shape = std::make_shared<Collision::SignalizingRectangleShape>();
 		_shape->SetTrackCollisions(true);
 	}
 
@@ -137,4 +137,3 @@ using WidgetPtr = std::shared_ptr<Widgets::Widget>;
 
 }
 
-#endif

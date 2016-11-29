@@ -1,15 +1,14 @@
 #ifndef MXCHECKMARKSTRATEGY
 #define MXCHECKMARKSTRATEGY
-#include <boost/signals2/signal.hpp>
 #include "Devices/MXTouches.h"
-#include "MXStrategy.h"
+#include "Strategy.h"
 
 namespace MX
 {
 namespace Widgets
 {
 
-class CheckmarkGroup : public boost::signals2::trackable
+class CheckmarkGroup
 {
 public:
 	CheckmarkGroup(){}

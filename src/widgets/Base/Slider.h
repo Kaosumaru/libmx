@@ -1,8 +1,6 @@
-#ifndef MXSLIDER
-#define MXSLIDER
-#include "Widgets/MXWidget.h"
-#include "Graphic/Fonts/MXFont.h"
-#include "Utils/MXSignalizingVariable.h"
+#pragma once
+#include "Widgets/Widget.h"
+#include "Utils/SignalizingVariable.h"
 
 namespace MX
 {
@@ -65,5 +63,3 @@ namespace Widgets
 
 }
 }
-
-#endif

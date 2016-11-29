@@ -1,6 +1,6 @@
-#include "MXSlider.h"
-#include "Collision/Area/MXEventsToCollisions.h"
-#include "Application/MXWindow.h"
+#include "Slider.h"
+#include "Collision/Area/EventsToCollisions.h"
+#include "Application/Window.h"
 
 
 using namespace MX;
@@ -56,7 +56,7 @@ Slider::Slider()
 {
 	AddWidget(_knob = std::make_shared<ButtonWidget>());
 
-	_knob->AddStrategy(MX::make_shared<Strategy::SlideButton>(*this));
+	_knob->AddStrategy(stf::make_shared<Strategy::SlideButton>(*this));
 
 	auto sig = [this](float w, float h){ onSizeOrKnobChanged(); };
 	on_size_changed.connect(sig);
@@ -136,7 +136,7 @@ void SliderMinMax::SetMaxValue(float value)
 SliderMinMaxForVariable::SliderMinMaxForVariable(SignalizingVariable<float> &variable) : _variable(variable)
 {
 	_data = std::make_shared<int>();
-	_variable.onValueChanged.connect(boost::bind(&SliderMinMaxForVariable::onVariableChanged, this, _1), _data);
+	_variable.onValueChanged.connect(std::bind(&SliderMinMaxForVariable::onVariableChanged, this, _1), _data);
 	SetValue(_variable);
 }
 

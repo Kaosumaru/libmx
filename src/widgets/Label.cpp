@@ -1,13 +1,13 @@
-#include "MXLabel.h"
-#include "Application/MXWindow.h"
-#include "Game/Resources/MXResources.h"
+#include "Label.h"
+#include "Application/Window.h"
+#include "Game/Resources/Resources.h"
 #include <iostream>
-#include "HTML/MXHTMLRendererCairo.h"
 
 using namespace MX;
 using namespace MX::Widgets;
 
-
+#ifdef WIP
+#include "HTML/MXHTMLRendererCairo.h"
 
 MX::Widgets::Label::Label(const std::wstring &text)
 {
@@ -76,3 +76,4 @@ void FPSLabel::Run()
 		count = 0;
 	}
 }
+#endif

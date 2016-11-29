@@ -1,7 +1,6 @@
-#ifndef MXLISTCONTROLLER
-#define MXLISTCONTROLLER
-#include "Widgets/MXWidget.h"
-#include "Widgets/Strategies/MXStrategy.h"
+#pragma once
+#include "Widgets/Widget.h"
+#include "Widgets/Strategies/Strategy.h"
 
 namespace MX
 {
@@ -158,4 +157,3 @@ protected:
 }
 }
 
-#endif

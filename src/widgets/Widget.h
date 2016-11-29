@@ -1,18 +1,16 @@
 #ifndef MXWIDGET
 #define MXWIDGET
-#include "Utils/MXUtils.h"
-#include "Utils/MXVector2.h"
-#include "Drawers/MXDrawer.h"
-#include "Drawers/MXSimpleDrawers.h"
-#include "Scene/Sprites/MXSpriteScene.h"
-#include "Collision/Shape/MXSignalizingShape.h"
-#include "Strategies/MXStrategy.h"
-#include <boost/signals2/signal.hpp>
-#include "Drawers/MXDrawerManager.h"
-#include <boost/variant/get.hpp>
-#include "Shapes/MXShapes.h"
-#include <glm/glm.hpp>
-#include "Scene/Script/MXScriptableActor.h"
+#include "Utils/Utils.h"
+#include "Utils/Vector2.h"
+#include "Drawers/Drawer.h"
+#include "Drawers/SimpleDrawers.h"
+#include "Scene/Sprites/SpriteScene.h"
+#include "Collision/Shape/SignalizingShape.h"
+#include "Strategies/Strategy.h"
+#include "Utils/Signal.h"
+#include "Drawers/DrawerManager.h"
+#include "Shapes/Shapes.h"
+#include "Scene/Script/ScriptableActor.h"
 
 namespace MX
 {
@@ -32,20 +30,20 @@ class PropertyMap
 public:
 
 	template<typename T>
-	void SetValue(const std::string &name, const T& v) { _values[name] = v; }
+	void SetValue(const std::string &name, const T& v) { /*_values[name] = v;*/ }
 
 	template<typename T>
 	T valueOf(const std::string &name, const T& def = {}) const
-	{
+	{/*
 		auto it = _values.find(name);
 		if (it == _values.end())
 			return def;
-		return boost::get<T>(it->second);
+		return boost::get<T>(it->second);*/
 	}
 
 protected:
-	using Type = boost::variant < float, std::string >;
-	std::unordered_map<std::string, Type> _values;
+	//using Type = boost::variant < float, std::string >;
+	//std::unordered_map<std::string, Type> _values;
 };
 
 
@@ -69,7 +67,7 @@ protected:
 };
 
 
-class Widget : public virtual SpriteScene, public boost::signals2::trackable, public ScopeSingleton<Widget>, public shared_ptr_init<Widget>
+class Widget : public virtual SpriteScene, public ScopeSingleton<Widget>, public shared_ptr_init<Widget>
 {
 	friend class Strategy::Strategy;
 	friend class Drawer;
@@ -88,20 +86,20 @@ public:
 	void Draw(float x, float y) override;
 
 
-	Vector2 position();
-	Vector2 relativePosition(); //position relative to parent
-	unsigned Width() override { return _width; }
-	unsigned Height() override { return _height; }
-	Vector2 dimensions() { return{ (float)Width(), (float)Height() }; }
-	Vector2 dimensionsInside() { return{ (float)Width() - _margins.hMargins(), (float)Height() - _margins.vMargins() }; }
+	glm::vec2 position();
+	glm::vec2 relativePosition(); //position relative to parent
+	float Width() override { return _width; }
+	float Height() override { return _height; }
+	glm::vec2 dimensions() { return{ (float)Width(), (float)Height() }; }
+	glm::vec2 dimensionsInside() { return{ (float)Width() - _margins.hMargins(), (float)Height() - _margins.vMargins() }; }
 
-	virtual MX::Vector2 minDimensions();
-	virtual MX::Vector2 maxDimensions();
+	virtual glm::vec2 minDimensions();
+	virtual glm::vec2 maxDimensions();
 
-	void ShiftPosition(const Vector2& delta) { SetPosition(position() + delta); }
+	void ShiftPosition(const glm::vec2& delta) { SetPosition(position() + delta); }
 
 	bool SetPosition(float x, float y) { return SetPosition({ x, y }); }
-	bool SetPosition(const Vector2& position);
+	bool SetPosition(const glm::vec2& position);
 	void SetPosition(float x, float y, float width, float height); //position relative to parent
 	void SetPositionRect(const MX::Rectangle& r) { SetPosition(r.x1, r.y1, r.width(), r.height()); }
 
@@ -109,7 +107,7 @@ public:
 
 	void SetVerticalScroll(float y);
 	void SetHorizontalScroll(float x);
-	const Vector2& scroll() { return _scroll; }
+	const glm::vec2& scroll() { return _scroll; }
 
 	
 	void AddStrategy(const Strategy::Strategy::pointer& strategy);
@@ -123,7 +121,7 @@ public:
 	PropertyMap &properties() { return _properties; }
 	bool interactive() { return _requestedInteraction > 0; } //if it's interactive, then it should have shape
 
-	default_signal<void(float width, float height)> on_size_changed;
+	Signal<void(float width, float height)> on_size_changed; //WIP check unlinking
 
 
 	const auto& transform() { return _transform.transform(); }
@@ -160,7 +158,7 @@ protected:
 
 	virtual void IterateOverStrategies(const std::function<void(Strategy::Strategy&)>& f);
 
-	Vector2 parentWidgetOffset();
+	glm::vec2 parentWidgetOffset();
 
 	void NotifyParentAboutSizeUpdate()
 	{
@@ -193,15 +191,15 @@ protected:
 	virtual void onChildSizeChanged() {}
 	virtual void onChildRemoved(Widget& child) {}
 
-	void translate_child_position(MX::Vector2 & position) override {};
+	void translate_child_position(glm::vec2 & position) override {};
 
-	void moveChildren(const Vector2& delta);
+	void moveChildren(const glm::vec2& delta);
 
 	void onBecameVisible();
 	void onBecameInvisible();
 
 	void AddActor(const SpriteActorPtr &actor);
-	void onParentMove(const Vector2& delta);
+	void onParentMove(const glm::vec2& delta);
 
 	void onParentTransformMatrixChanged(const glm::mat4 &transform);
 	
@@ -226,7 +224,7 @@ protected:
 	std::vector<Strategy::Strategy*> _staticStrategies;
 
 	MX::Margins _margins;
-	Vector2     _scroll;
+	glm::vec2   _scroll;
 
 	PropertyMap _properties;
 
@@ -263,16 +261,16 @@ public:
 
 	bool isState(State state);
 
-	default_signal<void(bool)> onEnabledChanged;
+	Signal<void(bool)> onEnabledChanged;
 
-    default_signal<void(void)> onTouched;
-    default_signal<void(void)> onReleased;
-	default_signal<void(void)> onClicked;
-	default_signal<void(bool)> onSelectedChanged;
-	default_signal<void(void)> onSelected;
-	default_signal<void(void)> onUnselected;
-	default_signal<void(void)> onHoverIn;
-	default_signal<void(void)> onHoverOut;
+    Signal<void(void)> onTouched;
+    Signal<void(void)> onReleased;
+	Signal<void(void)> onClicked;
+	Signal<void(bool)> onSelectedChanged;
+	Signal<void(void)> onSelected;
+	Signal<void(void)> onUnselected;
+	Signal<void(void)> onHoverIn;
+	Signal<void(void)> onHoverOut;
 protected:
 	bool                            _hover = false;
 	bool                            _enabled = true;

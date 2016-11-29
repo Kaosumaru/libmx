@@ -1,5 +1,4 @@
-#ifndef MXWIDGETSCRIPTBINDING
-#define MXWIDGETSCRIPTBINDING
+#pragma once
 
 namespace MX
 {
@@ -17,5 +16,3 @@ namespace MX
 	}
 
 }
-
-#endif

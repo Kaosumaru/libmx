@@ -1,8 +1,8 @@
-#ifndef MXPAGINATEDLISTCONTROLLER
-#define MXPAGINATEDLISTCONTROLLER
-#include "Widgets/MXWidget.h"
-#include "MXListController.h"
-#include "Widgets/Strategies/MXStrategy.h"
+#pragma once
+#include "Widgets/Widget.h"
+#include "ListController.h"
+#include "Widgets/Strategies/Strategy.h"
+#include "utils/SignalizingVariable.h"
 
 namespace MX
 {
@@ -213,5 +213,3 @@ protected:
 
 }
 }
-
-#endif

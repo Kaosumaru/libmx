@@ -1,8 +1,7 @@
 #ifndef MXDRAGSYSTEM
 #define MXDRAGSYSTEM
-#include "Utils/MXUtils.h"
-#include "Utils/MXVector2.h"
-#include "Utils/MXBoostFast.h"
+#include "Utils/Utils.h"
+#include "Utils/Vector2.h"
 #include <set>
 #include <map>
 
@@ -29,8 +28,8 @@ public:
 
 	virtual void DrawDrag(float x, float y) {}
 
-	default_signal<void ()> onDraggingThis;
-	default_signal<void ()> onDroppedThis;
+	Signal<void ()> onDraggingThis;
+	Signal<void ()> onDroppedThis;
 
     template <typename T, typename ...Args>
     auto EmplaceDragData(Args&&... args)
@@ -43,8 +42,8 @@ public:
         return data;
     }
 protected:
-    bool InitiateDrag(const Vector2 &position, const Vector2& offset = {});
-	void ChangedDragPosition(const Vector2 &position);
+    bool InitiateDrag(const glm::vec2 &position, const glm::vec2& offset = {});
+	void ChangedDragPosition(const glm::vec2 &position);
 	void InitiateDrop();
 
 	bool _dragging;
@@ -110,12 +109,12 @@ public:
 	}
 
 	bool dragging() { return _draggedObject != nullptr; }
-	default_signal<void (const Vector2&)> on_started_drag;
-	default_signal<void (const Vector2&)> on_moved_drag;
-	default_signal<void (const Vector2&)> on_ended_drag;
+	Signal<void (const glm::vec2&)> on_started_drag;
+	Signal<void (const glm::vec2&)> on_moved_drag;
+	Signal<void (const glm::vec2&)> on_ended_drag;
 protected:
-    bool StartDragging(DragTarget* object, const Vector2 &initialPosition, const Vector2& offset = {});
-	void ChangedDragPosition(DragTarget* object, const Vector2 &position);
+    bool StartDragging(DragTarget* object, const glm::vec2 &initialPosition, const glm::vec2& offset = {});
+	void ChangedDragPosition(DragTarget* object, const glm::vec2 &position);
 	void StopDragging(DragTarget* object);
 
 
@@ -124,8 +123,8 @@ protected:
 
 	std::map<ClassID<>::type, DragInfo::pointer> _registeredTypes;
 	DragTarget* _draggedObject;
-	Vector2 _position;
-    Vector2 _offset;
+	glm::vec2 _position;
+    glm::vec2 _offset;
 };
 
 

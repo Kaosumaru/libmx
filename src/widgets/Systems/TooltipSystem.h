@@ -1,8 +1,9 @@
-#ifndef MXTOOLTIPSYSTEM
-#define MXTOOLTIPSYSTEM
-#include "Utils/MXUtils.h"
+#pragma once
+#include "Utils/Utils.h"
+#include "Utils/Singleton.h"
 #include <set>
 #include <map>
+#include <vector>
 
 namespace MX
 {
@@ -60,5 +61,3 @@ protected:
 
 }
 }
-
-#endif

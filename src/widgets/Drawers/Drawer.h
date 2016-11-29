@@ -1,10 +1,8 @@
-#ifndef MXDRAWER
-#define MXDRAWER
-#include "Utils/MXUtils.h"
-#include "Utils/MXVector2.h"
-#include "Utils/MXRectangle.h"
-#include <boost/signals2/signal.hpp>
-#include "Script/MXScriptObject.h"
+#pragma once
+#include "Utils/Utils.h"
+#include "Utils/Vector2.h"
+#include "Utils/shapes/Rectangle.h"
+#include "Script/ScriptObject.h"
 namespace MX
 {
 namespace Widgets
@@ -106,5 +104,3 @@ protected:
 
 }
 }
-
-#endif

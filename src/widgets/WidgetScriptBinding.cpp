@@ -1,9 +1,9 @@
-#include "MXWidgetScriptBinding.h"
-#include "Script/MXScript.h"
-#include "Widgets/Drawers/MXDrawer.h"
-#include "Widgets/MXWidget.h"
+#include "WidgetScriptBinding.h"
+#include "Script/Script.h"
+#include "Widgets/Drawers/Drawer.h"
+#include "Widgets/Widget.h"
 #include "RPN/Function.h"
-#include "Widgets/Strategies/MXDrawableStrategy.h"
+#include "Widgets/Strategies/DrawableStrategy.h"
 
 using namespace MX;
 using namespace MX::Widgets;
@@ -19,7 +19,7 @@ void WidgetScriptBinding::Init()
 
 void WidgetScriptBinding::onReload()
 {
-	auto &script = Script::get();
+	auto &script = Script::current();
 	script.SetPairFunctor("Area.X", []()-> float { return Drawer::Destination::current().x(); });
 	script.SetPairFunctor("Area.Y", []()-> float { return Drawer::Destination::current().y(); });
 	script.SetPairFunctor("Area.Width", []()-> float { return Drawer::Destination::current().width(); });

@@ -1,8 +1,9 @@
-#ifndef MXLABEL
-#define MXLABEL
-#include "MXWidget.h"
+#pragma once
+#include "Widget.h"
+#ifdef WIP
 #include "Graphic/Fonts/MXFont.h"
-#include "Strategies/MXDrawableStrategy.h"
+#endif
+#include "Strategies/DrawableStrategy.h"
 
 namespace MX
 {
@@ -10,7 +11,7 @@ namespace Widgets
 {
 
 
-
+#ifdef WIP
 class Label : public ButtonWidget
 {
 public:
@@ -29,7 +30,7 @@ protected:
 class AutoLabel : public ButtonWidget
 {
 public:
-	typedef std::function<std::wstring(void)> StringBuilder;
+	using StringBuilder = std::function<std::wstring(void)>;
 
 	AutoLabel();
 
@@ -110,11 +111,13 @@ protected:
 	Time::SimpleTimer _timer;
 };
 
-
-
-}
 typedef std::shared_ptr<Widgets::Label> LabelPtr;
 typedef std::shared_ptr<Widgets::LabelButton> LabelButtonPtr;
+#endif
+
+
 }
 
-#endif
+}
+
+
