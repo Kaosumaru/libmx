@@ -49,5 +49,6 @@ protected:
 
 	std::shared_ptr<Mouse> _mouse;
 	std::shared_ptr<Keyboard> _keyboard;
+	std::shared_ptr<MouseTouches> _mouseTouches;
 };
 }
