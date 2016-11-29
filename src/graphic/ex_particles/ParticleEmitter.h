@@ -1,13 +1,12 @@
-#ifndef MXPARTICLEEMITTER
-#define MXPARTICLEEMITTER
-#include "Scene/Sprites/MXSpriteScene.h"
-#include "Graphic/Images/MXImage.h"
-#include "Script/MXScriptObject.h"
-#include "Utils/MXTime.h"
-#include "Utils/MXUtils.h"
-#include "MXParticle.h"
-#include "MXParticles.h"
-#include "Utils/MXCircle.h"
+#pragma once
+#include "Scene/Sprites/SpriteScene.h"
+#include "Graphic/Images/Image.h"
+#include "Script/ScriptObject.h"
+#include "Utils/Time.h"
+#include "Utils/Utils.h"
+#include "Particle.h"
+#include "Particles.h"
+#include "utils/shapes/Circle.h"
 
 namespace MX{
 namespace Graphic{
@@ -214,5 +213,3 @@ protected:
 
 }
 }
-
-#endif

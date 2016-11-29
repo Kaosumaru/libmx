@@ -1,9 +1,12 @@
-#include "MXEvent.h"
-#include "Script/MXScriptClassParser.h"
-#include "Scene/Sprites/MXScriptableSpriteActor.h"
-#include "Widgets/MXWidget.h"
+#include "Event.h"
+#include "Script/ScriptClassParser.h"
+#include "Scene/Managers/SceneStackManager.h"
+
+#ifdef WIP
+#include "Scene/Sprites/ScriptableSpriteActor.h"
+#include "Widgets/Widget.h"
 #include "Widgets/Layouters/MXStackWidget.h"
-#include "Scene/Managers/MXSceneStackManager.h"
+#endif
 
 using namespace MX;
 
@@ -74,6 +77,7 @@ protected:
 	Scriptable::Value::pointer _do;
 };
 
+#ifdef WIP
 class OnRunEvent : public Event
 {
 public:
@@ -91,8 +95,6 @@ public:
 protected:
 	CommandSignal onRun;
 };
-
-
 
 class StackWidgetPopEvent : public Event
 {
@@ -129,7 +131,7 @@ class CreateSpriteAtSprite : public Event
 public:
     CreateSpriteAtSprite(const std::string& objectName) : Event(objectName)
     {
-        load_property_child(_actor, "Sprite");
+        load_property(_actor, "Sprite");
         load_property(_rotateToCurrent, "RotateToCurrent");
     }
 
@@ -154,7 +156,7 @@ protected:
     std::shared_ptr<MX::ScriptableSpriteActor> _actor;
     bool _rotateToCurrent = false;
 };
-
+#endif
 
 class SoundEffectEvent : public Event
 {
@@ -176,18 +178,17 @@ protected:
 
 void EventInit::Init()
 {
-    ScriptClassParser::AddCreator(L"Events", new DefaultClassCreatorContructor<EventHolder>());
-
 	ScriptClassParser::AddCreator(L"Event.Return", new DefaultClassCreatorContructor<ReturnEvent>());
 	ScriptClassParser::AddCreator(L"Event.If", new DefaultClassCreatorContructor<IfEvent>());
 	ScriptClassParser::AddCreator(L"Event.Do", new DefaultClassCreatorContructor<DoEvent>());
+
+#ifdef WIP
 	ScriptClassParser::AddCreator(L"Event.OnRun", new DefaultClassCreatorContructor<OnRunEvent>());
-
-
 
 	ScriptClassParser::AddCreator(L"Event.StackWidget.Pop", new DefaultClassCreatorContructor<StackWidgetPopEvent>());
 	ScriptClassParser::AddCreator(L"Event.Scene.StackManager.Pop", new DefaultClassCreatorContructor<SpriteSceneStackManagerPopEvent>());
-
     ScriptClassParser::AddCreator(L"Event.Sprite.CreateSprite", new DefaultClassCreatorContructor<CreateSpriteAtSprite>());
+#endif
+
     ScriptClassParser::AddCreator(L"Event.PlaySound", new DefaultClassCreatorContructor<SoundEffectEvent>());
 }

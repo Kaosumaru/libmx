@@ -1,9 +1,5 @@
-#ifndef MXCOMMANDSIGNAL
-#define MXCOMMANDSIGNAL
-#include "MXCommand.h"
-#include "Utils/MXBoostFast.h"
-
-namespace bs2 = boost::signals2;
+#pragma once
+#include "Command.h"
 
 namespace MX
 {
@@ -26,6 +22,3 @@ public:
 
 
 }
-
-
-#endif

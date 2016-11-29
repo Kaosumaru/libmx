@@ -7,12 +7,12 @@
 #include <sstream>
 #include <utility>
 #include "Utils/SignalizingVariable.h"
+#include "Graphic/Blender.h"
+#include "Graphic/OpenGL.h"
+#include "Script/Class/ScriptSoundClass.h"
+#include "Script/Class/ScriptImageClass.h"
+#include "Script/Class/ScriptAnimationClass.h"
 #if WIP
-#include "Script/Class/MXScriptSoundClass.h"
-#include "Script/Class/MXScriptImageClass.h"
-#include "Script/Class/MXScriptAnimationClass.h"
-
-#include "Graphic/MXBlender.h"
 #include "Graphic/Fonts/MXFont.h"
 #endif
 #include <array>
@@ -340,42 +340,6 @@ namespace MX
 		}
 	};
 
-#ifdef WIP
-	template<typename T>
-	struct PropertyLoader<RandomItem<T>>
-	{
-		using type = PropertyLoader_Standard;
-		static bool load(RandomItem<T>& out, const Scriptable::Value::pointer& obj)
-		{
-			auto &items = obj->array();
-			for (auto &item : items)
-			{
-				if (item->size() == 2)
-				{
-					auto item_object = (*item)[0].to_object<T>();
-					out.AddItem(item_object, (*item)[1]);
-					continue;
-				}
-
-				auto item_object = item->to_object<T>();
-				out.AddItem(item_object, 1.0f);
-			}
-			return true;
-		}
-	};
-
-	template<typename T>
-	struct PropertyLoader<RandomNonLockedItem<T>>
-	{
-		using type = PropertyLoader_Standard;
-		static bool load(RandomNonLockedItem<T>& out, const Scriptable::Value::pointer& obj)
-		{
-			return PropertyLoader<RandomItem<T>>::load(out, obj);
-		}
-	};
-
-
-	
 	template<typename T>
 	struct PropertyLoader<Time::XPerSecond<T>>
 	{
@@ -389,6 +353,43 @@ namespace MX
 		}
 	};
 
+#ifdef WIP
+	template<typename T>
+	struct PropertyLoader<RandomNonLockedItem<T>>
+	{
+		using type = PropertyLoader_Standard;
+		static bool load(RandomNonLockedItem<T>& out, const Scriptable::Value::pointer& obj)
+		{
+			return PropertyLoader<RandomItem<T>>::load(out, obj);
+		}
+	};
+
+
+
+
+	template<>
+	struct PropertyLoader<MX::Graphic::Font::pointer>
+	{
+		using type = PropertyLoader_Custom;
+		static bool load(MX::Graphic::Font::pointer& out, const MX::Scriptable::Value &value)
+		{
+			ScriptObjectString script(value.fullPath());
+
+
+			std::string name;
+			std::string face;
+			unsigned size = 10;
+			if (script.load_property(name, "Name"))
+			{
+				script.load_property(size, "Size");
+				script.load_property(face, "Face");
+				out = MX::Graphic::Font::Create(name, size, face);
+				return true;
+			}
+			return false;
+		}
+	};
+#endif
 	template<>
 	struct PropertyLoader<std::shared_ptr<Graphic::Image>>
 	{
@@ -418,15 +419,15 @@ namespace MX
 	};
 
 	template<>
-	struct PropertyLoader<std::shared_ptr<Graphic::Surface>>
+	struct PropertyLoader<std::shared_ptr<Graphic::TextureImage>>
 	{
 		using type = PropertyLoader_Standard;
-		static bool load(std::shared_ptr<Graphic::Surface>& out, const Scriptable::Value::pointer& obj)
+		static bool load(std::shared_ptr<Graphic::TextureImage>& out, const Scriptable::Value::pointer& obj)
 		{
 			auto loader = obj->to_object<ScriptImageClass>();
 			if (!loader || !loader->image())
 				return false;
-			auto surface = std::dynamic_pointer_cast<Graphic::Surface>(loader->image());
+			auto surface = std::dynamic_pointer_cast<Graphic::TextureImage>(loader->image());
 			if (!surface)
 				return false;
 			out = surface;
@@ -462,31 +463,6 @@ namespace MX
 		}
 	};
 
-
-	template<>
-	struct PropertyLoader<MX::Graphic::Font::pointer>
-	{
-		using type = PropertyLoader_Custom;
-		static bool load(MX::Graphic::Font::pointer& out, const MX::Scriptable::Value &value)
-		{
-			ScriptObjectString script(value.fullPath());
-
-
-			std::string name;
-			std::string face;
-			unsigned size = 10;
-			if (script.load_property(name, "Name"))
-			{
-				script.load_property(size, "Size");
-				script.load_property(face, "Face");
-				out = MX::Graphic::Font::Create(name, size, face);
-				return true;
-			}
-			return false;
-		}
-	};
-	
-	
 	template<>
 	struct PropertyLoader<MX::Graphic::Blender>
 	{
@@ -543,9 +519,27 @@ namespace MX
 			return false;
 		}
 	};
-#endif
 
-
+	template<>
+	struct PropertyLoader<MX::Rectangle>
+	{
+		using type = PropertyLoader_Standard;
+		static bool load(MX::Rectangle& out, const Scriptable::Value::pointer& obj)
+		{
+			if (obj->size() == 0)
+			{
+				float f = *obj;
+				out = MX::Rectangle(f,f,f,f);
+			}
+			else
+			{
+				auto &arr = obj->array();
+				out = MX::Rectangle(*(arr[0]), *(arr[1]), *(arr[2]), *(arr[3]));
+			}
+				
+			return true;
+		}
+	};
 
 	template<>
 	struct PropertyLoader<glm::vec2>

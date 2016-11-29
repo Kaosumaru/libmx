@@ -1,5 +1,4 @@
-#ifndef MXSCENE
-#define MXSCENE
+#pragma once
 #include "Actor.h"
 #include "Utils/StrongList.h"
 #include <list>
@@ -61,5 +60,3 @@ public:
 
 
 }
-
-#endif

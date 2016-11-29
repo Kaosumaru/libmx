@@ -1,12 +1,10 @@
-#include "MXSpriteCommands.h"
-#include "MXCommonCommands.h"
-#include "Utils/MXInclude.h"
-#include "Utils/MXTime.h"
-#include "Script/MXScriptClassParser.h"
-#include "Script/Class/MXScriptSoundClass.h"
-#include "Graphic/MXUtils.h"
-#include "Utils/MXRandom.h"
-#include "MXEvent.h"
+#include "SpriteCommands.h"
+#include "CommonCommands.h"
+#include "Utils/Time.h"
+#include "Script/ScriptClassParser.h"
+#include "Script/Class/ScriptSoundClass.h"
+#include "Utils/Random.h"
+#include "Event.h"
 
 
 namespace MX
@@ -97,7 +95,7 @@ class TeleportToCommand : public Command
 {
 public:
 	TeleportToCommand(float x, float y) : _vec(x, y) {}
-	TeleportToCommand(const Vector2 &vec) : _vec(vec) {}
+	TeleportToCommand(const glm::vec2 &vec) : _vec(vec) {}
 	TeleportToCommand(LScriptObject& script)
 	{
 		script.load_property(_vec, "Position");
@@ -111,10 +109,10 @@ public:
 
 	Command::pointer clone() { return MX::make_shared<TeleportToCommand>(_vec); }
 protected:
-	Vector2 _vec;
+	glm::vec2 _vec;
 };
 
-std::shared_ptr<Command> teleport_to(const Vector2 &vec)
+std::shared_ptr<Command> teleport_to(const glm::vec2 &vec)
 {
 	return make_shared<TeleportToCommand>(vec);
 }
@@ -250,7 +248,7 @@ public:
 		else 
 			p = percent();
 
-		ScriptableSpriteActor::current().geometry.color.SetCurrent(Color::lerp(current.geometry.color.original(), _color * current.geometry.color.original(), exponential(p*2.0f)));
+		ScriptableSpriteActor::current().geometry.color.SetCurrent(Color::lerp(current.geometry.color.original(), _color * current.geometry.color.original(), exp(p*2.0f)));
 		return ret;
 	}
 
@@ -268,7 +266,7 @@ class MoveToCommand : public WaitCommand
 {
 public:
 	MoveToCommand(float x, float y, float seconds) : _vec(x, y), WaitCommand(seconds) {}
-	MoveToCommand(const Vector2 &vec, float seconds) : _vec(vec), WaitCommand(seconds) {}
+	MoveToCommand(const glm::vec2 &vec, float seconds) : _vec(vec), WaitCommand(seconds) {}
 	MoveToCommand(LScriptObject& script) : WaitCommand(script)
 	{
 		script.load_property(_vec, "Position");
@@ -288,15 +286,15 @@ public:
 			_start = false;
 		}
 		bool ret = WaitCommand::operator()();
-		ScriptableSpriteActor::current().geometry.position = Vector2::lerp(_vecOrig, _vec, percent());
+		ScriptableSpriteActor::current().geometry.position = MX::lerp(_vecOrig, _vec, percent());
 		return ret;
 	}
 
 	Command::pointer clone() { return MX::make_shared<MoveToCommand>(_vec.x, _vec.y, (float)_seconds); }
 protected:
 	bool _start = true;
-	Vector2 _vecOrig;
-	Vector2 _vec;
+	glm::vec2 _vecOrig;
+	glm::vec2 _vec;
 };
 
 std::shared_ptr<Command> move_to(float x, float y, float seconds)
@@ -308,7 +306,7 @@ class WarpScaleCommand : public WaitCommand
 {
 public:
 	WarpScaleCommand(float x, float y, float seconds) : _vec(x, y), WaitCommand(seconds) {}
-	WarpScaleCommand(const Vector2 &vec, float seconds) : _vec(vec), WaitCommand(seconds) {}
+	WarpScaleCommand(const glm::vec2 &vec, float seconds) : _vec(vec), WaitCommand(seconds) {}
 	WarpScaleCommand(LScriptObject& script) : WaitCommand(script)
 	{
 		script.load_property(_vec, "Scale");
@@ -328,7 +326,7 @@ public:
 			_start = false;
 		}
 		bool ret = WaitCommand::operator()();
-		ScriptableSpriteActor::current().geometry.scale = Vector2::lerp(_vecOrig, _vec, percent());
+		ScriptableSpriteActor::current().geometry.scale = MX::lerp(_vecOrig, _vec, percent());
 		return ret;
 	}
 
@@ -336,8 +334,8 @@ public:
 
 protected:
 	bool _start = true;
-	Vector2 _vecOrig;
-	Vector2 _vec;
+	glm::vec2 _vecOrig;
+	glm::vec2 _vec;
 };
 
 
@@ -345,7 +343,7 @@ class WarpRelativeScaleCommand : public WaitCommand
 {
 public:
 	WarpRelativeScaleCommand(float x, float y, float seconds) : _vec(x, y), WaitCommand(seconds) {}
-	WarpRelativeScaleCommand(const Vector2 &vec, float seconds) : _vec(vec), WaitCommand(seconds) {}
+	WarpRelativeScaleCommand(const glm::vec2 &vec, float seconds) : _vec(vec), WaitCommand(seconds) {}
 	WarpRelativeScaleCommand(LScriptObject& script) : WaitCommand(script)
 	{
 		script.load_property(_vec, "Scale");
@@ -367,7 +365,7 @@ public:
 			_start = false;
 		}
 		bool ret = WaitCommand::operator()();
-		ScriptableSpriteActor::current().geometry.scale = Vector2::lerp(_vecOrig, _vec, percent());
+		ScriptableSpriteActor::current().geometry.scale = MX::lerp(_vecOrig, _vec, percent());
 		return ret;
 	}
 
@@ -375,8 +373,8 @@ public:
 
 protected:
 	bool _start = true;
-	Vector2 _vecOrig;
-	Vector2 _vec;
+	glm::vec2 _vecOrig;
+	glm::vec2 _vec;
 };
 
 std::shared_ptr<Command> warp_scale(float x, float y, float seconds)
@@ -388,7 +386,7 @@ std::shared_ptr<Command> warp_scale(float x, float y, float seconds)
 class MoveInDirectionCommand : public Command
 {
 public:
-    MoveInDirectionCommand(const Vector2 &vec, float speed)
+    MoveInDirectionCommand(const glm::vec2 &vec, float speed)
     {
         _vec = vec;
         _speed = speed;
@@ -408,7 +406,7 @@ public:
 	Command::pointer clone() { return MX::make_shared<MoveInDirectionCommand>(_vec, _speed.getOriginalValue()); }
 
 protected:
-    Vector2 _vec;
+    glm::vec2 _vec;
     Time::FloatPerSecond _speed;
 };
 
@@ -485,7 +483,7 @@ protected:
 
 
 
-std::shared_ptr<Command> move_in_direction(const Vector2 &vec, float speed)
+std::shared_ptr<Command> move_in_direction(const glm::vec2 &vec, float speed)
 {
 	return make_shared<MoveInDirectionCommand>(vec, speed);
 }
@@ -554,7 +552,7 @@ public:
 	{
 		if (GlueToCommand::operator()())
 		{
-			auto offset = _options.offset.vectorByRotation(ScriptableSpriteActor::current().geometry.angle);
+			auto offset = MX::vectorByRotation(_options.offset, ScriptableSpriteActor::current().geometry.angle);
 
 			auto ptr = _ptr.lock();
 			if (_options.scale_offset && ptr)
@@ -577,7 +575,7 @@ protected:
 std::shared_ptr<Command> glue_to(const SpriteActorPtr& ptr, const glue_to_options& options)
 {
 	std::shared_ptr<GlueToCommand> command;
-	if (options.offset.zero())
+	if ( options.offset == glm::vec2{} )
 		command = MX::make_shared<GlueToCommand>(ptr, options);
 	else
 		command = MX::make_shared<GlueToCommandWithOffset>(ptr, options);
@@ -594,7 +592,7 @@ public:
 	NailToCommand(const SpriteActorPtr& original, const SpriteActorPtr& ptr) : _ptr(ptr)
     {
 		auto deltaVector = original->geometry.position - ptr->geometry.position;
-		_hitAngle = deltaVector.angle() - ptr->geometry.angle;
+		_hitAngle = angle(deltaVector) - ptr->geometry.angle;
 		_objectAngle = original->geometry.angle - ptr->geometry.angle;
 		_length = deltaVector.length();
     }
@@ -609,7 +607,7 @@ public:
 		}
 
 		auto angle = ptr->geometry.angle;
-		auto deltaVector = Vector2::CreateVectorFromAngle(_hitAngle + angle) * _length;
+		auto deltaVector = CreateVectorFromAngle(_hitAngle + angle) * _length;
 
 		ScriptableSpriteActor::current().geometry.position = ptr->geometry.position + deltaVector;
 		ScriptableSpriteActor::current().geometry.angle = _objectAngle + angle;
@@ -638,26 +636,22 @@ std::shared_ptr<Command> nail_to(const SpriteActorPtr& original, const SpriteAct
 class ExecuteEventCommand : public Command
 {
 public:
-	ExecuteEventCommand(const ExecuteEventCommand& other) : _event(other._event), _events(other._events) {}
+	ExecuteEventCommand(const EventPtr& event) : _event(event) {}
 	ExecuteEventCommand(LScriptObject& script)
 	{
-        if (!script.load_property_children(_events, "Events"))
-		    script.load_property_child(_event, "Event");   
+		script.load_property_child(_event, "Event");
 	}
 
 	bool operator () ()
 	{
 		if (_event)
 			_event->Do();
-        for (auto &event : _events)
-            event->Do();
 		return false;
 	}
 
-	Command::pointer clone() { return MX::make_shared<ExecuteEventCommand>(*this); }
+	Command::pointer clone() { return MX::make_shared<ExecuteEventCommand>(_event); }
 protected:
 	EventPtr _event;
-    std::vector<EventPtr> _events;
 };
 
 

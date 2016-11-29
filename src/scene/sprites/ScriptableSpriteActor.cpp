@@ -1,15 +1,14 @@
-#include "MXScriptableSpriteActor.h"
+#include "ScriptableSpriteActor.h"
 #include <iostream>
-#include "Utils/MXTime.h"
-#include "Utils/MXMakeShared.h"
-#include "../Generators/MXActorFactory.h"
-#include "../Script/MXCommonCommands.h"
-#include "../Script/MXSpriteCommands.h"
-#include "Script/MXScriptClassParser.h"
-#include "Graphic/MXBlender.h"
-#include "Script/Class/MXScriptAnimationClass.h"
-#include "Script/Class/MXScriptImageClass.h"
-#include "Graphic/Renderers/MXTextureRenderer.h"
+#include "Utils/Time.h"
+#include "scene/Generators/ActorFactory.h"
+#include "scene/Script/CommonCommands.h"
+#include "scene/Script/SpriteCommands.h"
+#include "Script/ScriptClassParser.h"
+#include "Graphic/Blender.h"
+#include "Script/Class/ScriptAnimationClass.h"
+#include "Script/Class/ScriptImageClass.h"
+#include "Graphic/Renderer/TextureRenderer.h"
 
 using namespace MX;
 
@@ -59,7 +58,7 @@ SpriteActorPtr ScriptableSpriteActor::clone()
 
 std::shared_ptr<ScriptableSpriteActor> ScriptableSpriteActor::cloneSprite()
 {
-	return MX::make_shared<ScriptableSpriteActor>(*this);
+	return std::make_shared<ScriptableSpriteActor>(*this);
 }
 
 
@@ -116,34 +115,42 @@ void BaseGraphicTransformSceneScriptable::Draw(float x, float y)
 	if (geometry.color.current() != MX::Color::white())
 		color_guard.Reset(geometry.color.current());
 
+#ifdef WIP
 	ci::gl::pushModelView();
 	ci::gl::translate(x, y);
 	ci::gl::rotate(geometry.angle, 0.0f, 0.0f, 1.0f);
 	ci::gl::scale(geometry.scale.x, geometry.scale.y);
 	ci::gl::translate(-x, -y);
+#endif
 
 	auto guard = Context<ScriptableSpriteActor>::Lock(this); //TODO is that necessary?
 	BaseGraphicScene::Draw(x, y);
+#ifdef WIP
 	Graphic::TextureRenderer::current().Flush();
 	ci::gl::popModelView();
-	
+#endif	
 }
 
 void BaseGraphicTransformSceneScriptable::DrawCustom(float x, float y)
 {
 	if (_actors.empty())
 		return;
+#ifdef WIP
 	Graphic::TextureRenderer::current().Flush();
 	ci::gl::pushModelView();
 	ci::gl::translate(x, y);
 	ci::gl::rotate(geometry.angle, 0.0f, 0.0f, 1.0f);
 	ci::gl::scale(geometry.scale.x, geometry.scale.y);
 	ci::gl::translate(-x, -y);
+#endif
 
 	auto guard = Context<ScriptableSpriteActor>::Lock(this); //TODO is that necessary?
 	BaseGraphicScene::DrawCustom(x, y);
+
+#ifdef WIP
 	Graphic::TextureRenderer::current().Flush();
 	ci::gl::popModelView();
+#endif
 }
 
 

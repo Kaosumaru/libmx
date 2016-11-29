@@ -53,14 +53,7 @@ public:
 		OpenMainWindow(1280, 800, false);
 
 		{
-			auto path = MX::Paths::get().pathToImage("cthulhu.png");
-			auto texture = MX::gl::Texture::Create(path);
-			if (texture)
-			{
-				std::cout << "Opened image " << texture->width() << "x" << texture->height() << std::endl;
-			}
-
-			_image = std::make_shared<MX::Graphic::TextureImage>(texture);
+			_image = MX::Resources::get().loadImage("cthulhu.png");
 		}
 
 		{

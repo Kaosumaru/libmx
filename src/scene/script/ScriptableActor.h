@@ -1,11 +1,7 @@
-#ifndef MXSCRIPTABLEACTOR
-#define MXSCRIPTABLEACTOR
-#include "Scene/MXActor.h"
-#include "MXCommand.h"
-#include "MXCommandSignal.h"
-#include "Utils/MXBoostFast.h"
-#include <boost/signals2/signal.hpp>
-namespace bs2 = boost::signals2;
+#pragma once
+#include "Scene/Actor.h"
+#include "Command.h"
+#include "CommandSignal.h"
 
 namespace MX
 {
@@ -54,6 +50,3 @@ protected:
 
 
 }
-
-
-#endif

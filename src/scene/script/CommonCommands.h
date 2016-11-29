@@ -1,14 +1,10 @@
-#ifndef MXCOMMONCOMMANDS
-#define MXCOMMONCOMMANDS
-#include "MXCommand.h"
-#include "Utils/MXUtils.h"
+#pragma once
+#include "Command.h"
+#include "Utils/Utils.h"
 #include <memory>
-#include <boost/signals2/signal.hpp>
-#include "Utils/MXTime.h"
-#include "Utils/Graphic/MXEasings.h"
+#include "Utils/Time.h"
+#include "Utils/Graphic/Easings.h"
 
-namespace bs2 = boost::signals2;
-#define INCURSION_DEPTH 9
 
 namespace MX
 {
@@ -26,7 +22,7 @@ namespace MX
 		bool operator () ();
 
 		float percent();
-		Command::pointer clone() { return MX::make_shared<WaitCommand>(*this); }
+		Command::pointer clone() { return std::make_shared<WaitCommand>(*this); }
 	protected:
 		virtual void OnWait() {}
 
@@ -77,6 +73,3 @@ Command::pointer q(std::list<Command::pointer> &&l);
 	
 
 }
-
-
-#endif

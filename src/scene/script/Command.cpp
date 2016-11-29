@@ -1,5 +1,4 @@
-#include "MXCommand.h"
-#include "Utils/MXInclude.h"
+#include "Command.h"
 
 namespace MX
 {
@@ -73,7 +72,7 @@ ScriptHolder& ScriptHolder::operator += (const ScriptHolder &value)
 void ScriptSignal::operator () ()
 {
     ScriptHolder::operator()();
-    default_signal<void (void)>::operator()();
+    Signal<void (void)>::operator()();
 }
 
 ScriptSignal& ScriptSignal::operator = (const ScriptSignal &value) { ScriptHolder::operator=(value); return *this; }

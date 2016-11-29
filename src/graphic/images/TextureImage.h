@@ -66,6 +66,7 @@ public:
 	}
 
 	static pointer Create(unsigned width, unsigned height, unsigned int dataFormat, void *data);
+	static pointer Create(const std::string& path);
 
 protected:
 	glm::vec2 dimensionToUV(const glm::vec2& v);

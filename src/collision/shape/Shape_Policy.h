@@ -1,5 +1,4 @@
-#ifndef MXSHAPEPOLICY
-#define MXSHAPEPOLICY
+#pragma once
 #include "Utils/Utils.h"
 #include "Utils/Vector2.h"
 #include "Utils/shapes/Rectangle.h"
@@ -213,4 +212,3 @@ namespace Collision
 	*/
 }
 };
-#endif

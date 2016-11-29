@@ -1,14 +1,9 @@
-#ifndef MXEVENT
-#define MXEVENT
-
+#pragma once
 #include <memory>
-#include "Script/MXScriptObject.h"
-#include "Script/Scriptable/MXScriptableValue.h"
-#include "Script/MXPropertyLoaders.h"
-#include "Utils/MXBoostFast.h"
-#include "MXCommand.h"
-
-namespace bs2 = boost::signals2;
+#include "Script/ScriptObject.h"
+#include "Script/Scriptable/ScriptableValue.h"
+#include "Script/PropertyLoaders.h"
+#include "Command.h"
 
 namespace MX
 {
@@ -18,7 +13,7 @@ namespace MX
 		int returnValue = 0;
 	};
 
-	class Event : public Command, public bs2::trackable
+	class Event : public Command
 	{
 	public:
 		Event(){};
@@ -44,14 +39,10 @@ namespace MX
 	typedef std::shared_ptr<Event> EventPtr;
 
 
-	class EventHolder : public Event
+	class EventHolder
 	{
 	public:
 		EventHolder(){};
-        EventHolder(const std::string& objectName) : Event(objectName) 
-        {
-            load_property_children(_events, "Events");
-        };
 		virtual ~EventHolder(){}
 
 		void SetEvents(const std::vector<EventPtr>& events)
@@ -140,6 +131,3 @@ namespace MX
 
 
 }
-
-
-#endif

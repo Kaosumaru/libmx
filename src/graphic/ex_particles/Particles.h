@@ -1,11 +1,10 @@
-#ifndef MXPARTICLES
-#define MXPARTICLES
+#pragma once
 
-#include "Scene/Sprites/MXSpriteScene.h"
-#include "Scene/Sprites/MXScriptableSpriteActor.h"
-#include "Graphic/Images/MXImage.h"
-#include "Script/MXScriptObject.h"
-#include "Utils/MXTime.h"
+#include "Scene/Sprites/SpriteScene.h"
+#include "Scene/Sprites/ScriptableSpriteActor.h"
+#include "Graphic/Images/Image.h"
+#include "Script/ScriptObject.h"
+#include "Utils/Time.h"
 
 
 
@@ -83,5 +82,3 @@ public:
 
 }
 }
-
-#endif

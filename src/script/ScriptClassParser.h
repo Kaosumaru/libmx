@@ -12,7 +12,7 @@ namespace MX{
 	{
 		static std::shared_ptr<T> Create(const std::wstring& className, const std::string& instancePath)
 		{
-			return MX::make_shared<T>(instancePath);
+			return std::make_shared<T>(instancePath);
 		};
 
 		static T* CreateRaw(const std::wstring& className, const std::string& instancePath)
@@ -27,7 +27,7 @@ namespace MX{
 		static std::shared_ptr<T> Create(const std::wstring& className, const std::string& instancePath)
 		{
 			ScriptObjectString script(instancePath);
-			return MX::make_shared<T>(script);
+			return std::make_shared<T>(script);
 		};
 
 		static T* CreateRaw(const std::wstring& className, const std::string& instancePath)
@@ -42,7 +42,7 @@ namespace MX{
 	{
 		static std::shared_ptr<T> Create(const std::wstring& className, const std::string& instancePath)
 		{
-			return MX::make_shared<T>();
+			return std::make_shared<T>();
 		};
 
 		static T* CreateRaw(const std::wstring& className, const std::string& instancePath)

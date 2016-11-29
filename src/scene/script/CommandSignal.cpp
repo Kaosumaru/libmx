@@ -1,5 +1,4 @@
-#include "MXCommandSignal.h"
-#include "Utils/MXInclude.h"
+#include "CommandSignal.h"
 
 namespace MX
 {

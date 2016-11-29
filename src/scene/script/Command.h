@@ -1,14 +1,11 @@
-#ifndef MXCOMMAND
-#define MXCOMMAND
-#include "Utils/MXUtils.h"
-#include "Utils/MXMakeShared.h"
+#pragma once
+#include "Utils/Utils.h"
 #include <memory>
 #include <map>
-#include "Utils/MXBoostFast.h"
-#include "Script/MXScript.h"
-#include "Script/MXScriptObject.h"
+#include "Utils/Signal.h"
+#include "Script/Script.h"
+#include "Script/ScriptObject.h"
 
-namespace bs2 = boost::signals2;
 
 namespace MX
 {
@@ -29,7 +26,7 @@ public:
     //false - delete this and pass to next
 	virtual bool operator()() { return false; }
 
-	virtual Command::pointer clone() { return MX::make_shared<Command>(); }
+	virtual Command::pointer clone() { return std::make_shared<Command>(); }
 };
 
 
@@ -52,7 +49,7 @@ protected:
 	std::multimap<int, Command::pointer> commands;
 };
     
-class ScriptSignal : public ScriptHolder, public default_signal<void (void)>
+class ScriptSignal : public ScriptHolder, public Signal<void (void)>
 {
 public:
     ScriptSignal(){};
@@ -70,5 +67,3 @@ public:
 
 }
 
-
-#endif

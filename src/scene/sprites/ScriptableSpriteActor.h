@@ -4,7 +4,7 @@
 #include "Scene/Sprites/SpriteScene.h"
 #include "Scene/Script/Command.h"
 #include "Scene/Script/CommandSignal.h"
-#include "Script/MXScriptObject.h"
+#include "Script/ScriptObject.h"
 #include "Scene/script/ScriptableActor.h"
 
 

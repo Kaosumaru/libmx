@@ -1,5 +1,4 @@
-#ifndef MXSIGNALIZINGSHAPE
-#define MXSIGNALIZINGSHAPE
+#pragma once
 #include "Shape.h"
 #include <map>
 #include "utils/Signal.h"
@@ -134,4 +133,3 @@ using SignalizingOrientedRectangleShapeDelayed = OrientedRectangleShape_Policy<S
 
 }
 };
-#endif

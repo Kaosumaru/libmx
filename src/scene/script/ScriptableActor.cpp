@@ -1,6 +1,6 @@
-#include "MXScriptableActor.h"
+#include "ScriptableActor.h"
 #include <iostream>
-#include "Utils/MXTime.h"
+#include "Utils/Time.h"
 using namespace MX;
 
 

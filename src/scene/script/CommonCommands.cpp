@@ -1,10 +1,7 @@
-#include "MXCommonCommands.h"
-
-#include "Utils/MXInclude.h"
+#include "CommonCommands.h"
 #include <algorithm>
-
-#include "Utils/MXTime.h"
-#include "Script/MXScriptClassParser.h"
+#include "Utils/Time.h"
+#include "Script/ScriptClassParser.h"
 
 //TODO 
 #undef _t
