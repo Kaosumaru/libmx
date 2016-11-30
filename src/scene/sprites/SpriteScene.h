@@ -247,32 +247,4 @@ public:
 	void Run() override;
 };
 
-
-#if WIP
-class BitmapDisplaySceneTimer : public DisplaySceneTimer
-{
-public:
-	BitmapDisplaySceneTimer(const glm::vec2& size);
-	void Draw(float x, float y);
-	unsigned Width();
-	unsigned Height();
-protected:
-	Graphic::Surface::pointer _bitmap;
-};
-
-class BitmapScene : public virtual BaseGraphicScene
-{
-public:
-	BitmapScene(const glm::vec2& size, const Color &backgroundColor = 0x00000000, bool alpha = false);
-	void Draw(float x, float y);
-	unsigned Width();
-	unsigned Height();
-
-	const Graphic::Surface::pointer& bitmap() { return _bitmap; }
-protected:
-	Graphic::Surface::pointer _bitmap;
-	Color _backgroundColor;
-};
-#endif
-
 }

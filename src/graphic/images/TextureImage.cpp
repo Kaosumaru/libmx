@@ -78,6 +78,15 @@ TextureImage::pointer TextureImage::Create(unsigned width, unsigned height, unsi
 	return std::make_shared<TextureImage>(txt);
 }
 
+TextureImage::pointer TextureImage::Create(const std::string& path)
+{
+	auto texture = MX::gl::Texture::Create(path);
+	if (!texture)
+		return nullptr;
+
+	return std::make_shared<MX::Graphic::TextureImage>(texture);
+}
+
 void TextureImage::Clear(const Color &color)
 {
 	TargetContext c(*this);

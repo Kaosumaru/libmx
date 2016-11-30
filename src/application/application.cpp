@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "Window.h"
 #include "utils/Random.h"
+#include "script/Script.h"
 #include <SDL.h>
 #include <iostream>
 #include "graphic/renderer/TextureRenderer.h"
@@ -19,6 +20,9 @@ App::App()
 	ScopeSingleton<FunctorsQueue, RenderQueue>::SetCurrent(_renderQueue);
 
 	Random::Init();
+
+	_script.reset(new Script);
+	Script::SetCurrent(*_script);
 
 	running = true;
 }

@@ -1,5 +1,5 @@
-#include "MXParticleEmitter.h"
-#include "Script/MXScriptClassParser.h"
+#include "ParticleEmitter.h"
+#include "Script/ScriptClassParser.h"
 
 
 using namespace MX;

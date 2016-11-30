@@ -153,12 +153,12 @@ namespace Time
 
 		operator X () const 
 		{
-			return (X)(_value * Time::Timer::current().elapsed_seconds());
+			return getPerSecond();
 		}
 
 		X getOriginalValue() const  { return _value; }
 
-		X getPerSecond()
+		X getPerSecond() const
 		{
 			return (X)(_value * Time::Timer::current().elapsed_seconds());
 		}

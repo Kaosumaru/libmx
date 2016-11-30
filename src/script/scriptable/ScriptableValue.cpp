@@ -1,4 +1,5 @@
 #include "ScriptableValue.h"
+#include "Script/ScriptClassParser.h"
 #include <memory>
 #include <regex>
 #include <iterator>
@@ -46,10 +47,8 @@ public:
 protected:
 	void Parse()
 	{
-#ifdef WIPSCRIPT
 		_value = Script::parseString(_parentValue->path(), _value);
 		_parsed = true;
-#endif
 	}
 
 	std::wstring _value;
@@ -234,10 +233,8 @@ public:
 
 	std::shared_ptr<ScriptObject> object() override { return _object; }
 
-#ifdef WIPSCRIPT
 	std::shared_ptr<ScriptObject> createObject() override { return _object ? _object : ScriptClassParser::CreateObjectFromTemplate(_fullPath); }
 	ScriptObject* createRawObject() override { return ScriptClassParser::CreateRawObjectFromTemplate(_fullPath); }
-#endif
 
 	std::string valueString() override
 	{

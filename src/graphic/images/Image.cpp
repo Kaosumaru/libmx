@@ -65,7 +65,7 @@ void TargetContext::SetTarget(TargetSurface& target)
 	if (_current_target)
 	{
 		_current_target->bindAsTarget();
-#ifdef WIP
+#ifdef WIPTEST
 		Blender::current().Apply(); //TODO why is this needed? Does cinder changes blend modes in pushViewPort?
 #endif
 	}

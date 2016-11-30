@@ -1,9 +1,8 @@
 #pragma once
 #include "collision/shape/Shape.h"
 #include "devices/Mouse.h"
-#if WIP
-#include "Widgets/Systems/MXDragSystem.h"
-#endif
+#include "devices/Touches.h"
+#include "Widgets/Systems/DragSystem.h"
 
 #include <set>
 
@@ -14,14 +13,13 @@ namespace Collision
 
 class LayeredArea;
 
-#if WIP
 class TouchShape : public PointShape
 {
 public:
 	struct TypeBegin {};
 	struct TypeEnd {};
 
-	TouchShape(const Touch::pointer &touch, unsigned id = ClassID<TouchShape>::id());
+	TouchShape(const Touch::pointer &touch, ClassID<>::type id = ClassID<TouchShape>::id());
     ~TouchShape();
     const Touch::weak_pointer touch;
 };
@@ -34,11 +32,10 @@ public:
 	struct TypeBegin {};
 	struct TypeEnd {};
 
-	MouseTouchShape(const std::shared_ptr<MouseTouch> &touch, unsigned id = ClassID<MouseTouchShape>::id());
+	MouseTouchShape(const std::shared_ptr<MouseTouch> &touch, ClassID<>::type id = ClassID<MouseTouchShape>::id());
 
 	const std::shared_ptr<MouseTouch> mouse_touch;
 };
-#endif
 
 class MouseShape : public PointShape
 {
@@ -64,16 +61,14 @@ class EventsToCollisions
 {
 public:
 	friend class AreaLink;
-	EventsToCollisions(const std::shared_ptr<Collision::LayeredArea>  &area, const Mouse::pointer& mouse);
+	EventsToCollisions(const std::shared_ptr<Collision::LayeredArea>  &area, const Mouse::pointer& mouse, const Touches::pointer& touches, const MouseTouches::pointer& mouseTouches, const std::shared_ptr<Widgets::DragSystem> &dragSystem);
 	virtual ~EventsToCollisions();
 
 
 protected:
-#if WIP
 	void OnTouchBegin(const Touch::pointer & touch, bool mouseTouch);
 	void OnTouchMove(const Touch::pointer & touch, const std::shared_ptr<TouchShape> &shape, bool mouseTouch);
 	void OnTouchEnd(const Touch::pointer & touch, const std::shared_ptr<TouchShape> &shape, bool mouseTouch);
-#endif
 
 	void OnMouseEnter(const glm::vec2& position);
 	void OnMouseMove(const glm::vec2& position);

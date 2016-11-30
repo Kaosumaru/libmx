@@ -15,6 +15,19 @@ class Keyboard;
 class Touches;
 class MouseTouches;
 
+
+namespace Collision
+{
+	class LayeredArea;
+	class EventsToCollisions;
+};
+
+namespace Widgets
+{
+	class DragSystem;
+	class TooltipSystem;
+};
+
 class Window : public shared_ptr_init<Window>, public ScopeSingleton<Window>
 {
 public:
@@ -32,6 +45,10 @@ public:
 
 	const auto& mouse() { return _mouse; }
 	const auto& keyboard() { return _keyboard; }
+
+	const std::shared_ptr<Collision::LayeredArea> &area() { return _windowArea; }
+	auto& dragSystem() { return *_dragSystem; }
+	auto& tooltipSystem() { return *_tooltipSystem; }
 protected:
 	void OnRender();
 	void AfterRender();
@@ -49,5 +66,13 @@ protected:
 
 	std::shared_ptr<Mouse> _mouse;
 	std::shared_ptr<Keyboard> _keyboard;
+	std::shared_ptr<Touches> _touches;
+	std::shared_ptr<MouseTouches> _mouseTouches;
+
+	std::shared_ptr<Collision::LayeredArea> _windowArea;
+	std::unique_ptr<Collision::EventsToCollisions> _eventsToCollisions;
+
+	std::shared_ptr<Widgets::DragSystem>    _dragSystem;
+	std::shared_ptr<Widgets::TooltipSystem>    _tooltipSystem;
 };
 }

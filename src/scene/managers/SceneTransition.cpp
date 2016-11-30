@@ -1,4 +1,5 @@
 #include "SceneTransition.h"
+#include "Graphic/Blender.h"
 #include <iostream>
 
 using namespace std;
@@ -13,9 +14,7 @@ namespace MX
 
 	void BaseBitmapTransition::SetScenes(const std::shared_ptr<SpriteScene> &old_scene, const std::shared_ptr<SpriteScene> &new_scene)
 	{
-#if WIPBLENDER
 		auto guard = Graphic::Blender::defaultNormal().Use();
-#endif
 		if (old_scene)
 		{
 			_scene1 = TextureImage::Create((unsigned)old_scene->Width(), (unsigned)old_scene->Height());

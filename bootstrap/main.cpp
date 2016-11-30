@@ -15,6 +15,8 @@
 
 #include "graphic/renderer/InstancedRenderer.h"
 #include "graphic/images/TextureImage.h"
+#include "utils/ListFiles.h"
+
 
 class Bootstrap : public MX::App
 {
@@ -51,14 +53,15 @@ public:
 		OpenMainWindow(1280, 800, false);
 
 		{
-			auto path = MX::Paths::get().pathToImage("cthulhu.png");
-			auto texture = MX::gl::Texture::Create(path);
-			if (texture)
-			{
-				std::cout << "Opened image " << texture->width() << "x" << texture->height() << std::endl;
-			}
+			_image = MX::Resources::get().loadImage("cthulhu.png");
+		}
 
-			_image = std::make_shared<MX::Graphic::TextureImage>(texture);
+		{
+			auto path = MX::Paths::get().pathToImage("");
+			MX::ListFilesRecursively( path, []( auto &d ) 
+			{
+				std::cout << d.path << " " << d.extension() << std::endl;
+			} );
 		}
 
 		MX::Window::current().keyboard()->on_specific_key_down[SDL_SCANCODE_ESCAPE].connect([&]() { Quit(); });

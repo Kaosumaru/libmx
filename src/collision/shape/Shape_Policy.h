@@ -1,5 +1,4 @@
-#ifndef MXSHAPEPOLICY
-#define MXSHAPEPOLICY
+#pragma once
 #include "Utils/Utils.h"
 #include "Utils/Vector2.h"
 #include "Utils/shapes/Rectangle.h"
@@ -166,7 +165,7 @@ namespace Collision
 		OrientedRectangle _orientedRectangle;
 	};
 
-#if WIP
+#ifdef WIPPOLYGON
 	struct Polygon_Policy_Tag;
 	template<typename Parent>
 	class PolygonShape_Policy : public Parent
@@ -213,4 +212,3 @@ namespace Collision
 	*/
 }
 };
-#endif

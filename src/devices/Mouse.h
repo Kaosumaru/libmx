@@ -23,8 +23,8 @@ namespace MX
 		bool button[buttons] = {};
 
 
-		//Signal<void(const glm::vec2& position)> on_mouse_enter; //warning, NYI
-		//Signal<void(const glm::vec2& position)> on_mouse_leave; //warning, NYI
+		Signal<void(const glm::vec2& position)> on_mouse_enter; //warning, NYI
+		Signal<void(const glm::vec2& position)> on_mouse_leave; //warning, NYI
 
 		Signal<void(const glm::vec2& position, const glm::ivec2& delta)> on_mouse_move;
 

@@ -93,7 +93,7 @@ void InstancedRenderer::Draw(const gl::Texture& tex, const Rectangle& srcArea, c
 	instance.angle = angle;
 
 	instance.uv = { srcArea.x1, srcArea.y1, srcArea.x2, srcArea.y2 };
-#ifdef WIP
+#ifdef WIPTHINK
 	if (Image::Settings::flipX)
 		std::swap(instance.uv[0], instance.uv[2]);
 	if (Image::Settings::flipY)

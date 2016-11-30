@@ -1,6 +1,6 @@
 #include <memory>
 #include "Texture.h"
-#include "lodepng.h"
+#include "deps/lodepng.h"
 
 using namespace MX;
 using namespace MX::gl;

@@ -1,5 +1,4 @@
-#ifndef MXSIGNALIZINGSHAPE
-#define MXSIGNALIZINGSHAPE
+#pragma once
 #include "Shape.h"
 #include <map>
 #include "utils/Signal.h"
@@ -121,17 +120,16 @@ using SignalizingPointShape = PointShape_Policy<SignalizingShapeWrapper>;
 using SignalizingRectangleShape = RectangleShape_Policy<SignalizingShapeWrapper>;
 using SignalizingCircleShape = CircleShape_Policy<SignalizingShapeWrapper>;
 using SignalizingOrientedRectangleShape = OrientedRectangleShape_Policy<SignalizingShapeWrapper>;
-#ifdef WIP
+#ifdef WIPPOLYGON
 using SignalizingPolygonShape = PolygonShape_Policy<SignalizingShapeWrapper>;
 #endif
 
 using SignalizingPointShapeDelayed = PointShape_Policy<SignalizingShapeDelayed>;
 using SignalizingRectangleShapeDelayed = RectangleShape_Policy<SignalizingShapeDelayed>;
 using SignalizingCircleShapeDelayed = CircleShape_Policy<SignalizingShapeDelayed>;
-#ifdef WIP
+#ifdef WIPPOLYGON
 using SignalizingOrientedRectangleShapeDelayed = OrientedRectangleShape_Policy<SignalizingShapeDelayed>;
 #endif
 
 }
 };
-#endif

@@ -52,17 +52,4 @@ public:
 	void Run();
 };
 
-#if WIP
-class ScrollableBitmapScene : public BitmapScene, public ScrollableSpriteScene
-{
-public:
-	ScrollableBitmapScene(const Vector2 &viewDimensions, const Vector2 &sceneDimensions);
-	void Draw(float x = 0.0f, float y = 0.0f);
-	void Run();
-
-	unsigned Width();
-	unsigned Height();
-};
-#endif
-
 }

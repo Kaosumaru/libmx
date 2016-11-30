@@ -1,5 +1,4 @@
-#ifndef MXSHAPE
-#define MXSHAPE
+#pragma once
 #include "Utils/Signal.h"
 #include "Utils/Vector2.h"
 #include "Shape_Policy.h"
@@ -81,4 +80,3 @@ using OrientedRectangleShape = OrientedRectangleShape_Policy<Shape>;
 
 }
 };
-#endif

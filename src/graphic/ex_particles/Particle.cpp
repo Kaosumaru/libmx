@@ -1,5 +1,5 @@
-#include "MXParticle.h"
-#include "Script/MXScriptClassParser.h"
+#include "Particle.h"
+#include "Script/ScriptClassParser.h"
 #include "Utils/Pools/PooledObject.h"
 
 

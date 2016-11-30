@@ -151,6 +151,16 @@ namespace Scriptable
 		operator const float () const
 		{
 			return _member->valueFloat();
+		}
+
+		operator const int () const
+		{
+			return (int)_member->valueFloat();
+		} 
+
+		operator const unsigned int () const
+		{
+			return (unsigned int)_member->valueFloat();
 		}  
 
 

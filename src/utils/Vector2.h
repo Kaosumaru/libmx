@@ -1,6 +1,7 @@
 #pragma once
 #include "glm/vec2.hpp"
 #include "glm/geometric.hpp"
+#include "utils/Time.h"
 
 #include<cmath>
 #include<algorithm>
@@ -10,6 +11,10 @@
 
 namespace MX
 {
+	inline glm::vec2 operator *( const glm::vec2& v, const Time::FloatPerSecond& t )
+	{
+		return v * t.getPerSecond();
+	}
 
 	inline bool zero(const glm::vec2& v)
 	{
