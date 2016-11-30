@@ -84,6 +84,14 @@ protected:
 			OnGenericMouse(event.button.x, event.button.y);
 			OnMouseUp(event);
 		}
+		else if (event.type == SDL_WINDOWEVENT_ENTER)
+		{
+			on_mouse_enter(_position);
+		}
+		else if (event.type == SDL_WINDOWEVENT_LEAVE)
+		{
+			on_mouse_leave(_position);
+		}
 	}
 };
 

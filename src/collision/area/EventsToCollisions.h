@@ -19,7 +19,7 @@ public:
 	struct TypeBegin {};
 	struct TypeEnd {};
 
-	TouchShape(const Touch::pointer &touch, unsigned id = ClassID<TouchShape>::id());
+	TouchShape(const Touch::pointer &touch, ClassID<>::type id = ClassID<TouchShape>::id());
     ~TouchShape();
     const Touch::weak_pointer touch;
 };
@@ -32,7 +32,7 @@ public:
 	struct TypeBegin {};
 	struct TypeEnd {};
 
-	MouseTouchShape(const std::shared_ptr<MouseTouch> &touch, unsigned id = ClassID<MouseTouchShape>::id());
+	MouseTouchShape(const std::shared_ptr<MouseTouch> &touch, ClassID<>::type id = ClassID<MouseTouchShape>::id());
 
 	const std::shared_ptr<MouseTouch> mouse_touch;
 };

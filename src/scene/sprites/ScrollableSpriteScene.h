@@ -52,17 +52,4 @@ public:
 	void Run();
 };
 
-#ifdef WIP
-class ScrollableBitmapScene : public BitmapScene, public ScrollableSpriteScene
-{
-public:
-	ScrollableBitmapScene(const glm::vec2 &viewDimensions, const glm::vec2 &sceneDimensions);
-	void Draw(float x = 0.0f, float y = 0.0f);
-	void Run();
-
-	unsigned Width();
-	unsigned Height();
-};
-#endif
-
 }

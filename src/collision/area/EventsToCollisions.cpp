@@ -4,7 +4,7 @@
 using namespace MX;
 using namespace Collision;
 
-TouchShape::TouchShape(const Touch::pointer &touch, unsigned id) : touch(touch)
+TouchShape::TouchShape(const Touch::pointer &touch, ClassID<>::type id) : touch(touch)
 {
 	SetClassID(id);
 	_trackCollisions = true;
@@ -16,7 +16,7 @@ TouchShape::~TouchShape()
 }
 
 
-MouseTouchShape::MouseTouchShape(const std::shared_ptr<MouseTouch> &touch, unsigned id) : TouchShape(touch, id), mouse_touch(touch)
+MouseTouchShape::MouseTouchShape(const std::shared_ptr<MouseTouch> &touch, ClassID<>::type id) : TouchShape(touch, id), mouse_touch(touch)
 {
 
 }
@@ -42,12 +42,12 @@ DropShape::DropShape()
 
 EventsToCollisions::EventsToCollisions(const std::shared_ptr<Collision::LayeredArea> &area, const Mouse::pointer& mouse, const Touches::pointer& touches, const MouseTouches::pointer& mouseTouches, const std::shared_ptr<Widgets::DragSystem> &dragSystem)
 {
-	_area = area;
-#ifdef WIP
-	mouse->on_mouse_enter.connect(boost::bind(&EventsToCollisions::OnMouseEnter, this, _1));
-	mouse->on_mouse_leave.connect(boost::bind(&EventsToCollisions::OnMouseLeave, this, _1));
-#endif
 	using namespace std::placeholders;
+
+	_area = area;
+
+	mouse->on_mouse_enter.connect(std::bind(&EventsToCollisions::OnMouseEnter, this, _1));
+	mouse->on_mouse_leave.connect(std::bind(&EventsToCollisions::OnMouseLeave, this, _1));
 
 	if (mouse)
 	{
@@ -96,10 +96,11 @@ void EventsToCollisions::OnTouchBegin(const Touch::pointer & touch, bool mouseTo
 	}
 
 	std::shared_ptr<TouchShape> touchShape = !mouseTouch ? std::make_shared<TouchShape>(touch) : std::make_shared<MouseTouchShape>(std::static_pointer_cast<MouseTouch>(touch));
-#ifdef WIP
-	touch->on_move.connect(std::bind(&EventsToCollisions::OnTouchMove, this, _1, touchShape, mouseTouch), boost::signals2::at_front);
-	touch->on_end.connect(std::bind(&EventsToCollisions::OnTouchEnd, this, _1, touchShape, mouseTouch), boost::signals2::at_front);
-#endif
+
+	using namespace std::placeholders;
+	touch->on_move.connect_front(std::bind(&EventsToCollisions::OnTouchMove, this, _1, touchShape, mouseTouch));
+	touch->on_end.connect_front(std::bind(&EventsToCollisions::OnTouchEnd, this, _1, touchShape, mouseTouch));
+
     touchShape->SetPoint(touch->point());
 	_area->AddShape(ClassID<Collision::EventsToCollisions>::id(), touchShape);
 }

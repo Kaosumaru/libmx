@@ -128,6 +128,12 @@ namespace MX
 
 	public:
 
+		Connection::pointer connect_front(const Function& func)
+		{
+			_functors.emplace_front(std::make_shared<FunctorEntry>(func));
+			return _functors.front();
+		}
+
 		Connection::pointer connect(const Function& func)
 		{
 			_functors.emplace_back(std::make_shared<FunctorEntry>(func));
