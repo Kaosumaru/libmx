@@ -81,21 +81,22 @@ ButtonWidget &Button::buttonWidget()
 void Button::OnShapeChanged()
 {
 	_buttonWidget = static_cast<ButtonWidget*>(_widget);
+	using namespace std::placeholders;
 
-    widget().shape()->with<Collision::TouchShape::TypeBegin>()->onCollided.connect(boost::bind(&Button::OnTouch, this, _1));
-	widget().shape()->with<Collision::TouchShape::TypeEnd>()->onCollided.connect(boost::bind(&Button::OnTouchEndCollision, this, _1));
+    widget().shape()->with<Collision::TouchShape::TypeBegin>()->onCollided.connect(std::bind(&Button::OnTouch, this, _1));
+	widget().shape()->with<Collision::TouchShape::TypeEnd>()->onCollided.connect(std::bind(&Button::OnTouchEndCollision, this, _1));
 
 
-	widget().shape()->with<Collision::MouseTouchShape::TypeBegin>()->onCollided.connect(boost::bind(&Button::OnTouch, this, _1));
-	widget().shape()->with<Collision::MouseTouchShape::TypeEnd>()->onCollided.connect(boost::bind(&Button::OnTouchEndCollision, this, _1));
+	widget().shape()->with<Collision::MouseTouchShape::TypeBegin>()->onCollided.connect(std::bind(&Button::OnTouch, this, _1));
+	widget().shape()->with<Collision::MouseTouchShape::TypeEnd>()->onCollided.connect(std::bind(&Button::OnTouchEndCollision, this, _1));
 
-	widget().shape()->with<Collision::MouseShape>()->onFirstCollided.connect(boost::bind(&Button::OnMouseFirstCollision, this, _1, _2));
+	widget().shape()->with<Collision::MouseShape>()->onFirstCollided.connect(std::bind(&Button::OnMouseFirstCollision, this, _1, _2));
 }
 
 void Button::OnMouseFirstCollision(const MX::Collision::Shape::pointer& shape, const MX::Collision::ShapeCollision::pointer &collision)
 {
 	IncrementHovers();
-	collision->onCollisionEnd.connect(boost::bind(&Button::OnMouseCollisionEnds, this));
+	collision->onCollisionEnd.connect(std::bind(&Button::OnMouseCollisionEnds, this));
 }
 
 void Button::OnMouseCollisionEnds()
@@ -140,7 +141,7 @@ void Button::OnTouchEndCollision(const MX::Collision::Shape::pointer& shape)
 
 void Button::OnTouchBegin()
 {
-	_touch->on_end.connect(boost::bind(&Button::OnTouchEnd, this));
+	_touch->on_end.connect(std::bind(&Button::OnTouchEnd, this));
 	buttonWidget().SetPressed(true);
 }
 
@@ -165,7 +166,7 @@ void PushButton::OnPressed()
 void PushButton::OnInit()
 {
 	auto buttonWidget = static_cast<ButtonWidget*>(_widget);
-	buttonWidget->onTouched.connect(boost::bind(&PushButton::OnPressed, this));
+	buttonWidget->onTouched.connect(std::bind(&PushButton::OnPressed, this));
 }
 
 
@@ -178,11 +179,11 @@ Draggable::Draggable()
 
 void Draggable::OnShapeChanged()
 {
+	using namespace std::placeholders;
 
 
-
-	widget().shape()->with<Collision::MouseTouchShape::TypeBegin>()->onCollided.connect(boost::bind(&Draggable::OnTouchBegin, this, _1));
-	widget().shape()->with<Collision::TouchShape::TypeBegin>()->onCollided.connect(boost::bind(&Draggable::OnTouchBegin, this, _1));
+	widget().shape()->with<Collision::MouseTouchShape::TypeBegin>()->onCollided.connect(std::bind(&Draggable::OnTouchBegin, this, _1));
+	widget().shape()->with<Collision::TouchShape::TypeBegin>()->onCollided.connect(std::bind(&Draggable::OnTouchBegin, this, _1));
 	_dragDrawerInfo = Drawer::Drag(_widget, false);
 }
 
@@ -200,8 +201,8 @@ void Draggable::OnTouchBegin(const Collision::Shape::pointer& shape)
     _touch = touch->touch.lock();
     _initialDragPosition = _touch->point();
 
-    _touch->on_move.connect(boost::bind(&Draggable::OnTouchMove, this));
-    _touch->on_end.connect(boost::bind(&Draggable::OnTouchEnd, this));
+    _touch->on_move.connect(std::bind(&Draggable::OnTouchMove, this));
+    _touch->on_end.connect(std::bind(&Draggable::OnTouchEnd, this));
 
     if (_distanceToDrag != 0.0f)
         return;
@@ -231,7 +232,7 @@ void Draggable::OnTouchEnd()
 }
 
 
-void Draggable::StartDrag(const Vector2& position)
+void Draggable::StartDrag(const glm::vec2& position)
 {
     if (!TryToStartDrag(position))
         _touch = nullptr;
@@ -242,7 +243,7 @@ void Draggable::StartDrag(const Vector2& position)
     }
 }
 
-bool Draggable::TryToStartDrag(const Vector2& position)
+bool Draggable::TryToStartDrag(const glm::vec2& position)
 {
 	Drawer::Drag::SetCurrent(_dragDrawerInfo);//TODO bit of a hack, but since only one drag exist in given time...
 	auto lock = Context<MX::Widgets::Widget>::Lock(_widget);
@@ -269,7 +270,7 @@ Strategies::DropTarget::DropTarget()
 
 void Strategies::DropTarget::OnShapeChanged()
 {
-	widget().shape()->with<Collision::DropShape>()->onCollided.connect(boost::bind(&Strategies::DropTarget::OnDrop, this));
+	widget().shape()->with<Collision::DropShape>()->onCollided.connect(std::bind(&Strategies::DropTarget::OnDrop, this));
 }
 
 
@@ -277,25 +278,4 @@ void Strategies::DropTarget::OnDrop()
 {
 	auto lock = Context<MX::Widgets::Widget>::Lock(_widget);
 	InitiateGotDrop();
-}
-
-
-
-
-EnableIfUnlocked::EnableIfUnlocked(const std::string& objectPath) : _info(objectPath)
-{
-	
-}
-
-void EnableIfUnlocked::OnInit()
-{
-	auto func = [&]()
-	{
-		((ButtonWidget&)widget()).SetEnabled(!_info.locked());
-	};
-
-	func();
-
-	if (_info.locked())
-		_info.onUnlocked.connect(func);
 }

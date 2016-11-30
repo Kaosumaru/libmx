@@ -9,7 +9,7 @@
 #include "utils/ListFiles.h"
 #include "ScriptParser.h"
 
-#if WIP
+#ifdef WIPTHREAD
 #include "Utils/ThreadPool.h"
 
 #endif

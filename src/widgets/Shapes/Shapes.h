@@ -35,7 +35,7 @@ public:
 	const auto& shape() { return _shape; }
 	virtual pointer clone() = 0;
 
-#ifdef WIP
+#ifdef WIPPOLYGON
 	static pointer createPolygon(const cinder::Shape2d &polygon);
 #endif
 protected:

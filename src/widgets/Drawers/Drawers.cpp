@@ -1,17 +1,16 @@
-#include "MXDrawers.h"
-#include "Widgets/MXWidget.h"
-#include "Script/MXScriptClassParser.h"
-#include "Script/Class/MXScriptImageClass.h"
-#include "Widgets/MXLabel.h"
-#include "Game/Resources/MXResources.h"
-#include "Widgets/MXLabel.h"
-#include "Graphic/Images/MXSlice9Image.h"
-#include "MXShaderDrawers.h"
-#include "Utils/MXContextStack.h"
+#include "Drawers.h"
+#include "Widgets/Widget.h"
+#include "Script/ScriptClassParser.h"
+#include "Script/Class/ScriptImageClass.h"
+#include "Widgets/Label.h"
+#include "Game/Resources/Resources.h"
+#include "Widgets/Label.h"
+#include "Graphic/Images/Slice9Image.h"
+#include "Utils/ContextStack.h"
 
 using namespace MX;
 
-
+#ifdef WIPFONT
 class TextImageDrawer : public MX::Widgets::Drawer
 {
 public:
@@ -111,9 +110,9 @@ protected:
 	MX::ScriptableColor _color;
 	Graphic::Font::pointer _font;
 	Scriptable::Value::pointer _width;
-    MX::Vector2 _offset;
+    glm::vec2 _offset;
 };
-
+#endif
 
 
 
@@ -135,7 +134,7 @@ public:
 
 		auto &img = image();
 		auto w2 = img.Width(), h2 = img.Height();
-		img.DrawCentered(0.0f, 0.0f, x, y, w1 / w2, h1 / h2, MX::Widgets::Widget::current().geometry.angle, imageColor());
+		img.DrawCentered( {}, { x, y }, { w1 / w2, h1 / h2 }, MX::Widgets::Widget::current().geometry.angle, imageColor() );
 	}
 };
 
@@ -276,7 +275,7 @@ protected:
 	bool _flipX = false;
 	bool _flipY = false;
 
-	Vector2 _scale = { 1.0f, 1.0f };
+	glm::vec2 _scale = { 1.0f, 1.0f };
 
 	int _position = 5;
 };
@@ -299,7 +298,7 @@ void MX::Widgets::ColorDrawer::DrawImage()
 	auto w2 = img.Width(), h2 = img.Height();
 
 
-	img.DrawCentered(0.0f, 0.0f, x, y, w1 / w2, h1 / h2, MX::Widgets::Widget::current().geometry.angle, imageColor());
+	img.DrawCentered( {}, { x, y }, { w1 / w2, h1 / h2 }, MX::Widgets::Widget::current().geometry.angle, imageColor() );
 }
 
 
@@ -362,7 +361,9 @@ public:
 
 void MX::Widgets::DrawersInit::Init()
 {
+#ifdef WIPFONT
 	ScriptClassParser::AddCreator(L"Drawer.TextImage", new OutsideScriptClassCreatorContructor<TextImageDrawer>());
+#endif
 	ScriptClassParser::AddCreator(L"Drawer.Image", new OutsideScriptClassCreatorContructor<ImageDrawer>());
 	ScriptClassParser::AddCreator(L"Drawer.TransformedImage", new OutsideScriptClassCreatorContructor<TransformedImageDrawer>());
 	ScriptClassParser::AddCreator(L"Drawer.StretchedImage", new OutsideScriptClassCreatorContructor<StretchedImageDrawer>());

@@ -2,7 +2,10 @@
 #define MXDRAWABLESTRATEGY
 #include "Strategy.h"
 #include "Graphic/Images/Image.h"
+#ifdef WIPFONT
 #include "Graphic/Fonts/Font.h"
+#endif
+#include "Utils/SignalizingVariable.h"
 
 namespace MX
 {
@@ -13,7 +16,7 @@ namespace Widgets
 	{
 		namespace Drawable
 		{
-			class Drawable : public Strategy
+			class Drawable : public MX::Widgets::Strategy::Strategy
 			{
 			public:
 				bool drawable() override { return true; }
@@ -21,7 +24,7 @@ namespace Widgets
 		}
 	}
 
-
+#ifdef WIPFONT
 class TextData : public ScopeSingleton<TextData>
 {
 public:
@@ -64,7 +67,7 @@ protected:
 	std::shared_ptr<Graphic::Image> _textImage;
 
 };
-
+#endif
 
 namespace Strategy
 {
@@ -86,6 +89,7 @@ namespace Strategy
 			std::shared_ptr<Graphic::Image> _image;
 		};
 
+#ifdef WIPFONT
 		class Text : public Drawable
 		{
 		public:
@@ -170,6 +174,7 @@ namespace Strategy
 			StringBuilder _stringBuilder;
 
 		};
+#endif
 	}
 }
 
@@ -221,8 +226,8 @@ namespace Strategy
 			std::shared_ptr<int> _data;
 			SignalizingVariable<float> *_value;
 			SignalizingVariable<float> *_max;
-			boost::signals2::connection _value_connection;
-			boost::signals2::connection _max_connection;
+			Connection _value_connection;
+			Connection _max_connection;
 		};
 	}
 }

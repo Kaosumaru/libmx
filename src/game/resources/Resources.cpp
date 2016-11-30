@@ -85,7 +85,7 @@ namespace MX
 
 	bool Resources::loadSpriteSheet(const std::string& path)
 	{
-#ifdef WIP
+#ifdef WIPSPRITESHEET
 		class SpriteSheetSurface : public MX::Graphic::Surface
 		{
 		public:
@@ -94,16 +94,16 @@ namespace MX
 
 			}
 
-			static pointer Create(const Surface::pointer& parent, const MX::Rectangle& rect, const Vector2& offset)
+			static pointer Create(const Surface::pointer& parent, const MX::Rectangle& rect, const glm::vec2& offset)
 			{
 				auto ptr = std::make_shared<SpriteSheetSurface>(*parent, (int)rect.x1, (int)rect.y1, (int)rect.width(), (int)rect.height());
 				ptr->_centerOffset = offset;
 				return ptr;
 			}
 
-			void SetCenter(const Vector2& center) override { _center = center - _centerOffset; }
+			void SetCenter(const glm::vec2& center) override { _center = center - _centerOffset; }
 		protected:
-			Vector2 _centerOffset;
+			glm::vec2 _centerOffset;
 		};
 
 
@@ -163,7 +163,7 @@ namespace MX
 
 	bool Resources::isSpriteSheet(const std::string& path)
 	{
-#ifdef WIP
+#ifdef WIPSPRITESHEET
 		boost::filesystem::path p(path);
 		return boost::filesystem::is_regular_file(p) && p.extension() == ".json";
 #endif
@@ -172,7 +172,7 @@ namespace MX
 
 	const std::shared_ptr<Graphic::TextureImage> &Resources::loadImageFromSpriteSheet(const std::string &path)
 	{
-#ifdef WIP
+#ifdef WIPSPRITESHEET
 		static Graphic::Surface::pointer dummy;
 		if (path.find(".json") == std::string::npos)
 			return dummy;

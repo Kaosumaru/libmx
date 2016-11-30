@@ -3,6 +3,8 @@
 #include "Utils/Vector2.h"
 #include "Utils/shapes/Rectangle.h"
 #include "Script/ScriptObject.h"
+#include "stx/optional.hpp"
+
 namespace MX
 {
 namespace Widgets
@@ -26,8 +28,8 @@ public:
 	virtual void OnAssignedToWidget() {};
 
 	virtual std::unique_ptr<ShapePolicy> defaultShapePolicy() { return nullptr; }
-	virtual boost::optional<MX::Margins> defaultMargins() { return  boost::optional<MX::Margins>(); }
-	virtual boost::optional<MX::Vector2> defaultSize() { return  boost::optional<MX::Vector2>(); }
+	virtual stx::optional<MX::Margins> defaultMargins() { return {}; }
+	virtual stx::optional<glm::vec2> defaultSize() { return {}; }
 
 	virtual void clipSize(float &width, float &height) {}
 
@@ -91,8 +93,8 @@ public:
 	void OnAssignedToWidget() override { return _drawer->OnAssignedToWidget(); };
 
 	std::unique_ptr<ShapePolicy> defaultShapePolicy() override { return _drawer->defaultShapePolicy(); };
-	boost::optional<MX::Margins> defaultMargins() override { return _drawer->defaultMargins(); };
-	boost::optional<MX::Vector2> defaultSize() override { return _drawer->defaultSize(); };
+	stx::optional<MX::Margins> defaultMargins() override { return _drawer->defaultMargins(); };
+	stx::optional<glm::vec2> defaultSize() override { return _drawer->defaultSize(); };
 
 	void clipSize(float &width, float &height) override { return _drawer->clipSize(width, height); }
 

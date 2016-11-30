@@ -95,8 +95,5 @@ void ActorCreatorInit::Init()
 {
 	ScriptClassParser::AddCreator(L"Scene.ActorFactory.Creator.Switch", new OutsideScriptClassCreatorContructor<SwitchActorCreator>());
 	ScriptClassParser::AddCreator(L"Scene.ActorFactory.Creator.Random", new OutsideScriptClassCreatorContructor<RandomActorCreator>());
-#ifdef WIP
-	ScriptClassParser::AddCreator(L"Scene.ActorFactory.Creator.Random.NonLocked", new OutsideScriptClassCreatorContructor<RandomNonLockedActorCreator>());
-#endif
 	ScriptClassParser::AddCreator(L"Scene.ActorFactory.Creator.Specific", new OutsideScriptClassCreatorContructor<SpecificActorCreator>());
 }

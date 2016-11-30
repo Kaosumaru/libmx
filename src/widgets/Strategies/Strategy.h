@@ -145,16 +145,16 @@ protected:
 	void OnTouchMove();
 	void OnTouchEnd();
 
-    void StartDrag(const Vector2& position);
-	bool TryToStartDrag(const Vector2& position);
+    void StartDrag(const glm::vec2& position);
+	bool TryToStartDrag(const glm::vec2& position);
 	void EndDrag();
 
-    MX::Vector2 _initialDragPosition;
+    glm::vec2 _initialDragPosition;
     float _distanceToDrag = 4.5f;
     bool _dragStarted = false;
 	Drawer::Drag _dragDrawerInfo;
 	static Drawer::Drag emptyDrag;
-	Vector2 _offset;
+	glm::vec2 _offset;
 	Touch::pointer  _touch;
 
 };
@@ -170,17 +170,6 @@ public:
 protected:
 	void OnDrop();
 };
-
-
-class EnableIfUnlocked : public Strategy
-{
-public:
-	EnableIfUnlocked(const std::string& objectPath);
-	void OnInit();
-protected:
-	LockableInfo _info;
-};
-
 
 }
 

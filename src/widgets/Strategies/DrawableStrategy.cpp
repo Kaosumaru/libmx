@@ -3,8 +3,10 @@
 #include "Application/Window.h"
 #include "Game/Resources/Resources.h"
 #include "Utils/ContextStack.h"
+#ifdef WIPFONT
 #include "HTML/HTMLRendererCairo.h"
-#include "Graphic/Fonts/Font.h"
+#endif
+
 #include <iostream>
 
 using namespace MX;
@@ -12,7 +14,7 @@ using namespace MX::Widgets;
 using namespace MX::Strategies;
 using namespace MX::Strategies::Drawable;
 
-
+#ifdef WIPFONT
 void MX::Widgets::TextData::UpdateTextImage()
 {
 	if (!_dirty)
@@ -29,20 +31,6 @@ void MX::Widgets::TextData::UpdateTextImage()
 		SetTextImage(font->DrawTextOnBitmap(_text, _width));
 	}
 }
-
-
-void Image::BeforeDraw()
-{
-	_old = &(ScopeSingleton<Graphic::Image>::current());
-	ScopeSingleton<Graphic::Image>::SetCurrent(*_image);
-}
-void Image::AfterDraw()
-{
-	ScopeSingleton<Graphic::Image>::SetCurrent(*_old);
-	_old = nullptr;
-}
-
-
 void Text::BeforeDraw()
 { 
 	_old = &(ScopeSingleton<TextData>::current());
@@ -58,6 +46,19 @@ void Text::AfterDraw()
 	ScopeSingleton<TextData>::SetCurrent(*_old);
 	_old = nullptr;
 }
+#endif
+
+void Image::BeforeDraw()
+{
+	_old = &(ScopeSingleton<Graphic::Image>::current());
+	ScopeSingleton<Graphic::Image>::SetCurrent(*_image);
+}
+void Image::AfterDraw()
+{
+	ScopeSingleton<Graphic::Image>::SetCurrent(*_old);
+	_old = nullptr;
+}
+
 
 
 void Progress::BeforeDraw()

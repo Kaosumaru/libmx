@@ -11,7 +11,7 @@
 
 using namespace MX::Widgets;
 
-void ScriptLayouter::ChangeInnerDimension(const MX::Vector2& size)
+void ScriptLayouter::ChangeInnerDimension(const glm::vec2& size)
 {
 	auto &widget = Context<ScriptLayouterWidget>::current();
 
@@ -186,8 +186,6 @@ void ScriptLayouterManager::Deinitialize()
 
 void ScriptLayouterManager::onReload()
 {
-	auto &script = Script::get();
-
 	for (auto& pair : _layouters)
 	{
 		auto layouter = std::static_pointer_cast<ScriptLayouterManagerLayouterProxy>(pair.second);

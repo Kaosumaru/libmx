@@ -115,7 +115,7 @@ void BaseGraphicTransformSceneScriptable::Draw(float x, float y)
 	if (geometry.color.current() != MX::Color::white())
 		color_guard.Reset(geometry.color.current());
 
-#ifdef WIP
+#ifdef WIPMATRIX
 	ci::gl::pushModelView();
 	ci::gl::translate(x, y);
 	ci::gl::rotate(geometry.angle, 0.0f, 0.0f, 1.0f);
@@ -125,7 +125,7 @@ void BaseGraphicTransformSceneScriptable::Draw(float x, float y)
 
 	auto guard = Context<ScriptableSpriteActor>::Lock(this); //TODO is that necessary?
 	BaseGraphicScene::Draw(x, y);
-#ifdef WIP
+#ifdef WIPMATRIX
 	Graphic::TextureRenderer::current().Flush();
 	ci::gl::popModelView();
 #endif	
@@ -135,7 +135,7 @@ void BaseGraphicTransformSceneScriptable::DrawCustom(float x, float y)
 {
 	if (_actors.empty())
 		return;
-#ifdef WIP
+#ifdef WIPMATRIX
 	Graphic::TextureRenderer::current().Flush();
 	ci::gl::pushModelView();
 	ci::gl::translate(x, y);
@@ -147,7 +147,7 @@ void BaseGraphicTransformSceneScriptable::DrawCustom(float x, float y)
 	auto guard = Context<ScriptableSpriteActor>::Lock(this); //TODO is that necessary?
 	BaseGraphicScene::DrawCustom(x, y);
 
-#ifdef WIP
+#ifdef WIPMATRIX
 	Graphic::TextureRenderer::current().Flush();
 	ci::gl::popModelView();
 #endif

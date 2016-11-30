@@ -1,7 +1,7 @@
-#include "MXCompositeDrawers.h"
-#include "Widgets/MXWidget.h"
-#include "Script/MXScriptClassParser.h"
-#include "Utils/MXRectangle.h"
+#include "CompositeDrawers.h"
+#include "Widgets/Widget.h"
+#include "Script/ScriptClassParser.h"
+#include "Utils/shapes/Rectangle.h"
 
 using namespace MX;
 using namespace MX::Widgets;
@@ -102,8 +102,8 @@ CompositeLayouterDrawer::CompositeLayouterDrawer(LScriptObject& script) : Compos
 
 		MX::Rectangle rect(0.0f, 0.0f, -1.0f, -1.0f);
 
-		if (child.size() > 1)
-			rect = child[1];
+		if ( child.size() > 1 )
+			PropertyLoader<MX::Rectangle>::load( rect, child.array()[1] );
 
 		AddChild(drawer, rect);
 	}
@@ -173,7 +173,7 @@ public:
 			{
                 auto r = MX::Rectangle::fromWH(.0f, .0f, _image->Width(), _image->Height());
                 r.NumLayoutIn(Destination::current().rectangle, pos);
-				_image->DrawTinted(r.x1, r.y1, MX::Widgets::Widget::current().geometry.color.current() * _color);
+				_image->DrawTinted( { r.x1, r.y1 }, MX::Widgets::Widget::current().geometry.color.current() * _color );
 			}
 		}
 

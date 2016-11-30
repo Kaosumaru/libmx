@@ -165,7 +165,7 @@ namespace Collision
 		OrientedRectangle _orientedRectangle;
 	};
 
-#if WIP
+#ifdef WIPPOLYGON
 	struct Polygon_Policy_Tag;
 	template<typename Parent>
 	class PolygonShape_Policy : public Parent

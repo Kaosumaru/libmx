@@ -18,7 +18,7 @@ public:
 		//	view->Unlink();
 	}
 
-	typedef std::function< std::shared_ptr<Widget> (const T&, ListController* controller, unsigned int index) > CreatorFunction;
+	using CreatorFunction = std::function< std::shared_ptr<Widget> (const T&, ListController* controller, unsigned int index) >;
 	SignalType OnAction;
 
 	static std::shared_ptr<ListController> Create(const CreatorFunction& function)
@@ -76,10 +76,10 @@ public:
         bool default_item = false;
     };
 
-	typedef default_signal<void (const T&, int index)> SignalType;
-	typedef std::function< std::shared_ptr<ButtonWidget> (const T&, OneSelectionListController* controller, unsigned int index, ItemContext &ctx) > CreatorFunction;
+	using SignalType = Signal<void (const T&, int index)>;
+	using CreatorFunction = std::function< std::shared_ptr<ButtonWidget> (const T&, OneSelectionListController* controller, unsigned int index, ItemContext &ctx) >;
 	SignalType OnAction;
-	default_signal<void()> OnListEmpty;
+	Signal<void()> OnListEmpty;
 
 	static std::shared_ptr<OneSelectionListController> Create(const CreatorFunction& function)
 	{

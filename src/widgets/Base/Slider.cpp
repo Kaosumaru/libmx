@@ -35,7 +35,7 @@ namespace Strategy {
 		void OnTouchBegin() override
 		{
 			Button::OnTouchBegin();
-			_touch->on_move.connect(boost::bind(&SlideButton::OnTouchMove, this));
+			_touch->on_move.connect(std::bind(&SlideButton::OnTouchMove, this));
 
 		}
 
@@ -56,7 +56,7 @@ Slider::Slider()
 {
 	AddWidget(_knob = std::make_shared<ButtonWidget>());
 
-	_knob->AddStrategy(stf::make_shared<Strategy::SlideButton>(*this));
+	_knob->AddStrategy(std::make_shared<Strategy::SlideButton>(*this));
 
 	auto sig = [this](float w, float h){ onSizeOrKnobChanged(); };
 	on_size_changed.connect(sig);
@@ -135,6 +135,7 @@ void SliderMinMax::SetMaxValue(float value)
 
 SliderMinMaxForVariable::SliderMinMaxForVariable(SignalizingVariable<float> &variable) : _variable(variable)
 {
+	using namespace std::placeholders;
 	_data = std::make_shared<int>();
 	_variable.onValueChanged.connect(std::bind(&SliderMinMaxForVariable::onVariableChanged, this, _1), _data);
 	SetValue(_variable);

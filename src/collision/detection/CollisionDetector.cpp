@@ -186,7 +186,7 @@ bool Collision_Oriented_Oriented(const Shape &shape1, const Shape &shape2)
 }
 
 
-#ifdef WIP
+#ifdef WIPPOLYGON
 bool Collision_Polygon_Point(const Shape &shape1, const Shape &shape2)
 {
 	assert( false );
@@ -211,7 +211,7 @@ Detection::Detection()
 
 void Detection::Init()
 {
-#if WIP
+
 	AddCollision<PointShape_Policy_Tag, PointShape_Policy_Tag, &Collision_Point_Point>();
 	AddCollision<PointShape_Policy_Tag, RectangleShape_Policy_Tag, &Collision_Point_Rectangle>();
 	AddCollision<PointShape_Policy_Tag, CircleShape_Policy_Tag, &Collision_Point_Circle>();
@@ -225,7 +225,7 @@ void Detection::Init()
 	AddCollision<CircleShape_Policy_Tag, OrientedRectangle_Policy_Tag, &Collision_Circle_Oriented>();
 
 	AddCollision<OrientedRectangle_Policy_Tag, OrientedRectangle_Policy_Tag, &Collision_Oriented_Oriented>();
-
+#ifdef WIPPOLYGON
 	AddCollision<Polygon_Policy_Tag, PointShape_Policy_Tag, &Collision_Polygon_Point>();
 #endif
 }

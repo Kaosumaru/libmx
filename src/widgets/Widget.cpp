@@ -4,7 +4,7 @@
 #include <iostream>
 #include <cmath>
 
-#include "Graphic/Renderers/TextureRenderer.h"
+#include "Graphic/Renderer/TextureRenderer.h"
 
 using namespace MX;
 using namespace MX::Widgets;
@@ -155,6 +155,7 @@ void MX::Widgets::Widget::Draw(float x, float y)
 	if (Drawer::isDragged() && !Drawer::drawDragged())
 		return;
 
+#ifdef WIPFONT
 	if (drawDebug)
 	{
 		Graphic::TextureRenderer::current().Flush();
@@ -173,6 +174,7 @@ void MX::Widgets::Widget::Draw(float x, float y)
 		ci::gl::pushModelView();
 		ci::gl::multModelMatrix(_transform.transform());
 	}
+#endif
 
 	for (auto &strategy : _drawableStrategies)
 		strategy->BeforeDraw();
@@ -192,11 +194,13 @@ void MX::Widgets::Widget::Draw(float x, float y)
 		strategy->AfterDraw();
 	}
 		
+#ifdef WIPFONT
 	if (!_transform.isIdentity())
 	{
 		Graphic::TextureRenderer::current().Flush();
 		ci::gl::popModelView();
 	}
+#endif
 }
 
 void MX::Widgets::Widget::DrawBackground()
@@ -264,7 +268,7 @@ void MX::Widgets::Widget::SetDrawer(const Drawer::pointer& drawer)
 	
 
 	if (_drawer->defaultMargins())
-		SetMargins(_drawer->defaultMargins().get());
+		SetMargins(_drawer->defaultMargins().value());
 	if (_width == 0)
 	{
 		for (auto &strategy : _drawableStrategies)
@@ -336,13 +340,13 @@ void MX::Widgets::Widget::SetHorizontalScroll(float x)
 }
 
 
-MX::Vector2 MX::Widgets::Widget::relativePosition()
+glm::vec2 MX::Widgets::Widget::relativePosition()
 {
 	return linked() ? geometry.position - sprite_scene().geometry.position : geometry.position;
 }
 
 
-Vector2 MX::Widgets::Widget::position()
+glm::vec2 MX::Widgets::Widget::position()
 {
 	auto npos = geometry.position;
 	auto parent = parentWidget();
@@ -353,24 +357,24 @@ Vector2 MX::Widgets::Widget::position()
 	return npos;
 }
 
-MX::Vector2 MX::Widgets::Widget::minDimensions()
+glm::vec2 MX::Widgets::Widget::minDimensions()
 {
-	MX::Vector2 v(.0f, .0f);
+	glm::vec2 v(.0f, .0f);
 	clipSize(v.x, v.y);
 	return v;
 }
-MX::Vector2 MX::Widgets::Widget::maxDimensions()
+glm::vec2 MX::Widgets::Widget::maxDimensions()
 {
-	MX::Vector2 v(1000000.0f, 1000000.0f);
+	glm::vec2 v(1000000.0f, 1000000.0f);
 	clipSize(v.x, v.y);
 	return v;
 }
 
-bool MX::Widgets::Widget::SetPosition(const Vector2& position)
+bool MX::Widgets::Widget::SetPosition(const glm::vec2& position)
 {
-	Vector2 npos = position;
+	glm::vec2 npos = position;
 	npos += parentWidgetOffset();
-    npos.round();
+    round(npos);
 
 	auto inf = std::numeric_limits<float>::infinity();
 	if (position.x == inf)
@@ -392,7 +396,7 @@ bool MX::Widgets::Widget::SetPosition(const Vector2& position)
 }
 
 
-void MX::Widgets::Widget::onParentMove(const Vector2& delta)
+void MX::Widgets::Widget::onParentMove(const glm::vec2& delta)
 {
 	geometry.position += delta;
 	_shapePolicy.OnMoved(*this);
@@ -547,15 +551,15 @@ void MX::Widgets::Widget::onBecameInvisible()
 
 
 
-Vector2 MX::Widgets::Widget::parentWidgetOffset()
+glm::vec2 MX::Widgets::Widget::parentWidgetOffset()
 {
 	auto parent = parentWidget();
 	if (parent)
 		return parent->geometry.position + parent->_margins.topLeft() - parent->_scroll;
-	return Vector2();
+	return {};
 }
 
-void MX::Widgets::Widget::moveChildren(const Vector2& delta)
+void MX::Widgets::Widget::moveChildren(const glm::vec2& delta)
 {
 	auto guard = _subWidgets.guard();
 	auto it = _subWidgets.begin();
@@ -677,8 +681,10 @@ bool ButtonWidget::hover()
 WidgetBackground::WidgetBackground()
 {
 	static Drawer::pointer drawer = 0;
+#ifdef WIP
 	if (!_drawer)
-		_drawer = MX::make_shared<SimpleDrawer>(MX::Resources::get().loadImage("Misc/White128.png"));
+		_drawer = std::make_shared<SimpleDrawer>(MX::Resources::get().loadImage("Misc/White128.png"));
+#endif
 	SetDrawer(_drawer);
 }
 

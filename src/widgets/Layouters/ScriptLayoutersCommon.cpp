@@ -53,7 +53,7 @@ public:
 
 protected:
 	template<typename T>
-	MX::Vector2 CalculateSize(const NamedWidgetsMap& named_widgets, const T& f)
+	glm::vec2 CalculateSize(const NamedWidgetsMap& named_widgets, const T& f)
 	{
 		float secondaryDimensionMax = 0.0f;
 		float mainDimensionOffset = 0.f;
@@ -174,8 +174,8 @@ public:
     }
 
 protected:
-    MX::Vector2 _itemSize;
-    MX::Vector2 _itemSpacing;
+    glm::vec2 _itemSize;
+    glm::vec2 _itemSpacing;
 };
 
 void ScriptLayouterCommonInit::Init()

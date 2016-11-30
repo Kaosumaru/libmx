@@ -1,9 +1,9 @@
 #ifndef MXSIMPLEDRAWER
 #define MXSIMPLEDRAWER
-#include "Utils/MXUtils.h"
-#include "MXDrawer.h"
-#include "Graphic/Images/MXImage.h"
-#include "Graphic/Images/MXSlice9Image.h"
+#include "Utils/Utils.h"
+#include "Drawer.h"
+#include "Graphic/Images/Image.h"
+#include "Graphic/Images/Slice9Image.h"
 
 namespace MX
 {

@@ -12,7 +12,8 @@
 #include "Script/Class/ScriptSoundClass.h"
 #include "Script/Class/ScriptImageClass.h"
 #include "Script/Class/ScriptAnimationClass.h"
-#if WIP
+#include "stx/optional.hpp"
+#ifdef WIPFONT
 #include "Graphic/Fonts/Font.h"
 #endif
 #include <array>
@@ -353,20 +354,24 @@ namespace MX
 		}
 	};
 
-#ifdef WIP
 	template<typename T>
-	struct PropertyLoader<RandomNonLockedItem<T>>
+	struct PropertyLoader<stx::optional<T>>
 	{
 		using type = PropertyLoader_Standard;
-		static bool load(RandomNonLockedItem<T>& out, const Scriptable::Value::pointer& obj)
+		static bool load(stx::optional<T>& out, const Scriptable::Value::pointer& obj)
 		{
-			return PropertyLoader<RandomItem<T>>::load(out, obj);
+			T t;
+			if (PropertyLoader<T>::load(t, obj))
+			{
+				out = t;
+				return true;
+			}
+				
+			return false;
 		}
 	};
 
-
-
-
+#ifdef WIPFONT
 	template<>
 	struct PropertyLoader<MX::Graphic::Font::pointer>
 	{

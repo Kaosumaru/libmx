@@ -1,6 +1,6 @@
-#include "MXDestinationDrawers.h"
-#include "Widgets/MXWidget.h"
-#include "Script/MXScriptClassParser.h"
+#include "DestinationDrawers.h"
+#include "Widgets/Widget.h"
+#include "Script/ScriptClassParser.h"
 
 using namespace MX;
 using namespace MX::Widgets;
@@ -241,8 +241,8 @@ public:
     }
 
 protected:
-    MX::Vector2 _position;
-    MX::Vector2 _position2;
+    glm::vec2 _position;
+    glm::vec2 _position2;
 };
 
 class TransformDrawer : public DestinationDrawer

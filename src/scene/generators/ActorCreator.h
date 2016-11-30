@@ -105,35 +105,6 @@ struct PropertyLoader<ActorCreatorEntry>
 	}
 };
 
-
-#if WIP
-class RandomNonLockedActorCreator : public ActorCreator
-{
-protected:
-	typedef RandomNonLockedItem<ScriptableSpriteActor> RandomActor;
-public:
-	RandomNonLockedActorCreator()
-	{
-	}
-
-	RandomNonLockedActorCreator(LScriptObject& script) : ActorCreator(script)
-	{
-		script.load_property(_randomActors, "Actors");
-	}
-
-	std::shared_ptr<ScriptableSpriteActor> onCreateActor() override
-	{
-		if (_randomActors.empty())
-			return nullptr;
-		return _randomActors.randomItem()->cloneSprite();
-	}
-
-	virtual ActorCreator::pointer clone() { return std::make_shared<RandomNonLockedActorCreator>(*this); }
-
-	RandomActor _randomActors;
-};
-#endif
-
 class SpecificActorCreator : public ActorCreator
 {
 public:

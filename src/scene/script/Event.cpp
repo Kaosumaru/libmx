@@ -2,10 +2,8 @@
 #include "Script/ScriptClassParser.h"
 #include "Scene/Managers/SceneStackManager.h"
 #include "Scene/Sprites/ScriptableSpriteActor.h"
-#ifdef WIP
 #include "Widgets/Widget.h"
 #include "Widgets/Layouters/StackWidget.h"
-#endif
 
 using namespace MX;
 
@@ -95,7 +93,6 @@ protected:
 	CommandSignal onRun;
 };
 
-#ifdef WIP
 class StackWidgetPopEvent : public Event
 {
 public:
@@ -110,7 +107,6 @@ public:
 	}
 
 };
-#endif
 
 class SpriteSceneStackManagerPopEvent : public Event
 {
@@ -184,9 +180,7 @@ void EventInit::Init()
 	ScriptClassParser::AddCreator(L"Event.Do", new DefaultClassCreatorContructor<DoEvent>());
 	ScriptClassParser::AddCreator(L"Event.OnRun", new DefaultClassCreatorContructor<OnRunEvent>());
 
-#ifdef WIP
 	ScriptClassParser::AddCreator(L"Event.StackWidget.Pop", new DefaultClassCreatorContructor<StackWidgetPopEvent>());
-#endif
 
 	ScriptClassParser::AddCreator(L"Event.Scene.StackManager.Pop", new DefaultClassCreatorContructor<SpriteSceneStackManagerPopEvent>());
     ScriptClassParser::AddCreator(L"Event.Sprite.CreateSprite", new DefaultClassCreatorContructor<CreateSpriteAtSprite>());

@@ -18,7 +18,7 @@
 using namespace MX;
 
 
-#if WIP
+#ifdef WIPMSL
 class MSLScriptParser : public ScriptParser
 {
 public:
@@ -385,7 +385,7 @@ namespace impl
 		}
 	}
 
-#if WIP
+#ifdef WIPMSL
 	void ScriptParser_MSLDoParse(const std::string& path, Script &sc)
 	{
 		MSLScriptParser Script(path, sc);
@@ -397,7 +397,7 @@ namespace impl
 	{
 		if (FileExtension(path) == "json")
 			ScriptParser_JSONDoParse(path,sc);
-#if WIP
+#ifdef WIPMSL
 		else if (FileExtension(path) == "msl")
 			ScriptParser_MSLDoParse(path, sc);
 #endif
@@ -411,7 +411,7 @@ ScriptParser::ScriptParser(Script &Script) : _Script(Script)
 
 }
 
-#if WIP
+#ifdef WIPMSL
 void ScriptParser::ParseStringToScript(const std::string& data, Script &sc)
 {
 	MSLScriptParser Script(data, sc, true);

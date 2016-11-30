@@ -46,8 +46,6 @@ void DrawerManager::Deinitialize()
 
 void DrawerManager::onReload()
 {
-	auto &script = Script::get();
-
 	for (auto& pair : _drawers)
 	{
 		auto drawer = std::static_pointer_cast<DrawerManagerDrawerProxy>(pair.second);

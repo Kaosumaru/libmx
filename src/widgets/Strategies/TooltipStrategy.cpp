@@ -47,6 +47,7 @@ void Tooltip::onDraw()
 
 void Tooltip::onShow()
 {
+#ifdef WIPFONT
 	auto buttonDrawer = MX::Widgets::DrawerManager::drawer(_drawerPath);
 
 	auto text = _tooltipText;
@@ -65,6 +66,7 @@ void Tooltip::onShow()
 	_position.y += 32;
 
 	_tooltipWidget = txt;
+#endif
 }
 
 void Tooltip::onHide()

@@ -1,18 +1,15 @@
 #include "ScriptClassParser.h"
 #include "Script.h"
 
-#if WIP
 #include "Class/ScriptAnimationClass.h"
 #include "Class/ScriptSoundClass.h"
 #include "Class/ScriptImageClass.h"
-#endif
 
 using namespace MX;
 
 ScriptClassParser::ScriptClassParser()
 {
 	//TODO find better place for this
-#if WIP
 	_AddCreator(L"Animation.AnimationFromFiles", new DefaultClassCreator<ScriptAnimationFromFilesClass>());
 	_AddCreator(L"Animation.AnimationFromFile", new DefaultClassCreator<ScriptAnimationFromFileClass>());
 	_AddCreator(L"Animation.RandomAnimation", new DefaultClassCreator<ScriptRandomAnimation>());
@@ -26,7 +23,6 @@ ScriptClassParser::ScriptClassParser()
 
 	_AddCreator(L"Image.ImageGrid", new DefaultClassCreator<ScriptImageGridClass>());
 	_AddCreator(L"Image.ImageFromGrid", new DefaultClassCreator<ScriptImageFromGridClass>());
-#endif
 }
 
 ScriptClassParser::~ScriptClassParser()

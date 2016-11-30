@@ -2,6 +2,12 @@
 #include "devices/Mouse.h"
 #include "devices/Keyboard.h"
 #include "devices/Touches.h"
+#include "Collision/Area/EventsToCollisions.h"
+#include "Collision/Quadtree/Quadtree.h"
+#include "Widgets/Systems/DragSystem.h"
+#include "Widgets/Systems/TooltipSystem.h"
+#include "Widgets/Widget.h"
+
 #include "SDL_video.h"
 #include "SDL_render.h"
 #include "graphic/OpenGL.h"
@@ -36,7 +42,17 @@ Window::Window(unsigned width, unsigned height, bool fullscreen)
 
 	_mouse = Mouse::CreateForWindow(this);	
 	_keyboard = Keyboard::CreateForWindow(this);
+	_touches = Touches::CreateTouchesForDisplay(_timer);
 	_mouseTouches = MouseTouches::CreateMouseTouchesForDisplay(_timer, _mouse);
+
+	_dragSystem = std::make_shared<MX::Widgets::DragSystem>();
+	_tooltipSystem = std::make_shared<MX::Widgets::TooltipSystem>();
+
+	_eventsToCollisions.reset(new Collision::EventsToCollisions(_windowArea, _mouse, _touches, _mouseTouches, _dragSystem));
+
+	_windowArea = std::make_shared<Collision::QuadtreeWeakLayeredArea>((float)width, (float)height);
+	_windowArea->DefineLayerCollision(ClassID<Collision::EventsToCollisions>::id(), ClassID<Widgets::WidgetsLayer>::id());
+	_windowArea->DefineLayerCollision(ClassID<Widgets::DragLayer>::id(), ClassID<Widgets::WidgetsLayer>::id());
 
 	_glcontext = SDL_GL_CreateContext(_window.get());
 	if (!_glcontext) throw std::runtime_error("SDL_GL_CreateContext");

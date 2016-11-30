@@ -112,7 +112,7 @@ public:
 };
 
 
-#ifdef WIP
+#ifdef WIPPOLYGON
 class ScriptPolygonShapePolicy : public ScriptShapePolicy
 {
 public:
@@ -234,7 +234,7 @@ void MX::Widgets::ShapePolicyInit::Init()
 {
 	ScriptClassParser::AddCreator(L"Widget.Shape.Circle", new OutsideScriptClassCreatorContructor<ScriptCirclePolicy>());
 
-#ifdef WIP
+#ifdef WIPPOLYGON
 	ScriptClassParser::AddCreator(L"Widget.Shape.Polygon", new OutsideScriptClassCreatorContructor<ScriptPolygonShapePolicy>());
 	ScriptClassParser::AddCreator(L"Widget.Shape.Polygon.Rectangle", new OutsideScriptClassCreatorContructor<ScriptPolygonRectangleShapePolicy>());
 #endif
@@ -242,7 +242,7 @@ void MX::Widgets::ShapePolicyInit::Init()
 
 
 
-#ifdef WIP
+#ifdef WIPPOLYGON
 ShapePolicy::pointer ShapePolicy::createPolygon(const cinder::Shape2d &polygon)
 {
 	return std::make_unique<ScriptPolygonShapePolicy>(polygon);

@@ -1,10 +1,10 @@
 #ifndef MXCOMPOSITEDRAWERS
 #define MXCOMPOSITEDRAWERS
-#include "Utils/MXUtils.h"
-#include "MXDrawer.h"
-#include "Graphic/Images/MXImage.h"
-#include "Graphic/Images/MXSlice9Image.h"
-#include "MXDrawerUtils.h"
+#include "Utils/Utils.h"
+#include "Drawer.h"
+#include "Graphic/Images/Image.h"
+#include "Graphic/Images/Slice9Image.h"
+#include "DrawerUtils.h"
 
 namespace MX
 {
@@ -21,13 +21,13 @@ namespace Widgets
 		CompositeDrawer(LScriptObject& script);
 
 		std::unique_ptr<ShapePolicy> defaultShapePolicy() override;
-		boost::optional<MX::Margins> defaultMargins() override { return _optionalMargins; }
+		stx::optional<MX::Margins> defaultMargins() override { return _optionalMargins; }
 		
-		boost::optional<MX::Vector2> defaultSize() override 
+		stx::optional<glm::vec2> defaultSize() override 
 		{ 
 			if (!_defaultSize)
-				return boost::none;
-			return MX::Vector2{ _defaultSize->first, _defaultSize->second };
+				return stx::nullopt;
+			return glm::vec2{ _defaultSize->first, _defaultSize->second };
 		}
 
 		void clipSize(float &width, float &height) override;
@@ -42,8 +42,8 @@ namespace Widgets
 
 
 		std::shared_ptr<ShapePolicy> _shapePolicy;
-		boost::optional<MX::Margins> _optionalMargins;
-		boost::optional<SizeType> _defaultSize;
+		stx::optional<MX::Margins> _optionalMargins;
+		stx::optional<SizeType> _defaultSize;
 	};
 
 	class CompositeLayouterDrawer : public CompositeDrawer

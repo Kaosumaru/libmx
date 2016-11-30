@@ -1,13 +1,13 @@
 #ifndef MXDRAWERS
 #define MXDRAWERS
-#include "Utils/MXUtils.h"
-#include "MXDrawer.h"
-#include "Graphic/Images/MXImage.h"
-#include "Graphic/Images/MXSlice9Image.h"
-#include "Script/MXScriptObject.h"
-#include "Graphic/MXScriptableColor.h"
-#include "Widgets/MXWidget.h"
-#include "MXDrawerUtils.h"
+#include "Utils/Utils.h"
+#include "Drawer.h"
+#include "Graphic/Images/Image.h"
+#include "Graphic/Images/Slice9Image.h"
+#include "Script/ScriptObject.h"
+#include "Graphic/ScriptableColor.h"
+#include "Widgets/Widget.h"
+#include "DrawerUtils.h"
 
 namespace MX
 {
@@ -61,14 +61,14 @@ namespace Widgets
 			if (_position == -1)
 			{
 				float x = Destination::current().x(), y = Destination::current().y();
-				image().DrawCentered(0.0f, 0.0f, x, y, 1.0f, 1.0f, MX::Widgets::Widget::current().geometry.angle, imageColor());
+				image().DrawCentered( {}, { x, y }, { 1.0f, 1.0f }, MX::Widgets::Widget::current().geometry.angle, imageColor() );
 				return;
 			}
 
 
 			auto r = MX::Rectangle::fromWH(.0f, .0f, image().Width(), image().Height());
 			r.NumLayoutIn(Destination::current().rectangle, _position);
-			image().DrawCentered(0.0f, 0.0f, r.x1, r.y1, 1.0f, 1.0f, MX::Widgets::Widget::current().geometry.angle, imageColor());
+			image().DrawCentered( {}, { r.x1, r.y1 }, { 1.0f, 1.0f }, MX::Widgets::Widget::current().geometry.angle, imageColor() );
 		}
 	protected:
 

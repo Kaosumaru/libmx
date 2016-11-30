@@ -34,7 +34,7 @@ protected:
 	void onHoverOut();
 
 
-	Vector2      _position;
+	glm::vec2      _position;
 	std::string  _drawerPath;
 	std::wstring _tooltipText;
 

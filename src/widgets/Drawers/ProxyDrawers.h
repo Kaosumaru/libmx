@@ -1,7 +1,7 @@
 #ifndef MXPROXYDRAWERS
 #define MXPROXYDRAWERS
 
-#include "MXDrawer.h"
+#include "Drawer.h"
 
 namespace MX
 {

@@ -248,7 +248,7 @@ public:
 };
 
 
-#if WIP
+#ifdef WIP
 class BitmapDisplaySceneTimer : public DisplaySceneTimer
 {
 public:

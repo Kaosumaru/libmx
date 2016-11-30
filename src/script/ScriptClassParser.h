@@ -117,7 +117,7 @@ public:
 
 	static std::shared_ptr<ScriptObject> Create(const std::wstring& className, const std::string& instancePath)
 	{
-		auto obj = MX::make_shared<T>();
+		auto obj = std::make_shared<T>();
 		if (obj->Parse(className, instancePath))
 			return obj;
 		return nullptr;
@@ -243,7 +243,7 @@ protected:
 
 }
 
-#ifdef WIP
+#ifdef WIPSERIALIZE
 template<typename T>
 void operator & (std::shared_ptr<T> &t, MX::Scriptable::Variable&& var)
 {

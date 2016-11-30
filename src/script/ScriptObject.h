@@ -2,7 +2,7 @@
 #include <string>
 #include "Script.h"
 
-#if WIP
+#ifdef WIPSERIALIZE
 #include "scriptable/ScriptableVariable.h"
 #endif
 
@@ -75,7 +75,7 @@ public:
 	}
 
 
-#ifdef WIP
+#ifdef WIPSERIALIZE
 	virtual Scriptable::Variable variable(const std::string &name)
 	{
 		return Scriptable::Variable(object() + "." + name);
@@ -265,7 +265,7 @@ protected:
 #endif
 
 
-#ifdef WIP
+#ifdef WIPSERIALIZE
 class ScriptSettings : public ScriptObjectString
 {
 public:

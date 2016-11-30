@@ -37,7 +37,7 @@ namespace Widgets
 		virtual int version() { return 0; }
 	protected:
 
-		void ChangeInnerDimension(const MX::Vector2& size);
+		void ChangeInnerDimension(const glm::vec2& size);
 	};
 
 

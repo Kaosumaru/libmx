@@ -112,7 +112,7 @@ protected:
 };
 
 template<typename T, typename Type = OneSelectionListController<T> >
-class PaginatedListController : public Strategies::Strategy, virtual public bs2::trackable
+class PaginatedListController : public Strategies::Strategy
 {
 public:
 	using pointer = std::shared_ptr<PaginatedListController>;

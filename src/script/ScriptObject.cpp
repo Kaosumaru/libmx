@@ -86,7 +86,7 @@ std::wstring ScriptObject::description()
 	return L"Misc.UnsetValue";
 }
 
-#ifdef WIP
+#ifdef WIPSERIALIZE
 ScriptSettings::ScriptSettings(const std::string& objectName, const std::string& prefix) : ScriptObjectString(prefix + objectName) 
 {
 

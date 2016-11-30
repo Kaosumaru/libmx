@@ -103,7 +103,7 @@ void ScrollableBaseGraphicScene::Draw(float x, float y)
 
 
 
-#if WIP
+#ifdef WIP
 ScrollableBitmapScene::ScrollableBitmapScene(const glm::vec2& viewDimensions, const glm::vec2& sceneDimensions) : BitmapScene(viewDimensions), ScrollableSpriteScene(viewDimensions, sceneDimensions)
 {
 }

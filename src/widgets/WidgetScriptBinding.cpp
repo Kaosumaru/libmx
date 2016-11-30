@@ -2,8 +2,9 @@
 #include "Script/Script.h"
 #include "Widgets/Drawers/Drawer.h"
 #include "Widgets/Widget.h"
-#include "RPN/Function.h"
 #include "Widgets/Strategies/DrawableStrategy.h"
+#include "RPN/Function.h"
+
 
 using namespace MX;
 using namespace MX::Widgets;
@@ -45,8 +46,10 @@ void WidgetScriptBinding::onReload()
 	RPN::Functions::AddLambda("Widget.Property", [](const std::string& name) { return Widget::current().properties().valueOf<float>(name); });
 
 
+#ifdef WIPFONT
 	script.SetPairFunctor("Widget.Text.Width", []()-> float 
 	{ 
 		return ScopeSingleton<TextData>::current().actualWidth();
 	});
+#endif
 }

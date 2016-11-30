@@ -1,6 +1,6 @@
 #pragma once
 #include "Widget.h"
-#ifdef WIP
+#ifdef WIPFONT
 #include "Graphic/Fonts/Font.h"
 #endif
 #include "Strategies/DrawableStrategy.h"
@@ -11,7 +11,7 @@ namespace Widgets
 {
 
 
-#ifdef WIP
+#ifdef WIPFONT
 class Label : public ButtonWidget
 {
 public:

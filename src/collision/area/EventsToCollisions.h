@@ -1,9 +1,8 @@
 #pragma once
 #include "collision/shape/Shape.h"
 #include "devices/Mouse.h"
-#if WIP
+#include "devices/Touches.h"
 #include "Widgets/Systems/DragSystem.h"
-#endif
 
 #include <set>
 
@@ -14,7 +13,6 @@ namespace Collision
 
 class LayeredArea;
 
-#if WIP
 class TouchShape : public PointShape
 {
 public:
@@ -38,7 +36,6 @@ public:
 
 	const std::shared_ptr<MouseTouch> mouse_touch;
 };
-#endif
 
 class MouseShape : public PointShape
 {
@@ -64,16 +61,14 @@ class EventsToCollisions
 {
 public:
 	friend class AreaLink;
-	EventsToCollisions(const std::shared_ptr<Collision::LayeredArea>  &area, const Mouse::pointer& mouse);
+	EventsToCollisions(const std::shared_ptr<Collision::LayeredArea>  &area, const Mouse::pointer& mouse, const Touches::pointer& touches, const MouseTouches::pointer& mouseTouches, const std::shared_ptr<Widgets::DragSystem> &dragSystem);
 	virtual ~EventsToCollisions();
 
 
 protected:
-#if WIP
 	void OnTouchBegin(const Touch::pointer & touch, bool mouseTouch);
 	void OnTouchMove(const Touch::pointer & touch, const std::shared_ptr<TouchShape> &shape, bool mouseTouch);
 	void OnTouchEnd(const Touch::pointer & touch, const std::shared_ptr<TouchShape> &shape, bool mouseTouch);
-#endif
 
 	void OnMouseEnter(const glm::vec2& position);
 	void OnMouseMove(const glm::vec2& position);

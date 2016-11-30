@@ -33,15 +33,17 @@ public:
 
 	template<typename T>
 	T valueOf(const std::string &name, const T& def = {}) const
-	{/*
+	{
+		/*
 		auto it = _values.find(name);
 		if (it == _values.end())
 			return def;
 		return boost::get<T>(it->second);*/
+		return{};
 	}
 
 protected:
-	//using Type = boost::variant < float, std::string >;
+	//using Type = stx::variant < float, std::string >;
 	//std::unordered_map<std::string, Type> _values;
 };
 

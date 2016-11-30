@@ -1,12 +1,16 @@
-#include "MXProxyDrawers.h"
-#include "MXDrawers.h"
-#include "Graphic/Images/MXSurfaceRental.h"
-#include "Graphic/MXBlender.h"
-#include "Widgets/MXWidget.h"
-#include "Script/MXScriptClassParser.h"
+#include "ProxyDrawers.h"
+#include "Drawers.h"
+#include "Graphic/Blender.h"
+#include "Widgets/Widget.h"
+#include "Script/ScriptClassParser.h"
+#ifdef WIP
+#include "Graphic/Images/SurfaceRental.h"
+#endif
+
 
 using namespace MX;
 
+#ifdef WIP
 class SurfaceProxyDrawer : public MX::Widgets::DrawerProxy
 {
 public:
@@ -124,9 +128,11 @@ protected:
 	std::vector<Drawer::pointer>      _passDrawers;
 	std::vector<Drawer::pointer>      _postDrawers;
 };
+#endif
 
 void MX::Widgets::ProxyDrawersInit::Init()
 {
+#ifdef WIP
 	ScriptClassParser::AddCreator(L"Drawer.Proxy.Surface", new OutsideScriptClassCreatorContructor<SurfaceProxyDrawer>());
-
+#endif
 }

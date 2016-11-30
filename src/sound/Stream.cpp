@@ -192,7 +192,7 @@ bool Stream::empty()
 StreamManager::StreamManager()
 {
 	float vol = 0.0f;
-#if WIP
+#ifdef WIPSERIALIZE
 	if (MX::Database::get().settings().try_get("StreamManager.Settings.Volume", vol))
 		volume = vol;
 #endif
@@ -204,7 +204,7 @@ void StreamManager::SetDefaultVolume(float v)
 {
 	float vol = 0.0f;
 
-#if WIP
+#ifdef WIPSERIALIZE
 	if (!MX::Database::get().settings().try_get("StreamManager.Settings.Volume", vol))
 		volume = v;
 #endif

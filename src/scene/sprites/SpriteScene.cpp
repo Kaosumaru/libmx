@@ -193,7 +193,7 @@ bool DisplaySceneTimer::paused()
 }
 
 
-#if WIP
+#ifdef WIP
 BitmapDisplaySceneTimer::BitmapDisplaySceneTimer(const glm::vec2& size) : DisplaySceneTimer(size)
 {
 	_bitmap = Graphic::Surface::Create(size.x, size.y);
@@ -218,7 +218,7 @@ unsigned BitmapDisplaySceneTimer::Height()
 }
 
 
-BitmapScene::BitmapScene(const Vector2& size, const Color &backgroundColor, bool alpha) : _backgroundColor(backgroundColor)
+BitmapScene::BitmapScene(const glm::vec2& size, const Color &backgroundColor, bool alpha) : _backgroundColor(backgroundColor)
 {
 	_bitmap = Graphic::Surface::Create(size.x, size.y, alpha);
 }

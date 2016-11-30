@@ -1,10 +1,6 @@
 #pragma once
 #include "PropertyLoaders.h"
 #include "utils/Random.h"
-
-#if WIP
-#include "Graphic/Fonts/Font.h"
-#endif
 #include <array>
 
 namespace MX

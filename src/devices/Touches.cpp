@@ -44,7 +44,7 @@ Touches::Touches(const Time::Timer::pointer &timer)
     _timer = timer;
 }
 
-#if WIP
+#ifdef WIPTOUCHES
 class CinderTouches : public Touches
 {
 public:

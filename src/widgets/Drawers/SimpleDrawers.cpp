@@ -1,5 +1,5 @@
-#include "MXSimpleDrawers.h"
-#include "Widgets/MXWidget.h"
+#include "SimpleDrawers.h"
+#include "Widgets/Widget.h"
 
 using namespace MX::Widgets;
 
@@ -20,7 +20,7 @@ void SimpleDrawer::DrawBackground()
 		float w1 = Destination::current().width(), h1 = Destination::current().height();
 		auto w2 = _image->Width(), h2 = _image->Height();
 
-		_image->DrawCentered(0.0f, 0.0f, x, y, w1/w2, h1/h2, Widget::current().geometry.angle, Widget::current().geometry.color);
+		_image->DrawCentered( {}, { x, y }, { w1 / w2, h1 / h2 }, Widget::current().geometry.angle, Widget::current().geometry.color );
 	}
 }
 
@@ -76,7 +76,7 @@ void TestButtonDrawer::DrawBackground()
 		float w1 = Destination::current().width(), h1 = Destination::current().height();
 		auto w2 = image->Width(), h2 = image->Height();
 
-		image->DrawCentered(0.0f, 0.0f, x, y, w1 / w2, h1 / h2, Widget::current().geometry.angle, Widget::current().geometry.color);
+		image->DrawCentered( {}, { x, y }, { w1 / w2, h1 / h2 }, Widget::current().geometry.angle, Widget::current().geometry.color );
 	}
 }
 

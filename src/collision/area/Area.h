@@ -3,14 +3,6 @@
 #include <map>
 #include <list>
 #include <functional>
-
-#if WIP
-#include <boost/bimap.hpp>
-#include <boost/bimap/unordered_set_of.hpp>
-#include <boost/bimap/multiset_of.hpp>
-#include <boost/bimap/unordered_multiset_of.hpp>
-namespace bm = boost::bimaps;
-#endif
 #include "utils/Bimap.h"
 #include "utils/Utils.h"
 #include "utils/StrongList.h"

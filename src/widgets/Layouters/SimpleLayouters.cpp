@@ -117,14 +117,14 @@ void VerticalLayouter::ItemResized(const std::shared_ptr<MX::Widgets::Widget> &w
 
 VerticalLayouterWidget::VerticalLayouterWidget(int inner)
 {
-	SetLayouter(MX::make_shared<VerticalLayouter>());
+	SetLayouter(std::make_shared<VerticalLayouter>());
 	layouter()->SetInnerMargin(inner);
 }
 
 
 HorizontalLayouterWidget::HorizontalLayouterWidget(int inner)
 {
-	SetLayouter(MX::make_shared<HorizontalLayouter>());
+	SetLayouter(std::make_shared<HorizontalLayouter>());
 	layouter()->SetInnerMargin(inner);
 }
 

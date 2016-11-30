@@ -6,7 +6,7 @@
 using namespace MX;
 using namespace MX::Widgets;
 
-#ifdef WIP
+#ifdef WIPFONT
 #include "HTML/HTMLRendererCairo.h"
 
 MX::Widgets::Label::Label(const std::wstring &text)
