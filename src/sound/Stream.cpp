@@ -243,7 +243,7 @@ void StreamManager::SetCurrent(const std::shared_ptr<StreamBase>& stream)
 
 	if (stream)
 	{
-		stream->SetGain(_crossfading ? 0.0f : volume);
+		stream->SetGain(_crossfading ? 0.0f : volume.directValueAccess());
 		stream->SetLooped(true);
 		stream->Rewind();
 		stream->Play();

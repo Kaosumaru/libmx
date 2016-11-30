@@ -16,6 +16,57 @@ class DragInfo : public shared_ptr_init<DragInfo>
 {
 };
 
+class DropTarget;
+class DragTarget;
+
+class DragSystem : public shared_ptr_init<DragSystem>
+{
+public:
+	friend class DropTarget;
+	friend class DragTarget;
+	DragSystem();
+	void Draw();
+
+
+	static DragSystem& current()
+	{
+		return ScopeSingleton<DragSystem>::current();
+	}
+
+	template <typename T>
+	static std::shared_ptr<T> Get()
+	{
+		auto it = DragSystem::current()._registeredTypes.find(ClassID<T>::id());
+		if (it == DragSystem::current()._registeredTypes.end())
+			return nullptr;
+		return std::static_pointer_cast<T>(it->second);
+	}
+
+	template<typename T>
+	void RegisterData(const std::shared_ptr<T>& dragInfo)
+	{
+		_registeredTypes[ClassID<T>::id()] = dragInfo;
+	}
+
+	bool dragging() { return _draggedObject != nullptr; }
+	Signal<void (const glm::vec2&)> on_started_drag;
+	Signal<void (const glm::vec2&)> on_moved_drag;
+	Signal<void (const glm::vec2&)> on_ended_drag;
+protected:
+	bool StartDragging(DragTarget* object, const glm::vec2 &initialPosition, const glm::vec2& offset = {});
+	void ChangedDragPosition(DragTarget* object, const glm::vec2 &position);
+	void StopDragging(DragTarget* object);
+
+
+
+	void UnregisterAllTypes();
+
+	std::map<ClassID<>::type, DragInfo::pointer> _registeredTypes;
+	DragTarget* _draggedObject;
+	glm::vec2 _position;
+	glm::vec2 _offset;
+};
+
 
 class DragTarget : public shared_ptr_init<DragTarget>
 {
@@ -79,53 +130,7 @@ protected:
 };
 
 
-class DragSystem : public shared_ptr_init<DragSystem>
-{
-public:
-	friend class DragTarget;
-	friend class DropTarget;
-	DragSystem();
-	void Draw();
 
-
-	static DragSystem& current()
-	{
-		return ScopeSingleton<DragSystem>::current();
-	}
-
-	template <typename T>
-	static std::shared_ptr<T> Get()
-	{
-		auto it = DragSystem::current()._registeredTypes.find(ClassID<T>::id());
-		if (it == DragSystem::current()._registeredTypes.end())
-			return nullptr;
-		return std::static_pointer_cast<T>(it->second);
-	}
-
-	template<typename T>
-	void RegisterData(const std::shared_ptr<T>& dragInfo)
-	{
-		_registeredTypes[ClassID<T>::id()] = dragInfo;
-	}
-
-	bool dragging() { return _draggedObject != nullptr; }
-	Signal<void (const glm::vec2&)> on_started_drag;
-	Signal<void (const glm::vec2&)> on_moved_drag;
-	Signal<void (const glm::vec2&)> on_ended_drag;
-protected:
-    bool StartDragging(DragTarget* object, const glm::vec2 &initialPosition, const glm::vec2& offset = {});
-	void ChangedDragPosition(DragTarget* object, const glm::vec2 &position);
-	void StopDragging(DragTarget* object);
-
-
-
-	void UnregisterAllTypes();
-
-	std::map<ClassID<>::type, DragInfo::pointer> _registeredTypes;
-	DragTarget* _draggedObject;
-	glm::vec2 _position;
-    glm::vec2 _offset;
-};
 
 
 

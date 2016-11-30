@@ -67,15 +67,13 @@ public:
 	}
 
     
-
+#ifdef WIPSERIALIZE
 	template<typename T>
 	const bool load_variable(T &t, const std::string &name)
 	{
 		return variable(name).load(t);
 	}
 
-
-#ifdef WIPSERIALIZE
 	virtual Scriptable::Variable variable(const std::string &name)
 	{
 		return Scriptable::Variable(object() + "." + name);
@@ -194,7 +192,7 @@ protected:
 	template<typename T>
 	bool load_property(const PropertyLoader_Standard& st, T &t, const std::string &name)
 	{
-		auto prop = property_object(name);
+		auto prop = ParentType::property_object(name);
 		if (prop)
 		{
 			return PropertyLoader<T>::load(t, prop);
@@ -205,7 +203,7 @@ protected:
 	template<typename T>
 	bool load_property(const PropertyLoader_Custom& st, T &t, const std::string &name)
 	{
-		return PropertyLoader<T>::load(t, property(name));
+		return PropertyLoader<T>::load(t, ParentType::property(name));
 	}
 };
 

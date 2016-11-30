@@ -72,7 +72,7 @@ class RandomSample : virtual public shared_ptr_init<RandomSample>
 public:
 	void AddSample(const Sample::pointer &sample);
 	void Play(float gain = 1.0f, float pan = 0.0f, float speed = 1.0f);
-	Sample::pointer &Get();
+	const Sample::pointer &Get();
 protected:
 	std::vector<Sample::pointer> _samples;
 };

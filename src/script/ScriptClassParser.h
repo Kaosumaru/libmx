@@ -78,7 +78,7 @@ class CreatorTemplatedBase_Policy : public CreatorTemplatedBase<T>
 {
 public:
 
-	ScriptObjectPtr createSharedPtr(const std::wstring& className, const std::string& instancePath) override
+	CreatorBase::ScriptObjectPtr createSharedPtr(const std::wstring& className, const std::string& instancePath) override
 	{
 		return Policy<T>::Create(className, instancePath);
 	}
@@ -124,7 +124,7 @@ public:
 	}
 
 
-	ScriptObjectPtr createSharedPtr(const std::wstring& className, const std::string& instancePath) override
+	CreatorBase::ScriptObjectPtr createSharedPtr(const std::wstring& className, const std::string& instancePath) override
 	{
 		return Create(className, instancePath);
 	}
@@ -171,7 +171,7 @@ public:
 		});
 	}
 
-	ScriptObjectPtr createSharedPtr(const std::wstring& className, const std::string& instancePath) override
+	CreatorBase::ScriptObjectPtr createSharedPtr(const std::wstring& className, const std::string& instancePath) override
 	{ 
 		auto &obj = _cache[instancePath];
 		if (!obj)

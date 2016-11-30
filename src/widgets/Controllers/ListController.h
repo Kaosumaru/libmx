@@ -8,7 +8,7 @@ namespace Widgets
 {
 
 //populates parent with controls created from data
-template<typename T, typename SignalType = default_signal<void (const T&)> >
+template<typename T, typename SignalType = Signal<void (const T&)> >
 class ListController : public Strategies::Strategy, public shared_ptr_init<ListController<T, SignalType>>
 {
 public:
@@ -23,7 +23,7 @@ public:
 
 	static std::shared_ptr<ListController> Create(const CreatorFunction& function)
 	{
-		return MX::make_shared< ListController<T, SignalType> > (function);
+		return std::make_shared< ListController<T, SignalType> > (function);
 	}
 
 	ListController(const CreatorFunction& function)
@@ -83,7 +83,7 @@ public:
 
 	static std::shared_ptr<OneSelectionListController> Create(const CreatorFunction& function)
 	{
-		return MX::make_shared< OneSelectionListController<T, Container> >(function);
+		return std::make_shared< OneSelectionListController<T, Container> >(function);
 	}
 
 	OneSelectionListController(const CreatorFunction& function)
@@ -112,7 +112,7 @@ public:
 			if (_currentWidget == nullptr || ctx.default_item)
 				SelectedButton(widget, dataItem, index);
 
-			widget->onTouched.connect(boost::bind(&OneSelectionListController::SelectedButton, this, widget, boost::ref(dataItem), index));
+			widget->onTouched.connect(std::bind(&OneSelectionListController::SelectedButton, this, widget, std::ref(dataItem), index));
 
 			it2 ++;
 			index ++;

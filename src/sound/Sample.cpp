@@ -1,6 +1,7 @@
 #include "Sample.h"
 #include <memory>
 #include "Stream.h"
+#include "utils/Random.h"
 
 using namespace std;
 using namespace MX;
@@ -223,7 +224,7 @@ void RandomSample::Play(float gain, float pan, float speed)
 {
 	Get()->Play(gain, pan, speed);
 }
-Sample::pointer &RandomSample::Get()
+const Sample::pointer &RandomSample::Get()
 {
-	return _samples[rand() %_samples.size()];
+	return Random::randomFrom(_samples);
 }

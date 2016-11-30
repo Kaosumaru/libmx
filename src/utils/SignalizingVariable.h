@@ -1,7 +1,7 @@
 #pragma once
 #include<memory>
 #include "Signal.h"
-
+#include "Time.h"
 
 template <typename T, template<class> class Parent>
 class SignalizingVariableBase : public Parent<T>
@@ -155,7 +155,7 @@ public:
 protected:
 	void _onChanged(const T& newValue, const T& oldValue)
 	{
-		_timeOfChange = Time::Timer::current().total_seconds();
+		_timeOfChange = MX::Time::Timer::current().total_seconds();
 	}
 	float _timeOfChange = 0.0f;
 };

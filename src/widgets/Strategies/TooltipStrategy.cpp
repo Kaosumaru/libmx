@@ -35,8 +35,8 @@ void Tooltip::onHoverOut()
 void Tooltip::OnInit()
 {
 	//auto buttonWidget = static_cast<ButtonWidget*>(_widget);
-	//buttonWidget->onHoverIn.connect(boost::bind(&Tooltip::onHoverIn, this));
-	//buttonWidget->onHoverOut.connect(boost::bind(&Tooltip::onHoverOut, this));
+	//buttonWidget->onHoverIn.connect(std::bind(&Tooltip::onHoverIn, this));
+	//buttonWidget->onHoverOut.connect(std::bind(&Tooltip::onHoverOut, this));
 }
 
 void Tooltip::onDraw()
@@ -58,7 +58,7 @@ void Tooltip::onShow()
 			text = labelWidget->text();
 	}
 
-	auto txt = MX::make_shared<MX::Widgets::Label>(text);
+	auto txt = std::make_shared<MX::Widgets::Label>(text);
 	txt->SetDrawer(buttonDrawer);
 	txt->ChangeVisibility(-1);
 

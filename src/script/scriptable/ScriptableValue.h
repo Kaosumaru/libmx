@@ -153,17 +153,6 @@ namespace Scriptable
 			return _member->valueFloat();
 		}
 
-		operator const int () const
-		{
-			return (int)_member->valueFloat();
-		} 
-
-		operator const unsigned int () const
-		{
-			return (unsigned int)_member->valueFloat();
-		}  
-
-
 		const bool isTrue() const
 		{
 			return _member->isTrue();
