@@ -1,10 +1,10 @@
 #ifndef MXPARTICLEDECORATOR
 #define MXPARTICLEDECORATOR
 
-#include "Script/MXScriptObject.h"
-#include "Utils/MXTime.h"
-#include "MXParticleEmitter.h"
-#include "Utils/MXUtils.h"
+#include "Script/ScriptObject.h"
+#include "Utils/Time.h"
+#include "ParticleEmitter.h"
+#include "Utils/Utils.h"
 
 namespace MX{
 namespace Graphic{
@@ -35,7 +35,7 @@ namespace Graphic{
 		virtual bool isStateless() { return true; }
 		virtual pointer clone()
 		{
-			return MX::make_shared<ParticleDecorator>(*this);
+			return std::make_shared<ParticleDecorator>(*this);
 		}
 	};
 

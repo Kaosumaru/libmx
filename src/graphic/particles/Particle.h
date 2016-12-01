@@ -1,12 +1,12 @@
 #pragma once
 #include "Scene/Sprites/SpriteScene.h"
 #include "Graphic/Images/Image.h"
-#include "Script/MXScriptObject.h"
-#include "Utils/MXTime.h"
-#include "Utils/MXRandom.h"
-#include "Utils/MXUtils.h"
-#include "Script/Class/MXScriptImageClass.h"
-#include "Script/Class/MXScriptAnimationClass.h"
+#include "Script/ScriptObject.h"
+#include "Utils/Time.h"
+#include "Utils/Random.h"
+#include "Utils/Utils.h"
+#include "Script/Class/ScriptImageClass.h"
+#include "Script/Class/ScriptAnimationClass.h"
 
 namespace MX{
 namespace Graphic{
@@ -32,7 +32,7 @@ public:
 		auto percent = _stopWatch.percent();
 
 		geometry.position += _directionForce * elapsed_seconds;
-		geometry.scale = Vector2::lerp(_scale1, _scale2, percent);
+		geometry.scale = lerp(_scale1, _scale2, percent);
 
 		double _particleColorInactivePercent = _timeToColorChange / _stopWatch.total_time();
 		auto lerp_percent = percent - (percent > _particleColorInactivePercent ? _particleColorInactivePercent : 0.0f);
@@ -57,12 +57,12 @@ public:
 	virtual Graphic::Image* baseImage() const { return nullptr; }
 	virtual Graphic::Image* normalsImage() const { return nullptr; }
 
-	Vector2              _directionForce;
-	Vector2              _acceleration;
+	glm::vec2              _directionForce;
+	glm::vec2              _acceleration;
 	float				 _angular_vel;
 	double				 _timeToColorChange = 0.0;
 
-	Vector2              _scale1, _scale2;
+	glm::vec2              _scale1, _scale2;
 	float                _angle1, _angle2;
 	Color                _color1, _color2;
 	Time::ManualStopWatchAbsolute      _stopWatch;
@@ -82,7 +82,7 @@ public:
 	void Draw(float x, float y)  const override
 	{
 		if (_image)
-			_image->DrawCentered(0.0f, 0.0f, x, y, geometry.scale.x, geometry.scale.y, geometry.angle, geometry.color);
+			_image->DrawCentered( {}, { x, y }, geometry.scale, geometry.angle, geometry.color );
 	}
 
 	void SetImage(const std::shared_ptr<Graphic::Image> &image)
@@ -129,8 +129,8 @@ public:
 protected:
 	virtual void InitParticle(Particle &p)
 	{
-		p._scale1 = Vector2::lerp(_scale1.first, _scale1.second, Random::randomRange());
-		p._scale2 = Vector2::lerp(_scale2.first, _scale2.second, Random::randomRange());
+		p._scale1 = lerp(_scale1.first, _scale1.second, Random::randomRange());
+		p._scale2 = lerp(_scale2.first, _scale2.second, Random::randomRange());
 		p._color1 = Color::lerp(_color1.first, _color1.second, Random::randomRange());
 		p._color2 = Color::lerp(_color2.first, _color2.second, Random::randomRange());
 
@@ -141,7 +141,7 @@ protected:
 	}
 
 	std::pair<Color, Color> _color1, _color2;
-	std::pair<Vector2, Vector2> _scale1, _scale2;
+	std::pair<glm::vec2, glm::vec2> _scale1, _scale2;
 	std::pair<float, float> _angle1, _angle2;
 	std::pair<float, float> _angular_vel;
 };
@@ -159,5 +159,3 @@ public:
 
 }
 }
-
-#endif

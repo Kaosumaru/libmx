@@ -76,8 +76,8 @@ public:
 	{
 		ParticleEmitter::EmitParticle(p, s);
 		p._stopWatch.Start(Random::randomRange(_life));
-		p._directionForce = Vector2::CreateVectorFromAngle(Random::randomRange(_direction)) * Random::randomRange(_speed);
-		p._acceleration = Vector2::CreateVectorFromAngle(Random::randomRange(_direction)) * Random::randomRange(_acceleration);
+		p._directionForce = CreateVectorFromAngle(Random::randomRange(_direction)) * Random::randomRange(_speed);
+		p._acceleration = CreateVectorFromAngle(Random::randomRange(_direction)) * Random::randomRange(_acceleration);
 	}
 
 protected:
@@ -101,8 +101,8 @@ public:
 		ParticleEmitter::EmitParticle(p, s);
 		float direction = Random::randomRange(_direction_range);
 		p._stopWatch.Start(Random::randomRange(_life));
-		p._directionForce = Vector2::CreateVectorFromAngle(direction) * Random::randomRange(_speed);
-		p._acceleration = Vector2::CreateVectorFromAngle(direction) * Random::randomRange(_acceleration);
+		p._directionForce = CreateVectorFromAngle(direction) * Random::randomRange(_speed);
+		p._acceleration = CreateVectorFromAngle(direction) * Random::randomRange(_acceleration);
 		p.geometry.angle += direction;
 	}
 
@@ -128,8 +128,8 @@ public:
 	{
 		ParticleEmitter::EmitParticle(p, s);
 		p._stopWatch.Start(Random::randomRange(_life));
-		p._directionForce = Vector2::CreateVectorFromAngle(Random::randomGaussRange(_direction)) * Random::randomRange(_speed);
-		p._acceleration = Vector2::CreateVectorFromAngle(Random::randomGaussRange(_direction)) * Random::randomRange(_acceleration);
+		p._directionForce = CreateVectorFromAngle(Random::randomGaussRange(_direction)) * Random::randomRange(_speed);
+		p._acceleration = CreateVectorFromAngle(Random::randomGaussRange(_direction)) * Random::randomRange(_acceleration);
 	}
 
 protected:
@@ -197,8 +197,8 @@ public:
 		p.geometry.position += circ.RandomPointInside();
 		_direction = Random::randomRange(_direction_range);
 		p._stopWatch.Start(Random::randomRange(_life));
-		p._directionForce = Vector2::CreateVectorFromAngle(_direction) * Random::randomRange(_speed);
-		p._acceleration = Vector2::CreateVectorFromAngle(_direction) * Random::randomRange(_acceleration);
+		p._directionForce = CreateVectorFromAngle(_direction) * Random::randomRange(_speed);
+		p._acceleration = CreateVectorFromAngle(_direction) * Random::randomRange(_acceleration);
 		p.geometry.angle += _direction;
 
 	}

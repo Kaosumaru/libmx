@@ -33,7 +33,7 @@ public:
 #ifdef WIPFONT
 	WidgetPtr WidgetCreate() override
 	{ 
-		return MX::make_shared<MX::Widgets::Label>(_text ? _text->text() : L"");
+		return std::make_shared<MX::Widgets::Label>(_text ? _text->text() : L"");
 	}
 #endif
 protected:
@@ -53,7 +53,7 @@ public:
 
 	WidgetPtr WidgetCreate() override
 	{
-		auto button = MX::make_shared<MX::Widgets::LabelButton>(_text ? _text->text() : L"");
+		auto button = std::make_shared<MX::Widgets::LabelButton>(_text ? _text->text() : L"");
 
 		button->onClicked.connect([=, b = button.get()]() 
 		{

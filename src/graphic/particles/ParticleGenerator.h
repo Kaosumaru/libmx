@@ -1,11 +1,11 @@
 #ifndef MXPARTICLEGENERATOR
 #define MXPARTICLEGENERATOR
-#include "Scene/Sprites/MXSpriteScene.h"
-#include "Graphic/Images/MXImage.h"
-#include "Script/MXScriptObject.h"
-#include "Utils/MXTime.h"
-#include "MXParticleEmitter.h"
-#include "Utils/MXUtils.h"
+#include "Scene/Sprites/SpriteScene.h"
+#include "Graphic/Images/Image.h"
+#include "Script/ScriptObject.h"
+#include "Utils/Time.h"
+#include "ParticleEmitter.h"
+#include "Utils/Utils.h"
 
 namespace MX{
 namespace Graphic{
@@ -48,7 +48,7 @@ public:
 
 	ParticleGenerator::pointer clone()
 	{
-		return MX::make_shared<ParticleGeneratorSimple>(*this);
+		return std::make_shared<ParticleGeneratorSimple>(*this);
 	}
 
 	void OnBeforeGeneration() override
@@ -97,7 +97,7 @@ public:
 	ParticleGenerator::pointer clone()
 	{
 		_particleNumber = Random::randomRange(_particleRange);
-		return MX::make_shared<ParticleGeneratorAllAtOnce>(*this);
+		return std::make_shared<ParticleGeneratorAllAtOnce>(*this);
 	}
 
 

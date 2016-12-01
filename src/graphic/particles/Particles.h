@@ -61,7 +61,7 @@ protected:
 	bool _active = true;
 	bool _relative = true;
 
-	Vector2 _oldPosition;
+	glm::vec2 _oldPosition;
 
 	std::shared_ptr<ParticleCreator> _creator;
 	std::shared_ptr<ParticleEmitter> _emitter;

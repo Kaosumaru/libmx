@@ -128,7 +128,7 @@ public:
 
 	static std::shared_ptr<PaginatedListController> Create(const CreatorFunction& function)
 	{
-		return MX::make_shared< PaginatedListController<T, ControllerType> >(function);
+		return std::make_shared< PaginatedListController<T, ControllerType> >(function);
 	}
 
 	void SetData(const ContainerType &data)

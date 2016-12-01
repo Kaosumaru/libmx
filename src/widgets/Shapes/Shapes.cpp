@@ -155,7 +155,7 @@ public:
 
 	void OnEnabled() override
 	{
-		_shape = MX::make_shared<Collision::SignalizingPolygonShape>();
+		_shape = std::make_shared<Collision::SignalizingPolygonShape>();
 		_shape->SetTrackCollisions(true);
 	}
 	void OnDisabled() override

@@ -80,7 +80,7 @@ namespace MX
 
 		Command::pointer clone()
 		{
-			return MX::make_shared<QueueCommand>(*this);
+			return std::make_shared<QueueCommand>(*this);
 		}
 	};
 
@@ -120,7 +120,7 @@ namespace MX
 
 		Command::pointer clone()
 		{
-			return MX::make_shared<LoopCommand>(*this);
+			return std::make_shared<LoopCommand>(*this);
 		}
 
 
@@ -151,7 +151,7 @@ namespace MX
 
 		Command::pointer clone()
 		{
-			return MX::make_shared<SimultaneusCommand>(*this);
+			return std::make_shared<SimultaneusCommand>(*this);
 		}
 	};
 
@@ -180,7 +180,7 @@ namespace MX
 		LambdaCommand(const Function &t) : _t(t) {}
 		bool operator()() { return _t(); }
 
-		Command::pointer clone() { return MX::make_shared<LambdaCommand>(_t); }
+		Command::pointer clone() { return std::make_shared<LambdaCommand>(_t); }
 	protected:
 		Function _t;
 	};

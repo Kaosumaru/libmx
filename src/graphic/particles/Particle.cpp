@@ -74,9 +74,10 @@ public:
 		geometry.scale.x *= scale_percent;
 		geometry.scale.y *= scale_percent;
 
-
+#ifdef WIP
 		if (!_directionForce.zero() && _deceleration)
 			_directionForce.approach_zero(_deceleration * elapsed_seconds);
+#endif
 
 		return true;
 	}

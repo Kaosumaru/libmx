@@ -58,7 +58,7 @@ void Tooltip::onShow()
 			text = labelWidget->text();
 	}
 
-	auto txt = MX::make_shared<MX::Widgets::Label>(text);
+	auto txt = std::make_shared<MX::Widgets::Label>(text);
 	txt->SetDrawer(buttonDrawer);
 	txt->ChangeVisibility(-1);
 

@@ -20,7 +20,7 @@ public:
 	
 	static Command::pointer get_static()
 	{
-		static Command::pointer ptr = MX::make_shared<UnlinkCommand>();
+		static Command::pointer ptr = std::make_shared<UnlinkCommand>();
 		return ptr;
 	}
 
@@ -39,7 +39,7 @@ public:
 
 	static Command::pointer get_static()
 	{
-		static Command::pointer ptr = MX::make_shared<UnlinkIfEmptyCommand>();
+		static Command::pointer ptr = std::make_shared<UnlinkIfEmptyCommand>();
 		return ptr;
 	}
 
@@ -81,7 +81,7 @@ public:
 		return false;
 	}
 
-	Command::pointer clone() { return MX::make_shared<ChangeColorCommand>(_color); }
+	Command::pointer clone() { return std::make_shared<ChangeColorCommand>(_color); }
 protected:
 	Color _color;
 };
@@ -107,7 +107,7 @@ public:
 		return false;
 	}
 
-	Command::pointer clone() { return MX::make_shared<TeleportToCommand>(_vec); }
+	Command::pointer clone() { return std::make_shared<TeleportToCommand>(_vec); }
 protected:
 	glm::vec2 _vec;
 };
@@ -145,7 +145,7 @@ public:
 		return ret;
 	}
 
-	Command::pointer clone() { return MX::make_shared<LerpColorCommand>(*this); }
+	Command::pointer clone() { return std::make_shared<LerpColorCommand>(*this); }
 protected:
 	Color _color1;
 	Color _color2;
@@ -169,7 +169,7 @@ public:
 		return ret;
 	}
 
-	Command::pointer clone() { return MX::make_shared<LerpColor1Command>(_color, (float)_seconds); }
+	Command::pointer clone() { return std::make_shared<LerpColor1Command>(_color, (float)_seconds); }
 protected:
 	Color _color;
 };
@@ -206,7 +206,7 @@ public:
 		return ret;
 	}
 
-	Command::pointer clone() { return MX::make_shared<LerpAlphaCommand>(*this); }
+	Command::pointer clone() { return std::make_shared<LerpAlphaCommand>(*this); }
 protected:
 	float _alpha;
 	float _from = -1;
@@ -252,7 +252,7 @@ public:
 		return ret;
 	}
 
-	Command::pointer clone() { return MX::make_shared<BlinkColorCommand>(_color, (float)_seconds); }
+	Command::pointer clone() { return std::make_shared<BlinkColorCommand>(_color, (float)_seconds); }
 protected:
 	Color _color;
 };
@@ -290,7 +290,7 @@ public:
 		return ret;
 	}
 
-	Command::pointer clone() { return MX::make_shared<MoveToCommand>(_vec.x, _vec.y, (float)_seconds); }
+	Command::pointer clone() { return std::make_shared<MoveToCommand>(_vec.x, _vec.y, (float)_seconds); }
 protected:
 	bool _start = true;
 	glm::vec2 _vecOrig;
@@ -330,7 +330,7 @@ public:
 		return ret;
 	}
 
-	Command::pointer clone() { return MX::make_shared<WarpScaleCommand>(_vec.x, _vec.y, (float)_seconds); }
+	Command::pointer clone() { return std::make_shared<WarpScaleCommand>(_vec.x, _vec.y, (float)_seconds); }
 
 protected:
 	bool _start = true;
@@ -369,7 +369,7 @@ public:
 		return ret;
 	}
 
-	Command::pointer clone() { return MX::make_shared<WarpRelativeScaleCommand>(_vec.x, _vec.y, (float)_seconds); }
+	Command::pointer clone() { return std::make_shared<WarpRelativeScaleCommand>(_vec.x, _vec.y, (float)_seconds); }
 
 protected:
 	bool _start = true;
@@ -403,7 +403,7 @@ public:
 		return true;
 	}
 
-	Command::pointer clone() { return MX::make_shared<MoveInDirectionCommand>(_vec, _speed.getOriginalValue()); }
+	Command::pointer clone() { return std::make_shared<MoveInDirectionCommand>(_vec, _speed.getOriginalValue()); }
 
 protected:
     glm::vec2 _vec;
@@ -430,7 +430,7 @@ public:
 		return true;
 	}
 
-	Command::pointer clone() { return MX::make_shared<RotateCommand>(_speed.getOriginalValue()); }
+	Command::pointer clone() { return std::make_shared<RotateCommand>(_speed.getOriginalValue()); }
 protected:
     Time::FloatPerSecond _speed;
 };
@@ -454,7 +454,7 @@ public:
 		return false;
 	}
 
-	Command::pointer clone() { return MX::make_shared<SetRandomAngle>(_angle); }
+	Command::pointer clone() { return std::make_shared<SetRandomAngle>(_angle); }
 protected:
 	std::pair<float,float> _angle;
 };
@@ -475,7 +475,7 @@ public:
 		return false;
 	}
 
-	Command::pointer clone() { return MX::make_shared<SoundEffect>(_sound); }
+	Command::pointer clone() { return std::make_shared<SoundEffect>(_sound); }
 protected:
 	std::shared_ptr<MX::ScriptSoundClass> _sound;
 };
@@ -526,7 +526,7 @@ public:
 		return true;
 	}
 
-	Command::pointer clone() { return MX::make_shared<GlueToCommand>(*this); }
+	Command::pointer clone() { return std::make_shared<GlueToCommand>(*this); }
 
 protected:
     std::weak_ptr<SpriteActor> _ptr;
@@ -567,7 +567,7 @@ public:
 		return false;
 	}
 
-	Command::pointer clone() { return MX::make_shared<GlueToCommandWithOffset>(*this); }
+	Command::pointer clone() { return std::make_shared<GlueToCommandWithOffset>(*this); }
 
 protected:
 };
@@ -576,9 +576,9 @@ std::shared_ptr<Command> glue_to(const SpriteActorPtr& ptr, const glue_to_option
 {
 	std::shared_ptr<GlueToCommand> command;
 	if ( options.offset == glm::vec2{} )
-		command = MX::make_shared<GlueToCommand>(ptr, options);
+		command = std::make_shared<GlueToCommand>(ptr, options);
 	else
-		command = MX::make_shared<GlueToCommandWithOffset>(ptr, options);
+		command = std::make_shared<GlueToCommandWithOffset>(ptr, options);
 	return command;
 }
 
@@ -627,7 +627,7 @@ protected:
 
 std::shared_ptr<Command> nail_to(const SpriteActorPtr& original, const SpriteActorPtr& ptr)
 {
-	return MX::make_shared<NailToCommand>(original, ptr);
+	return std::make_shared<NailToCommand>(original, ptr);
 }
 
 
@@ -649,7 +649,7 @@ public:
 		return false;
 	}
 
-	Command::pointer clone() { return MX::make_shared<ExecuteEventCommand>(_event); }
+	Command::pointer clone() { return std::make_shared<ExecuteEventCommand>(_event); }
 protected:
 	EventPtr _event;
 };

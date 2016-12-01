@@ -1,16 +1,13 @@
-#include "MXParticles.h"
-#include "Utils/MXRandom.h"
-#include "Utils/MXMakeShared.h"
-#include "Scene/Sprites/MXScriptableSpriteActor.h"
+#include "Particles.h"
+#include "Utils/Random.h"
+#include "Scene/Sprites/ScriptableSpriteActor.h"
 
-#include "MXParticle.h"
-#include "MXParticleGenerator.h"
-#include "MXParticleEmitter.h"
-#include "MXParticleDecorator.h"
-#include "Script/MXScriptClassParser.h"
-#include "Graphic/MXBlender.h"
-
-#include "Graphic/Renderers/MXTextureRenderer.h"
+#include "Particle.h"
+#include "ParticleGenerator.h"
+#include "ParticleEmitter.h"
+#include "ParticleDecorator.h"
+#include "Script/ScriptClassParser.h"
+#include "Graphic/Blender.h"
 
 
 using namespace MX;
@@ -111,7 +108,6 @@ void ParticleSystem::Draw(float x, float y)
 {
 	if (_container.empty())
 		return;
-	Image::Hold::ScopeLock imageHold;
 
 	auto color_guard = Context<Color, Graphic::Image::Settings::ColorMultiplier>::CreateEmptyGuard();
 	if (geometry.color.current() != MX::Color::white())
@@ -120,12 +116,14 @@ void ParticleSystem::Draw(float x, float y)
 	//TODO fix me - code duplication
 	if (relative())
 	{
+#ifdef WIPMATRIX
 		Graphic::TextureRenderer::current().Flush();
 		ci::gl::pushModelView();
 		ci::gl::translate(x, y);
 		ci::gl::rotate(geometry.angle, 0.0f, 0.0f, 1.0f);
 		ci::gl::scale(geometry.scale.x, geometry.scale.y);
 		ci::gl::translate(-x, -y);
+#endif
 	}
 	else
 	{
@@ -147,8 +145,10 @@ void ParticleSystem::Draw(float x, float y)
 
 	if (relative())
 	{
+#ifdef WIPMATRIX
 		Graphic::TextureRenderer::current().Flush();
 		ci::gl::popModelView();
+#endif
 	}
 
 }
@@ -158,7 +158,6 @@ void ParticleSystem::DrawCustom(float x, float y)
 {
 	if (_container.empty())
 		return;
-	Image::Hold::ScopeLock imageHold;
 
 	auto color_guard = Context<Color, Graphic::Image::Settings::ColorMultiplier>::CreateEmptyGuard();
 	if (geometry.color.current() != MX::Color::white())
@@ -167,12 +166,14 @@ void ParticleSystem::DrawCustom(float x, float y)
 	//TODO fix me - code duplication
 	if (relative())
 	{
+#ifdef WIPMATRIX
 		Graphic::TextureRenderer::current().Flush();
 		ci::gl::pushModelView();
 		ci::gl::translate(x, y);
 		ci::gl::rotate(geometry.angle, 0.0f, 0.0f, 1.0f);
 		ci::gl::scale(geometry.scale.x, geometry.scale.y);
 		ci::gl::translate(-x, -y);
+#endif
 	}
 	else
 	{
@@ -194,8 +195,10 @@ void ParticleSystem::DrawCustom(float x, float y)
 
 	if (relative())
 	{
+#ifdef WIPMATRIX
 		Graphic::TextureRenderer::current().Flush();
 		ci::gl::popModelView();
+#endif
 	}
 
 }
@@ -229,7 +232,7 @@ void ParticleSystem::Run()
 
 				particle = _creator->CreateParticle();
 				if (!relative())
-					particle->geometry.position = Vector2::lerp(_oldPosition, geometry.position, time_percent);
+					particle->geometry.position = lerp(_oldPosition, geometry.position, time_percent);
 
 				_emitter->EmitParticle(*particle, *this);
 			}
@@ -256,9 +259,6 @@ void ParticleSystem::Run()
 void ParticleInit::Init()
 {
 	ScriptClassParser::AddCreator(L"Particles.SimpleSystem", new OutsideScriptClassCreatorContructor<ParticleSystem>());
-
-
-
 
 
 	ParticleEmitterInit::Init();

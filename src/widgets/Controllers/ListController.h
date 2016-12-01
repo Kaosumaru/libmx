@@ -23,7 +23,7 @@ public:
 
 	static std::shared_ptr<ListController> Create(const CreatorFunction& function)
 	{
-		return MX::make_shared< ListController<T, SignalType> > (function);
+		return std::make_shared< ListController<T, SignalType> > (function);
 	}
 
 	ListController(const CreatorFunction& function)
@@ -83,7 +83,7 @@ public:
 
 	static std::shared_ptr<OneSelectionListController> Create(const CreatorFunction& function)
 	{
-		return MX::make_shared< OneSelectionListController<T, Container> >(function);
+		return std::make_shared< OneSelectionListController<T, Container> >(function);
 	}
 
 	OneSelectionListController(const CreatorFunction& function)
