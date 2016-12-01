@@ -15,7 +15,8 @@ include(CommonFunctions)
 add_definitions("${MX_DEFINES}")
 
 #deps
-#add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/RPNParser/RPN" "${CMAKE_CURRENT_BINARY_DIR}/RPN")
+SET(RPN_USE_JIT OFF CACHE BOOL "Don't use jit")
+add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/RPNParser/RPN" "${CMAKE_CURRENT_BINARY_DIR}/RPN")
 #add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/MSL/MSL" "${CMAKE_CURRENT_BINARY_DIR}/MSL")
 
 set(MX_INCLUDES ${MX_INCLUDES} ${RPN_Includes} ${CMAKE_CURRENT_LIST_DIR}/deps/MSL ${CMAKE_CURRENT_LIST_DIR}/deps/RPNParser/RPN)
