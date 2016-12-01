@@ -27,7 +27,7 @@
 
       Creator: Particles.Creator.Image()
       {
-        Start.Color: [-1,-1,-1,0.5],
+        Start.Color: [-1,-1,-1,1.0],
         Start.Scale: [0.78, 0.78],
 
         End.Color: [1, 1, 1, -0.1],
@@ -35,7 +35,7 @@
         Image: &(Test).Smoke
       }
 
-      Generator: Particles.Generator.Simple() { PerSecond: 50	}
+      Generator: Particles.Generator.Simple() { PerSecond: 100	}
     }
 
   }

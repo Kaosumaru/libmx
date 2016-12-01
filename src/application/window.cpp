@@ -83,6 +83,7 @@ void Window::OnRender()
 	Viewport::Set(Rectangle{0.0f, 0.0f, (float)_width, (float)_height});
 	glm::mat4x4 projection = glm::orthoLH(0.0f, (float)_width, (float)_height, 0.0f, -100.0f, 100.0f);
 	MVP::SetProjection(projection);
+	glEnable(GL_BLEND);
 }
 
 void Window::AfterRender()
