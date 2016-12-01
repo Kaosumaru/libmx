@@ -40,20 +40,20 @@ public:
 	template<typename ...Args>
 	void connect_signal(MX::SimpleSignal<Args...>& signal)
 	{
-		signal.connect(boost::bind(&AutoLabel::MarkAsDirty, this), shared_from_this());
+		signal.connect(std::bind(&AutoLabel::MarkAsDirty, this), shared_from_this());
 	}
 	
 
 	template<typename ...Args>
 	void connect_signal(MX::Signal<void (Args...)>& signal)
 	{
-		signal.connect(boost::bind(&AutoLabel::MarkAsDirty, this), shared_from_this());
+		signal.connect(std::bind(&AutoLabel::MarkAsDirty, this), shared_from_this());
 	}
 
 	template<typename T>
 	void connect_signal(default_signal<T>& signal)
 	{
-		signal.connect(boost::bind(&AutoLabel::MarkAsDirty, this));
+		signal.connect(std::bind(&AutoLabel::MarkAsDirty, this));
 	}
 
     

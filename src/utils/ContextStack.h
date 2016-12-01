@@ -60,7 +60,7 @@ protected:
 	static std::vector<T*> _stack;
 };
 
-template <typename T, typename T1 = void>
+template <typename T, typename T1>
 std::vector<T*> ContextStack<T,T1>::_stack;
 
 #endif

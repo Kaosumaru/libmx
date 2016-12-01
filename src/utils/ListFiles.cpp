@@ -1,13 +1,17 @@
 #include "ListFiles.h"
 #include "Utils/Time.h"
-#include "deps/dirent.h"
 #include <sys/stat.h>
 #include <sys/types.h>
+
+#ifndef __EMSCRIPTEN__
+#include "deps/dirent.h"
+#endif
 
 namespace MX
 {
 	bool ListFiles(const std::string& path, const ListFileCallback& callback)
 	{
+#ifndef __EMSCRIPTEN__
 		DIR *dir = opendir(path.c_str());
 		dirent *ent;
 		if (dir == NULL) 
@@ -26,6 +30,10 @@ namespace MX
 
 		closedir (dir);
 		return true;
+#else
+		return false;
+#endif
+
 	}
 
 	bool ListFilesRecursively( const std::string& path, const ListFileCallback& callback )

@@ -26,7 +26,7 @@ namespace Widgets
 		stx::optional<glm::vec2> defaultSize() override 
 		{ 
 			if (!_defaultSize)
-				return stx::nullopt;
+				return stx::optional<glm::vec2>{};
 			return glm::vec2{ _defaultSize->first, _defaultSize->second };
 		}
 

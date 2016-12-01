@@ -1,6 +1,8 @@
 #include "ScriptObject.h"
 #include "Script.h"
 #include <string>
+#include <codecvt>
+#include <locale>
 using namespace MX;
 
 

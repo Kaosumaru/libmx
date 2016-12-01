@@ -1,4 +1,5 @@
 #include "ScriptParser.h"
+#include "ScriptClassParser.h"
 #include "Script.h"
 
 #include <mutex>

@@ -23,8 +23,8 @@ class BaseSpriteSceneManager : public SpriteSceneManager
 {
 public:
 	virtual void SelectScene(const SpriteScenePtr &scene, const std::shared_ptr<SceneTransition> &transition = nullptr);
-	void Run();
-	void Draw(float x = 0.0f, float y = 0.0f);
+	void Run() override;
+	void Draw(float x = 0.0f, float y = 0.0f) override;
 
 	void Clear() override;
 protected:

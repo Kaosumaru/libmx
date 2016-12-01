@@ -50,14 +50,13 @@ public:
 	virtual void AfterDraw() { }
 
 	virtual void OnRefreshedDrawer() { }
-
+	virtual void OnShapeChanged() {};
 protected:
 	void IncInteractive();
 	void DecInteractive();
 
 
 	virtual void OnInit() {};
-	virtual void OnShapeChanged() {};
 
 	bool    _interactive = false;
 	Widget *_widget = nullptr;

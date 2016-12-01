@@ -20,7 +20,7 @@ public:
 	{
 		for (std::size_t i = 0; i < pool_size; ++i)
 		{
-			threads_.create_thread(boost::bind(&boost::asio::io_service::run,
+			threads_.create_thread(std::bind(&boost::asio::io_service::run,
 				&io_service_));
 		}
 	}

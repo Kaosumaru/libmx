@@ -38,7 +38,7 @@ public:
 
 	void operator = (const ContainerType& l) { _list = l; _onChanged(); }
 
-	default_signal<void(const ContainerType& container)> onChanged;
+	Signal<void(const ContainerType& container)> onChanged;
 protected:
 	void _onChanged()
 	{

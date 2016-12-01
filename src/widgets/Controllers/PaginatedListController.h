@@ -186,11 +186,11 @@ public:
 
 	void OnRefreshedDrawer() override
 	{
-		auto items = widget().properties().valueOf<float>("ItemsPerPage", -1.0f);
+		auto items = widget().properties().template valueOf<float>("ItemsPerPage", -1.0f);
 		if (items != -1.0f)
 			_pagination.SetMaxItemsPerPage(items);
 
-		pagination().SetFillPageToEnd(widget().properties().valueOf<float>("FillPageToEnd", 0.0f) != 0.0f);
+		pagination().SetFillPageToEnd(widget().properties().template valueOf<float>("FillPageToEnd", 0.0f) != 0.0f);
 	}
 
 protected:
