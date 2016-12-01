@@ -163,6 +163,7 @@ namespace MX
 
 	bool Resources::isSpriteSheet(const std::string& path)
 	{
+
 #ifdef WIPSPRITESHEET
 		boost::filesystem::path p(path);
 		return boost::filesystem::is_regular_file(p) && p.extension() == ".json";

@@ -5,6 +5,7 @@
 #include <iterator>
 #include <sstream>
 #include <iostream>
+#include "Utils/RPN/Parser.h"
 
 using namespace MX;
 
@@ -119,7 +120,6 @@ protected:
 	std::function<float()> _number_functor;
 };
  
-#ifdef WIPSCRIPT
 class RPNValue : public NumericalValueMember
 {
 public:
@@ -131,7 +131,7 @@ public:
 
 	~RPNValue()
 	{
-#ifdef _DEBUG
+#ifdef RPN_USE_JIT
 		_function.Release();
 #endif
 	}
@@ -140,7 +140,7 @@ public:
 	{
 		auto guard = Context<std::string, MX::KeyContext>::Lock(const_cast<std::string &>(_parentValue->fullPath()));
 
-#ifdef _DEBUG
+#ifdef RPN_USE_JIT
 		_function = MX::RPNParser::Default().Compile(_text);
 #else
 		_value = MX::RPNParser::Default().Parse(_text);
@@ -151,7 +151,7 @@ public:
 
 	float valueFloat() 
 	{ 
-#ifdef _DEBUG
+#ifdef RPN_USE_JIT
 		return _function();
 #else
 		return _value->value();
@@ -160,7 +160,7 @@ public:
 
 	bool isConstant() const override 
 	{ 
-#ifdef _DEBUG
+#ifdef RPN_USE_JIT
 		return _function.constant();
 #else
 		return _value->constant();
@@ -169,7 +169,7 @@ public:
 
 	std::string valueString() override
 	{
-#ifdef _DEBUG
+#ifdef RPN_USE_JIT
 		auto &token = _function.token();
 #else
 		auto &token = _value;
@@ -186,14 +186,13 @@ protected:
 	Scriptable::Value* _parentValue;
 	std::string _text;
 
-#ifdef _DEBUG
+#ifdef RPN_USE_JIT
 	RPN::Parser::CompiledFunction _function;
 #else
 	RPN::TokenPtr _value;
 #endif
 	
 };
-#endif
 
 class ArrayValue : public Scriptable::Detail::ValueMember
 {
@@ -275,14 +274,12 @@ public:
 			finalizeOnMainThread();
 	}
 
-#ifdef WIPSCRIPT
 	void finalizeOnMainThread() override
 	{
 		auto guard = Context<std::string, MX::KeyContext>::Lock(const_cast<std::string &>(_parentValue->fullPath()));
-		_pointer = Script::get().object(_value);
+		_pointer = Script::current().object(_value);
 		_value.clear();
 	}
-#endif
 
 	bool isConstant() const override { return _pointer->member()->isConstant(); }
 
@@ -355,7 +352,6 @@ void Scriptable::Value::Update(const std::wstring& string)
 		return;
     }
 
-#ifdef WIPSCRIPT
 	if (!string.empty() && string[0] == L'=')
 	{
 		static std::wstring_convert<std::codecvt_utf8<wchar_t>> convert;
@@ -363,7 +359,6 @@ void Scriptable::Value::Update(const std::wstring& string)
 		_member.reset(new RPNValue(this, std::move(str)));
 		return;
 	}
-#endif
 
 	_member.reset(new StringValue(this, string));
 }

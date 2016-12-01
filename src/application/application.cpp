@@ -6,6 +6,8 @@
 #include <iostream>
 #include "graphic/renderer/TextureRenderer.h"
 #include "graphic/renderer/InstancedRenderer.h"
+#include "game/ScriptInitializer.h"
+
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -23,6 +25,7 @@ App::App()
 
 	_script.reset(new Script);
 	Script::SetCurrent(*_script);
+	ScriptInitializer::Init();
 
 	running = true;
 }

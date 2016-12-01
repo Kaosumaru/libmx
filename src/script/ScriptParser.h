@@ -13,9 +13,7 @@ namespace MX
 
 		static void ParseFileToScript(const std::string& path, Script &sc);
 
-#ifdef WIPMSL
 		static void ParseStringToScript(const std::string& data, Script &sc);
-#endif
 	protected:
 		Script &_Script;
 	};

@@ -9,17 +9,12 @@
 #include <iostream>
 #include "deps/json/json.h"
 #include "utils/ListFiles.h"
+#include "msl/MSL.h"
 
-#if 0
-#include <boost/algorithm/string/predicate.hpp>
-#include "msl/msl.h"
-#include "Script/ScriptClassParser.h"
-#endif
 
 using namespace MX;
 
 
-#ifdef WIPMSL
 class MSLScriptParser : public ScriptParser
 {
 public:
@@ -217,7 +212,6 @@ protected:
 	std::string _file_path;
 	bool _is_data = false;
 };
-#endif
 
 
 
@@ -386,22 +380,18 @@ namespace impl
 		}
 	}
 
-#ifdef WIPMSL
 	void ScriptParser_MSLDoParse(const std::string& path, Script &sc)
 	{
 		MSLScriptParser Script(path, sc);
 		Script.Parse();
 	}
-#endif
 
 	void ScriptParser_DoParse(const std::string& path, Script &sc)
 	{
 		if (FileExtension(path) == "json")
 			ScriptParser_JSONDoParse(path,sc);
-#ifdef WIPMSL
 		else if (FileExtension(path) == "msl")
 			ScriptParser_MSLDoParse(path, sc);
-#endif
 	}
 };
 
@@ -412,13 +402,11 @@ ScriptParser::ScriptParser(Script &Script) : _Script(Script)
 
 }
 
-#ifdef WIPMSL
 void ScriptParser::ParseStringToScript(const std::string& data, Script &sc)
 {
 	MSLScriptParser Script(data, sc, true);
 	Script.Parse();
 }
-#endif
 
 void ScriptParser::ParseFileToScript(const std::string& path, Script &mainSC)
 {

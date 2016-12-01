@@ -17,9 +17,9 @@ add_definitions("${MX_DEFINES}")
 #deps
 SET(RPN_USE_JIT OFF CACHE BOOL "Don't use jit")
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/RPNParser/RPN" "${CMAKE_CURRENT_BINARY_DIR}/RPN")
-#add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/MSL/MSL" "${CMAKE_CURRENT_BINARY_DIR}/MSL")
+add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/MSL/MSL" "${CMAKE_CURRENT_BINARY_DIR}/MSL")
 
-set(MX_INCLUDES ${MX_INCLUDES} ${RPN_Includes} ${CMAKE_CURRENT_LIST_DIR}/deps/MSL ${CMAKE_CURRENT_LIST_DIR}/deps/RPNParser/RPN)
+set(MX_INCLUDES ${MX_INCLUDES} ${RPN_Includes} ${CMAKE_CURRENT_LIST_DIR}/deps/MSL/MSL ${CMAKE_CURRENT_LIST_DIR}/deps/RPNParser/RPN)
 #deps
 
 if (EMSCRIPTEN)
@@ -41,7 +41,7 @@ else(EMSCRIPTEN)
 
   set(MX_INCLUDES ${MX_INCLUDES} ${SDL_INCLUDE_DIR})
   set(MX_LINK_FLAGS "" PARENT_SCOPE)
-  set(MX_LIBS MXLib ${SDL_LIBRARY}/SDL2.lib glew32.lib ${OPENGL_LIBRARIES} PARENT_SCOPE)
+  set(MX_LIBS MXLib MSL RPN ${SDL_LIBRARY}/SDL2.lib glew32.lib ${OPENGL_LIBRARIES} PARENT_SCOPE)
 endif(EMSCRIPTEN)
 
 
@@ -52,7 +52,7 @@ option (GAME_RELEASE "Build release?" FALSE)
 
 if (MSVC)
 add_definitions( "/MP /W3 /D_CRT_SECURE_NO_WARNINGS /wd4005 /wd4996 /wd4503 /nologo" )
-configure_msvc_runtime()
+#configure_msvc_runtime()
 endif(MSVC)
 
 

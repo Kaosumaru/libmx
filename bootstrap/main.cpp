@@ -2,6 +2,7 @@
 #include <iostream>
 #include "application/application.h"
 #include "application/window.h"
+#include "game/ScriptInitializer.h"
 #include "game/resources/Paths.h"
 #include "game/resources/Resources.h"
 #include "graphic/images/Image.h"
@@ -17,6 +18,7 @@
 #include "graphic/images/TextureImage.h"
 #include "utils/ListFiles.h"
 
+#include "TestManager.h"
 
 class Bootstrap : public MX::App
 {
@@ -65,33 +67,20 @@ public:
 		}
 
 		MX::Window::current().keyboard()->on_specific_key_down[SDL_SCANCODE_ESCAPE].connect([&]() { Quit(); });
+
+		MX::ScriptInitializer::ReloadScripts();
 	}
 
 	void OnRender() override
 	{
-		MX::gl::Clear({ 1.0f, 0.0f, 0.0f, 1.0f });
+		MX::gl::Clear({ 0.0f, 0.0f, 0.0f, 1.0f });
 
-		/*
-		if ( !_target )
-		{
-			_target = std::make_shared<MX::Graphic::TextureImage>(512,512);
-			MX::Graphic::TargetContext context(*_target);
-			MX::gl::Clear({ 1.0f, 0.0f, 1.0f, 1.0f });
-			_image->DrawCentered({}, {});
-		}
+		TestManager::get().Draw();
+	}
 
-		_target->DrawCentered({}, {});
-		*/
-
-		_image->DrawCentered({}, {});
-
-		//drawTriangle(_vbo, { 1.0f, 0.0f, 1.0f, 1.0f });
-
-		{
-			//auto &renderer = MX::Graphic::TextureRenderer::current();
-			//renderer.Draw(*_image, MX::Rectangle{0.0f, 0.0f, 1.0f, 1.0f}, { 100.0f,100.0f }, { 0.0f, 0.0f }, { 256.0f, 256.0f }, MX::Color{}, 0.0f);
-			//renderer.Draw(*_image, MX::Rectangle{0.0f, 0.0f, 0.5f, 0.5f}, { 600.0f,300.0f }, { 0.0f, 0.0f }, { 256.0f, 256.0f }, MX::Color{}, 0.0f);
-		}
+	void OnLoop() override
+	{
+		TestManager::get().Run();
 	}
 
 	std::shared_ptr<MX::Graphic::TextureImage> _image;
