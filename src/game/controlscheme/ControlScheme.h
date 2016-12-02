@@ -12,6 +12,7 @@ namespace MX
     {
 
         class Action;
+		class ActionBase;
         std::shared_ptr<Action> actionForKey(int keycode);
 
 
@@ -62,7 +63,7 @@ namespace MX
         protected:
 
             template<typename T>
-            void Call(T& t)
+            void Call(const T& t)
             {
                 if (!_scheme)
                 {
@@ -176,7 +177,7 @@ namespace MX
             {
                 if (!_ticking)
                     return;
-                _conn = false;
+                _conn = nullptr;
                 _ticking = false;
             }
 
@@ -215,7 +216,7 @@ namespace MX
         protected:
             void onGotTick() override 
             {
-                Call([&]() { onTick(); });
+                ActionBase::Call([&]() { onTick(); });
             }            
         };
 
@@ -271,7 +272,7 @@ namespace MX
             SignalizingVariable<glm::vec2> target;
         };
 
-        template<typename Type = Vector2>
+        template<typename Type = glm::vec2>
         class TargetDirection : public ActionBase
         {
             struct Data
@@ -327,13 +328,13 @@ namespace MX
             std::vector<Data> _actions;
         };
 
-        template<typename Type = Vector2>
+        template<typename Type = glm::vec2>
         class TickingTargetDirection : public TargetDirection<Type>, public TickingHelper
         {
         public:
-            TickingTargetDirection(ControlScheme* scheme, float tickRate = 0.0f) : TargetDirection(scheme), TickingHelper(scheme, tickRate)
+            TickingTargetDirection(ControlScheme* scheme, float tickRate = 0.0f) : TargetDirection<Type>(scheme), TickingHelper(scheme, tickRate)
             {
-                target.onValueChanged.connect([&](auto &v, auto &o)
+				Target::target.onValueChanged.connect([&](auto &v, auto &o)
                 {
                     bool isZero = v == Type{ 0,0 };
                     bool wasZero = o == Type{ 0,0 };
@@ -351,7 +352,7 @@ namespace MX
         protected:
             void onGotTick() override
             {
-                Call([&]() { onTick(target); });
+                Call([&]() { onTick(Target::target); });
             }
         };
         
