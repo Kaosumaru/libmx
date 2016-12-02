@@ -3,6 +3,7 @@
 #include "Game/Resources/Resources.h"
 #include "graphic/Blender.h"
 #include "script/PropertyLoaders.h"
+#include <iostream>
 using namespace MX;
 
 
@@ -52,7 +53,14 @@ bool ScriptImageClass::onParse()
 #endif
 	}
 	MX::Graphic::Image::Settings::mipmap = false;
-	assert(_image);
+
+    if ( !_image )
+    {
+        //WIPLOG
+        std::cout << "cannot load image " << path << "\n";
+        assert(_image);
+    }
+	
 	return true;
 }
 

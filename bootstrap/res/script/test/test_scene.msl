@@ -9,7 +9,7 @@
   {
     Smoke: Image.Image()
     {
-      Path: "Misc/smoke.png"
+      Path: "misc/smoke.png"
       Pivot: [32,32]
     },
 

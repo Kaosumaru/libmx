@@ -4,7 +4,7 @@
 #include "graphic/images/TextureImage.h"
 #include "Sound/Sample.h"
 #include "Sound/Stream.h"
-
+#include <iostream>
 
 namespace MX
 {
@@ -173,8 +173,8 @@ namespace MX
 
 	const std::shared_ptr<Graphic::TextureImage> &Resources::loadImageFromSpriteSheet(const std::string &path)
 	{
+        static Graphic::TextureImage::pointer dummy;
 #ifdef WIPSPRITESHEET
-		static Graphic::Surface::pointer dummy;
 		if (path.find(".json") == std::string::npos)
 			return dummy;
 
@@ -188,7 +188,7 @@ namespace MX
 
 		return _imageMap[path];
 #endif
-		return nullptr;
+		return dummy;
 	}
 
 }

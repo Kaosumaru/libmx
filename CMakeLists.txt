@@ -26,10 +26,10 @@ if (EMSCRIPTEN)
   message("Building for emscripten")
 
   add_definitions("-std=c++14 ${MX_DEFINES}")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=2 --use-preload-plugins")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=2 --use-preload-plugins" PARENT_SCOPE)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -O3 -g3 -s USE_SDL=2 --use-preload-plugins")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -O3 -g3 -s USE_SDL=2 --use-preload-plugins" PARENT_SCOPE)
 
-  set(MX_LINK_FLAGS "-s USE_SDL=2 --use-preload-plugins --preload-file ../res/" PARENT_SCOPE)
+  set(MX_LINK_FLAGS " -s USE_SDL=2 --use-preload-plugins --preload-file ../res/" PARENT_SCOPE)
   set(MX_LIBS MSL RPN MXLib PARENT_SCOPE)
 else(EMSCRIPTEN)
   #find_package(GLEW REQUIRED)
