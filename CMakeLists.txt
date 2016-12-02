@@ -30,7 +30,7 @@ if (EMSCRIPTEN)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=2 --use-preload-plugins" PARENT_SCOPE)
 
   set(MX_LINK_FLAGS "-s USE_SDL=2 --use-preload-plugins --preload-file ../res/" PARENT_SCOPE)
-  set(MX_LIBS MXLib PARENT_SCOPE)
+  set(MX_LIBS MSL RPN MXLib PARENT_SCOPE)
 else(EMSCRIPTEN)
   #find_package(GLEW REQUIRED)
   find_package(Boost REQUIRED)
