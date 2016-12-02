@@ -32,7 +32,7 @@
 
         End.Color: [1, 1, 1, -0.1],
         End.Scale: [0.52, 0.52],
-        Image: &(Test).Smoke
+        Image: &Test.Smoke
       }
 
       Generator: Particles.Generator.Simple() { PerSecond: 100	}
