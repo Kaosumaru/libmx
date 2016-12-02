@@ -5,13 +5,14 @@
 
 #ifndef __EMSCRIPTEN__
 #include "deps/dirent.h"
+#else
+#include <dirent.h>
 #endif
 
 namespace MX
 {
 	bool ListFiles(const std::string& path, const ListFileCallback& callback)
 	{
-#ifndef __EMSCRIPTEN__
 		DIR *dir = opendir(path.c_str());
 		dirent *ent;
 		if (dir == NULL) 
@@ -30,9 +31,6 @@ namespace MX
 
 		closedir (dir);
 		return true;
-#else
-		return false;
-#endif
 
 	}
 
