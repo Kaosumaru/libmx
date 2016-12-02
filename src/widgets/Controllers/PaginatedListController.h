@@ -1,7 +1,7 @@
 #pragma once
-#include "Widgets/Widget.h"
+#include "widgets/Widget.h"
 #include "ListController.h"
-#include "Widgets/Strategies/Strategy.h"
+#include "widgets/Strategies/Strategy.h"
 #include "utils/SignalizingVariable.h"
 
 namespace MX

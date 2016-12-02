@@ -1,10 +1,10 @@
 #pragma once
-#include "Scene/Sprites/SpriteScene.h"
-#include "Graphic/Images/Image.h"
-#include "Script/ScriptObject.h"
-#include "Utils/Time.h"
-#include "Utils/Utils.h"
-#include "Utils/SignalizingVariable.h"
+#include "scene/sprites/SpriteScene.h"
+#include "graphic/images/Image.h"
+#include "script/ScriptObject.h"
+#include "utils/Time.h"
+#include "utils/Utils.h"
+#include "utils/SignalizingVariable.h"
 #include <limits>
 
 namespace MX{

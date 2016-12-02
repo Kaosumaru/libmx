@@ -1,5 +1,5 @@
 #pragma once
-#include "Utils/Singleton.h"
+#include "utils/Singleton.h"
 
 namespace MX{
 namespace Graphic

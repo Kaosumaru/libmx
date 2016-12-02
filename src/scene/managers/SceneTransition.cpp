@@ -1,5 +1,5 @@
 #include "SceneTransition.h"
-#include "Graphic/Blender.h"
+#include "graphic/Blender.h"
 #include <iostream>
 
 using namespace std;

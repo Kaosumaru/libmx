@@ -1,10 +1,10 @@
 #ifndef MXSTRATEGY
 #define MXSTRATEGY
-#include "Utils/Utils.h"
-#include "Utils/Vector2.h"
-#include "Devices/Touches.h"
-#include "Widgets/Systems/DragSystem.h"
-#include "Widgets/Drawers/Drawer.h"
+#include "utils/Utils.h"
+#include "utils/Vector2.h"
+#include "devices/Touches.h"
+#include "widgets/systems/DragSystem.h"
+#include "widgets/Drawers/Drawer.h"
 #include "Collision/Shape/Shape.h"
 
 namespace MX

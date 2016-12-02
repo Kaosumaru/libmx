@@ -1,7 +1,7 @@
 #include "Resources.h"
 #include <sstream>
 #include <fstream>
-#include "Graphic/Images/TextureImage.h"
+#include "graphic/images/TextureImage.h"
 #include "Sound/Sample.h"
 #include "Sound/Stream.h"
 

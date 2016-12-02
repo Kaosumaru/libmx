@@ -1,7 +1,7 @@
 #ifndef MXWIDGETFACTORY
 #define MXWIDGETFACTORY
-#include "Widgets/Widget.h"
-#include "Script/PropertyLoaders.h"
+#include "widgets/Widget.h"
+#include "script/PropertyLoaders.h"
 
 namespace MX
 {

@@ -1,5 +1,5 @@
 #pragma once
-#include "Scene/Sprites/SpriteScene.h"
+#include "scene/sprites/SpriteScene.h"
 #include "SceneTransition.h"
 #include <list>
 

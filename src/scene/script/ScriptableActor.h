@@ -1,5 +1,5 @@
 #pragma once
-#include "Scene/Actor.h"
+#include "scene/Actor.h"
 #include "Command.h"
 #include "CommandSignal.h"
 

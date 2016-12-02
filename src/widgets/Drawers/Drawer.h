@@ -1,8 +1,8 @@
 #pragma once
-#include "Utils/Utils.h"
-#include "Utils/Vector2.h"
-#include "Utils/shapes/Rectangle.h"
-#include "Script/ScriptObject.h"
+#include "utils/Utils.h"
+#include "utils/Vector2.h"
+#include "utils/shapes/Rectangle.h"
+#include "script/ScriptObject.h"
 #include "stx/optional.hpp"
 
 namespace MX

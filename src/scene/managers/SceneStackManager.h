@@ -1,7 +1,7 @@
 #pragma once
 #include "SceneManager.h"
 #include<stack>
-#include "Utils/Signal.h"
+#include "utils/Signal.h"
 
 namespace MX
 {

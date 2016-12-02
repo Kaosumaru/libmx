@@ -1,9 +1,9 @@
 #include "SpriteCommands.h"
 #include "CommonCommands.h"
-#include "Utils/Time.h"
-#include "Script/ScriptClassParser.h"
-#include "Script/Class/ScriptSoundClass.h"
-#include "Utils/Random.h"
+#include "utils/Time.h"
+#include "script/ScriptClassParser.h"
+#include "script/class/ScriptSoundClass.h"
+#include "utils/Random.h"
 #include "Event.h"
 
 

@@ -1,6 +1,6 @@
 #include "Slider.h"
 #include "Collision/Area/EventsToCollisions.h"
-#include "Application/Window.h"
+#include "application/Window.h"
 
 
 using namespace MX;

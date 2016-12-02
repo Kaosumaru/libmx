@@ -1,9 +1,9 @@
 #pragma once
-#include "Utils/Utils.h"
-#include "Utils/Vector2.h"
-#include "Utils/shapes/Rectangle.h"
-#include "Utils/shapes/OrientedRectangle.h"
-#include "Utils/shapes/Circle.h"
+#include "utils/Utils.h"
+#include "utils/Vector2.h"
+#include "utils/shapes/Rectangle.h"
+#include "utils/shapes/OrientedRectangle.h"
+#include "utils/shapes/Circle.h"
 
 namespace MX
 {

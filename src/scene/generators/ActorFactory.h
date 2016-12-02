@@ -1,6 +1,6 @@
 #pragma once
-#include "Scene/Sprites/SpriteScene.h"
-#include "Scene/Sprites/ScriptableSpriteActor.h"
+#include "scene/sprites/SpriteScene.h"
+#include "scene/sprites/ScriptableSpriteActor.h"
 
 
 

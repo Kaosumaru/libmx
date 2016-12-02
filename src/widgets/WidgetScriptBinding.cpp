@@ -1,8 +1,8 @@
 #include "WidgetScriptBinding.h"
-#include "Script/Script.h"
-#include "Widgets/Drawers/Drawer.h"
-#include "Widgets/Widget.h"
-#include "Widgets/Strategies/DrawableStrategy.h"
+#include "script/Script.h"
+#include "widgets/Drawers/Drawer.h"
+#include "widgets/Widget.h"
+#include "widgets/Strategies/DrawableStrategy.h"
 #include "RPN/Function.h"
 
 

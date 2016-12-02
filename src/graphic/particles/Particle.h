@@ -1,12 +1,12 @@
 #pragma once
-#include "Scene/Sprites/SpriteScene.h"
-#include "Graphic/Images/Image.h"
-#include "Script/ScriptObject.h"
-#include "Utils/Time.h"
-#include "Utils/Random.h"
-#include "Utils/Utils.h"
-#include "Script/Class/ScriptImageClass.h"
-#include "Script/Class/ScriptAnimationClass.h"
+#include "scene/sprites/SpriteScene.h"
+#include "graphic/images/Image.h"
+#include "script/ScriptObject.h"
+#include "utils/Time.h"
+#include "utils/Random.h"
+#include "utils/Utils.h"
+#include "script/class/ScriptImageClass.h"
+#include "script/class/ScriptAnimationClass.h"
 
 namespace MX{
 namespace Graphic{

@@ -4,9 +4,9 @@
 #include "devices/Touches.h"
 #include "Collision/Area/EventsToCollisions.h"
 #include "Collision/Quadtree/Quadtree.h"
-#include "Widgets/Systems/DragSystem.h"
-#include "Widgets/Systems/TooltipSystem.h"
-#include "Widgets/Widget.h"
+#include "widgets/systems/DragSystem.h"
+#include "widgets/systems/TooltipSystem.h"
+#include "widgets/Widget.h"
 
 #include "SDL_video.h"
 #include "SDL_render.h"
@@ -50,7 +50,8 @@ Window::Window(unsigned width, unsigned height, bool fullscreen)
 
 	_eventsToCollisions.reset(new Collision::EventsToCollisions(_windowArea, _mouse, _touches, _mouseTouches, _dragSystem));
 
-	_windowArea = std::make_shared<Collision::QuadtreeWeakLayeredArea>((float)width, (float)height);
+    auto area = std::make_shared<Collision::QuadtreeWeakLayeredArea>((float)width, (float)height);
+    _windowArea = area;
 	_windowArea->DefineLayerCollision(ClassID<Collision::EventsToCollisions>::id(), ClassID<Widgets::WidgetsLayer>::id());
 	_windowArea->DefineLayerCollision(ClassID<Widgets::DragLayer>::id(), ClassID<Widgets::WidgetsLayer>::id());
 

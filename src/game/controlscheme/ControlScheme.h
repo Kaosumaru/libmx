@@ -1,9 +1,9 @@
 #ifndef MXCONTROLSCHEME
 #define MXCONTROLSCHEME
-#include "Utils/Utils.h"
-#include "Utils/shapes/Rectangle.h"
-#include "Utils/SignalizingVariable.h"
-#include "Utils/FunctorsQueue.h"
+#include "utils/Utils.h"
+#include "utils/shapes/Rectangle.h"
+#include "utils/SignalizingVariable.h"
+#include "utils/FunctorsQueue.h"
 #include <array>
 
 namespace MX

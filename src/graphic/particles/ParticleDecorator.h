@@ -1,10 +1,10 @@
 #ifndef MXPARTICLEDECORATOR
 #define MXPARTICLEDECORATOR
 
-#include "Script/ScriptObject.h"
-#include "Utils/Time.h"
+#include "script/ScriptObject.h"
+#include "utils/Time.h"
 #include "ParticleEmitter.h"
-#include "Utils/Utils.h"
+#include "utils/Utils.h"
 
 namespace MX{
 namespace Graphic{

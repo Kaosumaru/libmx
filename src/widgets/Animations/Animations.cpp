@@ -1,6 +1,6 @@
 #include "Animations.h"
-#include "Script/ScriptClassParser.h"
-#include "Scene/Sprites/ScriptableSpriteActor.h"
+#include "script/ScriptClassParser.h"
+#include "scene/sprites/ScriptableSpriteActor.h"
 
 using namespace MX;
 using namespace MX::Widgets;

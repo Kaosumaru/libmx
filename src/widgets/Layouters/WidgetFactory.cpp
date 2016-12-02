@@ -1,7 +1,7 @@
 #include "WidgetFactory.h"
-#include "Script/ScriptClassParser.h"
-#include "Scene/Script/Event.h"
-#include "Widgets/Label.h"
+#include "script/ScriptClassParser.h"
+#include "scene/Script/Event.h"
+#include "widgets/Label.h"
 
 
 using namespace MX;

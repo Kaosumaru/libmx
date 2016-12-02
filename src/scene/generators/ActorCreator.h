@@ -1,9 +1,9 @@
 #pragma once
-#include "Scene/Sprites/SpriteScene.h"
-#include "Script/ScriptObject.h"
-#include "Scene/Sprites/ScriptableSpriteActor.h"
-#include "Utils/Random.h"
-#include "Script/PropertyLoaders.h"
+#include "scene/sprites/SpriteScene.h"
+#include "script/ScriptObject.h"
+#include "scene/sprites/ScriptableSpriteActor.h"
+#include "utils/Random.h"
+#include "script/PropertyLoaders.h"
 
 namespace MX{
 

@@ -1,6 +1,6 @@
 #include "Touches.h"
 #include "application/application.h"
-#include "Devices/Mouse.h"
+#include "devices/Mouse.h"
 
 using namespace MX;
 

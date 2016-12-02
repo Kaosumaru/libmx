@@ -1,6 +1,6 @@
 #pragma once
-#include "Utils/Utils.h"
-#include "Utils/Singleton.h"
+#include "utils/Utils.h"
+#include "utils/Singleton.h"
 #include <set>
 #include <map>
 #include <vector>

@@ -17,7 +17,7 @@ namespace Collision
 class Shape;
 class ShapeCollision;
 
-class Area : public virtual shared_ptr_init<Area>
+class Area : public shared_ptr_init<Area>
 {
 public:
 	friend class Shape;

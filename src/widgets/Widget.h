@@ -1,15 +1,15 @@
 #ifndef MXWIDGET
 #define MXWIDGET
-#include "Utils/Utils.h"
-#include "Utils/Vector2.h"
+#include "utils/Utils.h"
+#include "utils/Vector2.h"
 #include "Drawers/Drawer.h"
-#include "Scene/Sprites/SpriteScene.h"
+#include "scene/sprites/SpriteScene.h"
 #include "Collision/Shape/SignalizingShape.h"
 #include "Strategies/Strategy.h"
-#include "Utils/Signal.h"
+#include "utils/Signal.h"
 #include "Drawers/DrawerManager.h"
 #include "Shapes/Shapes.h"
-#include "Scene/Script/ScriptableActor.h"
+#include "scene/Script/ScriptableActor.h"
 
 namespace MX
 {

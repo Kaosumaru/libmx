@@ -1,11 +1,11 @@
 #ifndef MXDRAWABLESTRATEGY
 #define MXDRAWABLESTRATEGY
 #include "Strategy.h"
-#include "Graphic/Images/Image.h"
+#include "graphic/images/Image.h"
 #ifdef WIPFONT
-#include "Graphic/Fonts/Font.h"
+#include "graphic/Fonts/Font.h"
 #endif
-#include "Utils/SignalizingVariable.h"
+#include "utils/SignalizingVariable.h"
 
 namespace MX
 {

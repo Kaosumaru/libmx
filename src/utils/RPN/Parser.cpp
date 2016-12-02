@@ -1,10 +1,10 @@
 #include "Parser.h"
 #include "RPN/Function.h"
 #include "RPN/Utils.h"
-#include "Script/ScriptClassParser.h"
+#include "script/ScriptClassParser.h"
 #include <map>
-#include "Utils/Random.h"
-#include "Utils/Time.h"
+#include "utils/Random.h"
+#include "utils/Time.h"
 
 #if WIP
 #include <boost/format.hpp>

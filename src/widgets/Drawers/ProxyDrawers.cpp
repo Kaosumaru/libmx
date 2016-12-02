@@ -1,10 +1,10 @@
 #include "ProxyDrawers.h"
 #include "Drawers.h"
-#include "Graphic/Blender.h"
-#include "Widgets/Widget.h"
-#include "Script/ScriptClassParser.h"
+#include "graphic/Blender.h"
+#include "widgets/Widget.h"
+#include "script/ScriptClassParser.h"
 #ifdef WIP
-#include "Graphic/Images/SurfaceRental.h"
+#include "graphic/images/SurfaceRental.h"
 #endif
 
 

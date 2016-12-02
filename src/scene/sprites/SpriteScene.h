@@ -1,7 +1,7 @@
 #pragma once
 
 #include "graphic/images/Image.h"
-#include "Scene/Scene.h"
+#include "scene/Scene.h"
 #include "utils/FunctorsQueue.h"
 #include "SpriteActor.h"
 #include <list>

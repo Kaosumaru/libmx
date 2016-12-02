@@ -1,5 +1,5 @@
 #include "SimpleDrawers.h"
-#include "Widgets/Widget.h"
+#include "widgets/Widget.h"
 
 using namespace MX::Widgets;
 

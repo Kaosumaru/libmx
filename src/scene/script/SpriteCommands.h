@@ -1,8 +1,8 @@
 #pragma once
 #include "Command.h"
-#include "Utils/Utils.h"
+#include "utils/Utils.h"
 #include <memory>
-#include "Scene/Sprites/ScriptableSpriteActor.h"
+#include "scene/sprites/ScriptableSpriteActor.h"
 
 namespace MX
 {

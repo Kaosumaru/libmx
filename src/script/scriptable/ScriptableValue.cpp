@@ -1,11 +1,11 @@
 #include "ScriptableValue.h"
-#include "Script/ScriptClassParser.h"
+#include "script/ScriptClassParser.h"
 #include <memory>
 #include <regex>
 #include <iterator>
 #include <sstream>
 #include <iostream>
-#include "Utils/RPN/Parser.h"
+#include "utils/RPN/Parser.h"
 
 using namespace MX;
 

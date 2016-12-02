@@ -1,12 +1,12 @@
 #include "Drawers.h"
-#include "Widgets/Widget.h"
-#include "Script/ScriptClassParser.h"
-#include "Script/Class/ScriptImageClass.h"
-#include "Widgets/Label.h"
+#include "widgets/Widget.h"
+#include "script/ScriptClassParser.h"
+#include "script/class/ScriptImageClass.h"
+#include "widgets/Label.h"
 #include "Game/Resources/Resources.h"
-#include "Widgets/Label.h"
-#include "Graphic/Images/Slice9Image.h"
-#include "Utils/ContextStack.h"
+#include "widgets/Label.h"
+#include "graphic/images/Slice9Image.h"
+#include "utils/ContextStack.h"
 
 using namespace MX;
 

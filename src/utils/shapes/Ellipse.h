@@ -2,7 +2,7 @@
 #define MXELLIPSE
 #include<memory>
 #include "glm/vec2.hpp"
-#include "Graphic/Color.h"
+#include "graphic/Color.h"
 #include <cmath>
 #include <time.h>
 namespace MX

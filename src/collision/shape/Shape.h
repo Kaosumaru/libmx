@@ -1,8 +1,8 @@
 #pragma once
-#include "Utils/Signal.h"
-#include "Utils/Vector2.h"
+#include "utils/Signal.h"
+#include "utils/Vector2.h"
 #include "Shape_Policy.h"
-#include "Utils/StrongList.h"
+#include "utils/StrongList.h"
 
 namespace MX
 {
@@ -12,13 +12,13 @@ namespace Collision
 class Area;
 class Shape;
 
-class ShapeCollision : public virtual shared_ptr_init<ShapeCollision>
+class ShapeCollision : public shared_ptr_init<ShapeCollision>
 {
 public:
 	Signal<void(void)> onCollisionEnd;
 };
 
-class Shape : public Linkable, public virtual shared_ptr_init<Shape>
+class Shape : public Linkable, public shared_ptr_init<Shape>
 {
 	friend class Area;
 public:

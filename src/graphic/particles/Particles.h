@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Scene/Sprites/SpriteScene.h"
-#include "Scene/Sprites/ScriptableSpriteActor.h"
-#include "Graphic/Images/Image.h"
-#include "Script/ScriptObject.h"
-#include "Utils/Time.h"
+#include "scene/sprites/SpriteScene.h"
+#include "scene/sprites/ScriptableSpriteActor.h"
+#include "graphic/images/Image.h"
+#include "script/ScriptObject.h"
+#include "utils/Time.h"
 
 
 

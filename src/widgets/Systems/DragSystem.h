@@ -1,7 +1,7 @@
 #ifndef MXDRAGSYSTEM
 #define MXDRAGSYSTEM
-#include "Utils/Utils.h"
-#include "Utils/Vector2.h"
+#include "utils/Utils.h"
+#include "utils/Vector2.h"
 #include <set>
 #include <map>
 

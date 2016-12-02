@@ -1,5 +1,5 @@
 #include "TooltipSystem.h"
-#include "Application/Window.h"
+#include "application/Window.h"
 #include "Game/Resources/Resources.h"
 #include <iostream>
 

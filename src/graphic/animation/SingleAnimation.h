@@ -1,6 +1,6 @@
 #pragma once
-#include "Graphic/Images/Image.h"
-#include "Utils/Utils.h"
+#include "graphic/images/Image.h"
+#include "utils/Utils.h"
 #include <list>
 #include <map>
 #include <vector>
@@ -10,7 +10,7 @@ namespace MX{
 namespace Graphic
 {
 
-class SingleAnimation : virtual public shared_ptr_init<SingleAnimation>, virtual public disable_copy_constructors
+class SingleAnimation : public shared_ptr_init<SingleAnimation>, virtual public disable_copy_constructors
 {
 protected:
 	struct Frame

@@ -1,8 +1,8 @@
 #include "Shapes.h"
-#include "Widgets/Widget.h"
-#include "Application/Window.h"
+#include "widgets/Widget.h"
+#include "application/Window.h"
 #include "Collision/Area/Area.h"
-#include "Script/ScriptClassParser.h"
+#include "script/ScriptClassParser.h"
 #include <glm/gtx/transform.hpp>
 
 using namespace MX;

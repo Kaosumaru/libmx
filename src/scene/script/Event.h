@@ -1,8 +1,8 @@
 #pragma once
 #include <memory>
-#include "Script/ScriptObject.h"
-#include "Script/Scriptable/ScriptableValue.h"
-#include "Script/PropertyLoaders.h"
+#include "script/ScriptObject.h"
+#include "script/Scriptable/ScriptableValue.h"
+#include "script/PropertyLoaders.h"
 #include "Command.h"
 
 namespace MX

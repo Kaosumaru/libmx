@@ -1,20 +1,20 @@
 #pragma once
-#include "Utils/Time.h"
+#include "utils/Time.h"
 #include "glm/vec2.hpp"
 #include "glm/vec3.hpp"
 #include "ScriptObject.h"
 #include "graphic/Color.h"
 #include <sstream>
 #include <utility>
-#include "Utils/SignalizingVariable.h"
-#include "Graphic/Blender.h"
-#include "Graphic/OpenGL.h"
-#include "Script/Class/ScriptSoundClass.h"
-#include "Script/Class/ScriptImageClass.h"
-#include "Script/Class/ScriptAnimationClass.h"
+#include "utils/SignalizingVariable.h"
+#include "graphic/Blender.h"
+#include "graphic/OpenGL.h"
+#include "script/class/ScriptSoundClass.h"
+#include "script/class/ScriptImageClass.h"
+#include "script/class/ScriptAnimationClass.h"
 #include "stx/optional.hpp"
 #ifdef WIPFONT
-#include "Graphic/Fonts/Font.h"
+#include "graphic/Fonts/Font.h"
 #endif
 #include <array>
 

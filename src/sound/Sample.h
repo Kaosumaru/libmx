@@ -19,10 +19,10 @@ public:
     
 
 
-class Sample : virtual public shared_ptr_init<Sample>, virtual public disable_copy_constructors
+class Sample : public shared_ptr_init<Sample>, virtual public disable_copy_constructors
 {
 public:
-	class Instance : virtual public shared_ptr_init<Instance>, virtual public disable_copy_constructors
+	class Instance : public shared_ptr_init<Instance>, virtual public disable_copy_constructors
 	{
 		friend class Sample;
 	public:
@@ -67,7 +67,7 @@ protected:
 	float _defaultGain;
 };
 
-class RandomSample : virtual public shared_ptr_init<RandomSample>
+class RandomSample : public shared_ptr_init<RandomSample>
 {
 public:
 	void AddSample(const Sample::pointer &sample);

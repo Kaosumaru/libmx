@@ -1,9 +1,9 @@
 #include "Event.h"
-#include "Script/ScriptClassParser.h"
-#include "Scene/Managers/SceneStackManager.h"
-#include "Scene/Sprites/ScriptableSpriteActor.h"
-#include "Widgets/Widget.h"
-#include "Widgets/Layouters/StackWidget.h"
+#include "script/ScriptClassParser.h"
+#include "scene/managers/SceneStackManager.h"
+#include "scene/sprites/ScriptableSpriteActor.h"
+#include "widgets/Widget.h"
+#include "widgets/Layouters/StackWidget.h"
 
 using namespace MX;
 

@@ -2,10 +2,10 @@
 //small hack, fixes clashes with our context
 
 #include "Version.h"
-#include "Utils/Time.h"
+#include "utils/Time.h"
 #include "utils/Signal.h"
 #include "utils/Singleton.h"
-#include "Utils/FunctorsQueue.h"
+#include "utils/FunctorsQueue.h"
 
 
 namespace MX

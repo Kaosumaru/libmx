@@ -1,7 +1,7 @@
 #include "Drawer.h"
-#include "Widgets/Widget.h"
-#include "Widgets/Systems/DragSystem.h"
-#include "Script/PropertyLoaders.h"
+#include "widgets/Widget.h"
+#include "widgets/systems/DragSystem.h"
+#include "script/PropertyLoaders.h"
 
 using namespace MX::Widgets;
 

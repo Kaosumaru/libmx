@@ -1,5 +1,5 @@
 #pragma once
-#include "Utils/Singleton.h"
+#include "utils/Singleton.h"
 #include <map>
 #include <functional>
 namespace MX

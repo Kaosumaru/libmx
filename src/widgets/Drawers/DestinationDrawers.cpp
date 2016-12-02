@@ -1,6 +1,6 @@
 #include "DestinationDrawers.h"
-#include "Widgets/Widget.h"
-#include "Script/ScriptClassParser.h"
+#include "widgets/Widget.h"
+#include "script/ScriptClassParser.h"
 
 using namespace MX;
 using namespace MX::Widgets;

@@ -1,7 +1,7 @@
 #pragma once
 #include "Widget.h"
 #ifdef WIPFONT
-#include "Graphic/Fonts/Font.h"
+#include "graphic/Fonts/Font.h"
 #endif
 #include "Strategies/DrawableStrategy.h"
 

@@ -1,11 +1,11 @@
 #include "ActorFactory.h"
-#include "Utils/Random.h"
-#include "Scene/Sprites/ScriptableSpriteActor.h"
+#include "utils/Random.h"
+#include "scene/sprites/ScriptableSpriteActor.h"
 
 #include "ActorCreator.h"
 #include "ActorGenerator.h"
 #include "ActorDecorator.h"
-#include "Script/ScriptClassParser.h"
+#include "script/ScriptClassParser.h"
 
 using namespace MX;
 using namespace MX::Graphic;

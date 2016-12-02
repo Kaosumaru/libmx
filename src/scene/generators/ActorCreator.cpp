@@ -1,6 +1,6 @@
 #include "ActorCreator.h"
-#include "Script/ScriptClassParser.h"
-#include "Script/ExtendedPropertyLoaders.h"
+#include "script/ScriptClassParser.h"
+#include "script/ExtendedPropertyLoaders.h"
 
 using namespace MX;
 using namespace MX::Graphic;

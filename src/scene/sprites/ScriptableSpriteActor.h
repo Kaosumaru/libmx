@@ -1,11 +1,11 @@
 #ifndef SCRIPTABLESPRITEACTOR
 #define SCRIPTABLESPRITEACTOR
-#include "Scene/Sprites/SpriteActor.h"
-#include "Scene/Sprites/SpriteScene.h"
-#include "Scene/Script/Command.h"
-#include "Scene/Script/CommandSignal.h"
-#include "Script/ScriptObject.h"
-#include "Scene/script/ScriptableActor.h"
+#include "scene/sprites/SpriteActor.h"
+#include "scene/sprites/SpriteScene.h"
+#include "scene/Script/Command.h"
+#include "scene/Script/CommandSignal.h"
+#include "script/ScriptObject.h"
+#include "scene/script/ScriptableActor.h"
 
 
 namespace MX

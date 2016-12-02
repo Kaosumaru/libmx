@@ -1,7 +1,7 @@
 #include "CompositeDrawers.h"
-#include "Widgets/Widget.h"
-#include "Script/ScriptClassParser.h"
-#include "Utils/shapes/Rectangle.h"
+#include "widgets/Widget.h"
+#include "script/ScriptClassParser.h"
+#include "utils/shapes/Rectangle.h"
 
 using namespace MX;
 using namespace MX::Widgets;

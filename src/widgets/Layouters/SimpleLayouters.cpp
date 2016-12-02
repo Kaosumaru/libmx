@@ -1,5 +1,5 @@
 #include "SimpleLayouters.h"
-#include "Application/Window.h"
+#include "application/Window.h"
 #include "Game/Resources/Resources.h"
 
 #include "../Drawers/Drawer.h"

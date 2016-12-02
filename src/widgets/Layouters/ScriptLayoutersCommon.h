@@ -1,6 +1,6 @@
 #ifndef MXSCRIPTLAYOUTERSCOMMON
 #define MXSCRIPTLAYOUTERSCOMMON
-#include "Widgets/Widget.h"
+#include "widgets/Widget.h"
 namespace MX
 {
 namespace Widgets

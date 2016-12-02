@@ -1,9 +1,9 @@
 #pragma once
 #include "Command.h"
-#include "Utils/Utils.h"
+#include "utils/Utils.h"
 #include <memory>
-#include "Utils/Time.h"
-#include "Utils/Graphic/Easings.h"
+#include "utils/Time.h"
+#include "utils/Graphic/Easings.h"
 
 
 namespace MX

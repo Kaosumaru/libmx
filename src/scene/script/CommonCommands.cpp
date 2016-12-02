@@ -1,7 +1,7 @@
 #include "CommonCommands.h"
 #include <algorithm>
-#include "Utils/Time.h"
-#include "Script/ScriptClassParser.h"
+#include "utils/Time.h"
+#include "script/ScriptClassParser.h"
 
 //TODO 
 #undef _t

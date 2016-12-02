@@ -1,11 +1,11 @@
 #include "ControlScheme.h"
 #include "Collision/Area/EventsToCollisions.h"
-#include "Application/Window.h"
-#include "Scene/Sprites/SpriteScene.h"
-#include "Widgets/Widget.h"
+#include "application/Window.h"
+#include "scene/sprites/SpriteScene.h"
+#include "widgets/Widget.h"
 
 #include "Collision/Area/Area.h"
-#include "Devices/Keyboard.h"
+#include "devices/Keyboard.h"
 
 using namespace MX;
 using namespace MX::Game;

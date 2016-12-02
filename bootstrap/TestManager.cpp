@@ -1,18 +1,18 @@
 #include "TestManager.h"
 #include "Game/Resources/Paths.h"
 #include "Game/Resources/Resources.h"
-#include "Script/Script.h"
-#include "Script/ScriptObject.h"
-#include "Application/Window.h"
+#include "script/Script.h"
+#include "script/ScriptObject.h"
+#include "application/Window.h"
 
 
 
-#include "Devices/Mouse.h"
-#include "Devices/Keyboard.h"
-#include "Application/Window.h"
+#include "devices/Mouse.h"
+#include "devices/Keyboard.h"
+#include "application/Window.h"
 #include "game/ScriptInitializer.h"
 
-#include "Script/ScriptClassParser.h"
+#include "script/ScriptClassParser.h"
 
 using namespace MX;
 using namespace std;

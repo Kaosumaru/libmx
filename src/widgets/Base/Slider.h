@@ -1,6 +1,6 @@
 #pragma once
-#include "Widgets/Widget.h"
-#include "Utils/SignalizingVariable.h"
+#include "widgets/Widget.h"
+#include "utils/SignalizingVariable.h"
 
 namespace MX
 {

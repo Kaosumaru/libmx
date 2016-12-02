@@ -1,6 +1,6 @@
-#include "Scene/Script/Command.h"
-#include "Scene/Script/CommonCommands.h"
-#include "Widgets/Widget.h"
+#include "scene/Script/Command.h"
+#include "scene/Script/CommonCommands.h"
+#include "widgets/Widget.h"
 #include "glm/gtx/transform.hpp"
 
 namespace MX

@@ -1,9 +1,9 @@
 #include "ScriptAnimationClass.h"
-#include "Script/Script.h"
+#include "script/Script.h"
 #include "game/resources/Resources.h"
 #include "graphic/Blender.h"
 #include "graphic/animation/Animation.h"
-#include "Script/PropertyLoaders.h"
+#include "script/PropertyLoaders.h"
 
 using namespace MX;
 

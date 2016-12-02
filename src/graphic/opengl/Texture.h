@@ -1,7 +1,7 @@
 #ifndef TEXTURE
 #define TEXTURE
-#include "Utils/Utils.h"
-#include "Utils/Vector2.h"
+#include "utils/Utils.h"
+#include "utils/Vector2.h"
 #include "graphic/OpenGL.h"
 
 namespace MX 

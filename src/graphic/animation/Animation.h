@@ -11,7 +11,7 @@ namespace Graphic
 {
 
 
-class Animation : public Image, virtual public shared_ptr_init<Animation>
+class Animation : public Image, public shared_ptr_init<Animation>
 {
 public:
     Animation();

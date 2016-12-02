@@ -1,7 +1,7 @@
 #pragma once
 #include<memory>
-#include "Utils/Utils.h"
-#include "Utils/Signal.h"
+#include "utils/Utils.h"
+#include "utils/Signal.h"
 #include "SDL_keycode.h"
 
 namespace MX

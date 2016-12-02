@@ -1,6 +1,6 @@
 #pragma once
-#include "Scene/Sprites/SpriteScene.h"
-#include "Utils/Time.h"
+#include "scene/sprites/SpriteScene.h"
+#include "utils/Time.h"
 #include <list>
 #include "graphic/images/TextureImage.h"
 

@@ -1,8 +1,8 @@
 #include "ScriptImageClass.h"
-#include "Script/Script.h"
+#include "script/Script.h"
 #include "Game/Resources/Resources.h"
-#include "Graphic/Blender.h"
-#include "Script/PropertyLoaders.h"
+#include "graphic/Blender.h"
+#include "script/PropertyLoaders.h"
 using namespace MX;
 
 

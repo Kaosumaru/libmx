@@ -1,6 +1,6 @@
 #include "DrawerManager.h"
-#include "Widgets/Widget.h"
-#include "Widgets/Systems/DragSystem.h"
+#include "widgets/Widget.h"
+#include "widgets/systems/DragSystem.h"
 
 using namespace MX::Widgets;
 

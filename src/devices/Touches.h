@@ -1,9 +1,9 @@
 #pragma once
 #include<memory>
 #include<map>
-#include "Utils/Utils.h"
-#include "Utils/Vector2.h"
-#include "Utils/Time.h"
+#include "utils/Utils.h"
+#include "utils/Vector2.h"
+#include "utils/Time.h"
 
 namespace MX
 {

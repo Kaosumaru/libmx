@@ -10,7 +10,7 @@
 #include "ScriptParser.h"
 
 #ifdef WIPTHREAD
-#include "Utils/ThreadPool.h"
+#include "utils/ThreadPool.h"
 
 #endif
 

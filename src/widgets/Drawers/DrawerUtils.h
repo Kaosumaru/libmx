@@ -1,8 +1,8 @@
 #ifndef MXDRAWERUTILS
 #define MXDRAWERUTILS
-#include "Utils/Utils.h"
+#include "utils/Utils.h"
 #include "Drawer.h"
-#include "Script/ScriptUtils.h"
+#include "script/ScriptUtils.h"
 
 namespace MX
 {

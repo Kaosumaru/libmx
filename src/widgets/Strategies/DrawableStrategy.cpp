@@ -1,8 +1,8 @@
 #include "DrawableStrategy.h"
 #include "../Widget.h"
-#include "Application/Window.h"
+#include "application/Window.h"
 #include "Game/Resources/Resources.h"
-#include "Utils/ContextStack.h"
+#include "utils/ContextStack.h"
 #ifdef WIPFONT
 #include "HTML/HTMLRendererCairo.h"
 #endif

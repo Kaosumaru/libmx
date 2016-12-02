@@ -1,5 +1,5 @@
 #include "TextureScene.h"
-#include "Application/Window.h"
+#include "application/Window.h"
 
 using namespace std;
 using namespace MX;

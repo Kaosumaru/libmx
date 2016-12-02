@@ -2,7 +2,7 @@
 #include "collision/shape/Shape.h"
 #include "devices/Mouse.h"
 #include "devices/Touches.h"
-#include "Widgets/Systems/DragSystem.h"
+#include "widgets/systems/DragSystem.h"
 
 #include <set>
 

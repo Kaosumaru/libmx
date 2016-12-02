@@ -1,13 +1,13 @@
 #include "Particles.h"
-#include "Utils/Random.h"
-#include "Scene/Sprites/ScriptableSpriteActor.h"
+#include "utils/Random.h"
+#include "scene/sprites/ScriptableSpriteActor.h"
 
 #include "Particle.h"
 #include "ParticleGenerator.h"
 #include "ParticleEmitter.h"
 #include "ParticleDecorator.h"
-#include "Script/ScriptClassParser.h"
-#include "Graphic/Blender.h"
+#include "script/ScriptClassParser.h"
+#include "graphic/Blender.h"
 
 
 using namespace MX;

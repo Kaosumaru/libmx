@@ -1,10 +1,10 @@
 #pragma once
-#include "Utils/Utils.h"
+#include "utils/Utils.h"
 #include <memory>
 #include <map>
-#include "Utils/Signal.h"
-#include "Script/Script.h"
-#include "Script/ScriptObject.h"
+#include "utils/Signal.h"
+#include "script/Script.h"
+#include "script/ScriptObject.h"
 
 
 namespace MX

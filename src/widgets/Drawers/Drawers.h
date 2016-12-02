@@ -1,12 +1,12 @@
 #ifndef MXDRAWERS
 #define MXDRAWERS
-#include "Utils/Utils.h"
+#include "utils/Utils.h"
 #include "Drawer.h"
-#include "Graphic/Images/Image.h"
-#include "Graphic/Images/Slice9Image.h"
-#include "Script/ScriptObject.h"
-#include "Graphic/ScriptableColor.h"
-#include "Widgets/Widget.h"
+#include "graphic/images/Image.h"
+#include "graphic/images/Slice9Image.h"
+#include "script/ScriptObject.h"
+#include "graphic/ScriptableColor.h"
+#include "widgets/Widget.h"
 #include "DrawerUtils.h"
 
 namespace MX
