@@ -46,9 +46,20 @@ glm::vec4 TextureImage::subDimensions(float x, float y, float w, float h) const
 
 TextureImage::TextureImage(unsigned width, unsigned height, bool alpha)
 {
-	_texture = std::make_shared<gl::Texture>(glm::ivec2{ width, height }, alpha);
-	_dimensions = { 0.0f, 0.0f, _texture->size() };
-	_uvCoords = Rectangle{ 0.0f, 0.0f, 1.0f, 1.0f };
+	int w = width;
+	int h = height;
+	glm::vec2 uv = { 1.0f, 1.0f };
+
+#ifdef __EMSCRIPTEN__
+	w = gl::UpperPowerOfTwo(width);
+	h = gl::UpperPowerOfTwo(height);
+#endif
+
+	_texture = std::make_shared<gl::Texture>(glm::ivec2{ w, h }, alpha);
+	_dimensions = { 0.0f, 0.0f, (float)width, (float)height };
+
+	uv = dimensionToUV({(float)width, (float)height});
+	_uvCoords = Rectangle{ 0.0f, 0.0f, uv.x, uv.y };
 }
 
 TextureImage::TextureImage(const TextureImage& parent, const MX::Rectangle& rect) : TextureImage(parent, rect.x1, rect.y1, rect.width(), rect.height())
@@ -99,7 +110,7 @@ void TextureImage::DrawCentered(const glm::vec2& offset, const glm::vec2& pos, c
 	Graphic::TextureRenderer::current().Draw(*_texture, _uvCoords, pos, offset + _center, glm::vec2{ scale.x * _dimensions.z, scale.y * _dimensions.w }, calculated_color, angle);
 }
 
-void TextureImage::Draw(const MX::Rectangle &destination, const MX::Rectangle &source, const Color &color)
+void TextureImage::DrawArea(const MX::Rectangle &destination, const MX::Rectangle &source, const Color &color)
 {
 	auto dimensions = subDimensions(source.x1, source.y1, source.width(), source.height());
 	Rectangle uvCoords;

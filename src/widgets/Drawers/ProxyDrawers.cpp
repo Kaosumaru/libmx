@@ -3,9 +3,7 @@
 #include "graphic/Blender.h"
 #include "widgets/Widget.h"
 #include "script/ScriptClassParser.h"
-#ifdef WIP
-#include "graphic/images/SurfaceRental.h"
-#endif
+#include "graphic/images/TextureRental.h"
 
 
 using namespace MX;

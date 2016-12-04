@@ -4,6 +4,8 @@
 #include "graphic/renderer/Viewport.h"
 #include "graphic/renderer/TextureRenderer.h"
 #include "glm/gtc/matrix_transform.hpp"
+#include "graphic/Blender.h"
+#include <iostream>
 
 using namespace MX;
 using namespace MX::Graphic;
@@ -37,39 +39,30 @@ TargetContext::TargetContext(const std::shared_ptr<TargetSurface>& target) : Tar
 {
 }
 
-TargetContext::TargetContext(TargetSurface& target) : _target(target_surface())
+TargetContext::TargetContext(TargetSurface& target) : _oldTarget(_current_target)
 {
-	SetTarget(target);
+	SetTarget(&target);
 }
 
 TargetContext::~TargetContext()
 {
-	SetTarget(_target);
+	SetTarget(_oldTarget);
 }
 
-void TargetContext::SetTarget(TargetSurface& target)
+void TargetContext::SetTarget(TargetSurface* target)
 {
-	if (&target == _current_target)
+	if (target == _current_target)
 		return;
-
 
 	Graphic::TextureRenderer::current().Flush();
 
 	if (_current_target)
 		_current_target->unbindAsTarget();
 
-
-	_current_target = &target;
-
+	_current_target = target;
 
 	if (_current_target)
-	{
 		_current_target->bindAsTarget();
-#ifdef WIPTEST
-		Blender::current().Apply(); //TODO why is this needed? Does cinder changes blend modes in pushViewPort?
-#endif
-	}
-
 }
 
 TargetSurface& TargetContext::target_surface()
@@ -119,7 +112,7 @@ void Image::DrawScaled(const glm::vec2& offset, const glm::vec2& pos, const glm:
 	DrawCentered(offset, pos, scale);
 }
 
-void Image::Draw(const MX::Rectangle &destination, const Color &color)
+void Image::DrawArea(const MX::Rectangle &destination, const Color &color)
 {
 	float sx = (float)destination.width()/(float)Width();
 	float sy = (float)destination.height()/(float)Height();
@@ -132,7 +125,7 @@ void Image::DrawTiled(const MX::Rectangle &destination, const Color &color)
 {
 	auto src = destination;
 	src.Shift(-src.x1, -src.y1);
-	Draw(destination, src, color);
+	DrawArea(destination, src, color);
 }
 
 

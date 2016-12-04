@@ -152,7 +152,7 @@ public:
 		float x = Destination::current().x(), y = Destination::current().y();
 		auto rect = Destination::current().rectangle;
 		rect.Shift(-rect.x1, -rect.y1);
-		image().Draw(Destination::current().rectangle, rect, MX::Widgets::Widget::current().geometry.color);
+		image().DrawArea(Destination::current().rectangle, rect, MX::Widgets::Widget::current().geometry.color);
 	}
 };
 
@@ -265,7 +265,7 @@ public:
 			std::swap(source.x1, source.x2), source.x2 -= 1.0f, source.x1 += 1.0f;
 		if (_flipY)
 			std::swap(source.y1, source.y2), source.y2 -= 1.0f, source.y1 += 1.0f;
-		img.Draw(destination, source, imageColor());
+		img.DrawArea(destination, source, imageColor());
 
 	}
 
@@ -325,7 +325,7 @@ public:
             Graphic::Image::Settings::flipX = _flipX;
             Graphic::Image::Settings::flipY = _flipY;
 
-            _image->Draw(Destination::current().rectangle, imageColor());
+            _image->DrawArea(Destination::current().rectangle, imageColor());
 
             Graphic::Image::Settings::flipX = oldX;
             Graphic::Image::Settings::flipY = oldY;

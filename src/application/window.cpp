@@ -11,6 +11,7 @@
 #include "SDL_video.h"
 #include "SDL_render.h"
 #include "graphic/OpenGL.h"
+#include "graphic/Blender.h"
 #include "graphic/renderer/MVP.h"
 #include "graphic/renderer/Viewport.h"
 #include "glm/gtc/matrix_transform.hpp"
@@ -85,6 +86,9 @@ void Window::OnRender()
 	glm::mat4x4 projection = glm::orthoLH(0.0f, (float)_width, (float)_height, 0.0f, -100.0f, 100.0f);
 	MVP::SetProjection(projection);
 	glEnable(GL_BLEND);
+
+	Graphic::Blender::SetCurrent(Graphic::Blender::defaultNormal());
+	Graphic::Blender::defaultNormal().Apply();
 }
 
 void Window::AfterRender()

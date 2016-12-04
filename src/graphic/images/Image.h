@@ -44,11 +44,11 @@ public:
 	TargetContext(const std::shared_ptr<TargetSurface>& target);
 	~TargetContext();
 protected:
-	static void SetTarget(TargetSurface& target);
+	static void SetTarget(TargetSurface* target);
 	static TargetSurface& target_surface();
 	static TargetSurface *_current_target;
 
-	TargetSurface &_target;
+	TargetSurface *_oldTarget;
 };
 
 
@@ -81,8 +81,8 @@ public:
 	virtual void DrawCentered(const glm::vec2& offset, const glm::vec2& pos, const glm::vec2& scale = { 1.0f, 1.0f }, float angle = 0.0f, const Color &color = Color()) = 0;
 
 	virtual void DrawTiled(const MX::Rectangle &destination, const Color &color = Color());
-	virtual void Draw(const MX::Rectangle &destination, const MX::Rectangle &source, const Color &color = Color()) {};
-	virtual void Draw(const MX::Rectangle &destination, const Color &color = Color());
+	virtual void DrawArea(const MX::Rectangle &destination, const MX::Rectangle &source, const Color &color = Color()) {};
+	virtual void DrawArea(const MX::Rectangle &destination, const Color &color = Color());
 
 	glm::ivec2 dimensions() { return glm::ivec2{ Height(), Width() }; }
 	virtual unsigned Height() = 0;

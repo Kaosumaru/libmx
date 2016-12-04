@@ -30,7 +30,7 @@ public:
 	void Clear(const Color &color) override;
 
 	void DrawCentered(const glm::vec2& offset, const glm::vec2& pos, const glm::vec2& scale = { 1.0f, 1.0f }, float angle = 0.0f, const Color &color = Color()) override;
-	void Draw(const MX::Rectangle &destination, const MX::Rectangle &source, const Color &color = Color()) override;
+	void DrawArea(const MX::Rectangle &destination, const MX::Rectangle &source, const Color &color = Color()) override;
 
 
 	unsigned Height() override;

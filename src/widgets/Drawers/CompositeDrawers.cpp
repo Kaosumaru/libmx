@@ -168,7 +168,7 @@ public:
 		void DrawImage(const MX::Color& color, int pos)
 		{
 			if (_qimage)
-				_qimage->Draw(Destination::current().rectangle, MX::Widgets::Widget::current().geometry.color.current() * _color);
+				_qimage->DrawArea(Destination::current().rectangle, MX::Widgets::Widget::current().geometry.color.current() * _color);
 			else if (_image)
 			{
                 auto r = MX::Rectangle::fromWH(.0f, .0f, _image->Width(), _image->Height());

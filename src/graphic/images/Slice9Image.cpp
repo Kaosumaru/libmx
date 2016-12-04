@@ -11,9 +11,9 @@ QuadImageHolder::QuadImageHolder(const ImagePtr& image)
 	_image = image;
 }
 	
-void QuadImageHolder::Draw(const MX::Rectangle &destination, const Color &color)
+void QuadImageHolder::DrawArea(const MX::Rectangle &destination, const Color &color)
 {
-	_image->Draw(destination, Rectangle(0.0f, 0.0f, _image->Width(), _image->Height()), color);
+	_image->DrawArea(destination, Rectangle(0.0f, 0.0f, _image->Width(), _image->Height()), color);
 }
 
 Slice9Image::Slice9Image(const MX::Margins &margins, const Graphic::TextureImage::pointer& image) : QuadImageHolder(image)
@@ -51,15 +51,15 @@ Slice9Image::Slice9Image(const std::vector<ImagePtr>& images) : QuadImageHolder(
 }
 
 
-void Slice9Image::Draw(const MX::Rectangle &destination, const Color &color)
+void Slice9Image::DrawArea(const MX::Rectangle &destination, const Color &color)
 {
     using FunctionType = void (Image::*)(const MX::Rectangle &, const Color &);
-    FunctionType drawCenter = _tiled ? &Image::DrawTiled : static_cast<FunctionType>(&Image::Draw);
+    FunctionType drawCenter = _tiled ? &Image::DrawTiled : static_cast<FunctionType>(&Image::DrawArea);
 
     auto draw = [&](int n, const MX::Rectangle &destination)
     {
         auto img = _subImages[n].get();
-        img->Draw(destination, color);
+        img->DrawArea(destination, color);
     };
 
     auto drawC = [&](int n, const MX::Rectangle &destination)

@@ -35,7 +35,7 @@ void SimpleQuadDrawer::DrawBackground()
 
 	if (Widget::current().geometry.color.a() != 0x0 && _image)
 	{
-		_image->Draw(MX::Rectangle::fromWH(x, y, Destination::current().width(), Destination::current().height()), Widget::current().geometry.color);
+		_image->DrawArea(MX::Rectangle::fromWH(x, y, Destination::current().width(), Destination::current().height()), Widget::current().geometry.color);
 	}
 }
 
