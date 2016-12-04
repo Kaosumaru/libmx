@@ -129,11 +129,11 @@ void TextureImage::DrawArea(const MX::Rectangle &destination, const MX::Rectangl
 
 unsigned TextureImage::Height()
 {
-	return (unsigned)_dimensions.z;
+	return (unsigned)_dimensions.w;
 }
 unsigned TextureImage::Width()
 {
-	return (unsigned)_dimensions.w;
+	return (unsigned)_dimensions.z;
 }
 
 
