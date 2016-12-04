@@ -11,19 +11,26 @@ namespace Widgets
 {
 
 
-#ifdef WIPFONT
+
 class Label : public ButtonWidget
 {
 public:
 	Label(const std::wstring &text);
 	Label();
 
+#ifdef WIPFONT
 	void SetHTML(bool html) { _textStrategy.text().SetHTML(html); }
 	void SetText(const std::wstring &text) { _textStrategy.text().SetText(text); }
-
 	const auto &text() const { return _textStrategy.text().text(); }
+#else
+	void SetHTML(bool html) { }
+	void SetText(const std::wstring &text) {  }
+#endif
+
 protected:
+#ifdef WIPFONT
 	Strategy::Drawable::Text _textStrategy;
+#endif
 };
 
 
@@ -34,8 +41,10 @@ public:
 
 	AutoLabel();
 
+#ifdef WIPFONT
 	void SetHTML(bool html) { _textStrategy->text().SetHTML(html); }
 	void SetStringBuilder(const StringBuilder& builder) { _textStrategy->SetStringBuilder(builder); }
+#endif
 
 	template<typename ...Args>
 	void connect_signal(MX::SimpleSignal<Args...>& signal)
@@ -49,13 +58,6 @@ public:
 	{
 		signal.connect(std::bind(&AutoLabel::MarkAsDirty, this), shared_from_this());
 	}
-
-	template<typename T>
-	void connect_signal(default_signal<T>& signal)
-	{
-		signal.connect(std::bind(&AutoLabel::MarkAsDirty, this));
-	}
-
     
     template<typename T1>
     void connect_signals(T1 &t1)
@@ -73,11 +75,15 @@ public:
 
 	void MarkAsDirty()
 	{
+#ifdef WIPFONT
 		_textStrategy->MarkAsDirty();
+#endif
 	}
 
 protected:
+#ifdef WIPFONT
 	std::shared_ptr<Strategy::Drawable::AutoText> _textStrategy;
+#endif
 };
 
 
@@ -111,9 +117,9 @@ protected:
 	Time::SimpleTimer _timer;
 };
 
-typedef std::shared_ptr<Widgets::Label> LabelPtr;
-typedef std::shared_ptr<Widgets::LabelButton> LabelButtonPtr;
-#endif
+using LabelPtr = std::shared_ptr<Widgets::Label>;
+using LabelButtonPtr = std::shared_ptr<Widgets::LabelButton>;
+
 
 
 }

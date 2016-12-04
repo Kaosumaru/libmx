@@ -20,7 +20,7 @@ namespace Strategy
 
 
 
-class Strategy : public shared_ptr_init<Strategy>
+class Strategy : public shared_ptr_init<Strategy>, public MX::SignalTrackable
 {
 public:
 	Strategy(bool interactive = false) : _interactive(interactive)

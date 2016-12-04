@@ -2,23 +2,26 @@
 #include "application/Window.h"
 #include "Game/Resources/Resources.h"
 #include <iostream>
+#include <sstream>
 
 using namespace MX;
 using namespace MX::Widgets;
 
-#ifdef WIPFONT
-#include "HTML/HTMLRendererCairo.h"
 
 MX::Widgets::Label::Label(const std::wstring &text)
 {
+#ifdef WIPFONT
 	AddStrategy(_textStrategy);
+#endif
 	_margins = MX::Margins(15,15,10,10);
 	SetText(text);
 }
 
 MX::Widgets::Label::Label()
 {
+#ifdef WIPFONT
 	AddStrategy(_textStrategy);
+#endif
 	_margins = MX::Margins(15, 15, 10, 10);
 }
 
@@ -26,8 +29,10 @@ MX::Widgets::Label::Label()
 
 AutoLabel::AutoLabel()
 {
+#ifdef WIPFONT
 	_textStrategy = std::make_shared<Strategy::Drawable::AutoText>();
 	AddStrategy(_textStrategy);
+#endif
 }
 
 
@@ -76,4 +81,3 @@ void FPSLabel::Run()
 		count = 0;
 	}
 }
-#endif
