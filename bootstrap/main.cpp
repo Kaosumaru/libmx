@@ -54,20 +54,7 @@ public:
 		SetResPath();
 		OpenMainWindow(1280, 800, false);
 
-		{
-			_image = MX::Resources::get().loadImage("cthulhu.png");
-		}
-
-		{
-			auto path = MX::Paths::get().pathToImage("");
-			MX::ListFilesRecursively( path, []( auto &d ) 
-			{
-				std::cout << d.path << " " << d.extension() << std::endl;
-			} );
-		}
-
-		MX::Window::current().keyboard()->on_specific_key_down[SDL_SCANCODE_ESCAPE].connect([&]() { Quit(); });
-
+		MX::Window::current().keyboard()->on_specific_key_down[SDL_SCANCODE_ESCAPE].static_connect([&]() { Quit(); });
 		MX::ScriptInitializer::ReloadScripts();
 	}
 
@@ -82,9 +69,6 @@ public:
 	{
 		TestManager::get().Run();
 	}
-
-	std::shared_ptr<MX::Graphic::TextureImage> _image;
-	std::shared_ptr<MX::Graphic::TextureImage> _target;
 };
 
 int main(int argc, char* argv[])

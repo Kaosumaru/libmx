@@ -197,7 +197,7 @@ StreamManager::StreamManager()
 		volume = vol;
 #endif
 	using namespace std::placeholders;
-	volume.onValueChanged.connect(std::bind(&StreamManager::OnGainChanged, this, _1));
+	volume.onValueChanged.connect(std::bind(&StreamManager::OnGainChanged, this, _1), this);
 }
 
 void StreamManager::SetDefaultVolume(float v)

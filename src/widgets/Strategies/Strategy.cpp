@@ -83,20 +83,20 @@ void Button::OnShapeChanged()
 	_buttonWidget = static_cast<ButtonWidget*>(_widget);
 	using namespace std::placeholders;
 
-    widget().shape()->with<Collision::TouchShape::TypeBegin>()->onCollided.connect(std::bind(&Button::OnTouch, this, _1));
-	widget().shape()->with<Collision::TouchShape::TypeEnd>()->onCollided.connect(std::bind(&Button::OnTouchEndCollision, this, _1));
+    widget().shape()->with<Collision::TouchShape::TypeBegin>()->onCollided.connect(std::bind(&Button::OnTouch, this, _1), shared_from_this());
+	widget().shape()->with<Collision::TouchShape::TypeEnd>()->onCollided.connect(std::bind(&Button::OnTouchEndCollision, this, _1), shared_from_this());
 
 
-	widget().shape()->with<Collision::MouseTouchShape::TypeBegin>()->onCollided.connect(std::bind(&Button::OnTouch, this, _1));
-	widget().shape()->with<Collision::MouseTouchShape::TypeEnd>()->onCollided.connect(std::bind(&Button::OnTouchEndCollision, this, _1));
+	widget().shape()->with<Collision::MouseTouchShape::TypeBegin>()->onCollided.connect(std::bind(&Button::OnTouch, this, _1), shared_from_this());
+	widget().shape()->with<Collision::MouseTouchShape::TypeEnd>()->onCollided.connect(std::bind(&Button::OnTouchEndCollision, this, _1), shared_from_this());
 
-	widget().shape()->with<Collision::MouseShape>()->onFirstCollided.connect(std::bind(&Button::OnMouseFirstCollision, this, _1, _2));
+	widget().shape()->with<Collision::MouseShape>()->onFirstCollided.connect(std::bind(&Button::OnMouseFirstCollision, this, _1, _2), shared_from_this());
 }
 
 void Button::OnMouseFirstCollision(const MX::Collision::Shape::pointer& shape, const MX::Collision::ShapeCollision::pointer &collision)
 {
 	IncrementHovers();
-	collision->onCollisionEnd.connect(std::bind(&Button::OnMouseCollisionEnds, this));
+	collision->onCollisionEnd.connect(std::bind(&Button::OnMouseCollisionEnds, this), shared_from_this());
 }
 
 void Button::OnMouseCollisionEnds()
@@ -141,7 +141,7 @@ void Button::OnTouchEndCollision(const MX::Collision::Shape::pointer& shape)
 
 void Button::OnTouchBegin()
 {
-	_touch->on_end.connect(std::bind(&Button::OnTouchEnd, this));
+	_touch->on_end.connect(std::bind(&Button::OnTouchEnd, this), shared_from_this());
 	buttonWidget().SetPressed(true);
 }
 
@@ -166,7 +166,7 @@ void PushButton::OnPressed()
 void PushButton::OnInit()
 {
 	auto buttonWidget = static_cast<ButtonWidget*>(_widget);
-	buttonWidget->onTouched.connect(std::bind(&PushButton::OnPressed, this));
+	buttonWidget->onTouched.connect(std::bind(&PushButton::OnPressed, this), shared_from_this());
 }
 
 
@@ -182,8 +182,8 @@ void Draggable::OnShapeChanged()
 	using namespace std::placeholders;
 
 
-	widget().shape()->with<Collision::MouseTouchShape::TypeBegin>()->onCollided.connect(std::bind(&Draggable::OnTouchBegin, this, _1));
-	widget().shape()->with<Collision::TouchShape::TypeBegin>()->onCollided.connect(std::bind(&Draggable::OnTouchBegin, this, _1));
+	widget().shape()->with<Collision::MouseTouchShape::TypeBegin>()->onCollided.connect(std::bind(&Draggable::OnTouchBegin, this, _1), shared_from_this());
+	widget().shape()->with<Collision::TouchShape::TypeBegin>()->onCollided.connect(std::bind(&Draggable::OnTouchBegin, this, _1), shared_from_this());
 	_dragDrawerInfo = Drawer::Drag(_widget, false);
 }
 
@@ -201,8 +201,8 @@ void Draggable::OnTouchBegin(const Collision::Shape::pointer& shape)
     _touch = touch->touch.lock();
     _initialDragPosition = _touch->point();
 
-    _touch->on_move.connect(std::bind(&Draggable::OnTouchMove, this));
-    _touch->on_end.connect(std::bind(&Draggable::OnTouchEnd, this));
+    _touch->on_move.connect(std::bind(&Draggable::OnTouchMove, this), shared_from_this());
+    _touch->on_end.connect(std::bind(&Draggable::OnTouchEnd, this), shared_from_this());
 
     if (_distanceToDrag != 0.0f)
         return;
@@ -270,7 +270,7 @@ Strategies::DropTarget::DropTarget()
 
 void Strategies::DropTarget::OnShapeChanged()
 {
-	widget().shape()->with<Collision::DropShape>()->onCollided.connect(std::bind(&Strategies::DropTarget::OnDrop, this));
+	widget().shape()->with<Collision::DropShape>()->onCollided.connect(std::bind(&Strategies::DropTarget::OnDrop, this), shared_from_this());
 }
 
 

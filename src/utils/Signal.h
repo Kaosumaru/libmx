@@ -20,11 +20,25 @@ namespace MX
 		return ScopeExit<F>(std::forward<F>(f));
 	}
 
-
 	template<typename T>
 	class Signal
 	{
 
+	};
+
+	class SignalTrackable
+	{
+	private:
+		template<typename T>
+		friend class Signal;
+
+		const auto &trackable_data()
+		{
+			if (!_trackable_data)
+				_trackable_data = std::make_shared<int>();
+			return _trackable_data;
+		}
+		std::shared_ptr<int> _trackable_data;
 	};
 
 	struct Connection
@@ -127,19 +141,40 @@ namespace MX
 		};
 
 	public:
-
-		Connection::pointer connect_front(const Function& func)
+		Connection::pointer static_connect_front(const Function& func)
 		{
 			_functors.emplace_front(std::make_shared<FunctorEntry>(func));
 			return _functors.front();
 		}
 
-		Connection::pointer connect(const Function& func)
+		Connection::pointer static_connect(const Function& func)
 		{
 			_functors.emplace_back(std::make_shared<FunctorEntry>(func));
 			return _functors.back();
 		}
 
+		Connection::pointer static_connect_extended(const FunctionExtended& func)
+		{
+			_functors.emplace_back(std::make_shared<FunctorEntryExtended>(func));
+			return _functors.back();
+		}
+
+		Connection::pointer connect_front(const Function& func, SignalTrackable* obj)
+		{
+			return connect_front(func, obj->trackable_data());
+		}
+
+		Connection::pointer connect(const Function& func, SignalTrackable* obj)
+		{
+			return connect(func, obj->trackable_data());
+		}
+
+		template<typename T>
+		Connection::pointer connect_front(const Function& func, const std::shared_ptr<T> &ptr)
+		{
+			_functors.emplace_front(std::make_shared<FunctorEntryWeak<T>>(func, ptr));
+			return _functors.front();
+		}
 
 		template<typename T>
 		Connection::pointer connect(const Function& func, const std::shared_ptr<T> &ptr)
@@ -147,14 +182,6 @@ namespace MX
 			_functors.emplace_back(std::make_shared<FunctorEntryWeak<T>>(func, ptr));
 			return _functors.back();
 		}
-
-
-		Connection::pointer connect_extended(const FunctionExtended& func)
-		{
-			_functors.emplace_back(std::make_shared<FunctorEntryExtended>(func));
-			return _functors.back();
-		}
-
 
 		template<typename T>
 		Connection::pointer connect_extended(const FunctionExtended& func, const std::shared_ptr<T> &ptr)

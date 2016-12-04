@@ -9,7 +9,7 @@ using namespace MX::Widgets;
 void CheckmarkGroup::AddWidget(const std::shared_ptr<ButtonWidget>& widget)
 {
 	_widgets.push_back(widget);
-	widget->onTouched.connect(std::bind(&CheckmarkGroup::onWidgetSelected, this, widget.get()));
+	widget->onTouched.connect(std::bind(&CheckmarkGroup::onWidgetSelected, this, widget.get()), this);
 }
 
 

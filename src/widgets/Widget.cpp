@@ -761,7 +761,7 @@ void WidgetHolder::SetButtonLinkedWithContent(const std::shared_ptr<ButtonWidget
 		{
 			auto holder = h.lock();
 			holder->SetContent(widget);
-		});
+		}, shared_from_this());
 	}
 
 

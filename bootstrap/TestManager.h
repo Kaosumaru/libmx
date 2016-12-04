@@ -6,7 +6,7 @@
 #include "utils/Utils.h"
 
 
-class TestManager : public MX::DisplaySceneTimer, public DeinitSingleton<TestManager>
+class TestManager : public MX::DisplaySceneTimer, public DeinitSingleton<TestManager>, public MX::SignalTrackable
 {
 public:
     TestManager();

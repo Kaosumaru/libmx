@@ -148,18 +148,18 @@ MouseTouches::MouseTouches(const Time::Timer::pointer &timer, const std::shared_
 	mouse->on_mouse_button_down.connect([this](const glm::vec2& position, int button)
 	{
 		OnTouchBegin(button, position.x, position.y, 0.0f,0.0f);
-	});
+	}, this);
 
 	mouse->on_mouse_button_up.connect([this](const glm::vec2& position, int button)
 	{
 		OnTouchEnd(button, position.x, position.y, 0.0f, 0.0f);
-	});
+	}, this);
 
 	mouse->on_mouse_move.connect([this](const glm::vec2& position, const glm::vec2& delta)
 	{
 		for (auto &pair : this->_touches)
 			OnTouchMove(pair.first, position.x, position.y, delta.x, delta.y);
-	});
+	}, this);
 }
 
 MouseTouches::pointer MouseTouches::CreateMouseTouchesForDisplay(const Time::Timer::pointer &timer, const std::shared_ptr<Mouse>& mouse)

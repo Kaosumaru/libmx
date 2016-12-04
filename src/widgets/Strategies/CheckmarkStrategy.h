@@ -8,7 +8,7 @@ namespace MX
 namespace Widgets
 {
 
-class CheckmarkGroup
+class CheckmarkGroup : public MX::SignalTrackable
 {
 public:
 	CheckmarkGroup(){}

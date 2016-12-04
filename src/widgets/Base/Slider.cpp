@@ -35,7 +35,7 @@ namespace Strategy {
 		void OnTouchBegin() override
 		{
 			Button::OnTouchBegin();
-			_touch->on_move.connect(std::bind(&SlideButton::OnTouchMove, this));
+			_touch->on_move.connect(std::bind(&SlideButton::OnTouchMove, this), shared_from_this());
 
 		}
 
@@ -59,8 +59,8 @@ Slider::Slider()
 	_knob->AddStrategy(std::make_shared<Strategy::SlideButton>(*this));
 
 	auto sig = [this](float w, float h){ onSizeOrKnobChanged(); };
-	on_size_changed.connect(sig);
-	_knob->on_size_changed.connect(sig);
+	on_size_changed.connect(sig, this);
+	_knob->on_size_changed.connect(sig, this);
 }
 
 void Slider::SetValue(float v)

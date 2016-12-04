@@ -216,7 +216,7 @@ public:
 		{
 			_initialized = true;
 			t.reset(new T);
-			MainDeinitializer::onDeinit().connect([&]() { t.reset(); });
+			MainDeinitializer::onDeinit().static_connect([&]() { t.reset(); });
 		}
 
 		return *t;
