@@ -54,13 +54,7 @@ public:
 		SetResPath();
 		OpenMainWindow(1280, 800, false);
 
-		{
-			_image = MX::Resources::get().loadImage("cthulhu.png");
-		}
-
-
-		MX::Window::current().keyboard()->on_specific_key_down[SDL_SCANCODE_ESCAPE].connect([&]() { Quit(); });
-
+		MX::Window::current().keyboard()->on_specific_key_down[SDL_SCANCODE_ESCAPE].static_connect([&]() { Quit(); });
 		MX::ScriptInitializer::ReloadScripts();
 	}
 
@@ -69,24 +63,12 @@ public:
 		MX::gl::Clear({ 1.0f, 0.0f, 0.0f, 1.0f });
 
 		TestManager::get().Draw();
-
-		if (!_target)
-		{
-			_target = MX::Graphic::TextureImage::Create(_image->Width()+5, _image->Height()+5, true);
-			MX::Graphic::TargetContext context(_target);
-			MX::gl::Clear({ 1.0f, 0.0f, 1.0f, 1.0f });
-			_image->Draw(glm::vec2{0.0f,0.0f});
-		}
-		_target->Draw(glm::vec2{0.0f,0.0f});
 	}
 
 	void OnLoop() override
 	{
 		TestManager::get().Run();
 	}
-
-	std::shared_ptr<MX::Graphic::TextureImage> _image;
-	std::shared_ptr<MX::Graphic::TextureImage> _target;
 };
 
 int main(int argc, char* argv[])

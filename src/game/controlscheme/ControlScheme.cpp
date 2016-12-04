@@ -15,8 +15,8 @@ class KeyAction : public Action
 public:
     KeyAction(ControlScheme* scheme, int keycode) : Action(scheme)
     {
-        MX::Window::current().keyboard()->on_specific_key_up[keycode].connect([&]() { SetState(false); });
-        MX::Window::current().keyboard()->on_specific_key_down[keycode].connect([&]() { SetState(true); });
+        MX::Window::current().keyboard()->on_specific_key_up[keycode].connect([&]() { SetState(false); }, this);
+        MX::Window::current().keyboard()->on_specific_key_down[keycode].connect([&]() { SetState(true); }, this);
     } 
 };
 

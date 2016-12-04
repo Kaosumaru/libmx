@@ -68,7 +68,7 @@ protected:
 };
 
 
-class DragTarget : public shared_ptr_init<DragTarget>
+class DragTarget
 {
 public:
 	DragTarget() { _dragging = false; }
@@ -100,7 +100,7 @@ protected:
 	bool _dragging;
 };
 
-class DropTarget : public shared_ptr_init<DropTarget>
+class DropTarget
 {
 public:
 	virtual ~DropTarget(){}

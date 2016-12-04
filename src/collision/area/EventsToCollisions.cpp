@@ -46,26 +46,26 @@ EventsToCollisions::EventsToCollisions(const std::shared_ptr<Collision::LayeredA
 
 	_area = area;
 
-	mouse->on_mouse_enter.connect(std::bind(&EventsToCollisions::OnMouseEnter, this, _1));
-	mouse->on_mouse_leave.connect(std::bind(&EventsToCollisions::OnMouseLeave, this, _1));
+	mouse->on_mouse_enter.connect(std::bind(&EventsToCollisions::OnMouseEnter, this, _1), this);
+	mouse->on_mouse_leave.connect(std::bind(&EventsToCollisions::OnMouseLeave, this, _1), this);
 
 	if (mouse)
 	{
-		mouse->on_mouse_move.connect(std::bind(&EventsToCollisions::OnMouseMove, this, _1));
-		mouse->on_mouse_button_up.connect(std::bind(&EventsToCollisions::OnMouseUp, this, _1, _2));
-		mouse->on_mouse_button_down.connect(std::bind(&EventsToCollisions::OnMouseDown, this, _1, _2));
+		mouse->on_mouse_move.connect(std::bind(&EventsToCollisions::OnMouseMove, this, _1), this);
+		mouse->on_mouse_button_up.connect(std::bind(&EventsToCollisions::OnMouseUp, this, _1, _2), this);
+		mouse->on_mouse_button_down.connect(std::bind(&EventsToCollisions::OnMouseDown, this, _1, _2), this);
 	}
 
 	if (touches)
-		touches->on_touch_begin.connect(std::bind(&EventsToCollisions::OnTouchBegin, this, _1, false));
+		touches->on_touch_begin.connect(std::bind(&EventsToCollisions::OnTouchBegin, this, _1, false), this);
 	if (mouseTouches)
-		mouseTouches->on_touch_begin.connect(std::bind(&EventsToCollisions::OnTouchBegin, this, _1, true));
+		mouseTouches->on_touch_begin.connect(std::bind(&EventsToCollisions::OnTouchBegin, this, _1, true), this);
 
 	if (dragSystem)
 	{
-		dragSystem->on_started_drag.connect(std::bind(&EventsToCollisions::OnDragBegin, this, _1));
-		dragSystem->on_moved_drag.connect(std::bind(&EventsToCollisions::OnDragMove, this, _1));
-		dragSystem->on_ended_drag.connect(std::bind(&EventsToCollisions::OnDragEnd, this, _1));
+		dragSystem->on_started_drag.connect(std::bind(&EventsToCollisions::OnDragBegin, this, _1), this);
+		dragSystem->on_moved_drag.connect(std::bind(&EventsToCollisions::OnDragMove, this, _1), this);
+		dragSystem->on_ended_drag.connect(std::bind(&EventsToCollisions::OnDragEnd, this, _1), this);
 	}
 
 	_mouse = std::make_shared<MouseShape>();
@@ -98,8 +98,8 @@ void EventsToCollisions::OnTouchBegin(const Touch::pointer & touch, bool mouseTo
 	std::shared_ptr<TouchShape> touchShape = !mouseTouch ? std::make_shared<TouchShape>(touch) : std::make_shared<MouseTouchShape>(std::static_pointer_cast<MouseTouch>(touch));
 
 	using namespace std::placeholders;
-	touch->on_move.connect_front(std::bind(&EventsToCollisions::OnTouchMove, this, _1, touchShape, mouseTouch));
-	touch->on_end.connect_front(std::bind(&EventsToCollisions::OnTouchEnd, this, _1, touchShape, mouseTouch));
+	touch->on_move.connect_front(std::bind(&EventsToCollisions::OnTouchMove, this, _1, touchShape, mouseTouch), this);
+	touch->on_end.connect_front(std::bind(&EventsToCollisions::OnTouchEnd, this, _1, touchShape, mouseTouch), this);
 
     touchShape->SetPoint(touch->point());
 	_area->AddShape(ClassID<Collision::EventsToCollisions>::id(), touchShape);

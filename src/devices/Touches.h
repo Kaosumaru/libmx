@@ -71,7 +71,7 @@ protected:
 };
 
 class Mouse;
-class MouseTouches : public shared_ptr_init<MouseTouches>
+class MouseTouches : public shared_ptr_init<MouseTouches>, public MX::SignalTrackable
 {
 public:
 	MouseTouches(const Time::Timer::pointer &timer, const std::shared_ptr<Mouse>& mouse);

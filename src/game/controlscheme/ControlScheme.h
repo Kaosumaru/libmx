@@ -37,7 +37,7 @@ namespace MX
             std::vector<ActionBase*> _actions;
         };
 
-        class ActionBase
+        class ActionBase : public MX::SignalTrackable
         {
         public:
             ActionBase(ControlScheme* scheme) : _scheme(scheme) 
@@ -138,7 +138,7 @@ namespace MX
                 proxy->state.onValueChanged.connect([&](bool v, bool old) 
                 {
                     SetState(v);
-                });
+                }, this);
             }
 
             std::vector<Callback> _whileOn;
@@ -208,7 +208,7 @@ namespace MX
                         StartTicking();
                     else
                         StopTicking();
-                });
+                }, this);
             }
 
             MX::Signal<void(void)> onTick;

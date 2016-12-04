@@ -58,7 +58,7 @@ protected:
 };
 
 
-class StreamManager : public Singleton<StreamManager>
+class StreamManager : public Singleton<StreamManager>, public MX::SignalTrackable
 {
 public:
 	StreamManager();

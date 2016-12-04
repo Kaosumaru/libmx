@@ -22,8 +22,8 @@ TestManager::TestManager() : DisplaySceneTimer(MX::Window::current().size())
     //_cheats = CreateCheats();
 	_visibility = -1;
 
-	MX::Window::current().keyboard()->on_specific_key_down[SDL_SCANCODE_SPACE].connect(std::bind(&TestManager::reloadScripts, this));
-	MX::Window::current().keyboard()->on_specific_key_down[SDL_SCANCODE_R].connect(std::bind(&TestManager::clearReloadScripts, this));
+	MX::Window::current().keyboard()->on_specific_key_down[SDL_SCANCODE_SPACE].connect(std::bind(&TestManager::reloadScripts, this), this);
+	MX::Window::current().keyboard()->on_specific_key_down[SDL_SCANCODE_R].connect(std::bind(&TestManager::clearReloadScripts, this), this);
 
 	reloadScripts();
 

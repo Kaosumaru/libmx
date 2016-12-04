@@ -57,7 +57,7 @@ public:
 
 
 
-class EventsToCollisions
+class EventsToCollisions : public MX::SignalTrackable
 {
 public:
 	friend class AreaLink;

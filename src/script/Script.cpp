@@ -249,13 +249,13 @@ const Scriptable::Value& Script::valueOf(const std::string& label)
 const Scriptable::Value::pointer& Script::_object(const std::string& label)
 {
 	static Scriptable::Value::pointer null_pointer;
-	//relative path ie (TeleportSkill).Time
-	if (label[0] == '(' && Context<std::string, KeyContext>::isCurrent())
+	//relative path ie <TeleportSkill>.Time
+	if (label[0] == '<' && Context<std::string, KeyContext>::isCurrent())
 	{
 		auto &key = Context<std::string, KeyContext>::current();
 
 
-		auto closure = label.find(')');
+		auto closure = label.find('>');
 		if (closure == std::string::npos)
 			return null_pointer;
 

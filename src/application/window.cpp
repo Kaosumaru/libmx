@@ -21,6 +21,8 @@ using namespace MX;
 Window::Window(unsigned width, unsigned height, bool fullscreen)
 	:_window{ nullptr, SDL_DestroyWindow }
 {
+	_timer = std::make_shared<Time::SimpleTimer>();
+
 	_width = width;
 	_height = height;
 	_fullscreen = fullscreen;
@@ -41,6 +43,11 @@ Window::Window(unsigned width, unsigned height, bool fullscreen)
 	));
 	if (!_window) throw std::runtime_error("SDL_CreateWindow");
 
+	auto area = std::make_shared<Collision::QuadtreeWeakLayeredArea>((float)width, (float)height);
+	_windowArea = area;
+	_windowArea->DefineLayerCollision(ClassID<Collision::EventsToCollisions>::id(), ClassID<Widgets::WidgetsLayer>::id());
+	_windowArea->DefineLayerCollision(ClassID<Widgets::DragLayer>::id(), ClassID<Widgets::WidgetsLayer>::id());
+
 	_mouse = Mouse::CreateForWindow(this);	
 	_keyboard = Keyboard::CreateForWindow(this);
 	_touches = Touches::CreateTouchesForDisplay(_timer);
@@ -50,11 +57,6 @@ Window::Window(unsigned width, unsigned height, bool fullscreen)
 	_tooltipSystem = std::make_shared<MX::Widgets::TooltipSystem>();
 
 	_eventsToCollisions.reset(new Collision::EventsToCollisions(_windowArea, _mouse, _touches, _mouseTouches, _dragSystem));
-
-    auto area = std::make_shared<Collision::QuadtreeWeakLayeredArea>((float)width, (float)height);
-    _windowArea = area;
-	_windowArea->DefineLayerCollision(ClassID<Collision::EventsToCollisions>::id(), ClassID<Widgets::WidgetsLayer>::id());
-	_windowArea->DefineLayerCollision(ClassID<Widgets::DragLayer>::id(), ClassID<Widgets::WidgetsLayer>::id());
 
 	_glcontext = SDL_GL_CreateContext(_window.get());
 	if (!_glcontext) throw std::runtime_error("SDL_GL_CreateContext");
@@ -98,5 +100,6 @@ void Window::AfterRender()
 
 bool Window::OnLoop()
 {
+	_timer->Step();
 	return true;
 }	

@@ -8,7 +8,7 @@ namespace Widgets
 {
 
 
-	class Slider : public Widget
+	class Slider : public Widget, public MX::SignalTrackable
 	{
 	public:
 		Slider();
