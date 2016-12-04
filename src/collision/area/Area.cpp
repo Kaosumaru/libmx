@@ -129,6 +129,8 @@ void Area::ValidateExistingCollisions(Shape *shape, bool unlink)
 	bool found = false;
 	_existingCollisions.enumerate(shape, [shape, unlink, &found](auto &other, auto &data) 
 	{
+		if (!data.value)
+			return;
 		auto &other_shape = other;
 
 		if (!unlink && !shape->intersectsWith(*other_shape))
@@ -139,7 +141,7 @@ void Area::ValidateExistingCollisions(Shape *shape, bool unlink)
 		found = true;
 	});
 
-	_existingCollisions.remove_if([](auto &data) { return data.value != nullptr; });
+	_existingCollisions.remove_if([](auto &data) { return data.value == nullptr; });
 }
 
 void Area::LinkShape(Shape *shape)

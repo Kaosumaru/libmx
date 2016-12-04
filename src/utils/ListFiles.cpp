@@ -24,8 +24,9 @@ namespace MX
 			if (name == "." || name == "..")
 				continue;
 			FileData data;
+
 			data.path = path + name;
-			data.is_folder = S_ISDIR( ent->d_type );
+			data.is_folder = ent->d_type & DT_DIR;
 			callback(data);
 		}
 
