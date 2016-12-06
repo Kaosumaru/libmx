@@ -4,11 +4,11 @@
 #include "widgets/Widget.h"
 #include "script/ScriptClassParser.h"
 #include "graphic/images/TextureRental.h"
-
+#include "graphic/Renderer/MVP.h"
 
 using namespace MX;
 
-#ifdef WIP
+
 class SurfaceProxyDrawer : public MX::Widgets::DrawerProxy
 {
 public:
@@ -37,11 +37,11 @@ public:
 
 		const auto &dimensions = w.dimensions();
 
-		auto &rental = MX::Graphic::SurfaceRental::get();
-		auto rentedSurface = rental.rentSurface(dimensions, true);
+		auto &rental = MX::Graphic::TextureRental::get();
+		auto rentedSurface = rental.rentTexture(dimensions, true);
 		auto surface1 = rentedSurface.surface();
 
-		auto rentedSurface2 = rental.rentSurface(dimensions, true);
+		auto rentedSurface2 = rental.rentTexture(dimensions, true);
 		auto surface2 = rentedSurface2.surface();
 
 		DrawWidgetOnSurface(surface1);
@@ -71,7 +71,7 @@ public:
 			drawer->DrawForeground();
 	}
 protected:
-	void DrawWidgetOnSurface(std::shared_ptr<Graphic::Surface> &surface1)
+	void DrawWidgetOnSurface(std::shared_ptr<Graphic::TextureImage> &surface1)
 	{
 		auto &w = MX::Widgets::Widget::current();
 
@@ -81,22 +81,20 @@ protected:
 
 			static Graphic::Blender blender(GL_FUNC_ADD, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_FUNC_ADD, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			auto guard = blender.Use();
-			ci::gl::pushModelView();
-
-			ci::gl::translate(-(int)w.geometry.position.x, -(int)w.geometry.position.y); //#WIDGETFLOAT HERE, BUG if y has fraction part
+			MVP::Push();
+            MVP::translate(glm::vec2{-(int)w.geometry.position.x, -(int)w.geometry.position.y}); //#WIDGETFLOAT HERE, BUG if y has fraction part
 
 			_drawer->DrawBackground();
 			widgetDrawChildren();
 			_drawer->DrawForeground();
 
-			Graphic::TextureRenderer::current().Flush();
-			ci::gl::popModelView();
+            MVP::Pop();
 
 		}
 	}
 
 
-	void DoSteps(std::shared_ptr<Graphic::Surface> &surface1, std::shared_ptr<Graphic::Surface> &surface2)
+	void DoSteps(std::shared_ptr<Graphic::TextureImage> &surface1, std::shared_ptr<Graphic::TextureImage> &surface2)
 	{
 		auto &w = MX::Widgets::Widget::current();
 		const auto &dimensions = w.dimensions();
@@ -126,11 +124,9 @@ protected:
 	std::vector<Drawer::pointer>      _passDrawers;
 	std::vector<Drawer::pointer>      _postDrawers;
 };
-#endif
+
 
 void MX::Widgets::ProxyDrawersInit::Init()
 {
-#ifdef WIP
 	ScriptClassParser::AddCreator(L"Drawer.Proxy.Surface", new OutsideScriptClassCreatorContructor<SurfaceProxyDrawer>());
-#endif
 }

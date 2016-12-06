@@ -14,6 +14,7 @@ namespace gl
 	class Program : public GLObject<ProgramDeleter>
 	{
 	public:
+        using pointer = std::shared_ptr<Program>;
 		Program()
 		{
 			

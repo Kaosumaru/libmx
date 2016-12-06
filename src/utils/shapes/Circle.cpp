@@ -55,6 +55,6 @@ void Circle::Clip(glm::vec2 &point)
 	if (isInside(point))
 		return;
 	auto v = MX::vectorFromPointToPoint(center, point);
-	normalize(v);
+	v = normalize(v);
 	point = center + v * radius;
 }

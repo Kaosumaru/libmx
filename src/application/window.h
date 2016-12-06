@@ -49,6 +49,7 @@ public:
 	const std::shared_ptr<Collision::LayeredArea> &area() { return _windowArea; }
 	auto& dragSystem() { return *_dragSystem; }
 	auto& tooltipSystem() { return *_tooltipSystem; }
+    auto& timer() { return _timer; }
 protected:
 	void OnRender();
 	void AfterRender();

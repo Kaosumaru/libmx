@@ -24,6 +24,13 @@ namespace MX
 		return input;
 	}
 
+	void Resources::Clear()
+	{
+		_imageMap.clear();
+		_sampleMap.clear();
+		_streamMap.clear();
+	}
+
 	const std::shared_ptr<Graphic::TextureImage> &Resources::loadImage(const std::string &image)
 	{
 		auto fit = _imageMap.find(image);

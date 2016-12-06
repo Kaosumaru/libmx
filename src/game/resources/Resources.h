@@ -29,6 +29,8 @@ public:
 	bool isSpriteSheet(const std::string& path);
 
 	std::string openTextFile(const std::string& path);
+
+    void Clear();
 protected:
 	const std::shared_ptr<Graphic::TextureImage> &loadImageFromSpriteSheet(const std::string &path);
 

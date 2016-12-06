@@ -681,10 +681,6 @@ bool ButtonWidget::hover()
 WidgetBackground::WidgetBackground()
 {
 	static Drawer::pointer drawer = 0;
-#ifdef WIP
-	if (!_drawer)
-		_drawer = std::make_shared<SimpleDrawer>(MX::Resources::get().loadImage("Misc/White128.png"));
-#endif
 	SetDrawer(_drawer);
 }
 

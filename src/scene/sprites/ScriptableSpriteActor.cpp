@@ -9,7 +9,7 @@
 #include "script/class/ScriptAnimationClass.h"
 #include "script/class/ScriptImageClass.h"
 #include "graphic/Renderer/TextureRenderer.h"
-
+#include "graphic/Renderer/MVP.h"
 using namespace MX;
 
 
@@ -115,42 +115,25 @@ void BaseGraphicTransformSceneScriptable::Draw(float x, float y)
 	if (geometry.color.current() != MX::Color::white())
 		color_guard.Reset(geometry.color.current());
 
-#ifdef WIPMATRIX
-	ci::gl::pushModelView();
-	ci::gl::translate(x, y);
-	ci::gl::rotate(geometry.angle, 0.0f, 0.0f, 1.0f);
-	ci::gl::scale(geometry.scale.x, geometry.scale.y);
-	ci::gl::translate(-x, -y);
-#endif
+	MVP::Push();
+	MVP::rotateZoom({x,y}, geometry.scale, geometry.angle);
 
 	auto guard = Context<ScriptableSpriteActor>::Lock(this); //TODO is that necessary?
 	BaseGraphicScene::Draw(x, y);
-#ifdef WIPMATRIX
-	Graphic::TextureRenderer::current().Flush();
-	ci::gl::popModelView();
-#endif	
+    MVP::Pop();
 }
 
 void BaseGraphicTransformSceneScriptable::DrawCustom(float x, float y)
 {
 	if (_actors.empty())
 		return;
-#ifdef WIPMATRIX
-	Graphic::TextureRenderer::current().Flush();
-	ci::gl::pushModelView();
-	ci::gl::translate(x, y);
-	ci::gl::rotate(geometry.angle, 0.0f, 0.0f, 1.0f);
-	ci::gl::scale(geometry.scale.x, geometry.scale.y);
-	ci::gl::translate(-x, -y);
-#endif
+	MVP::Push();
+	MVP::rotateZoom({x,y}, geometry.scale, geometry.angle);
 
 	auto guard = Context<ScriptableSpriteActor>::Lock(this); //TODO is that necessary?
 	BaseGraphicScene::DrawCustom(x, y);
 
-#ifdef WIPMATRIX
-	Graphic::TextureRenderer::current().Flush();
-	ci::gl::popModelView();
-#endif
+    MVP::Pop();
 }
 
 

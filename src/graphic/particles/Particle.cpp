@@ -1,7 +1,7 @@
 #include "Particle.h"
 #include "script/ScriptClassParser.h"
 #include "utils/Pools/PooledObject.h"
-
+#include "utils/Vector2.h"
 
 using namespace MX;
 using namespace MX::Graphic;
@@ -63,6 +63,21 @@ public:
 
 	}
 
+	void approach_zero(glm::vec2& v, float force)
+	{
+		auto vector = -(normalize(v) * force);
+
+		if (v.x >= 0.0f != (v.x + vector.x) >= 0.0f)
+			v.x = 0.0f;
+		else
+			v.x += vector.x;
+
+		if (v.y >= 0.0f != (v.y + vector.y) >= 0.0f)
+			v.y = 0.0f;
+		else
+			v.y += vector.y;
+    }
+
 	virtual bool Run()
 	{
 		if (!Particle::Run())
@@ -74,10 +89,8 @@ public:
 		geometry.scale.x *= scale_percent;
 		geometry.scale.y *= scale_percent;
 
-#ifdef WIP
-		if (!_directionForce.zero() && _deceleration)
-			_directionForce.approach_zero(_deceleration * elapsed_seconds);
-#endif
+        if ( _directionForce != glm::vec2{0.0f, 0.0f} && _deceleration )
+			approach_zero(_directionForce, _deceleration * elapsed_seconds);
 
 		return true;
 	}

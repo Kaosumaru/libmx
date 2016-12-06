@@ -1,6 +1,8 @@
 #include "Touches.h"
 #include "application/application.h"
+#include "application/Window.h"
 #include "devices/Mouse.h"
+#include "EventWatcher.h"
 
 using namespace MX;
 
@@ -39,63 +41,64 @@ bool Touch::canceled()
     return _canceled;
 }
 
-Touches::Touches(const Time::Timer::pointer &timer)
+Touches::Touches(Window* window)
 {
-    _timer = timer;
+    _timer = window->timer();
 }
 
-#ifdef WIPTOUCHES
-class CinderTouches : public Touches
+class SDLTouches : public Touches, public SDLEventWatcher
 {
 public:
-	CinderTouches(const Time::Timer::pointer &timer) : Touches(timer)
+	SDLTouches(Window* window) : Touches(window), _window(window)
 	{
-		App::current().onTouchesBegan.connect([&](const ci::app::TouchEvent& event) { OnTouchesBegan(event); });
-		App::current().onTouchesMoved.connect([&](const ci::app::TouchEvent& event) { OnTouchesMoved(event); });
-		App::current().onTouchesEnded.connect([&](const ci::app::TouchEvent& event) { OnTouchesEnded(event); });
+
 	}
 
+	void OnEvent(SDL_Event& event) override
+	{
+        if (event.type != SDL_FINGERDOWN && event.type != SDL_FINGERUP && event.type != SDL_FINGERMOTION)
+            return;
+
+        auto &t = event.tfinger;
+        float x = t.x * _window->size().x;
+        float y = t.y * _window->size().y;
+
+		if (event.type == SDL_FINGERDOWN)
+		{
+            OnTouchBegin(t.fingerId, x, y, false);
+		}
+		else if (event.type == SDL_FINGERUP)
+		{
+			OnTouchEnd(t.fingerId, x, y, false, false);
+		}
+		else if (event.type == SDL_FINGERMOTION)
+		{
+			OnTouchMove(t.fingerId, x, y, false);
+		}
+	}
 protected:
-	void OnTouchesBegan(const ci::app::TouchEvent& event)
-	{
-		for (auto& t : event.getTouches())
-			OnTouchBegin(t.getId(), t.getX(), t.getY(), t.getX() - t.getPrevX(), t.getY() - t.getPrevY(), false);
-	}
-
-	void OnTouchesMoved(const ci::app::TouchEvent& event)
-	{
-		for (auto& t : event.getTouches())
-			OnTouchMove(t.getId(), t.getX(), t.getY(), t.getX() - t.getPrevX(), t.getY() - t.getPrevY(), false);
-	}
-
-	void OnTouchesEnded(const ci::app::TouchEvent& event)
-	{
-		for (auto& t : event.getTouches())
-			OnTouchEnd(t.getId(), t.getX(), t.getY(), t.getX() - t.getPrevX(), t.getY() - t.getPrevY(), false, false);
-	}
-
+    Window* _window;
 };
-#endif
 
 
 
-Touches::pointer Touches::CreateTouchesForDisplay(const Time::Timer::pointer &timer)
+Touches::pointer Touches::CreateForWindow(Window* window)
 {
-	return nullptr;
+	return std::make_shared<SDLTouches>(window);
 }
 
-void Touches::OnTouchBegin(int id, float x, float y, float dx, float dy, bool primary)
+void Touches::OnTouchBegin(int id, float x, float y, bool primary)
 {
 	auto it = _touches.find(id);
 	if (it != _touches.end())
-		OnTouchEnd(id, x, y, dx, dy, primary, true);
+		OnTouchEnd(id, x, y, primary, true);
 
     Touch::pointer touch = std::make_shared<Touch>();
 	touch->_timestamp = (float)_timer->elapsed_seconds();
     touch->_point.x = x;
     touch->_point.y = y;
-    touch->_delta.x = dx;
-    touch->_delta.y = dy;
+    touch->_delta.x = 0.0f;
+    touch->_delta.y = 0.0f;
     touch->_primary = primary;
     touch->_startPoint = touch->_point;
     touch->_timer = _timer;
@@ -105,33 +108,33 @@ void Touches::OnTouchBegin(int id, float x, float y, float dx, float dy, bool pr
         on_primary_touch_begin(touch);
     
 }
-void Touches::OnTouchMove(int id, float x, float y, float dx, float dy, bool primary)
+void Touches::OnTouchMove(int id, float x, float y, bool primary)
 {
     auto it = _touches.find(id);
     if (it == _touches.end())
         return;
 
     Touch::pointer touch = it->second;
+    auto old = touch->_point;
     touch->_point.x = x;
     touch->_point.y = y;
-    touch->_delta.x = dx;
-    touch->_delta.y = dy;
+    touch->_delta = touch->_point - old;
     touch->_primary = primary;
     on_touch_move(touch);
     if (primary)
         on_primary_touch_move(touch);
     touch->on_move(touch);
 }
-void Touches::OnTouchEnd(int id, float x, float y, float dx, float dy, bool primary, bool canceled)
+void Touches::OnTouchEnd(int id, float x, float y, bool primary, bool canceled)
 {
     auto it = _touches.find(id);
     if (it == _touches.end())
         return;
     Touch::pointer touch = it->second;
+    auto old = touch->_point;
     touch->_point.x = x;
     touch->_point.y = y;
-    touch->_delta.x = dx;
-    touch->_delta.y = dy;
+    touch->_delta = touch->_point - old;
     touch->_primary = primary;
     touch->_canceled = canceled;
     on_touch_end(touch);

@@ -50,7 +50,7 @@ Window::Window(unsigned width, unsigned height, bool fullscreen)
 
 	_mouse = Mouse::CreateForWindow(this);	
 	_keyboard = Keyboard::CreateForWindow(this);
-	_touches = Touches::CreateTouchesForDisplay(_timer);
+	_touches = Touches::CreateForWindow(this);
 	_mouseTouches = MouseTouches::CreateMouseTouchesForDisplay(_timer, _mouse);
 
 	_dragSystem = std::make_shared<MX::Widgets::DragSystem>();

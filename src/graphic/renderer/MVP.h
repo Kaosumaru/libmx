@@ -15,6 +15,9 @@ namespace MX
 			get().current().UpdateMVP();
 		}
 
+		static void translate( const glm::vec2& p );
+		static void rotateZoom( const glm::vec2& center, const glm::vec2& scale, float angle );
+
 		static const auto& mvp()
 		{
 			return get().current()._mvp;

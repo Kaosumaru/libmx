@@ -8,7 +8,7 @@
 #include "ParticleDecorator.h"
 #include "script/ScriptClassParser.h"
 #include "graphic/Blender.h"
-
+#include "graphic/renderer/MVP.h"
 
 using namespace MX;
 using namespace MX::Graphic;
@@ -116,14 +116,8 @@ void ParticleSystem::Draw(float x, float y)
 	//TODO fix me - code duplication
 	if (relative())
 	{
-#ifdef WIPMATRIX
-		Graphic::TextureRenderer::current().Flush();
-		ci::gl::pushModelView();
-		ci::gl::translate(x, y);
-		ci::gl::rotate(geometry.angle, 0.0f, 0.0f, 1.0f);
-		ci::gl::scale(geometry.scale.x, geometry.scale.y);
-		ci::gl::translate(-x, -y);
-#endif
+		MVP::Push();
+		MVP::rotateZoom({x,y}, geometry.scale, geometry.angle);
 	}
 	else
 	{
@@ -145,10 +139,7 @@ void ParticleSystem::Draw(float x, float y)
 
 	if (relative())
 	{
-#ifdef WIPMATRIX
-		Graphic::TextureRenderer::current().Flush();
-		ci::gl::popModelView();
-#endif
+		MVP::Pop();
 	}
 
 }
@@ -166,14 +157,8 @@ void ParticleSystem::DrawCustom(float x, float y)
 	//TODO fix me - code duplication
 	if (relative())
 	{
-#ifdef WIPMATRIX
-		Graphic::TextureRenderer::current().Flush();
-		ci::gl::pushModelView();
-		ci::gl::translate(x, y);
-		ci::gl::rotate(geometry.angle, 0.0f, 0.0f, 1.0f);
-		ci::gl::scale(geometry.scale.x, geometry.scale.y);
-		ci::gl::translate(-x, -y);
-#endif
+		MVP::Push();
+		MVP::rotateZoom({x,y}, geometry.scale, geometry.angle);
 	}
 	else
 	{
@@ -195,10 +180,7 @@ void ParticleSystem::DrawCustom(float x, float y)
 
 	if (relative())
 	{
-#ifdef WIPMATRIX
-		Graphic::TextureRenderer::current().Flush();
-		ci::gl::popModelView();
-#endif
+		MVP::Pop();
 	}
 
 }

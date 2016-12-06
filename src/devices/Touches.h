@@ -47,9 +47,9 @@ protected:
 class Touches : public shared_ptr_init<Touches>
 {
 public:
-	Touches(const Time::Timer::pointer &timer);
+	Touches(class Window* window);
 
-	static pointer CreateTouchesForDisplay(const Time::Timer::pointer &timer);
+	static pointer CreateForWindow(Window* window);
 
 	Signal<void(const Touch::pointer &)> on_touch_begin;
     Signal<void(const Touch::pointer &)> on_touch_move;
@@ -59,9 +59,9 @@ public:
 	Signal<void(const Touch::pointer &)> on_primary_touch_end;
 
 protected:
-    void OnTouchBegin(int id, float x, float y, float dx, float dy, bool primary);
-    void OnTouchMove(int id, float x, float y, float dx, float dy, bool primary);
-    void OnTouchEnd(int id, float x, float y, float dx, float dy, bool primary, bool canceled);
+    void OnTouchBegin(int id, float x, float y, bool primary);
+    void OnTouchMove(int id, float x, float y, bool primary);
+    void OnTouchEnd(int id, float x, float y, bool primary, bool canceled);
 
     
     
