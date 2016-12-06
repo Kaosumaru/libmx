@@ -31,7 +31,7 @@ namespace Graphic
 		std::string _face_name;
 		std::string _path;
 		float _size = 16.0f;
-		//std::unique_ptr<Face> _ftFace;
+		std::shared_ptr<Face> _ftFace;
 	};
 }
 }

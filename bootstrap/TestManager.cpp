@@ -11,7 +11,7 @@
 #include "devices/Keyboard.h"
 #include "application/Window.h"
 #include "game/ScriptInitializer.h"
-#include "graphic/fonts/freetype/Freetype.h"
+#include "graphic/fonts/Font.h"
 #include "script/ScriptClassParser.h"
 
 using namespace MX;
@@ -76,7 +76,7 @@ void TestManager::Draw(float x, float y)
         static std::shared_ptr<Graphic::TextureImage> text;
         if ( !text )
         {
-            text = MX::Graphic::FreetypeUtils::drawLine( "Hello world! gjkq" );
+            text = MX::Graphic::Font::CreateDefault()->DrawTextOnBitmap( "Hello world! gjkq" );
         }
 
         text->Draw({});

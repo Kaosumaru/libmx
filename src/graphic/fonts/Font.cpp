@@ -4,6 +4,7 @@
 #include "game/resources/Paths.h"
 #include <memory>
 #include <map>
+#include "graphic/fonts/freetype/Freetype.h"
 
 using namespace MX;
 using namespace MX::Graphic;
@@ -11,7 +12,11 @@ using namespace MX::Graphic;
 
 Font::Font(const std::string& path, float size, const std::string& face_name) :_path(path), _size(size), _face_name(face_name)
 {
-
+	_ftFace = std::make_shared<Face>(path);
+	_ftFace->SetCharSize((int)size << 6);
+#ifdef WIP
+	//cache faces, deinit glyphs before end
+#endif
 }
 Font::~Font()
 {
@@ -20,7 +25,7 @@ Font::~Font()
 
 Font::pointer Font::Create(const std::string& path, float size, const std::string& face_name)
 {
-	return nullptr;
+	return std::make_shared<Font>(Paths::get().pathToResource(path), size, face_name);
 }
 Font::pointer Font::CreateDefault()
 {
@@ -29,7 +34,7 @@ Font::pointer Font::CreateDefault()
 
 std::shared_ptr<TextureImage> Font::DrawTextOnBitmap(const std::string &str, const Color &color)
 {
-	return nullptr;
+	return FreetypeUtils::drawLine(_ftFace, str, color.toVec4());
 }
 std::shared_ptr<TextureImage> Font::DrawTextOnBitmap(const std::wstring &str, const Color &color)
 {
@@ -38,6 +43,5 @@ std::shared_ptr<TextureImage> Font::DrawTextOnBitmap(const std::wstring &str, co
 
 bool Font::empty()
 {
-	return true;
-	//return !_ftFace;
+	return !_ftFace;
 }

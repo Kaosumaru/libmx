@@ -1,5 +1,5 @@
 #pragma once
-
+#include "glm/vec4.hpp"
 namespace MX{
 
 class Color
@@ -43,6 +43,8 @@ public:
 
 	unsigned int toIntRGBA() const;
 	unsigned int toIntARGB() const;
+
+	glm::vec4 toVec4() const { return { _r, _g, _b, _a}; }
 protected:
 	union
 	{
