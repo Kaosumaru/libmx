@@ -76,7 +76,7 @@ void TestManager::Draw(float x, float y)
         static std::shared_ptr<Graphic::TextureImage> text;
         if ( !text )
         {
-            text = MX::Graphic::FreetypeUtils::testText( "Hello world" );
+            text = MX::Graphic::FreetypeUtils::drawLine( "Hello world! gjkq" );
         }
 
         text->Draw({});

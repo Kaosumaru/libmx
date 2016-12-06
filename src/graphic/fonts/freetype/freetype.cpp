@@ -109,6 +109,8 @@ public:
         return cached_glyph;
 	}
 
+	auto face() { return _face; }
+
 protected:
     FT_GlyphSlot glyph_slot()
     {
@@ -129,34 +131,8 @@ protected:
 	FT_Face _face;
 };
 
-namespace
+std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::drawLine( const std::string& text )
 {
-    template<typename T>
-    void iterate_bitmap( FT_Bitmap* bitmap, int ox, int oy, T&& t )
-    {
-        FT_Int  p, q;
-        FT_Int  x_max = bitmap->width;
-        FT_Int  y_max = bitmap->rows;
-
-        auto pointer = bitmap->buffer;
-        for ( q = oy; q < y_max + oy; q++ )
-        {
-            for ( p = ox; p < x_max + ox; p++ )
-            {
-                t( p, q, *pointer );
-                pointer++;
-            }
-        }
-
-    }
-}
-
-
-std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::testText( const std::string& text )
-{
-    Graphic::SurfaceRGBA surface( 512, 512 );
-    surface.Clear({ 0, 0, 0, 0 });
-
     auto path = Paths::get().pathToResource("font/arial.ttf");
     auto face = std::make_shared<Face>(path);
 
@@ -164,22 +140,35 @@ std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::testText( const s
 
     face->SetCharSize(size << 6);
 
-    FT_Vector     pen = { 200, 300 };
+	int ascender = face->face()->ascender >> 6;
+    FT_Vector     pen = { 0, ascender };
 
-    for ( auto &c : text )
-    {
-        auto& glyph = face->LoadCharCached( c );
+	for ( auto &c : text )
+	{
+		auto& glyph = face->LoadCharCached( c );
+		pen.x += glyph.glyph()->advance.x >> 16;
+	}
 
-        auto advance_x = glyph.iterate_bitmap( [&](int x, int y, uint8_t p) 
-        {
-            surface.at( pen.x + x, pen.y + y ).a = p;
-        });
+	int width = pen.x;
+	int height = ascender - (face->face()->descender >> 6);
+	pen.x = 0;
 
-        pen.x += advance_x >> 16;
-    }
+	{
+		Graphic::SurfaceRGBA surface( width, height );
+		surface.Clear({ 0, 0, 0, 0 });
 
+		for ( auto &c : text )
+		{
+			auto& glyph = face->LoadCharCached( c );
 
+			auto advance_x = glyph.iterate_bitmap( [&](int x, int y, uint8_t p) 
+			{
+				surface.at( pen.x + x, pen.y + y ).a = p;
+			});
 
+			pen.x += advance_x >> 16;
+		}
+		return Graphic::TextureImage::Create(surface);
+	}
 
-    return Graphic::TextureImage::Create(surface);
 }
