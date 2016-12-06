@@ -11,7 +11,7 @@
 #include "devices/Keyboard.h"
 #include "application/Window.h"
 #include "game/ScriptInitializer.h"
-
+#include "graphic/fonts/freetype/Freetype.h"
 #include "script/ScriptClassParser.h"
 
 using namespace MX;
@@ -71,6 +71,16 @@ void TestManager::reloadScripts()
 void TestManager::Draw(float x, float y)
 {
 	DisplaySceneTimer::Draw(x, y);
+
+    {
+        static std::shared_ptr<Graphic::TextureImage> text;
+        if ( !text )
+        {
+            text = MX::Graphic::FreetypeUtils::testText( "Hello world" );
+        }
+
+        text->Draw({});
+    }
 }
 
 
