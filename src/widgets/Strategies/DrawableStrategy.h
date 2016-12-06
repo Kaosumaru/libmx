@@ -2,9 +2,7 @@
 #define MXDRAWABLESTRATEGY
 #include "Strategy.h"
 #include "graphic/images/Image.h"
-#ifdef WIPFONT
 #include "graphic/Fonts/Font.h"
-#endif
 #include "utils/SignalizingVariable.h"
 
 namespace MX
@@ -24,7 +22,7 @@ namespace Widgets
 		}
 	}
 
-#ifdef WIPFONT
+
 class TextData : public ScopeSingleton<TextData>
 {
 public:
@@ -67,7 +65,7 @@ protected:
 	std::shared_ptr<Graphic::Image> _textImage;
 
 };
-#endif
+
 
 namespace Strategy
 {
@@ -89,7 +87,7 @@ namespace Strategy
 			std::shared_ptr<Graphic::Image> _image;
 		};
 
-#ifdef WIPFONT
+
 		class Text : public Drawable
 		{
 		public:
@@ -168,7 +166,6 @@ namespace Strategy
 			StringBuilder _stringBuilder;
 
 		};
-#endif
 	}
 }
 

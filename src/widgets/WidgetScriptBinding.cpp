@@ -45,11 +45,8 @@ void WidgetScriptBinding::onReload()
 
 	RPN::Functions::AddLambda("Widget.Property", [](const std::string& name) { return Widget::current().properties().valueOf<float>(name); });
 
-
-#ifdef WIPFONT
 	script.SetPairFunctor("Widget.Text.Width", []()-> float 
 	{ 
 		return ScopeSingleton<TextData>::current().actualWidth();
 	});
-#endif
 }
