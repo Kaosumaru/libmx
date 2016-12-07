@@ -139,7 +139,7 @@ namespace Graphic
 
     struct FreetypeUtils
     {
-        static std::shared_ptr<Graphic::TextureImage> drawLine(const std::shared_ptr<Face>& face, const std::string& text, const glm::vec4& c);
+        static std::shared_ptr<Graphic::TextureImage> drawLine(const std::shared_ptr<Face>& face, const std::string& text);
     };
 }
 }

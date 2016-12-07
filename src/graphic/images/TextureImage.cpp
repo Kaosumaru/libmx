@@ -84,13 +84,19 @@ void TextureImage::SetTexture(const TexturePointer& texture)
 
 TextureImage::pointer TextureImage::Create( const SurfaceRGBA& surface )
 {
-    auto txt = std::make_shared<gl::Texture>(surface.width(), surface.height(), GL_RGBA, surface.data());
+    auto txt = std::make_shared<gl::Texture>(surface.width(), surface.height(), GL_RGBA, GL_RGBA, surface.data());
+    return std::make_shared<TextureImage>(txt);
+}
+
+TextureImage::pointer TextureImage::Create(const SurfaceGrayscale& surface)
+{
+    auto txt = std::make_shared<gl::Texture>(surface.width(), surface.height(), GL_INTENSITY, GL_LUMINANCE, surface.data());
     return std::make_shared<TextureImage>(txt);
 }
 
 TextureImage::pointer TextureImage::Create(unsigned width, unsigned height, unsigned int dataFormat, void *data)
 {
-	auto txt = std::make_shared<gl::Texture>(width, height, dataFormat, data);
+	auto txt = std::make_shared<gl::Texture>(width, height, dataFormat, dataFormat, data);
 	return std::make_shared<TextureImage>(txt);
 }
 

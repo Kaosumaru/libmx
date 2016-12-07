@@ -93,15 +93,16 @@ public:
 			float t;
 			source.Shift(-std::modf(source.x1, &t), -std::modf(source.y1, &t));
 			
+            auto g = Graphic::Blender::defaultPremultiplied().Use();
 #ifdef WIPHTML
 			if (textData.HTML())
 			{
-				auto g = Graphic::Blender::defaultPremultiplied().Use();
 				image->Draw(source, color);
 			}
-			else
+            else
 #endif
-				image->DrawArea(source, color);
+            image->DrawArea(source, color);
+				
 		}
 	}
 

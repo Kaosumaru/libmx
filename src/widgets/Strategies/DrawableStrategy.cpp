@@ -31,7 +31,7 @@ void MX::Widgets::TextData::UpdateTextImage()
 	else
 #endif
 	{
-		SetTextImage(font->DrawTextOnBitmap(_text, _width));
+		SetTextImage(font->DrawTextOnBitmap(_text));
 	}
 }
 void Text::BeforeDraw()

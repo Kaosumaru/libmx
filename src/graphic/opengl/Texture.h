@@ -13,7 +13,7 @@ namespace gl
 	class Texture : public shared_ptr_init<Texture>
 	{
 	public:
-		Texture(unsigned w, unsigned h, GLint format, const GLvoid *data);
+		Texture(unsigned w, unsigned h, GLint target, GLint format, const GLvoid *data);
 		Texture(const glm::ivec2& size, bool alpha = true);
 		Texture(const std::string& path);
 		~Texture();
@@ -37,7 +37,7 @@ namespace gl
 		glm::vec2 pixelToUV(const glm::vec2& pixel);
 
 	protected:
-		void constructTexture(unsigned w, unsigned h, GLint format, const GLvoid *data);
+		void constructTexture(unsigned w, unsigned h, GLint target, GLint format, const GLvoid *data);
 
 		unsigned _width = 0, _height = 0;
 		GLuint _textureID = -1;

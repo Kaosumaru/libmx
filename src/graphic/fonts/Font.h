@@ -19,8 +19,8 @@ namespace Graphic
 		static pointer Create(const std::string& path, float size, const std::string& face_name = "");
 		static pointer CreateDefault();
 
-		std::shared_ptr<TextureImage> DrawTextOnBitmap(const std::string &str, const Color &color = Color());
-		std::shared_ptr<TextureImage> DrawTextOnBitmap(const std::wstring &str, const Color &color = Color());
+		std::shared_ptr<TextureImage> DrawTextOnBitmap(const std::string &str);
+		std::shared_ptr<TextureImage> DrawTextOnBitmap(const std::wstring &str);
 
 		bool empty();
 

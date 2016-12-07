@@ -67,6 +67,7 @@ public:
 	}
 
     static pointer Create(const SurfaceRGBA& surface);
+    static pointer Create(const SurfaceGrayscale& surface);
 	static pointer Create(unsigned width, unsigned height, unsigned int dataFormat, void *data);
 	static pointer Create(const std::string& path);
 

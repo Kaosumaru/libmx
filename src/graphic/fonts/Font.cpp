@@ -32,11 +32,11 @@ Font::pointer Font::CreateDefault()
 	return Create("font/arial.ttf", 16.0f);
 }
 
-std::shared_ptr<TextureImage> Font::DrawTextOnBitmap(const std::string &str, const Color &color)
+std::shared_ptr<TextureImage> Font::DrawTextOnBitmap(const std::string &str)
 {
-	return FreetypeUtils::drawLine(_ftFace, str, color.toVec4());
+	return FreetypeUtils::drawLine(_ftFace, str);
 }
-std::shared_ptr<TextureImage> Font::DrawTextOnBitmap(const std::wstring &str, const Color &color)
+std::shared_ptr<TextureImage> Font::DrawTextOnBitmap(const std::wstring &str)
 {
 	return nullptr;
 }

@@ -7,10 +7,9 @@
 using namespace MX;
 
 
-std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::drawLine( const std::shared_ptr<Face>& face, const std::string& text, const glm::vec4& color )
-{
-    auto path = Paths::get().pathToResource("font/arial.ttf");
 
+std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::drawLine( const std::shared_ptr<Face>& face, const std::string& text)
+{
 	int ascender = face->face()->ascender >> 6;
     FT_Vector     pen = { 0, ascender };
 
@@ -25,8 +24,7 @@ std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::drawLine( const s
 	pen.x = 0;
 
 	{
-		Graphic::SurfaceRGBA surface( width, height );
-		surface.Clear({ 0, 0, 0, 0 });
+		Graphic::SurfaceGrayscale surface( width, height );
 
 		for ( auto &c : text )
 		{
@@ -34,8 +32,7 @@ std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::drawLine( const s
 
 			auto advance_x = glyph.iterate_bitmap( [&](int x, int y, uint8_t p) 
 			{
-				surface.at(pen.x + x, pen.y + y) = color;
-				surface.at( pen.x + x, pen.y + y ).a = p;
+				surface.at( pen.x + x, pen.y + y ) += p;
 			});
 
 			pen.x += advance_x >> 16;
