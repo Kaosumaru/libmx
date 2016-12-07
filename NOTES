@@ -1,0 +1,6 @@
+
+#Emscripten
+#Freetype 
+
+1. Generate project by emcmake cmake .. -DCMAKE_INSTALL_PREFIX=#PATH# -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=make -G "Unix Makefiles"
+2. emmake make
