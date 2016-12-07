@@ -79,7 +79,7 @@ void TestManager::Draw(float x, float y)
             text = MX::Graphic::Font::CreateDefault()->DrawTextOnBitmap( "Hello world! gjkq" );
         }
 
-        auto g = Graphic::Blender::defaultPremultiplied().Use();
+        //auto g = Graphic::Blender::defaultPremultiplied().Use();
         text->Draw({});
     }
 }

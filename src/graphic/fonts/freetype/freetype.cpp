@@ -1,8 +1,9 @@
-#include "freetype.h"
+#include "Freetype.h"
 #include "graphic/images/TextureImage.h"
 #include "game/resources/Paths.h"
 #include <memory>
 #include <map>
+#include "graphic/opengl/Utils.h"
 
 using namespace MX;
 
@@ -21,6 +22,11 @@ std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::drawLine( const s
 
 	int width = pen.x;
 	int height = ascender - (face->face()->descender >> 6);
+#ifdef __EMSCRIPTEN__
+	width = gl::UpperPowerOfTwo(width);
+	height = gl::UpperPowerOfTwo(height);
+#endif
+
 	pen.x = 0;
 
 	{

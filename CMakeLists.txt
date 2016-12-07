@@ -24,13 +24,15 @@ set(MX_INCLUDES ${MX_INCLUDES} ${RPN_Includes} ${CMAKE_CURRENT_LIST_DIR}/deps/MS
 
 if (EMSCRIPTEN)
   message("Building for emscripten")
+  find_package(Freetype REQUIRED)
 
   add_definitions("-std=c++14 ${MX_DEFINES}")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=2 --use-preload-plugins")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=2 --use-preload-plugins" PARENT_SCOPE)
 
+  set(MX_INCLUDES ${MX_INCLUDES} ${FREETYPE_INCLUDE_DIRS})
   set(MX_LINK_FLAGS " -s USE_SDL=2 --use-preload-plugins --preload-file ../res/" PARENT_SCOPE)
-  set(MX_LIBS MSL RPN MXLib PARENT_SCOPE)
+  set(MX_LIBS MSL RPN MXLib ${FREETYPE_LIBRARY} PARENT_SCOPE)
 else(EMSCRIPTEN)
   #find_package(GLEW REQUIRED)
   find_package(Boost REQUIRED)

@@ -90,7 +90,7 @@ TextureImage::pointer TextureImage::Create( const SurfaceRGBA& surface )
 
 TextureImage::pointer TextureImage::Create(const SurfaceGrayscale& surface)
 {
-    auto txt = std::make_shared<gl::Texture>(surface.width(), surface.height(), GL_INTENSITY, GL_LUMINANCE, surface.data());
+    auto txt = std::make_shared<gl::Texture>(surface.width(), surface.height(), GL_ALPHA, GL_ALPHA, surface.data());
     return std::make_shared<TextureImage>(txt);
 }
 

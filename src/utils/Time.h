@@ -15,7 +15,7 @@ namespace Time
 
 
 
-	class Timer : public virtual shared_ptr_init<Timer>, public ScopeSingleton<Timer>
+	class Timer : public shared_ptr_init<Timer>, public ScopeSingleton<Timer>
 	{
 	public:
 		virtual ~Timer(){}

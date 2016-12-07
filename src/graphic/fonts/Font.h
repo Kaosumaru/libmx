@@ -10,7 +10,7 @@ namespace Graphic
 {
 	class Face;
 
-	class Font : virtual public shared_ptr_init<Font>, virtual public disable_copy_constructors
+	class Font : public shared_ptr_init<Font>, virtual public disable_copy_constructors
 	{
 	public:
 		Font(const std::string& path, float size, const std::string& face_name = "");

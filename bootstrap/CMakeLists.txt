@@ -24,6 +24,9 @@ endif(EMSCRIPTEN)
 #ADDFILES(source_list "${PROJECT_SOURCE_DIR}/src")
 include_directories(${MX_INCLUDES})
 
+#list(LENGTH MX_LIBS TEST)
+#message(STATUS "Test ${MX_LIBS} $TEST")
+
 add_executable(BootstrapProject main.cpp TestManager.cpp TestManager.h ${SRCS})
 target_link_libraries(BootstrapProject ${MX_LIBS} MSL RPN)
 set_target_properties(BootstrapProject PROPERTIES LINK_FLAGS "${MX_LINK_FLAGS}")
