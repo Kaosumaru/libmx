@@ -155,7 +155,7 @@ void MX::Widgets::Widget::Draw(float x, float y)
 	if (Drawer::isDragged() && !Drawer::drawDragged())
 		return;
 
-#ifdef WIPFONT
+#ifdef WIPMATRIX
 	if (drawDebug)
 	{
 		Graphic::TextureRenderer::current().Flush();
@@ -194,7 +194,7 @@ void MX::Widgets::Widget::Draw(float x, float y)
 		strategy->AfterDraw();
 	}
 		
-#ifdef WIPFONT
+#ifdef WIPMATRIX
 	if (!_transform.isIdentity())
 	{
 		Graphic::TextureRenderer::current().Flush();

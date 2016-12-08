@@ -7,10 +7,11 @@
 #include "widgets/Label.h"
 #include "graphic/images/Slice9Image.h"
 #include "utils/ContextStack.h"
+#include "graphic/renderer/DefaultRenderers.h"
 
 using namespace MX;
 
-#ifdef WIPFONT
+
 class TextImageDrawer : public MX::Widgets::Drawer
 {
 public:
@@ -93,13 +94,16 @@ public:
 			float t;
 			source.Shift(-std::modf(source.x1, &t), -std::modf(source.y1, &t));
 			
+			MX::Graphic::TextureRenderer::Context guard(Graphic::Renderers::get().textRenderer());
+#ifdef WIPHTML
 			if (textData.HTML())
 			{
-				auto g = Graphic::Blender::defaultPremultiplied().Use();
 				image->Draw(source, color);
 			}
-			else
-				image->Draw(source, color);
+            else
+#endif
+            image->DrawArea(source, color);
+				
 		}
 	}
 
@@ -112,7 +116,7 @@ protected:
 	Scriptable::Value::pointer _width;
     glm::vec2 _offset;
 };
-#endif
+
 
 
 
@@ -361,9 +365,7 @@ public:
 
 void MX::Widgets::DrawersInit::Init()
 {
-#ifdef WIPFONT
 	ScriptClassParser::AddCreator(L"Drawer.TextImage", new OutsideScriptClassCreatorContructor<TextImageDrawer>());
-#endif
 	ScriptClassParser::AddCreator(L"Drawer.Image", new OutsideScriptClassCreatorContructor<ImageDrawer>());
 	ScriptClassParser::AddCreator(L"Drawer.TransformedImage", new OutsideScriptClassCreatorContructor<TransformedImageDrawer>());
 	ScriptClassParser::AddCreator(L"Drawer.StretchedImage", new OutsideScriptClassCreatorContructor<StretchedImageDrawer>());

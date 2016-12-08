@@ -13,9 +13,7 @@
 #include "script/class/ScriptImageClass.h"
 #include "script/class/ScriptAnimationClass.h"
 #include "stx/optional.hpp"
-#ifdef WIPFONT
-#include "graphic/Fonts/Font.h"
-#endif
+#include "graphic/fonts/Font.h"
 #include <array>
 
 namespace MX
@@ -371,7 +369,6 @@ namespace MX
 		}
 	};
 
-#ifdef WIPFONT
 	template<>
 	struct PropertyLoader<MX::Graphic::Font::pointer>
 	{
@@ -383,7 +380,7 @@ namespace MX
 
 			std::string name;
 			std::string face;
-			unsigned size = 10;
+			float size = 10.0f;
 			if (script.load_property(name, "Name"))
 			{
 				script.load_property(size, "Size");
@@ -394,7 +391,7 @@ namespace MX
 			return false;
 		}
 	};
-#endif
+
 	template<>
 	struct PropertyLoader<std::shared_ptr<Graphic::Image>>
 	{

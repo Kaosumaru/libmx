@@ -5,15 +5,15 @@
 using namespace MX;
 using namespace MX::gl;
 
-Texture::Texture(unsigned w, unsigned h, GLint format, const GLvoid *data)
+Texture::Texture(unsigned w, unsigned h, GLint target, GLint format, const GLvoid *data)
 {
-	constructTexture(w, h, format, data);
+	constructTexture(w, h, target, format, data);
 }
 
 Texture::Texture(const glm::ivec2& size, bool alpha)
 {
 	auto format = alpha ? GL_RGBA : GL_RGB;
-	constructTexture(size.x, size.y, format, nullptr);
+	constructTexture(size.x, size.y, format, format, nullptr);
 }
 
 Texture::Texture(const std::string & path)
@@ -22,7 +22,7 @@ Texture::Texture(const std::string & path)
 	unsigned w = 0, h = 0;
 	auto ret = lodepng::decode(out, w, h, path);
 	if (ret == 0)
-		constructTexture(w, h, GL_RGBA, out.data());
+		constructTexture(w, h, GL_RGBA, GL_RGBA, out.data());
 }
 
 Texture::~Texture()
@@ -43,7 +43,7 @@ void Texture::unbind(int unit)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Texture::constructTexture(unsigned w, unsigned h, GLint format, const GLvoid *data)
+void Texture::constructTexture(unsigned w, unsigned h, GLint target, GLint format, const GLvoid *data)
 {
 	_width = w;
 	_height = h;
@@ -58,7 +58,7 @@ void Texture::constructTexture(unsigned w, unsigned h, GLint format, const GLvoi
 
 	glTexImage2D(GL_TEXTURE_2D,
 		0,
-		format,
+		target,
 		(GLsizei)_width,
 		(GLsizei)_height,
 		0,

@@ -1,8 +1,5 @@
 #pragma once
 #include "Widget.h"
-#ifdef WIPFONT
-#include "graphic/Fonts/Font.h"
-#endif
 #include "Strategies/DrawableStrategy.h"
 
 namespace MX
@@ -18,19 +15,12 @@ public:
 	Label(const std::wstring &text);
 	Label();
 
-#ifdef WIPFONT
 	void SetHTML(bool html) { _textStrategy.text().SetHTML(html); }
 	void SetText(const std::wstring &text) { _textStrategy.text().SetText(text); }
 	const auto &text() const { return _textStrategy.text().text(); }
-#else
-	void SetHTML(bool html) { }
-	void SetText(const std::wstring &text) {  }
-#endif
 
 protected:
-#ifdef WIPFONT
 	Strategy::Drawable::Text _textStrategy;
-#endif
 };
 
 
@@ -41,10 +31,8 @@ public:
 
 	AutoLabel();
 
-#ifdef WIPFONT
 	void SetHTML(bool html) { _textStrategy->text().SetHTML(html); }
 	void SetStringBuilder(const StringBuilder& builder) { _textStrategy->SetStringBuilder(builder); }
-#endif
 
 	template<typename ...Args>
 	void connect_signal(MX::SimpleSignal<Args...>& signal)
@@ -75,15 +63,11 @@ public:
 
 	void MarkAsDirty()
 	{
-#ifdef WIPFONT
 		_textStrategy->MarkAsDirty();
-#endif
 	}
 
 protected:
-#ifdef WIPFONT
 	std::shared_ptr<Strategy::Drawable::AutoText> _textStrategy;
-#endif
 };
 
 

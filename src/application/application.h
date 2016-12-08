@@ -63,6 +63,5 @@ namespace MX
 		std::unique_ptr<Script> _script;
 
 		std::shared_ptr<MX::Graphic::Image> _cursor;
-		std::shared_ptr<MX::Graphic::TextureRenderer> _defaultRenderer;
 	};
 }

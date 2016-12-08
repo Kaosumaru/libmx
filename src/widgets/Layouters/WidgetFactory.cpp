@@ -30,17 +30,15 @@ public:
 		script.load_property(_text, "Text");
 	}
 
-#ifdef WIPFONT
 	WidgetPtr WidgetCreate() override
 	{ 
 		return std::make_shared<MX::Widgets::Label>(_text ? _text->text() : L"");
 	}
-#endif
 protected:
 	Scriptable::Value::pointer _text;
 };
 
-#ifdef WIPFONT
+
 class LabelButtonWidgetFactory : public LabelWidgetFactory
 {
 public:
@@ -55,10 +53,10 @@ public:
 	{
 		auto button = std::make_shared<MX::Widgets::LabelButton>(_text ? _text->text() : L"");
 
-		button->onClicked.connect([=, b = button.get()]() 
+		button->onClicked.static_connect([d =_data, b = button.get()]() 
 		{
 			auto guard = Context<Widget>::Lock(b);
-			_data->_onClicked.Do();
+			d->_onClicked.Do();
 		});
 
 		return button;
@@ -71,13 +69,11 @@ protected:
 	
 	std::shared_ptr<Data> _data;
 };
-#endif
+
 
 void WidgetFactoryInit::Init()
 {
 	ScriptClassParser::AddCreator(L"Widget.Widget", new OutsideScriptClassCreatorContructor<WidgetFactory>());
-#ifdef WIPFONT
 	ScriptClassParser::AddCreator(L"Widget.Label", new OutsideScriptClassCreatorContructor<LabelWidgetFactory>());
 	ScriptClassParser::AddCreator(L"Widget.LabelButton", new OutsideScriptClassCreatorContructor<LabelButtonWidgetFactory>());
-#endif
 }

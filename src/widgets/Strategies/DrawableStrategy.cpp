@@ -3,7 +3,9 @@
 #include "application/Window.h"
 #include "Game/Resources/Resources.h"
 #include "utils/ContextStack.h"
-#ifdef WIPFONT
+#include "graphic/fonts/Font.h"
+#include "graphic/images/TextureImage.h"
+#ifdef WIPHTML
 #include "HTML/HTMLRendererCairo.h"
 #endif
 
@@ -14,21 +16,22 @@ using namespace MX::Widgets;
 using namespace MX::Strategies;
 using namespace MX::Strategies::Drawable;
 
-#ifdef WIPFONT
+
 void MX::Widgets::TextData::UpdateTextImage()
 {
 	if (!_dirty)
 		return;
 	Graphic::Font::pointer font = _font ? _font : MX::Graphic::Font::CreateDefault();
 
-
+#ifdef WIPHTML
 	if (_html)
 	{
 		SetTextImage(HTMLRendererCairo::DrawOnBitmap(_text, _width, _font));
 	}
 	else
+#endif
 	{
-		SetTextImage(font->DrawTextOnBitmap(_text, _width));
+		SetTextImage(font->DrawTextOnBitmap(_text));
 	}
 }
 void Text::BeforeDraw()
@@ -46,7 +49,7 @@ void Text::AfterDraw()
 	ScopeSingleton<TextData>::SetCurrent(*_old);
 	_old = nullptr;
 }
-#endif
+
 
 void Image::BeforeDraw()
 {

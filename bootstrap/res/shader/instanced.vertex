@@ -32,10 +32,6 @@ void mx_glposition_instanced_vertex()
 
 	UV.x = mix(instance_uv[0], instance_uv[2], squareVertices.x);
 	UV.y = mix(instance_uv[1], instance_uv[3], squareVertices.y);
-	//vec2 uv_index = squareVertices * 2.0;
-	//UV.x = instance_uv[int(uv_index.x)];
-	//UV.y = instance_uv[int(uv_index.y + 1.0)];
-
 }
 
 void main()

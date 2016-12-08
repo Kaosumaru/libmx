@@ -5,13 +5,13 @@
 #include "script/ScriptObject.h"
 #include "application/Window.h"
 
-
+#include "graphic/renderer/DefaultRenderers.h"
 
 #include "devices/Mouse.h"
 #include "devices/Keyboard.h"
 #include "application/Window.h"
 #include "game/ScriptInitializer.h"
-
+#include "graphic/fonts/Font.h"
 #include "script/ScriptClassParser.h"
 
 using namespace MX;
@@ -71,6 +71,18 @@ void TestManager::reloadScripts()
 void TestManager::Draw(float x, float y)
 {
 	DisplaySceneTimer::Draw(x, y);
+
+    {
+        static std::shared_ptr<Graphic::TextureImage> text;
+        if ( !text )
+        {
+            text = MX::Graphic::Font::CreateDefault()->DrawTextOnBitmap( "Hello world! gjkq" );
+        }
+
+        //auto g = Graphic::Blender::defaultPremultiplied().Use();
+        MX::Graphic::TextureRenderer::Context guard(Graphic::Renderers::get().textRenderer());
+        text->Draw({});
+    }
 }
 
 
