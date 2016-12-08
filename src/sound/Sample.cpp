@@ -2,6 +2,7 @@
 #include <memory>
 #include "Stream.h"
 #include "utils/Random.h"
+#include "SDL_mixer.h"
 
 using namespace std;
 using namespace MX;
@@ -165,6 +166,7 @@ void Sample::Shutdown()
 {
 	SampleAllGatherer::get().CloseAll();
 	Stream::CloseAll();
+	Mix_Quit();
 #ifdef SDLAUDIO
 	FMOD_System_Release(_fmodSystem);
 #endif
@@ -178,6 +180,9 @@ void Sample::SetDefaultGain(float gain)
 
 void Sample::ReserveSamples(unsigned samples)
 {
+	int flags=MIX_INIT_OGG|MIX_INIT_MOD;
+	int initted=Mix_Init(flags);
+	//WIPLOG
 #ifdef SDLAUDIO
 	FMOD_System_Create(&_fmodSystem);
 	FMOD_System_Init(_fmodSystem, samples, FMOD_INIT_NORMAL, NULL);
