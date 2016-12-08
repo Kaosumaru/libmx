@@ -7,6 +7,21 @@
 
 using namespace MX;
 
+namespace
+{
+    int roundUp(int numToRound, int multiple)
+    {
+        if (multiple == 0)
+            return numToRound;
+
+        int remainder = numToRound % multiple;
+        if (remainder == 0)
+            return numToRound;
+
+        return numToRound + multiple - remainder;
+    }
+}
+
 
 
 std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::drawLine( const std::shared_ptr<Face>& face, const std::string& text)
@@ -26,8 +41,8 @@ std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::drawLine( const s
 	width = gl::UpperPowerOfTwo(width);
 	height = gl::UpperPowerOfTwo(height);
 #else
-    width += width % 4;
-    height += height % 4;
+    width = roundUp(width, 4);
+    height = roundUp(height, 4);
 #endif
     
 	pen.x = 0;
@@ -69,8 +84,8 @@ std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::drawLine( const s
 	width = gl::UpperPowerOfTwo(width);
 	height = gl::UpperPowerOfTwo(height);
 #else
-    width += width % 4;
-    height += height % 4;
+    width = roundUp(width, 4);
+    height = roundUp(height, 4);
 #endif
 
 	pen.x = 0;
