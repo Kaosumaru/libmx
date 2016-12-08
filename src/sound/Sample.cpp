@@ -33,34 +33,19 @@ public:
 	std::set<Sample*> _samples;
 };
 
-#ifdef SDLAUDIO
-int Sample::_playSample(FMOD_SOUND *sound, float gain, float pan, float speed, bool looped, int priority)
-{
-	FMOD_CHANNEL *channel;
-	if (FMOD_OK == FMOD_System_PlaySound(Sample::system() , sound, 0, true, &channel))
-	{
-		float rate = 44100.0f;
-		FMOD_Channel_SetPriority(channel, priority);
-		FMOD_Channel_SetVolume(channel, gain * SoundSettings::current().baseVolume);
-		FMOD_Channel_SetFrequency(channel, rate * speed * SoundSettings::current().basePlaybackSpeed);
-		FMOD_Channel_SetPan(channel, pan);
 
-		if (looped)
-		{
-			FMOD_Channel_SetMode(channel, FMOD_LOOP_NORMAL);
-			FMOD_Channel_SetLoopCount(channel, -1);
-		}
-		else
-		{
-			FMOD_Channel_SetMode(channel, FMOD_LOOP_OFF);
-			FMOD_Channel_SetLoopCount(channel, 0);
-		}
-		
-		FMOD_Channel_SetPaused(channel, false);
-	}
+int Sample::_playSample(Mix_Chunk *sound, float gain, float pan, float speed, bool looped, int priority)
+{
+	auto channel = Mix_PlayChannel(-1, sound, looped ? -1 : 0);
+	Mix_Volume(channel, 128 * gain);
+
+#ifdef SDLAUDIO
+	Mix_SetPanning(channel, left, 255 - left);
+	FMOD_Channel_SetFrequency(channel, rate * speed * SoundSettings::current().basePlaybackSpeed);
+#endif
 	return channel;
 }
-#endif
+
 
 
 SoundSettings::SoundSettings()
@@ -75,20 +60,21 @@ Sample::Instance::~Instance()
 }
 void Sample::Instance::Stop()
 {
-#ifdef SDLAUDIO
-	FMOD_Channel_Stop(_channel);
-	_channel = nullptr;
-#endif
+	if (_channel == -1)
+		return;
+	Mix_HaltChannel(_channel);
+	_channel = -1;
 }
 
-Sample::Instance::Instance(const std::shared_ptr<Sample> & sample)
+Sample::Instance::Instance(const std::shared_ptr<Sample> & sample, int channel)
 {
+	_channel = channel;
 	_sample = sample;
 }
 
-Sample::Instance::pointer Sample::Instance::Create(const std::shared_ptr<Sample> & sample)
+Sample::Instance::pointer Sample::Instance::Create(const std::shared_ptr<Sample> & sample, int channel)
 {
-	return std::make_shared<Sample::Instance>(sample);
+	return std::make_shared<Sample::Instance>(sample, channel);
 }
 
 Sample::Sample(const std::string &path) : Sample(path.c_str())
@@ -98,42 +84,52 @@ Sample::Sample(const std::string &path) : Sample(path.c_str())
 
 Sample::Sample(const char *path)
 {
-#ifdef SDLAUDIO
-	FMOD_System_CreateSound(_fmodSystem, path, FMOD_DEFAULT, NULL, &_sample);
-	_defaultGain = 1.0f;
-	if (_sample)
+	_chunk = Mix_LoadWAV(path);
+	if (_chunk)
 	{
 		EstimateDuration();
 		SampleAllGatherer::get().AddSample(this);
 	}
-#endif	
+}
+
+Uint32 getChunkTimeMilliseconds(Mix_Chunk *chunk)
+{
+	Uint32 points = 0;
+	Uint32 frames = 0;
+	int freq = 0;
+	Uint16 fmt = 0;
+	int chans = 0;
+	/* Chunks are converted to audio device format... */
+	if (!Mix_QuerySpec(&freq, &fmt, &chans))
+		return 0; /* never called Mix_OpenAudio()?! */
+
+				  /* bytes / samplesize == sample points */
+	points = (chunk->alen / ((fmt & 0xFF) / 8));
+
+	/* sample points / channels == sample frames */
+	frames = (points / chans);
+
+	/* (sample frames * 1000) / frequency == play length in ms */
+	return (frames * 1000) / freq;
 }
 
 void Sample::EstimateDuration()
 {
-#ifdef SDLAUDIO
-	unsigned int length;
-	if (FMOD_OK == FMOD_Sound_GetLength(_sample, &length, FMOD_TIMEUNIT_MS))
-		_duration = (float)length / 1000.0f;
-#endif
+	_duration = getChunkTimeMilliseconds(_chunk);
 }
 
 Sample::~Sample()
 {
-#ifdef SDLAUDIO
-	if (_sample)
+	if (_chunk)
 		SampleAllGatherer::get().RemoveSample(this);
-#endif
 	Close();
 }
 
 void Sample::Close()
 {
-#ifdef SDLAUDIO
-	if (_sample)
-		FMOD_Sound_Release(_sample);
-	_sample = nullptr;
-#endif
+	if (_chunk)
+		Mix_FreeChunk(_chunk);
+	_chunk = nullptr;
 }
 
 Sample::pointer Sample::Create(const char *path)
@@ -148,28 +144,15 @@ Sample::pointer Sample::Create(const char *path)
 
 bool Sample::empty()
 {
-#ifdef SDLAUDIO
-	return _sample == nullptr;
-#else
-	return true;
-#endif
-}
-
-void Sample::Update()
-{
-#ifdef SDLAUDIO
-	FMOD_System_Update(_fmodSystem);
-#endif
+	return _chunk == nullptr;
 }
 
 void Sample::Shutdown()
 {
 	SampleAllGatherer::get().CloseAll();
 	Stream::CloseAll();
+	Mix_CloseAudio();
 	Mix_Quit();
-#ifdef SDLAUDIO
-	FMOD_System_Release(_fmodSystem);
-#endif
 }
 
 
@@ -178,43 +161,30 @@ void Sample::SetDefaultGain(float gain)
 	_defaultGain = gain;
 }
 
+int Sample::_mixer = 0;
+
 void Sample::ReserveSamples(unsigned samples)
 {
-	int flags=MIX_INIT_OGG|MIX_INIT_MOD;
+	int flags=MIX_INIT_OGG;
 	int initted=Mix_Init(flags);
+	_mixer = Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
 	//WIPLOG
-#ifdef SDLAUDIO
-	FMOD_System_Create(&_fmodSystem);
-	FMOD_System_Init(_fmodSystem, samples, FMOD_INIT_NORMAL, NULL);
-#endif
 }
 void Sample::Play(float gain , float pan, float speed)
 {
-#ifdef SDLAUDIO
-	_playSample(_sample, gain * _defaultGain, pan, speed, false, _priority);
-#endif
+	_playSample(_chunk, gain * _defaultGain, pan, speed, false, _priority);
 }
 void Sample::PlayLooped(float gain, float pan, float speed)
 {
-#ifdef SDLAUDIO
-	_playSample(_sample, gain * _defaultGain, pan, speed, true, _priority);
-#endif
+	_playSample(_chunk, gain * _defaultGain, pan, speed, true, _priority);
 }
 Sample::Instance::pointer Sample::PlayInstance(float gain , float pan, float speed)
 {
-#ifdef SDLAUDIO
-	return Sample::Instance::Create(shared_from_this(), _playSample(_sample, gain * _defaultGain, pan, speed, false, _priority));
-#else
-	return nullptr;
-#endif
+	return Sample::Instance::Create(shared_from_this(), _playSample(_chunk, gain * _defaultGain, pan, speed, false, _priority));
 }
 Sample::Instance::pointer Sample::PlayLoopedInstance(float gain , float pan, float speed)
 {
-#ifdef SDLAUDIO
-	return Sample::Instance::Create(shared_from_this(), _playSample(_sample, gain * _defaultGain, pan, speed, true, _priority));
-#else
-	return nullptr;
-#endif
+	return Sample::Instance::Create(shared_from_this(), _playSample(_chunk, gain * _defaultGain, pan, speed, true, _priority));
 }
 void Sample::StopAll()
 {

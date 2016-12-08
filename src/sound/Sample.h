@@ -4,6 +4,8 @@
 #include "utils/SignalizingVariable.h"
 #include "utils/Singleton.h"
 
+struct Mix_Chunk;
+
 namespace MX{
 namespace Sound
 {
@@ -26,11 +28,12 @@ public:
 	{
 		friend class Sample;
 	public:
-		Instance(const std::shared_ptr<Sample> & sample);
-		static pointer Create(const std::shared_ptr<Sample> & sample);
+		Instance(const std::shared_ptr<Sample> & sample, int channel);
+		static pointer Create(const std::shared_ptr<Sample> & sample, int channel);
 		virtual ~Instance();
 		void Stop();
 	protected:
+		int _channel = -1;
 		std::shared_ptr<Sample> _sample;
 	};
 
@@ -44,7 +47,6 @@ public:
 
 
 	static void ReserveSamples(unsigned samples);
-	static void Update();
 	static void Shutdown();
 
 	void Play(float gain = 1.0f, float pan = 0.0f, float speed = 1.0f);
@@ -60,11 +62,15 @@ public:
 	float duration() { return _duration; }
 	void SetPriority(int priority) { _priority = priority; }
 protected:
+	int _playSample(Mix_Chunk *sound, float gain, float pan, float speed, bool looped, int priority);
+
 	void EstimateDuration();
 
+	Mix_Chunk* _chunk = nullptr;
 	int _priority = 4;
 	float _duration = -1.0f;
 	float _defaultGain;
+	static int _mixer;
 };
 
 class RandomSample : public shared_ptr_init<RandomSample>

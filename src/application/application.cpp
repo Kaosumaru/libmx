@@ -7,7 +7,7 @@
 #include "graphic/renderer/TextureRenderer.h"
 #include "graphic/renderer/DefaultRenderers.h"
 #include "game/ScriptInitializer.h"
-
+#include "Sound/Sample.h"
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -139,6 +139,8 @@ bool App::OnInit()
 		return false;
 	}
 	
+	Sound::Sample::ReserveSamples(10);
+
 	return true;
 }
 
@@ -155,6 +157,7 @@ void App::OnRender()
 void App::OnCleanup()
 {
 	MainDeinitializer::get().RunDeinit();
+	Sound::Sample::Shutdown();
 	SDL_VideoQuit();
 	SDL_Quit();
 }
