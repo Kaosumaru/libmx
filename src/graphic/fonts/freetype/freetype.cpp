@@ -31,13 +31,8 @@ std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::drawLine( const s
 
 	int width = measureLine(face, text);
 	int height = ascender - (face->face()->descender >> 6);
-#ifdef __EMSCRIPTEN__
-	width = gl::UpperPowerOfTwo(width);
-	height = gl::UpperPowerOfTwo(height);
-#else
-    width = roundUp(width, 4);
-    height = roundUp(height, 4);
-#endif
+	width = roundUp(width, 4);
+	height = roundUp(height, 4);
 
 	Graphic::SurfaceGrayscale surface( width, height );
     face->draw_text( text.c_str(), pen, [&](int x, int y, uint8_t p) 
@@ -55,13 +50,8 @@ std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::drawLine( const s
 
 	int width = measureLine(face, text);
 	int height = ascender - (face->face()->descender >> 6);
-#ifdef __EMSCRIPTEN__
-	width = gl::UpperPowerOfTwo(width);
-	height = gl::UpperPowerOfTwo(height);
-#else
-    width = roundUp(width, 4);
-    height = roundUp(height, 4);
-#endif
+	width = roundUp(width, 4);
+	height = roundUp(height, 4);
 
 	Graphic::SurfaceGrayscale surface( width, height );
     face->draw_text( text.c_str(), pen, [&](int x, int y, uint8_t p) 

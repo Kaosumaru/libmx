@@ -171,5 +171,6 @@ namespace MX
 	}
 
 	std::wstring stringToWide(const std::string &str);
+	std::string wideToUTF(const std::wstring &str);
 }
 

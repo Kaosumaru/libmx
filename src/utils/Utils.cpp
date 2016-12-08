@@ -2,8 +2,17 @@
 #include <codecvt>
 #include <locale>
 
-std::wstring stringToWide(const std::string &str)
+namespace MX
 {
-    static std::wstring_convert<std::codecvt_utf8<wchar_t>> convert;
-    return convert.from_bytes(str);
+	std::wstring stringToWide(const std::string &str)
+	{
+		static std::wstring_convert<std::codecvt_utf8<wchar_t>> convert;
+		return convert.from_bytes(str);
+	}
+
+	std::string wideToUTF(const std::wstring &str)
+	{
+		static std::wstring_convert<std::codecvt_utf8<wchar_t>> convert;
+		return convert.to_bytes(str);
+	}
 }

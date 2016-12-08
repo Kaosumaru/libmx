@@ -10,20 +10,19 @@
 #include "graphic/Blender.h"
 #include "graphic/fonts/Font.h"
 
-
-#include "include/litehtml.h"
 #include "MasterCSS.h"
+#include "include/litehtml.h"
 
+
+#include "graphic/opengl/Utils.h"
 #include "graphic/fonts/freetype/Freetype.h"
+
 
 using namespace MX;
 
 using namespace std;
 
 using namespace litehtml;
-
-
-
 
 
 
@@ -118,7 +117,7 @@ public:
 	}
 	const tchar_t* get_default_font_name() const override
 	{
-		return L"Arial";
+		return _t("Arial");
 	}
 protected:
 
@@ -242,15 +241,15 @@ Graphic::TextureImage::pointer HTMLRendererFreetype::DrawOnBitmap(const std::wst
 	litehtml::context ctx;
 	ctx.load_master_stylesheet(HTMLUtils::mxmaster_css().c_str());
 
-
+#ifndef LITEHTML_UTF8
 	auto document = document::createFromString(str.c_str(), &painter, &ctx);
+#else
+	auto tstr = wideToUTF(str);
+	auto document = document::createFromString(tstr.c_str(), &painter, &ctx);
+#endif
 	document->render(width);
 
     int w = document->width(), h = document->height();
-#ifdef __EMSCRIPTEN__
-	w = gl::UpperPowerOfTwo(w);
-	w = gl::UpperPowerOfTwo(w);
-#endif    
     
     Graphic::SurfaceRGBA surface(w, h);
 

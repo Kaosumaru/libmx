@@ -1,9 +1,9 @@
 #include "MasterCSS.h"
 
-const std::wstring& HTMLUtils::mxmaster_css()
+const litehtml::tstring& HTMLUtils::mxmaster_css()
 {
-	static std::wstring mxmaster_css =
-		LR"X*X(
+	static litehtml::tstring mxmaster_css =
+		_t(R"X*X(
 html {
     display: block;
 	position: relative;
@@ -314,7 +314,7 @@ article, aside, footer, header, hgroup, nav, section
 }
 
 
-)X*X";
+)X*X");
 
 return mxmaster_css;
 }

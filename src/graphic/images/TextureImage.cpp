@@ -50,9 +50,11 @@ TextureImage::TextureImage(unsigned width, unsigned height, bool alpha)
 	int h = height;
 	glm::vec2 uv = { 1.0f, 1.0f };
 
+#if 0
 #ifdef __EMSCRIPTEN__
 	w = gl::UpperPowerOfTwo(width);
 	h = gl::UpperPowerOfTwo(height);
+#endif
 #endif
 
 	_texture = std::make_shared<gl::Texture>(glm::ivec2{ w, h }, alpha);

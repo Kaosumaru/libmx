@@ -28,5 +28,5 @@ include_directories(${MX_INCLUDES})
 #message(STATUS "Test ${MX_LIBS} $TEST")
 
 add_executable(BootstrapProject main.cpp TestManager.cpp TestManager.h ${SRCS})
-target_link_libraries(BootstrapProject ${MX_LIBS} MSL RPN)
+target_link_libraries(BootstrapProject ${MX_LIBS} MSL RPN litehtml)
 set_target_properties(BootstrapProject PROPERTIES LINK_FLAGS "${MX_LINK_FLAGS}")
