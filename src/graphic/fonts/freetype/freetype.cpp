@@ -26,8 +26,8 @@ std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::drawLine( const s
 	width = gl::UpperPowerOfTwo(width);
 	height = gl::UpperPowerOfTwo(height);
 #else
-    width += width % 2;
-    height += height % 2;
+    width += width % 4;
+    height += height % 4;
 #endif
     
 	pen.x = 0;
@@ -69,8 +69,8 @@ std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::drawLine( const s
 	width = gl::UpperPowerOfTwo(width);
 	height = gl::UpperPowerOfTwo(height);
 #else
-    width += width % 2;
-    height += height % 2;
+    width += width % 4;
+    height += height % 4;
 #endif
 
 	pen.x = 0;
@@ -89,9 +89,6 @@ std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::drawLine( const s
 
 			pen.x += advance_x >> 16;
 		}
-
-        for ( int y = 0; y < height; y++ )
-            surface.at( width - 1, y ) = 255;
 
 		return Graphic::TextureImage::Create(surface);
 	}
