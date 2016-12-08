@@ -232,7 +232,7 @@ public:
 
 Graphic::TextureImage::pointer HTMLRendererFreetype::DrawOnBitmap(const std::wstring &str, int width, const Graphic::Font::pointer& defaultFont)
 {
-    auto ftFace = std::make_shared<Graphic::Face>(Paths::get().pathToResource("font/arial.ttf"), 16);
+    auto ftFace = Graphic::Face::Create(Paths::get().pathToResource("font/arial.ttf"), 16);
 
     ft_html_container painter;
 	if (ftFace)

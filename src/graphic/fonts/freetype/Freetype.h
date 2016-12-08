@@ -94,10 +94,12 @@ namespace Graphic
 		Face(const std::string& path, unsigned size)
 		{
 			auto error = FT_New_Face(Freetype::library(), path.c_str(), 0, &_face);
-            _hasKerning = FT_HAS_KERNING( _face );
-            SetCharSize((int)size << 6);
+			_hasKerning = FT_HAS_KERNING( _face );
+			SetCharSize((int)size << 6);
 			//WIPerror
 		}
+
+		static std::shared_ptr<Face> Create(const std::string& path, unsigned size);
 
 		~Face()
 		{

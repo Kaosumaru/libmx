@@ -23,6 +23,27 @@ namespace
 }
 
 
+class FontManager : public DeinitSingleton<FontManager>
+{
+public:
+	using FontInfo = std::tuple<std::string, unsigned>;
+
+	auto& createFont(const std::string& path, unsigned size)
+	{
+		auto &font = _font[std::make_tuple(path, size)];
+		if (!font)
+			font = std::make_shared<Graphic::Face>(path, size);
+		return font;
+	}
+
+protected:
+	std::map<FontInfo, std::shared_ptr<Graphic::Face>> _font;
+};
+
+std::shared_ptr<Graphic::Face> Graphic::Face::Create(const std::string& path, unsigned size)
+{
+	return FontManager::get().createFont(path, size);
+}
 
 std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::drawLine( const std::shared_ptr<Face>& face, const std::string& text)
 {

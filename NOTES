@@ -1,11 +1,11 @@
 #TODO
-- cached fonts
 - sounds
 - shaders
 - font changing in html
+- grayscale font surface is now neared to 4, so it's slightly larger than it should be
 
 #Emscripten
-#Freetype 
+#Freetype
 
 1. Generate project by emcmake cmake .. -DCMAKE_INSTALL_PREFIX=#PATH# -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=make -G "Unix Makefiles"
 2. emmake make

@@ -154,6 +154,7 @@ void App::OnRender()
 
 void App::OnCleanup()
 {
+	MainDeinitializer::get().RunDeinit();
 	SDL_VideoQuit();
 	SDL_Quit();
 }

@@ -12,7 +12,7 @@ using namespace MX::Graphic;
 
 Font::Font(const std::string& path, float size, const std::string& face_name) :_path(path), _size(size), _face_name(face_name)
 {
-	_ftFace = std::make_shared<Face>(path, size);
+	_ftFace = Face::Create(path, size);
 #ifdef WIP
 	//cache faces, deinit glyphs before end
 #endif
