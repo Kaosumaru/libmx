@@ -29,13 +29,7 @@ std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::drawLine( const s
 	int ascender = face->face()->ascender >> 6;
     FT_Vector     pen = { 0, ascender };
 
-	for ( auto &c : text )
-	{
-		auto& glyph = face->LoadCharCached( c );
-		pen.x += glyph.glyph()->advance.x >> 16;
-	}
-
-	int width = pen.x;
+	int width = measureLine(face, text);
 	int height = ascender - (face->face()->descender >> 6);
 #ifdef __EMSCRIPTEN__
 	width = gl::UpperPowerOfTwo(width);
@@ -44,26 +38,13 @@ std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::drawLine( const s
     width = roundUp(width, 4);
     height = roundUp(height, 4);
 #endif
-    
-	pen.x = 0;
 
+	Graphic::SurfaceGrayscale surface( width, height );
+    face->draw_text( text.c_str(), pen, [&](int x, int y, uint8_t p) 
 	{
-		Graphic::SurfaceGrayscale surface( width, height );
-
-		for ( auto &c : text )
-		{
-			auto& glyph = face->LoadCharCached( c );
-
-			auto advance_x = glyph.iterate_bitmap( [&](int x, int y, uint8_t p) 
-			{
-				surface.at( pen.x + x, pen.y + y ) += p;
-			});
-
-			pen.x += advance_x >> 16;
-		}
-		return Graphic::TextureImage::Create(surface);
-	}
-
+		surface.at( x, y ) += p;
+    } );
+	return Graphic::TextureImage::Create(surface);
 }
 
 
@@ -72,13 +53,7 @@ std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::drawLine( const s
 	int ascender = face->face()->ascender >> 6;
     FT_Vector     pen = { 0, ascender };
 
-	for ( auto &c : text )
-	{
-		auto& glyph = face->LoadCharCached( c );
-		pen.x += glyph.glyph()->advance.x >> 16;
-	}
-
-	int width = pen.x;
+	int width = measureLine(face, text);
 	int height = ascender - (face->face()->descender >> 6);
 #ifdef __EMSCRIPTEN__
 	width = gl::UpperPowerOfTwo(width);
@@ -88,26 +63,22 @@ std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::drawLine( const s
     height = roundUp(height, 4);
 #endif
 
-	pen.x = 0;
-
+	Graphic::SurfaceGrayscale surface( width, height );
+    face->draw_text( text.c_str(), pen, [&](int x, int y, uint8_t p) 
 	{
-		Graphic::SurfaceGrayscale surface( width, height );
+		surface.at( x, y ) += p;
+    } );
+	return Graphic::TextureImage::Create(surface);
+}
 
-		for ( auto &c : text )
-		{
-			auto& glyph = face->LoadCharCached( c );
+int Graphic::FreetypeUtils::measureLine( const std::shared_ptr<Face>& face, const std::string& text )
+{
+    FT_Vector     pen = { 0, 0 };
+    return face->draw_text( text.c_str(), pen, [&]( int x, int y, uint8_t p ) {});
+}
 
-			auto advance_x = glyph.iterate_bitmap( [&](int x, int y, uint8_t p) 
-			{
-				surface.at( pen.x + x, pen.y + y ) += p;
-			});
-
-			pen.x += advance_x >> 16;
-		}
-
-		return Graphic::TextureImage::Create(surface);
-	}
-
-
-
+int Graphic::FreetypeUtils::measureLine( const std::shared_ptr<Face>& face, const std::wstring& text )
+{
+    FT_Vector     pen = { 0, 0 };
+    return face->draw_text( text.c_str(), pen, [&]( int x, int y, uint8_t p ) {});
 }

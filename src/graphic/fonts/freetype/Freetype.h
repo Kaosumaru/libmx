@@ -42,6 +42,7 @@ namespace Graphic
 	class Glyph
 	{
 	public:
+        friend class Face;
 		Glyph() {}
 		Glyph( const Glyph& other ) = delete;
 
@@ -76,16 +77,25 @@ namespace Graphic
 			if (_glyph)
 				FT_Done_Glyph(_glyph);
 		}
+
+        int height()
+        {
+            auto g = (FT_BitmapGlyph)_glyph;
+            return g->bitmap.rows;
+        }
 	protected:
+        FT_UInt _index = 0;
 		FT_Glyph   _glyph = nullptr;
 	};
 
 	class Face
 	{
 	public:
-		Face(const std::string& path)
+		Face(const std::string& path, unsigned size)
 		{
 			auto error = FT_New_Face(Freetype::library(), path.c_str(), 0, &_face);
+            _hasKerning = FT_HAS_KERNING( _face );
+            SetCharSize((int)size << 6);
 			//WIPerror
 		}
 
@@ -94,27 +104,62 @@ namespace Graphic
 			FT_Done_Face(_face);
 		}
 
+		Glyph& LoadCharCached(FT_ULong c)
+		{
+			auto &cached_glyph = _charToGlyph[c];
+			if (!cached_glyph.glyph())
+			{
+                LoadGlyph( c, cached_glyph );
+			}
+
+			return cached_glyph;
+		}
+
+		template<typename Text,typename T>
+		int draw_text( const Text* text, FT_Vector pen, const T&& t )
+		{
+            FT_UInt       previous = 0;
+            while ( *text != 0 )
+            {
+			    auto& glyph = LoadCharCached( *text );
+
+                if ( _hasKerning && previous && glyph._index )
+                {
+                    FT_Vector  delta;
+                    FT_Get_Kerning( _face, previous, glyph._index, FT_KERNING_DEFAULT, &delta );
+                    pen.x += delta.x >> 6;
+                }
+
+			    auto advance_x = glyph.iterate_bitmap( [&](int x, int y, uint8_t p) 
+			    {
+                    t(x + pen.x, y + pen.y, p);
+			    });
+
+			    pen.x += advance_x >> 16;
+                previous = glyph._index;
+                text++;
+            }
+            return pen.x;
+		}
+
+		auto face() { return _face; }
+
+        int ascender() const { return _face->ascender >> 6; }
+        int descender() const { return _face->descender >> 6; }
+        int height() const { return _face->height >> 6; }
+        int x_height() 
+        { 
+            auto &x = LoadCharCached( 'x' );
+            return x.height();
+        }
+
+	protected:
 		void SetCharSize(FT_F26Dot6 width, FT_F26Dot6 height = 0, FT_UInt hres = 100, FT_UInt vres = 0)
 		{
 			auto error = FT_Set_Char_Size(_face, width, height, hres, vres);
 			//WIPerror
 		}
 
-		Glyph& LoadCharCached(FT_ULong c)
-		{
-			auto &cached_glyph = _charToGlyph[c];
-			if (!cached_glyph.glyph() && LoadChar(c))
-			{
-				auto slot = glyph_slot();
-				FT_Get_Glyph( slot, &cached_glyph.glyph() );
-			}
-
-			return cached_glyph;
-		}
-
-		auto face() { return _face; }
-
-	protected:
 		FT_GlyphSlot glyph_slot()
 		{
 			return _face->glyph;
@@ -125,11 +170,22 @@ namespace Graphic
 			return FT_Get_Char_Index( _face, c );
 		}
 
-		bool LoadChar(FT_ULong c)
+		bool LoadGlyph(FT_ULong c, Glyph &glyph)
 		{
-			return FT_Load_Char( _face, c, FT_LOAD_RENDER ) == 0;
+            auto glyph_index = FT_Get_Char_Index( _face, c);
+            int error = FT_Load_Glyph( _face, glyph_index, FT_LOAD_RENDER );
+            if ( error != 0 )
+                return false;
+
+            auto slot = glyph_slot();
+			error = FT_Get_Glyph( slot, &glyph.glyph() );
+            if ( error != 0 )
+                return false;
+            glyph._index = glyph_index;
+            return true;
 		}
 
+        bool _hasKerning;
 		std::map<FT_ULong, Glyph> _charToGlyph;
 		FT_Face _face;
 	};
@@ -141,6 +197,9 @@ namespace Graphic
     {
         static std::shared_ptr<Graphic::TextureImage> drawLine(const std::shared_ptr<Face>& face, const std::string& text);
         static std::shared_ptr<Graphic::TextureImage> drawLine(const std::shared_ptr<Face>& face, const std::wstring& text);
+
+        static int measureLine(const std::shared_ptr<Face>& face, const std::string& text);
+        static int measureLine(const std::shared_ptr<Face>& face, const std::wstring& text);
     };
 }
 }

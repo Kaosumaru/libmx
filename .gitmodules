@@ -10,3 +10,6 @@
 [submodule "deps/cpp17_headers"]
 	path = deps/cpp17_headers
 	url = https://github.com/tcbrindle/cpp17_headers.git
+[submodule "deps/litehtml"]
+	path = deps/litehtml
+	url = https://github.com/litehtml/litehtml.git

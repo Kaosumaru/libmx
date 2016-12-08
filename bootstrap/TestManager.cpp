@@ -6,6 +6,7 @@
 #include "application/Window.h"
 
 #include "graphic/renderer/DefaultRenderers.h"
+#include "html/HTMLRendererFreetype.h"
 
 #include "devices/Mouse.h"
 #include "devices/Keyboard.h"
@@ -74,14 +75,19 @@ void TestManager::Draw(float x, float y)
 
     {
         static std::shared_ptr<Graphic::TextureImage> text;
+        static std::shared_ptr<Graphic::TextureImage> html;
         if ( !text )
         {
             text = MX::Graphic::Font::CreateDefault()->DrawTextOnBitmap( L"Hello world! gjkqx" );
+            html = MX::HTMLRendererCairo::DrawOnBitmap( L"<b>T</b>est Test<br/>Test", 200 );
         }
 
         //auto g = Graphic::Blender::defaultPremultiplied().Use();
-        MX::Graphic::TextureRenderer::Context guard(Graphic::Renderers::get().textRenderer());
-        text->Draw({});
+        {
+            MX::Graphic::TextureRenderer::Context guard(Graphic::Renderers::get().textRenderer());
+            text->Draw({});
+        }
+        html->Draw({0, 200});
     }
 }
 
