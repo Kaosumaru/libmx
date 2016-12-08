@@ -7,6 +7,7 @@
 #include "widgets/Label.h"
 #include "graphic/images/Slice9Image.h"
 #include "utils/ContextStack.h"
+#include "graphic/renderer/DefaultRenderers.h"
 
 using namespace MX;
 
@@ -93,7 +94,7 @@ public:
 			float t;
 			source.Shift(-std::modf(source.x1, &t), -std::modf(source.y1, &t));
 			
-            auto g = Graphic::Blender::defaultPremultiplied().Use();
+			MX::Graphic::TextureRenderer::Context guard(Graphic::Renderers::get().textRenderer());
 #ifdef WIPHTML
 			if (textData.HTML())
 			{

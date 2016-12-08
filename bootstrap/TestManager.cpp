@@ -5,7 +5,7 @@
 #include "script/ScriptObject.h"
 #include "application/Window.h"
 
-
+#include "graphic/renderer/DefaultRenderers.h"
 
 #include "devices/Mouse.h"
 #include "devices/Keyboard.h"
@@ -80,6 +80,7 @@ void TestManager::Draw(float x, float y)
         }
 
         //auto g = Graphic::Blender::defaultPremultiplied().Use();
+        MX::Graphic::TextureRenderer::Context guard(Graphic::Renderers::get().textRenderer());
         text->Draw({});
     }
 }

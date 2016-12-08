@@ -2,6 +2,7 @@
 #include "TextureRenderer.h"
 #include "graphic/opengl/Program.h"
 #include "graphic/opengl/Buffer.h"
+#include <string>
 
 namespace MX{
 namespace Graphic
@@ -12,6 +13,7 @@ class InstancedRenderer : public TextureRenderer
 private:
 	void InitData();
 public:
+    InstancedRenderer(const std::string& vertexPath, const std::string& fragmentPath);
 	InstancedRenderer();
 
 	void Flush() override;

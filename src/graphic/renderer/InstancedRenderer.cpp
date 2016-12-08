@@ -45,11 +45,11 @@ void InstancedRenderer::InitData()
 	}
 }
 
-InstancedRenderer::InstancedRenderer()
+InstancedRenderer::InstancedRenderer( const std::string& vertexPath, const std::string& fragmentPath )
 {
 	InitData();
 	std::string out;
-	_program = gl::createProgramFromFiles("shader/instanced.vertex", "shader/basic.fragment", out);
+	_program = gl::createProgramFromFiles(vertexPath, fragmentPath, out);
 	if (_program)
 	{
 		std::cout << "Shader compiled" << std::endl;
@@ -67,6 +67,11 @@ InstancedRenderer::InstancedRenderer()
 	{
 		std::cout << "Shader error: " << out << std::endl;
 	}
+}
+
+InstancedRenderer::InstancedRenderer() : InstancedRenderer("shader/instanced.vertex", "shader/basic.fragment")
+{
+
 }
 
 void InstancedRenderer::Flush()

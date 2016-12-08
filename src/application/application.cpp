@@ -5,7 +5,7 @@
 #include <SDL.h>
 #include <iostream>
 #include "graphic/renderer/TextureRenderer.h"
-#include "graphic/renderer/InstancedRenderer.h"
+#include "graphic/renderer/DefaultRenderers.h"
 #include "game/ScriptInitializer.h"
 
 
@@ -83,8 +83,8 @@ bool App::Run()
 
 	OnPrepare();
 
-	_defaultRenderer = std::make_shared<Graphic::InstancedRenderer>();
-	Graphic::TextureRenderer::SetCurrent(*_defaultRenderer);
+
+	Graphic::TextureRenderer::SetCurrent(Graphic::Renderers::get().defaultRenderer());
 
 #ifdef __EMSCRIPTEN__
 	auto oneIter = [](void* arg) 
