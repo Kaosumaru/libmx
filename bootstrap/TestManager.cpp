@@ -76,7 +76,7 @@ void TestManager::Draw(float x, float y)
         static std::shared_ptr<Graphic::TextureImage> text;
         if ( !text )
         {
-            text = MX::Graphic::Font::CreateDefault()->DrawTextOnBitmap( "Hello world! gjkq" );
+            text = MX::Graphic::Font::CreateDefault()->DrawTextOnBitmap( L"Hello world! gjkqx" );
         }
 
         //auto g = Graphic::Blender::defaultPremultiplied().Use();

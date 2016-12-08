@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include "graphic/OpenGL.h"
 #include "Shader.h"
 

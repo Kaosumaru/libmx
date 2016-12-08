@@ -38,7 +38,7 @@ std::shared_ptr<TextureImage> Font::DrawTextOnBitmap(const std::string &str)
 }
 std::shared_ptr<TextureImage> Font::DrawTextOnBitmap(const std::wstring &str)
 {
-	return nullptr;
+	return FreetypeUtils::drawLine(_ftFace, str);
 }
 
 bool Font::empty()
