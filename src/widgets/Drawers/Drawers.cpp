@@ -94,15 +94,16 @@ public:
 			float t;
 			source.Shift(-std::modf(source.x1, &t), -std::modf(source.y1, &t));
 			
-			MX::Graphic::TextureRenderer::Context guard(Graphic::Renderers::get().textRenderer());
-#ifdef WIPHTML
 			if (textData.HTML())
 			{
-				image->Draw(source, color);
+				image->DrawArea(source, color);
 			}
             else
-#endif
-            image->DrawArea(source, color);
+            {
+                MX::Graphic::TextureRenderer::Context guard(Graphic::Renderers::get().textRenderer());
+                image->DrawArea(source, color);
+            }
+            
 				
 		}
 	}

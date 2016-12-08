@@ -5,9 +5,7 @@
 #include "utils/ContextStack.h"
 #include "graphic/fonts/Font.h"
 #include "graphic/images/TextureImage.h"
-#ifdef WIPHTML
-#include "HTML/HTMLRendererCairo.h"
-#endif
+#include "html/HTMLRendererFreetype.h"
 
 #include <iostream>
 
@@ -23,13 +21,11 @@ void MX::Widgets::TextData::UpdateTextImage()
 		return;
 	Graphic::Font::pointer font = _font ? _font : MX::Graphic::Font::CreateDefault();
 
-#ifdef WIPHTML
 	if (_html)
 	{
-		SetTextImage(HTMLRendererCairo::DrawOnBitmap(_text, _width, _font));
+		SetTextImage(HTMLRendererFreetype::DrawOnBitmap(_text, _width, _font));
 	}
 	else
-#endif
 	{
 		SetTextImage(font->DrawTextOnBitmap(_text));
 	}

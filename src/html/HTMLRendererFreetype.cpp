@@ -231,65 +231,8 @@ public:
 
 };
 
-Graphic::TextureImage::pointer HTMLRendererCairo::DrawOnBitmap(const std::wstring &str, int width, const Graphic::Font::pointer& defaultFont)
+Graphic::TextureImage::pointer HTMLRendererFreetype::DrawOnBitmap(const std::wstring &str, int width, const Graphic::Font::pointer& defaultFont)
 {
-#if 0
-	ft_html_container painter;
-
-	if (defaultFont)
-		painter.SetDefaultFont(defaultFont);
-
-	litehtml::context ctx;
-	ctx.load_master_stylesheet(HTMLUtils::mxmaster_css().c_str());
-
-
-	auto document = document::createFromString(str.c_str(), &painter, &ctx);
-	document->render(width);
-
-
-
-
-	cairo_surface_t *surface;
-	cairo_t *cr;
-
-	int w = document->width(), h = document->height();
-	surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, w, h);
-	cr = cairo_create(surface);
-
-	
-	cairo_set_source_rgba(cr, 1.0, 1.0, 1.0, 0.0);
-	cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
- 	cairo_paint(cr);
-	cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
-
-	//cairo_set_source_rgb(cr, 1., 1., 1.);
-	//cairo_paint_with_alpha(cr, 1.0);
-
-
-	auto clip = litehtml::position(0, 0, w, h);
-	document->draw((uint_ptr)cr, 0, 0, &clip);
-
-
-	//cairo_surface_write_to_png(surface, "d:/cairof.png");
-
-	auto data = cairo_image_surface_get_data(surface);
-	for (int i = 0; i < w*h * 4; i += 4)
-	{
-		std::swap(data[i], data[i + 2]);
-
-		unsigned char r = data[i];
-		unsigned char g = data[i+1];
-		unsigned char b = data[i+2];
-		unsigned char a = data[i+3];
-	}
-
-	auto bitmap = Graphic::Surface::Create(data, GL_RGBA, w, h);
-	//bitmap->save("d:/cairof2.png");
-
-	cairo_surface_destroy(surface);
-	cairo_destroy(cr);
-	return bitmap;
-#endif
     auto ftFace = std::make_shared<Graphic::Face>(Paths::get().pathToResource("font/arial.ttf"), 16);
 
     ft_html_container painter;

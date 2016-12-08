@@ -79,7 +79,7 @@ void TestManager::Draw(float x, float y)
         if ( !text )
         {
             text = MX::Graphic::Font::CreateDefault()->DrawTextOnBitmap( L"Hello world! gjkqx" );
-            html = MX::HTMLRendererCairo::DrawOnBitmap( L"<b>T</b>est Test<br/>Test", 200 );
+            html = MX::HTMLRendererFreetype::DrawOnBitmap( L"<b>T</b>est Test<br/>Test", 200 );
         }
 
         //auto g = Graphic::Blender::defaultPremultiplied().Use();

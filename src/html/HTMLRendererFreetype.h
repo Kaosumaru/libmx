@@ -10,7 +10,7 @@ namespace Graphic
     class Font;
 }
 
-	class HTMLRendererCairo
+	class HTMLRendererFreetype
 	{
 	public:
 		static std::shared_ptr<Graphic::TextureImage> DrawOnBitmap(const std::wstring &str, int width, const std::shared_ptr<Graphic::Font>& defaultFont = nullptr);
