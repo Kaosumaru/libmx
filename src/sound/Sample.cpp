@@ -41,11 +41,8 @@ public:
 int Sample::_playSample(SoLoud::AudioSource *sound, float gain, float pan, float speed, bool looped, int priority)
 {
     auto channel = soloud.play( *sound, gain, pan );
-
-#ifdef SDLAUDIO
-	Mix_SetPanning(channel, left, 255 - left);
-	FMOD_Channel_SetFrequency(channel, rate * speed * SoundSettings::current().basePlaybackSpeed);
-#endif
+    soloud.setRelativePlaySpeed( channel, speed );
+    soloud.setLooping( channel, looped );
 	return channel;
 }
 
