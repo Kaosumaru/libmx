@@ -13,3 +13,5 @@
 [submodule "deps/litehtml"]
 	path = deps/litehtml
 	url = https://github.com/litehtml/litehtml.git
+[submodule "deps/vorbis"]
+	path = deps/vorbis

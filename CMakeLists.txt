@@ -19,6 +19,13 @@ SET(RPN_USE_JIT OFF CACHE BOOL "Don't use jit")
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/RPNParser/RPN" "${CMAKE_CURRENT_BINARY_DIR}/RPN")
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/MSL/MSL" "${CMAKE_CURRENT_BINARY_DIR}/MSL")
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/litehtml" "${CMAKE_CURRENT_BINARY_DIR}/litehtml")
+add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/soloud" "${CMAKE_CURRENT_BINARY_DIR}/soloud")
+#add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/ogg" "${CMAKE_CURRENT_BINARY_DIR}/ogg")
+
+#set(OGG_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/deps/ogg/include)
+#set(OGG_LIBRARIES ${CMAKE_CURRENT_LIST_DIR}/deps/ogg)
+
+#add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/vorbis" "${CMAKE_CURRENT_BINARY_DIR}/vorbis")
 
 set(MX_INCLUDES ${MX_INCLUDES} ${RPN_Includes} ${CMAKE_CURRENT_LIST_DIR}/deps/MSL/MSL ${CMAKE_CURRENT_LIST_DIR}/deps/RPNParser/RPN ${CMAKE_CURRENT_LIST_DIR}/deps/litehtml)
 #deps
@@ -33,20 +40,21 @@ if (EMSCRIPTEN)
 
   set(MX_INCLUDES ${MX_INCLUDES} ${FREETYPE_INCLUDE_DIRS})
   set(MX_LINK_FLAGS " -s USE_SDL=2 --use-preload-plugins --preload-file ../res/" PARENT_SCOPE)
-  set(MX_LIBS MSL RPN MXLib ${FREETYPE_LIBRARY} PARENT_SCOPE)
+  set(MX_LIBS MXLib MSL RPN litehtml soloud vorbis ${FREETYPE_LIBRARY} PARENT_SCOPE)
 else(EMSCRIPTEN)
   #find_package(GLEW REQUIRED)
   find_package(Boost REQUIRED)
   find_package(SDL2 REQUIRED)
-  find_package(SDL_mixer REQUIRED)
+ # find_package(SDL_mixer REQUIRED)
   find_package(OpenGL REQUIRED)
   find_package(Freetype REQUIRED)
+  #find_package(Vorbis REQUIRED)
 
 #message("Building for emscripten ${OPENGL_INCLUDE_DIR}")
 
-  set(MX_INCLUDES ${MX_INCLUDES} ${SDL_INCLUDE_DIR} ${SDL_MIXER_INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS})
+  set(MX_INCLUDES ${MX_INCLUDES} ${SDL_INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS} ${SOLOUD_INCLUDE_DIRS})
   set(MX_LINK_FLAGS "" PARENT_SCOPE)
-  set(MX_LIBS MXLib MSL RPN litehtml ${SDL_LIBRARY}/SDL2.lib glew32.lib ${SDL_MIXER_LIBRARY} ${OPENGL_LIBRARIES} ${FREETYPE_LIBRARY} PARENT_SCOPE)
+  set(MX_LIBS MXLib MSL RPN litehtml soloud ${SDL_LIBRARY}/SDL2.lib glew32.lib ${OPENGL_LIBRARIES} ${FREETYPE_LIBRARY} PARENT_SCOPE)
 endif(EMSCRIPTEN)
 
 

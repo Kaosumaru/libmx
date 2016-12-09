@@ -6,6 +6,11 @@
 
 struct Mix_Chunk;
 
+namespace SoLoud
+{
+    class AudioSource;
+}
+
 namespace MX{
 namespace Sound
 {
@@ -62,11 +67,11 @@ public:
 	float duration() { return _duration; }
 	void SetPriority(int priority) { _priority = priority; }
 protected:
-	int _playSample(Mix_Chunk *sound, float gain, float pan, float speed, bool looped, int priority);
+	int _playSample(SoLoud::AudioSource *sound, float gain, float pan, float speed, bool looped, int priority);
 
 	void EstimateDuration();
 
-	Mix_Chunk* _chunk = nullptr;
+	std::unique_ptr<SoLoud::AudioSource> _chunk = nullptr;
 	int _priority = 4;
 	float _duration = -1.0f;
 	float _defaultGain;
