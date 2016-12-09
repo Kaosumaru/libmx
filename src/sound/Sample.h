@@ -71,7 +71,7 @@ protected:
 
 	void EstimateDuration();
 
-	std::unique_ptr<SoLoud::AudioSource> _chunk = nullptr;
+	std::shared_ptr<SoLoud::AudioSource> _chunk = nullptr;
 	int _priority = 4;
 	float _duration = -1.0f;
 	float _defaultGain;

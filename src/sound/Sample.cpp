@@ -1,5 +1,6 @@
 #include "Sample.h"
 #include <memory>
+#include <iostream>
 #include "Stream.h"
 #include "utils/Random.h"
 #include "soloud.h"
@@ -86,9 +87,10 @@ Sample::Sample(const std::string &path) : Sample(path.c_str())
 
 Sample::Sample(const char *path)
 {
-    auto wav = std::make_unique<SoLoud::Wav>();
-    wav->load(path);
+    auto wav = std::make_shared<SoLoud::Wav>();
+    auto res = wav->load(path);
     _chunk = std::move( wav );
+    std::cout << "Sample " << path << " -> " << res << "\n";
 	if (_chunk)
 	{
 		EstimateDuration();
