@@ -2,6 +2,8 @@
 #include <memory>
 #include <set>
 #include "Sample.h"
+#include "soloud.h"
+#include "soloud_wavstream.h"
 
 using namespace MX;
 using namespace MX::Sound;
@@ -62,34 +64,23 @@ void Stream::CloseAll()
 
 Stream::Stream(const char *path)
 {
-#ifdef SDLAUDIO
-	FMOD_System_CreateStream(Sample::system(), path, FMOD_DEFAULT, NULL, &_sample);
-	if (_sample)
-		StreamAllGatherer::get().AddStream(this);
-#endif
+	_stream = std::make_shared<SoLoud::WavStream>();
+	_stream->load(path);
+	StreamAllGatherer::get().AddStream(this);
+	//WIPLOG
 }
 
 Stream::~Stream()
 {
-#ifdef SDLAUDIO
-	if (_sample)
-		StreamAllGatherer::get().RemoveStream(this);
+	StreamAllGatherer::get().RemoveStream(this);
 	Close();
-#endif
 }
 
 void Stream::Close()
 {
-#ifdef SDLAUDIO
 	Stop();
-	if (_channel)
-		FMOD_Channel_Stop(_channel);
-	if (_sample)
-		FMOD_Sound_Release(_sample);
+	_stream.reset();
 
-	_sample = nullptr;
-	_channel = nullptr;
-#endif
 }
 
 std::shared_ptr<Stream> Stream::Create(const char *path)
@@ -102,13 +93,17 @@ std::shared_ptr<Stream> Stream::Create(const char *path)
 
 void Stream::Rewind()
 {
-#ifdef SDLAUDIO
-	if (_channel)
-		FMOD_Channel_SetPosition(_channel, 0, FMOD_TIMEUNIT_MS);
-#endif
+	if (_channel != -1)
+		Sample::soLoud().seek(_channel, 0);
 }
 void Stream::Play()
 {
+	_channel = Sample::soLoud().play( *_stream );
+	Sample::soLoud().setProtectVoice(_channel, true);
+	SetSpeed(_speed);
+	SetGain(_gain);
+	SetPan(_pan);
+
 #ifdef SDLAUDIO
 	if (_channel || !_sample)
 		return;
@@ -130,61 +125,41 @@ void Stream::Play()
 }
 void Stream::Stop()
 {
-#ifdef SDLAUDIO
-	if (_channel)
-		FMOD_Channel_Stop(_channel);
-	_channel = nullptr;
-#endif
+	if (_channel != -1)
+	{
+		Sample::soLoud().setProtectVoice(_channel, false);
+		Sample::soLoud().stop(_channel);
+	}
+	_channel = -1;
 }
 void Stream::SetSpeed(float speed)
 {
-#ifdef SDLAUDIO
 	_speed = speed;
 	float rate = 44100.0f;
-	if (_channel)
-		FMOD_Channel_SetFrequency(_channel, rate * _speed);
-#endif
+	if (_channel != -1)
+		Sample::soLoud().setRelativePlaySpeed(_channel, _speed);
 }
 void Stream::SetGain(float gain)
 {
-#ifdef SDLAUDIO
 	_gain = gain;
-	if (_channel)
-		FMOD_Channel_SetVolume(_channel, _gain);
-#endif
+	if (_channel != -1)
+		Sample::soLoud().setVolume(_channel, _gain);
 }
 void Stream::SetPan(float pan)
 {
-#ifdef SDLAUDIO
 	_pan = pan;
-	if (_channel)
-		FMOD_Channel_SetPan(_channel, _pan);
-#endif
+	if (_channel != -1)
+		Sample::soLoud().setPan(_channel, _pan);
 }
 void Stream::SetLooped(bool looped)
 {
 	_looped = looped;
-
-#ifdef SDLAUDIO
-	if (looped && _channel)
-	{
-		FMOD_Channel_SetMode(_channel, FMOD_LOOP_NORMAL);
-		FMOD_Channel_SetLoopCount(_channel, -1);
-	}
-	else
-	{
-		FMOD_Channel_SetMode(_channel, FMOD_LOOP_OFF);
-		FMOD_Channel_SetLoopCount(_channel, 0);
-	}
-#endif
+	_stream->setLooping(looped);
 }
 
 bool Stream::empty()
 {
-#ifdef SDLAUDIO
-	return _sample == nullptr;
-#endif
-	return true;
+	return _stream != nullptr;
 }
 
 

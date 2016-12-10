@@ -11,7 +11,13 @@ using namespace MX;
 using namespace MX::Sound;
 
 
-SoLoud::Soloud soloud;
+
+
+SoLoud::Soloud& Sample::soLoud()
+{
+	static SoLoud::Soloud soloud;
+	return soloud;
+}
 
 class SampleAllGatherer : public Singleton<SampleAllGatherer>
 {
@@ -40,9 +46,9 @@ public:
 
 int Sample::_playSample(SoLoud::AudioSource *sound, float gain, float pan, float speed, bool looped, int priority)
 {
-    auto channel = soloud.play( *sound, gain, pan );
-    soloud.setRelativePlaySpeed( channel, speed );
-    soloud.setLooping( channel, looped );
+    auto channel = soLoud().play( *sound, gain, pan );
+	soLoud().setRelativePlaySpeed( channel, speed );
+	soLoud().setLooping( channel, looped );
 	return channel;
 }
 
@@ -62,7 +68,7 @@ void Sample::Instance::Stop()
 {
 	if (_channel == -1)
 		return;
-	soloud.stop(_channel);
+	soLoud().stop(_channel);
 	_channel = -1;
 }
 
@@ -86,19 +92,13 @@ Sample::Sample(const char *path)
 {
     auto wav = std::make_shared<SoLoud::Wav>();
     auto res = wav->load(path);
+	_duration = wav->getLength();
     _chunk = std::move( wav );
     std::cout << "Sample " << path << " -> " << res << "\n";
 	if (_chunk)
 	{
-		EstimateDuration();
 		SampleAllGatherer::get().AddSample(this);
 	}
-}
-
-
-void Sample::EstimateDuration()
-{
-	//_duration = 1000;
 }
 
 Sample::~Sample()
@@ -132,7 +132,7 @@ void Sample::Shutdown()
 {
 	SampleAllGatherer::get().CloseAll();
 	Stream::CloseAll();
-    soloud.deinit();
+	soLoud().deinit();
 }
 
 
@@ -145,7 +145,7 @@ int Sample::_mixer = 0;
 
 void Sample::ReserveSamples(unsigned samples)
 {
-    soloud.init(SoLoud::Soloud::CLIP_ROUNDOFF, 0, 48000, 1024, 2);
+	soLoud().init(SoLoud::Soloud::CLIP_ROUNDOFF, 0, 48000, 1024, 2);
 	//WIPLOG
 }
 void Sample::Play(float gain , float pan, float speed)

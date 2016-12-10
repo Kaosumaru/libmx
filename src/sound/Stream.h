@@ -3,6 +3,13 @@
 #include "utils/Time.h"
 #include "utils/SignalizingVariable.h"
 
+
+namespace SoLoud
+{
+	class WavStream;
+}
+
+
 namespace MX{
 namespace Sound
 {
@@ -55,6 +62,8 @@ public:
 
 	static void CloseAll();
 protected:
+	std::shared_ptr<SoLoud::WavStream> _stream = nullptr;
+	int _channel = -1;
 };
 
 
