@@ -74,6 +74,7 @@ void App::Loop()
 
 	if (_window)
 		_window->AfterRender();
+	_timer.Step();
 }
 
 bool App::Run()
