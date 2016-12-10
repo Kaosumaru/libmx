@@ -31,7 +31,7 @@ public:
 
 	operator bool () const
 	{
-		return _t != 0;
+		return _t != T{};
 	}
 
     operator T& ()
