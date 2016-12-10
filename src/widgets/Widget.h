@@ -10,6 +10,7 @@
 #include "Drawers/DrawerManager.h"
 #include "Shapes/Shapes.h"
 #include "scene/Script/ScriptableActor.h"
+#include "PropertyMap.h"
 
 namespace MX
 {
@@ -17,36 +18,6 @@ namespace Widgets
 {
 
 class Widget;
-
-
-
-
-
-
-
-class PropertyMap
-{
-public:
-
-	template<typename T>
-	void SetValue(const std::string &name, const T& v) { /*_values[name] = v;*/ }
-
-	template<typename T>
-	T valueOf(const std::string &name, const T& def = {}) const
-	{
-		/*
-		auto it = _values.find(name);
-		if (it == _values.end())
-			return def;
-		return boost::get<T>(it->second);*/
-		return{};
-	}
-
-protected:
-	//using Type = stx::variant < float, std::string >;
-	//std::unordered_map<std::string, Type> _values;
-};
-
 
 class WidgetTransform
 {
@@ -68,7 +39,7 @@ protected:
 };
 
 
-class Widget : public virtual SpriteScene, public ScopeSingleton<Widget>, public shared_ptr_init<Widget>
+class Widget : public SpriteScene, public ScopeSingleton<Widget>, public shared_ptr_init<Widget>
 {
 	friend class Strategy::Strategy;
 	friend class Drawer;
