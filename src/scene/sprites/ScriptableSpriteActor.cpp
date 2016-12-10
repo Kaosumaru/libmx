@@ -198,7 +198,7 @@ ScImageSpriteActor::ScImageSpriteActor(const ScImageSpriteActor& other) : ImageS
 
 ScImageSpriteActor::ScImageSpriteActor(LScriptObject& script) : ImageSpriteAdapter<ScriptableSpriteActor>(script, nullptr)
 {
-	script.load_property(_image, "Image");
+	script.load_property_child(_image, "Image");
 }
 
 ScImageSpriteActor::ScImageSpriteActor(const std::shared_ptr<Graphic::Image> &image) : ImageSpriteAdapter<ScriptableSpriteActor>(image)

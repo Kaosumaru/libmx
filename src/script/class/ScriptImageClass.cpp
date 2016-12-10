@@ -23,7 +23,7 @@ bool ScriptImageClass::onParse()
 {
 	//_sound
 	std::string path;
-	load_property(path, "Path");
+	load_property_child(path, "Path");
 	load_property(_pivot, "Pivot");
 	load_property(MX::Graphic::Image::Settings::mipmap, "Mipmap");
 
