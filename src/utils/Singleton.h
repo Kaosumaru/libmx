@@ -207,19 +207,27 @@ public:
 template <typename T>
 class DeinitSingleton
 {
+	static std::unique_ptr<T> t;
 public:
 	static T& get()
 	{
-		static std::unique_ptr<T> t;
+		
 		static bool _initialized = false;
 		if (!_initialized)
 		{
 			_initialized = true;
 			t.reset(new T);
-			MainDeinitializer::onDeinit().static_connect([&]() { t.reset(); });
+			MainDeinitializer::onDeinit().static_connect([&]() { Deinit(); });
 		}
 
 		return *t;
 	}
+
+	static void Deinit()
+	{
+		t.reset();
+	}
 };
 
+template <typename T>
+std::unique_ptr<T> DeinitSingleton<T>::t;

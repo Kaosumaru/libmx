@@ -22,7 +22,6 @@ namespace
     }
 }
 
-
 class FontManager : public DeinitSingleton<FontManager>
 {
 public:
@@ -36,9 +35,21 @@ public:
 		return font;
 	}
 
+	~FontManager()
+	{
+		for (auto &f : _font)
+			f.second->Clear();
+	}
+
 protected:
 	std::map<FontInfo, std::shared_ptr<Graphic::Face>> _font;
 };
+
+Graphic::Freetype::~Freetype()
+{
+	FontManager::Deinit();
+	FT_Done_FreeType(_library);
+}
 
 std::shared_ptr<Graphic::Face> Graphic::Face::Create(const std::string& path, unsigned size)
 {

@@ -24,10 +24,7 @@ namespace Graphic
 			//error
 		}
 
-		~Freetype()
-		{
-			FT_Done_FreeType(_library);
-		}
+		~Freetype();
 
 		static auto& library()
 		{
@@ -103,7 +100,15 @@ namespace Graphic
 
 		~Face()
 		{
-			FT_Done_Face(_face);
+			Clear();
+		}
+
+		void Clear()
+		{
+			_charToGlyph.clear();
+			if (_face)
+				FT_Done_Face(_face);
+			_face = nullptr;
 		}
 
 		Glyph& LoadCharCached(FT_ULong c)
