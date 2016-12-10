@@ -58,7 +58,7 @@ bool ScriptImageClass::onParse()
     {
         //WIPLOG
         std::cout << "cannot load image " << path << "\n";
-        assert(_image);
+        //assert(_image);
     }
 	
 	return true;

@@ -94,10 +94,15 @@ Sample::Sample(const char *path)
     auto res = wav->load(path);
 	_duration = wav->getLength();
     _chunk = std::move( wav );
-    std::cout << "Sample " << path << " -> " << res << "\n";
+    
 	if (_chunk)
 	{
 		SampleAllGatherer::get().AddSample(this);
+	}
+	else
+	{
+		std::cout << "Sample " << path << " load failed\n";
+		//wiplog
 	}
 }
 
