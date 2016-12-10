@@ -17,7 +17,7 @@
 #include "graphic/Particles/Particles.h"
 #include "scene/Script/Event.h"
 #include "script/ScriptClassParser.h"
-
+#include "widgets/WidgetScriptBinding.h"
 
 
 
@@ -46,7 +46,7 @@ void MX::ScriptInitializer::Init()
 	MX::Widgets::ScriptLayouterInit::Init();
 	MX::Widgets::WidgetAnimationsInit::Init();
 
-
+	MX::Widgets::WidgetScriptBinding::Init();
 }
 
 
