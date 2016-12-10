@@ -32,6 +32,7 @@ public:
 		_data.resize(_width * _height);
 	}
 	
+	bool contains(int x, int y) { return x >= 0 && y >= 0 && x < _width && y < _height; }
 	T& at(int x, int y) { return _data[x + y*_width]; }
 	const T& at(int x, int y) const { return _data[x + y*_width]; }
 

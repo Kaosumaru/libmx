@@ -77,7 +77,8 @@ std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::drawLine( const s
 	Graphic::SurfaceGrayscale surface( width, height );
     face->draw_text( text.c_str(), pen, [&](int x, int y, uint8_t p) 
 	{
-		surface.at( x, y ) += p;
+		if (surface.contains(x,y))
+			surface.at( x, y ) += p;
     } );
 	return Graphic::TextureImage::Create(surface);
 }
