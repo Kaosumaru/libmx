@@ -230,7 +230,7 @@ namespace MX
                 for (auto& action : actions)
                 {
                     action.SetScheme(scheme);
-                    action.onTrigger.connect([&, index]()
+                    action.onTrigger.static_connect([&, index]()
                     {
                         onTrigger(index);
                     });
@@ -334,7 +334,7 @@ namespace MX
         public:
             TickingTargetDirection(ControlScheme* scheme, float tickRate = 0.0f) : TargetDirection<Type>(scheme), TickingHelper(scheme, tickRate)
             {
-				Target::target.onValueChanged.connect([&](auto &v, auto &o)
+				target.onValueChanged.static_connect([&](auto &v, auto &o)
                 {
                     bool isZero = v == Type{ 0,0 };
                     bool wasZero = o == Type{ 0,0 };
@@ -352,7 +352,7 @@ namespace MX
         protected:
             void onGotTick() override
             {
-                Call([&]() { onTick(Target::target); });
+                Call([&]() { onTick((Type)Target::target); });
             }
         };
         
