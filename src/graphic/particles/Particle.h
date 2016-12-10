@@ -28,7 +28,7 @@ public:
 		{
 			return false;
 		}
-		auto elapsed_seconds = Time::Timer::current().elapsed_seconds();
+		float elapsed_seconds = Time::Timer::current().elapsed_seconds();
 		auto percent = _stopWatch.percent();
 
 		geometry.position += _directionForce * elapsed_seconds;

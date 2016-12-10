@@ -136,7 +136,7 @@ namespace Time
 	{
 	public:
 		XPerSecond(){ _value = 0; }
-		XPerSecond(const X& x) { _value = x; }
+		explicit XPerSecond(const X& x) { _value = x; }
 		XPerSecond(const XPerSecond& other) { _value = other._value; }
 
 		XPerSecond& operator=(const X &x)

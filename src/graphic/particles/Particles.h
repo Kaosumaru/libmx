@@ -59,7 +59,7 @@ protected:
 	bool _additiveBlending = true;
 	bool _started = false;
 	bool _active = true;
-	bool _relative = true;
+	bool _relative = false;
 
 	glm::vec2 _oldPosition;
 
