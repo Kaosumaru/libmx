@@ -5,6 +5,7 @@
 #include "utils/SignalizingVariable.h"
 #include "utils/FunctorsQueue.h"
 #include <array>
+#include "SDL_keycode.h"
 
 namespace MX
 {
@@ -288,7 +289,7 @@ namespace MX
             void bind(const Type& v, const Action::pointer& p)
             {
                 _actions.push_back(Data{ v, p });
-                p->state.onValueChanged.connect([&](auto...) { recalcState(); });
+                p->state.onValueChanged.static_connect([&](auto...) { recalcState(); });
             }
 
             void bindKey(const Type& v, int keycode)
@@ -304,6 +305,16 @@ namespace MX
                 bindKey(Type{ -1, 0 }, left);
                 bindKey(Type{ 1, 0 }, right);
             }
+
+			void bindKeysWSAD()
+			{
+				bindKeys(SDL_SCANCODE_W, SDL_SCANCODE_S, SDL_SCANCODE_A, SDL_SCANCODE_D);
+			}
+
+			void bindKeysArrows()
+			{
+				bindKeys(SDL_SCANCODE_UP, SDL_SCANCODE_DOWN, SDL_SCANCODE_LEFT, SDL_SCANCODE_RIGHT);
+			}
         protected:
             void recalcState()
             {
@@ -334,7 +345,7 @@ namespace MX
         public:
             TickingTargetDirection(ControlScheme* scheme, float tickRate = 0.0f) : TargetDirection<Type>(scheme), TickingHelper(scheme, tickRate)
             {
-				target.onValueChanged.static_connect([&](auto &v, auto &o)
+				this->target.onValueChanged.static_connect([&](auto &v, auto &o)
                 {
                     bool isZero = v == Type{ 0,0 };
                     bool wasZero = o == Type{ 0,0 };
@@ -352,7 +363,7 @@ namespace MX
         protected:
             void onGotTick() override
             {
-                Call([&]() { onTick((Type)Target::target); });
+                this->Call([&]() { onTick((Type)this->target.directValueAccess()); });
             }
         };
         
