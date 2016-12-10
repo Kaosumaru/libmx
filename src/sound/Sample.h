@@ -74,7 +74,7 @@ protected:
 	std::shared_ptr<SoLoud::AudioSource> _chunk = nullptr;
 	int _priority = 4;
 	float _duration = -1.0f;
-	float _defaultGain;
+	float _defaultGain = 1.0f;
 	static int _mixer;
 };
 

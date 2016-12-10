@@ -1,5 +1,5 @@
 cd build
 
-mingw32-make
+mingw32-make -j8
 
 cd ..

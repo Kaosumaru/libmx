@@ -145,7 +145,7 @@ int Sample::_mixer = 0;
 
 void Sample::ReserveSamples(unsigned samples)
 {
-    soloud.init();
+    soloud.init(SoLoud::Soloud::CLIP_ROUNDOFF, 0, 48000, 1024, 2);
 	//WIPLOG
 }
 void Sample::Play(float gain , float pan, float speed)
