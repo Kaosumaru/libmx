@@ -4,6 +4,7 @@
 #include "utils/shapes/Rectangle.h"
 #include "script/ScriptObject.h"
 #include "stx/optional.hpp"
+#include "widgets/shapes/Shapes.h"
 
 namespace MX
 {
