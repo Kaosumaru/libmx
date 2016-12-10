@@ -20,12 +20,6 @@ add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/RPNParser/RPN" "${CMAKE_CURRENT
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/MSL/MSL" "${CMAKE_CURRENT_BINARY_DIR}/MSL")
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/litehtml" "${CMAKE_CURRENT_BINARY_DIR}/litehtml")
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/soloud" "${CMAKE_CURRENT_BINARY_DIR}/soloud")
-#add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/ogg" "${CMAKE_CURRENT_BINARY_DIR}/ogg")
-
-#set(OGG_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/deps/ogg/include)
-#set(OGG_LIBRARIES ${CMAKE_CURRENT_LIST_DIR}/deps/ogg)
-
-#add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/vorbis" "${CMAKE_CURRENT_BINARY_DIR}/vorbis")
 
 set(MX_INCLUDES ${MX_INCLUDES} ${RPN_Includes} ${CMAKE_CURRENT_LIST_DIR}/deps/MSL/MSL ${CMAKE_CURRENT_LIST_DIR}/deps/RPNParser/RPN ${CMAKE_CURRENT_LIST_DIR}/deps/litehtml)
 #deps
