@@ -15,6 +15,7 @@ class SpriteSceneStackManager : public BaseSpriteSceneManager
 public:
 	SpriteSceneStackManager();
 
+	void SelectScene(const SpriteScenePtr &scene, const std::shared_ptr<SceneTransition> &transition = nullptr);
 	void PushScene(const std::shared_ptr<SpriteScene> &scene, const std::shared_ptr<SceneTransition> &transition = nullptr);
 	void PopScene(const std::shared_ptr<SceneTransition> &transition = nullptr);
 
@@ -38,9 +39,8 @@ public:
 	static Signal<void(SpriteSceneStackManager*)> onCreated;
 
 	const auto& scenesStack() { return _scenesStack; }
-private:
-	void SelectScene(const SpriteScenePtr &scene, const std::shared_ptr<SceneTransition> &transition = nullptr);
 
+private:
 	std::stack<SpriteScenePtr> _scenesStack;
 };
 

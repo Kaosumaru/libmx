@@ -133,6 +133,11 @@ bool Sample::empty()
 	return _chunk == nullptr;
 }
 
+void Sample::StopAll()
+{
+	soLoud().stopAll();
+}
+
 void Sample::Shutdown()
 {
 	SampleAllGatherer::get().CloseAll();
@@ -168,10 +173,6 @@ Sample::Instance::pointer Sample::PlayInstance(float gain , float pan, float spe
 Sample::Instance::pointer Sample::PlayLoopedInstance(float gain , float pan, float speed)
 {
 	return Sample::Instance::Create(shared_from_this(), _playSample(_chunk.get(), gain * _defaultGain, pan, speed, true, _priority));
-}
-void Sample::StopAll()
-{
-	assert(false);
 }
 
 void RandomSample::AddSample(const Sample::pointer &sample)

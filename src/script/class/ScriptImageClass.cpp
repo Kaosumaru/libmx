@@ -43,6 +43,13 @@ bool ScriptImageClass::onParse()
 	_image = Resources::get().loadCenteredImage(_pivot.x, _pivot.y, path.c_str());
 	MX::Graphic::Image::Settings::premultiplied_alpha = old_pre;
 
+	bool center = false;
+	load_property(center, "Center");
+
+	if (center)
+		_image->SetCenter({ _image->Width() / 2.0f, _image->Height() / 2.0f });
+
+
 	bool wrap = false;
 	load_property(wrap, "Wrap");
 	if ( wrap )

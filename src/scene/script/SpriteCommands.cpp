@@ -420,7 +420,7 @@ public:
     }
 	RotateCommand(LScriptObject& script)
 	{
-		script.load_property(_speed, "Speed");
+		script.load_property_child(_speed, "Speed");
 	}
 
 

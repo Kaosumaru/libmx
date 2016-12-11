@@ -146,7 +146,7 @@ ScAnimatedSpriteActor::ScAnimatedSpriteActor(const ScAnimatedSpriteActor& other)
 ScAnimatedSpriteActor::ScAnimatedSpriteActor(LScriptObject& script) : AnimatedSpriteAdapter<ScriptableSpriteActor>(script)
 {
 	Graphic::SingleAnimation::pointer single_animation;
-	script.load_property(single_animation, "Animation");
+	script.load_property_child(single_animation, "Animation");
 
 
 	Graphic::Animation::pointer animation;

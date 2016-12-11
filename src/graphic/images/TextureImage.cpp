@@ -120,7 +120,7 @@ void TextureImage::Clear(const Color &color)
 void TextureImage::DrawCentered(const glm::vec2& offset, const glm::vec2& pos, const glm::vec2& scale, float angle, const Color &color)
 {
 	auto &calculated_color = Settings::modifyColor(color);
-	Graphic::TextureRenderer::current().Draw(*_texture, _uvCoords, pos, offset + _center, glm::vec2{ scale.x * _dimensions.z, scale.y * _dimensions.w }, calculated_color, angle);
+	Graphic::TextureRenderer::current().Draw(*_texture, _uvCoords, pos, (offset + _center) * scale, glm::vec2{ scale.x * _dimensions.z, scale.y * _dimensions.w }, calculated_color, angle);
 }
 
 void TextureImage::DrawArea(const MX::Rectangle &destination, const MX::Rectangle &source, const Color &color)

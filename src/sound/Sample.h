@@ -51,7 +51,7 @@ public:
 
 	static pointer Create(const char *path);
 
-
+	static void StopAll();
 	static void ReserveSamples(unsigned samples);
 	static void Shutdown();
 
@@ -59,8 +59,6 @@ public:
 	void PlayLooped(float gain = 1.0f, float pan = 0.0f, float speed = 1.0f);
 	Instance::pointer PlayInstance(float gain = 1.0f, float pan = 0.0f, float speed = 1.0f);
 	Instance::pointer PlayLoopedInstance(float gain = 1.0f, float pan = 0.0f, float speed = 1.0f);
-	static void StopAll();
-
 
 	bool empty();
 	void SetDefaultGain(float gain);
