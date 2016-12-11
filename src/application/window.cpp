@@ -29,7 +29,7 @@ Window::Window(unsigned width, unsigned height, bool fullscreen)
 
 	Uint32 flags = SDL_WINDOW_OPENGL;
 	if (_fullscreen)
-		flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+		flags |= SDL_WINDOW_FULLSCREEN;
 
 
 
