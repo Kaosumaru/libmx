@@ -36,7 +36,7 @@ bool ScriptAnimationFromFilesClass::onParse()
 	load_property(_framesCount, "Frames_count");
 	load_property(offset, "Frames_offset");
 	load_property(_filenameTemplate, "Filename_template");
-	load_property(_pivot, "Frame_Pivot");
+	load_property(_pivot, "Frame_pivot");
 
 
 	load_property(MX::Graphic::Image::Settings::mipmap, "Mipmap");
@@ -105,7 +105,7 @@ bool ScriptAnimationFromFileClass::onParse()
 	float frameDuration = 0.0f;
 
 	load_property(frameDuration, "Frame_duration");
-	load_property(_pivot, "Frame_Pivot");
+	load_property(_pivot, "Frame_pivot");
 	
 
 	int rows = 1, columns = 1;

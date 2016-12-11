@@ -27,7 +27,7 @@ namespace MX
 		bool key(int keycode) { return _pressed_keys[keycode]; }
 
 	protected:
-		bool _pressed_keys[MaxKey];
+		bool _pressed_keys[MaxKey] = {};
 
 	};
 
