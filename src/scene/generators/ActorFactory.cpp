@@ -15,8 +15,8 @@ ActorFactory::ActorFactory(const ActorFactory& other)
 {
 	for (auto &decorator : other._decorators)
 		_decorators.push_back(decorator->clone());
-	_generator = other._generator->clone();
-	_creator = other._creator->clone();
+	_generator = other._generator ? other._generator->clone() : nullptr;
+	_creator = other._creator ? other._creator->clone() : nullptr;
 }
 
 ActorFactory::ActorFactory(LScriptObject& script)
@@ -49,7 +49,7 @@ std::shared_ptr<ScriptableSpriteActor> ActorFactory::generateActor()
 
 void ActorFactory::Run()
 {
-	if (!_creator->enabled())
+	if (_creator && !_creator->enabled())
 	{
 		Unlink();
 		return;

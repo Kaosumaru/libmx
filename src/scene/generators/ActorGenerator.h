@@ -4,6 +4,7 @@
 #include "script/ScriptObject.h"
 #include "utils/Time.h"
 #include "utils/Utils.h"
+#include "utils/Random.h"
 #include "utils/SignalizingVariable.h"
 #include <limits>
 

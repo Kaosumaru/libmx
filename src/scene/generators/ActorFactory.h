@@ -37,7 +37,7 @@ public:
 	void AddDecorator(const std::shared_ptr<ActorDecorator>& decorator) { _decorators.push_back(decorator); }
 
 protected:
-	std::shared_ptr<ScriptableSpriteActor> generateActor();
+	virtual std::shared_ptr<ScriptableSpriteActor> generateActor();
 
 	std::shared_ptr<ActorGenerator> _generator;
 	std::shared_ptr<ActorCreator> _creator;
