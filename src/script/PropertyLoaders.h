@@ -14,6 +14,7 @@
 #include "script/class/ScriptAnimationClass.h"
 #include "stx/optional.hpp"
 #include "graphic/fonts/Font.h"
+#include "scene/sprites/SpriteActor.h"
 #include <array>
 
 namespace MX
@@ -605,6 +606,22 @@ namespace MX
 			}
 			else return false;
 
+			return true;
+		}
+	};
+
+	template<>
+	struct PropertyLoader<MX::SpriteActor::Geometry>
+	{
+		using type = PropertyLoader_Custom;
+		static bool load(MX::SpriteActor::Geometry& out, const MX::Scriptable::Value &value)
+		{
+			ScriptObjectString script(value.fullPath());
+			script.load_property(out.position, "Position");
+			script.load_property(out.angle, "Angle");
+			script.load_property(out.z, "Z");
+			script.load_property(out.color, "Color");
+			script.load_property(out.scale, "Scale");
 			return true;
 		}
 	};
