@@ -41,6 +41,7 @@ bool App::OpenMainWindow(unsigned width, unsigned height, bool fullscreen)
 		return false;
 	_window = std::make_shared<Window>(width, height, fullscreen);
 	Window::SetCurrent(*_window);
+    ScriptInitializer::RegisterShortcuts();
 	return true;
 }
 

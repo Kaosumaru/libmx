@@ -19,6 +19,9 @@
 #include "script/ScriptClassParser.h"
 #include "widgets/WidgetScriptBinding.h"
 
+#include "devices/Keyboard.h"
+#include "application/window.h"
+#include "SDL_keycode.h"
 
 
 using namespace MX;
@@ -47,8 +50,28 @@ void MX::ScriptInitializer::Init()
 	MX::Widgets::WidgetAnimationsInit::Init();
 
 	MX::Widgets::WidgetScriptBinding::Init();
+
+
+
 }
 
+void MX::ScriptInitializer::RegisterShortcuts()
+{
+#ifndef MX_GAME_RELEASE
+    MX::Window::current().keyboard()->on_specific_key_down[SDL_SCANCODE_F5].static_connect( []() 
+    {
+        ScriptInitializer::ReloadScripts();
+    });
+    MX::Window::current().keyboard()->on_specific_key_down[SDL_SCANCODE_F6].static_connect( []() 
+    {
+        ScriptInitializer::ReloadScripts(true);
+    });
+    MX::Window::current().keyboard()->on_specific_key_down[SDL_SCANCODE_F1].static_connect( []() 
+    {
+        MX::Widgets::Widget::drawDebug = !MX::Widgets::Widget::drawDebug;
+    });
+#endif
+}
 
 void MX::ScriptInitializer::AfterScriptParse()
 {
