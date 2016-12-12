@@ -8,6 +8,7 @@
 #include "graphic/renderer/DefaultRenderers.h"
 #include "game/ScriptInitializer.h"
 #include "Sound/Sample.h"
+#include "Sound/Stream.h"
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -75,6 +76,8 @@ void App::Loop()
 
 	if (_window)
 		_window->AfterRender();
+
+	MX::Sound::StreamManager::get().Run();
 	_timer.Step();
 }
 

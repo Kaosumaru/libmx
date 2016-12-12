@@ -159,7 +159,7 @@ void Stream::SetLooped(bool looped)
 
 bool Stream::empty()
 {
-	return _stream != nullptr;
+	return _stream == nullptr;
 }
 
 
