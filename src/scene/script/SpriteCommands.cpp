@@ -151,22 +151,53 @@ protected:
 	Color _color2;
 };
 
-class LerpColor1Command : public WaitCommand
+
+class LerpColorFromBaseCommand : public WaitCommand
 {
 public:
-	LerpColor1Command(const Color &color, float seconds) : _color(color), WaitCommand(seconds) {}
-	LerpColor1Command(LScriptObject& script) : WaitCommand(script)
+	LerpColorFromBaseCommand(float seconds) : WaitCommand(seconds) {}
+	LerpColorFromBaseCommand(LScriptObject& script) : WaitCommand(script)
 	{
-		script.load_property(_color, "Color");
+
 	}
-	
+
 	bool operator () ()
 	{
 		auto &current = ScriptableSpriteActor::current();
 
+		if (_first_time)
+		{
+			_first_time = false;
+			_originalColor = current.geometry.color;
+		}
+
 		bool ret = WaitCommand::operator()();
-		ScriptableSpriteActor::current().geometry.color.SetCurrent(Color::lerp(current.geometry.color.original(), _color, percent()));
+		ModifyColor(current, _originalColor);
 		return ret;
+	}
+
+protected:
+	virtual void ModifyColor(ScriptableSpriteActor& actor, Color& original)
+	{
+
+	}
+private:
+	bool _first_time = true;
+	Color _originalColor;
+};
+
+class LerpColor1Command : public LerpColorFromBaseCommand
+{
+public:
+	LerpColor1Command(const Color &color, float seconds) : _color(color), LerpColorFromBaseCommand(seconds) {}
+	LerpColor1Command(LScriptObject& script) : LerpColorFromBaseCommand(script)
+	{
+		script.load_property(_color, "Color");
+	}
+
+	void ModifyColor(ScriptableSpriteActor& actor, Color& original) override
+	{
+		ScriptableSpriteActor::current().geometry.color = (Color::lerp(original, _color, percent()));
 	}
 
 	Command::pointer clone() { return std::make_shared<LerpColor1Command>(_color, (float)_seconds); }
@@ -175,35 +206,27 @@ protected:
 };
 
 
-class LerpAlphaCommand : public WaitCommand
+class LerpAlphaCommand : public LerpColorFromBaseCommand
 {
 public:
-	LerpAlphaCommand(LScriptObject& script) : WaitCommand(script)
-	{
-		script.load_property(_alpha, "Alpha");
-		script.load_property(_from, "From");
-	}
-
-	LerpAlphaCommand(const LerpAlphaCommand &other) : WaitCommand(other)
+	LerpAlphaCommand(const LerpAlphaCommand &other) : LerpColorFromBaseCommand(other)
 	{
 		_alpha = other._alpha;
 		_from = other._from;
 	}
 
-	bool operator () ()
+	LerpAlphaCommand(LScriptObject& script) : LerpColorFromBaseCommand(script)
 	{
-		auto &current = ScriptableSpriteActor::current();
+		script.load_property(_alpha, "Alpha");
+		script.load_property(_from, "From");
+	}
 
-		bool ret = WaitCommand::operator()();
-
-		auto new_color = current.geometry.color.original();
-
-
-		float from = _from == -1 ? new_color.a() : _from;
-
-		new_color.SetA(Easing::linear(from, _alpha- from, percent()));
-		ScriptableSpriteActor::current().geometry.color.SetCurrent(new_color);
-		return ret;
+	void ModifyColor(ScriptableSpriteActor& actor, Color& original) override
+	{
+		auto new_color = original;
+		float from = _from == -1 ? original.a() : _from;
+		new_color.SetA(Easing::linear(from, _alpha- from, percent()));		
+		actor.geometry.color = new_color;
 	}
 
 	Command::pointer clone() { return std::make_shared<LerpAlphaCommand>(*this); }
@@ -224,21 +247,17 @@ std::shared_ptr<Command> lerp_color(const Color &color, float seconds)
 }
 
 
-class BlinkColorCommand : public WaitCommand
+class BlinkColorCommand : public LerpColorFromBaseCommand
 {
 public:
-	BlinkColorCommand(const Color &color, float seconds) : _color(color), WaitCommand(seconds) {}
-	BlinkColorCommand(LScriptObject& script) : WaitCommand(script)
+	BlinkColorCommand(const Color &color, float seconds) : _color(color), LerpColorFromBaseCommand(seconds) {}
+	BlinkColorCommand(LScriptObject& script) : LerpColorFromBaseCommand(script)
 	{
 		script.load_property(_color, "Color");
 	}
 
-	bool operator () ()
+	void ModifyColor(ScriptableSpriteActor& actor, Color& original) override
 	{
-		auto &current = ScriptableSpriteActor::current();
-
-		bool ret = WaitCommand::operator()();
-
 		float p = 0.0f;
 
 		if (percent() == 1.0f)
@@ -248,14 +267,15 @@ public:
 		else 
 			p = percent();
 
-		ScriptableSpriteActor::current().geometry.color.SetCurrent(Color::lerp(current.geometry.color.original(), _color * current.geometry.color.original(), exp(p*2.0f)));
-		return ret;
+		ScriptableSpriteActor::current().geometry.color = Color::lerp(original, _color * original, exp(p*2.0f));
 	}
 
-	Command::pointer clone() { return std::make_shared<BlinkColorCommand>(_color, (float)_seconds); }
+	Command::pointer clone() { return std::make_shared<LerpColor1Command>(_color, (float)_seconds); }
 protected:
 	Color _color;
 };
+
+
 
 std::shared_ptr<Command> blink_color(const Color &color, float seconds)
 {

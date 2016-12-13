@@ -37,7 +37,7 @@ public:
 		glm::vec2 scale;
 		float z = 0.0f;
 		float angle = 0.0f;
-		ColorExtended color;
+		Color color;
 	} geometry;
 
 #ifdef _DEBUG

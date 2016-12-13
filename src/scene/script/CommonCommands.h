@@ -65,6 +65,7 @@ namespace MX
 
 	//std::shared_ptr<Command> l(p0, p1, ..., pn);
 Command::pointer l(std::list<Command::pointer> &&l);
+Command::pointer l(int i, std::list<Command::pointer> &&l);
 Command::pointer s(std::list<Command::pointer> &&l);
 Command::pointer q(std::list<Command::pointer> &&l);
 

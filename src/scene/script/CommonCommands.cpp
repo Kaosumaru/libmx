@@ -88,12 +88,15 @@ namespace MX
 	class LoopCommand : public CompositeCommand
 	{
 	public:
-		LoopCommand(const LoopCommand& other) : CompositeCommand(other){}
-		LoopCommand(LScriptObject& script) : CompositeCommand(script){}
+		LoopCommand(const LoopCommand& other) : _iterations(other._iterations), CompositeCommand(other){}
+		LoopCommand(LScriptObject& script) : CompositeCommand(script){ script.load_property(_iterations, "Iterations"); }
+		LoopCommand(list<Command::pointer> &&c, int i) : _iterations(i+1), CompositeCommand(std::move(c)){}
 		LoopCommand(list<Command::pointer> &&c) : CompositeCommand(std::move(c)){}
 
-		void Restart()
+		virtual void Restart()
 		{
+			if (_iterations > 0)
+				_iterations--;
 			for_each(_commands.begin(), _commands.end(), [](const Command::pointer &ptr){ptr->Restart(); });
 			current = _commands.begin();
 		}
@@ -101,6 +104,8 @@ namespace MX
 
 		bool operator () ()
 		{
+			if (_iterations == 0)
+				return false;
 			if (current == _commands.end())
 				Restart();
 
@@ -117,15 +122,14 @@ namespace MX
 			return true;
 		}
 
-
 		Command::pointer clone()
 		{
 			return std::make_shared<LoopCommand>(*this);
 		}
 
-
 	protected:
 		list<Command::pointer>::iterator current = _commands.end();
+		int _iterations = -1;
 	};
 
 	class SimultaneusCommand : public CompositeCommand
@@ -195,6 +199,12 @@ namespace MX
 	{
 		return std::make_shared<LoopCommand>(std::move(l));
 	}
+
+	Command::pointer l(int i, std::list<Command::pointer> &&l)
+	{
+		return std::make_shared<LoopCommand>(std::move(l), i);
+	}
+
 	Command::pointer s(std::list<Command::pointer> &&l)
 	{
 		return std::make_shared<SimultaneusCommand>(std::move(l));

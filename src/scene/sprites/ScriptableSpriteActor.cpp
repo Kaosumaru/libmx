@@ -112,8 +112,8 @@ void BaseGraphicTransformSceneScriptable::Draw(float x, float y)
 
 	auto color_guard = Context<Color, Graphic::Image::Settings::ColorMultiplier>::CreateEmptyGuard();
 
-	if (geometry.color.current() != MX::Color::white())
-		color_guard.Reset(geometry.color.current());
+	if (geometry.color != MX::Color::white())
+		color_guard.Reset(geometry.color);
 
 	MVP::Push();
 	MVP::rotateZoom({x,y}, geometry.scale, geometry.angle);

@@ -110,8 +110,8 @@ void ParticleSystem::Draw(float x, float y)
 		return;
 
 	auto color_guard = Context<Color, Graphic::Image::Settings::ColorMultiplier>::CreateEmptyGuard();
-	if (geometry.color.current() != MX::Color::white())
-		color_guard.Reset(geometry.color.current());
+	if (geometry.color != MX::Color::white())
+		color_guard.Reset(geometry.color);
 
 	//TODO fix me - code duplication
 	if (relative())
@@ -151,8 +151,8 @@ void ParticleSystem::DrawCustom(float x, float y)
 		return;
 
 	auto color_guard = Context<Color, Graphic::Image::Settings::ColorMultiplier>::CreateEmptyGuard();
-	if (geometry.color.current() != MX::Color::white())
-		color_guard.Reset(geometry.color.current());
+	if (geometry.color != MX::Color::white())
+		color_guard.Reset(geometry.color);
 
 	//TODO fix me - code duplication
 	if (relative())
