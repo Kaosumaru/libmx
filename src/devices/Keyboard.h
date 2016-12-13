@@ -22,7 +22,7 @@ namespace MX
 		Signal<void()> on_specific_key_up[MaxKey];
 		Signal<void()> on_specific_key_down[MaxKey];
 
-		Signal<void(int unichar, int keycode, unsigned modifiers, bool repeated)> on_char;
+		Signal<void(int unichar)> on_char;
 
 		bool key(int keycode) { return _pressed_keys[keycode]; }
 

@@ -49,6 +49,13 @@ public:
 		{
 			OnKeycodeUp(event.key.keysym.scancode);
 		}
+		else if (event.type == SDL_TEXTINPUT)
+		{
+			std::string txt{ event.text.text };
+			if (txt.size() > 0)
+				on_char(txt[0]);
+
+		}
 	}
 };
 
