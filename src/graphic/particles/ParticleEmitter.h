@@ -90,6 +90,7 @@ class PointRotationParticleEmitter : public ParticleEmitterBase
 public:
 	PointRotationParticleEmitter(const std::string& objectName) : ParticleEmitterBase(objectName)
 	{
+		load_property(_addParentAngle, "AddParentAngle");
 		load_property(_direction_range, "Direction");
 		_direction_range.first *= (float)MX_2PI;
 		_direction_range.second *= (float)MX_2PI;
@@ -100,6 +101,9 @@ public:
 	{
 		ParticleEmitter::EmitParticle(p, s);
 		float direction = Random::randomRange(_direction_range);
+		if (_addParentAngle)
+			direction += s.geometry.angle;
+
 		p._stopWatch.Start(Random::randomRange(_life));
 		p._directionForce = CreateVectorFromAngle(direction) * Random::randomRange(_speed);
 		p._acceleration = CreateVectorFromAngle(direction) * Random::randomRange(_acceleration);
@@ -108,7 +112,7 @@ public:
 
 protected:
 	std::pair<float, float> _direction_range;
-
+	bool _addParentAngle = false;
 };
 
 

@@ -1,6 +1,6 @@
 #include "Keyboard.h"
 #include "EventWatcher.h"
-
+#include <string>
 using namespace MX;
 
 Keyboard::Keyboard()

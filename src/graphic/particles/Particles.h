@@ -56,7 +56,7 @@ public:
 	bool relative() { return _relative; }
 
 protected:
-	bool _additiveBlending = true;
+	bool _additiveBlending = false;
 	bool _started = false;
 	bool _active = true;
 	bool _relative = false;
