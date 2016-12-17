@@ -25,7 +25,7 @@ public:
 	}
 
 
-	void RelayoutAllWidgets(const NamedWidgetsMap& named_widgets)
+	void RelayoutAllWidgets(const NamedWidgetsMap& named_widgets) override
 	{
 		//TODO because layouter is reused by multiple widgets, that may happen in future
 		if (_widgetMap)

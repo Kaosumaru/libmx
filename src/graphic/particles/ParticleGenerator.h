@@ -46,7 +46,7 @@ public:
 		_time = 0.0f;
 	}
 
-	ParticleGenerator::pointer clone()
+	ParticleGenerator::pointer clone() override
 	{
 		return std::make_shared<ParticleGeneratorSimple>(*this);
 	}
@@ -94,7 +94,7 @@ public:
 		load_property(_particleRange, "ParticleNumber");
 		_particleNumber = Random::randomRange(_particleRange);
 	}
-	ParticleGenerator::pointer clone()
+	ParticleGenerator::pointer clone() override
 	{
 		_particleNumber = Random::randomRange(_particleRange);
 		return std::make_shared<ParticleGeneratorAllAtOnce>(*this);
@@ -113,7 +113,7 @@ public:
 		return false;
 	}
 
-	bool IsActive()
+	bool IsActive() override
 	{
 		return !_hasgenerated;
 	}

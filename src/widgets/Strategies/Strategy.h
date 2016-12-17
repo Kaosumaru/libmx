@@ -75,7 +75,7 @@ public:
 	CenterInParent(bool horizontally = true, bool vertically = true);
 
 	bool runnable() override { return true; }
-	bool Run();
+	bool Run() override;
 protected:
 	bool _horizontally;
 	bool _vertically;
@@ -87,7 +87,7 @@ public:
 	FillInParent(bool horizontally = true, bool vertically = true);
 
 	bool runnable() override { return true; }
-	bool Run();
+	bool Run() override;
 protected:
 	bool _horizontally;
 	bool _vertically;
@@ -137,7 +137,7 @@ class Draggable : public Interactive, public MX::Widgets::DragTarget
 public:
 	Draggable();
 	void OnShapeChanged() override;
-	void DrawDrag(float x, float y);
+	void DrawDrag(float x, float y) override;
 
 protected:
 	void OnTouchBegin(const Collision::Shape::pointer& shape);

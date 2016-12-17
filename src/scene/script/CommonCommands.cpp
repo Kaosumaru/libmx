@@ -184,7 +184,7 @@ namespace MX
 		LambdaCommand(const Function &t) : _t(t) {}
 		bool operator()() { return _t(); }
 
-		Command::pointer clone() { return std::make_shared<LambdaCommand>(_t); }
+		Command::pointer clone() override { return std::make_shared<LambdaCommand>(_t); }
 	protected:
 		Function _t;
 	};

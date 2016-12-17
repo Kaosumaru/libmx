@@ -73,7 +73,7 @@ public:
 };
 
 
-template<typename T, template<typename> typename Policy>
+template<typename T, template<typename> class Policy>
 class CreatorTemplatedBase_Policy : public CreatorTemplatedBase<T>
 {
 public:
@@ -155,7 +155,7 @@ class NoneClassCreatorContructor : public CreatorTemplatedBase_Policy<T, NoneCla
 };
 
 
-template<typename T, template<typename> typename Policy = DefaultClassCreatorContructor_Policy>
+template<typename T, template<typename> class Policy = DefaultClassCreatorContructor_Policy>
 class DefaultCachedClassCreatorContructor : public CreatorTemplatedBase<T>
 {
 public:

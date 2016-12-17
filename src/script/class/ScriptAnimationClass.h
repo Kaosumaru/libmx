@@ -26,7 +26,7 @@ class ScriptAnimationFromFileClass : public ScriptAnimationClass
 public:
 	ScriptAnimationFromFileClass();
 protected:
-	bool onParse();	
+	bool onParse() override;	
 };
 
 class ScriptAnimationFromFilesClass : public ScriptAnimationClass
@@ -34,7 +34,7 @@ class ScriptAnimationFromFilesClass : public ScriptAnimationClass
 public:
 	ScriptAnimationFromFilesClass();
 protected:
-	bool onParse();
+	bool onParse() override;
 
 	float _frameDuration = 0.0f;
 	unsigned _framesCount = 0;
@@ -49,9 +49,9 @@ class ScriptRandomAnimation : public ScriptAnimationClass
 public:
 	ScriptRandomAnimation();
 
-	 const std::shared_ptr<Graphic::SingleAnimation>& animation() const;
+	 const std::shared_ptr<Graphic::SingleAnimation>& animation() const override;
 protected:
-	bool onParse();
+	bool onParse() override;
 
 	std::vector<std::shared_ptr<Graphic::SingleAnimation>> _animations;
 

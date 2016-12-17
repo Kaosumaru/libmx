@@ -16,7 +16,7 @@ public:
 
 	virtual std::shared_ptr<Graphic::Image> image() const;
 protected:
-	bool onParse();
+	bool onParse() override;
 
 	Graphic::TextureImage::pointer _image;
 	glm::vec2 _pivot;
@@ -29,7 +29,7 @@ public:
 
 	virtual std::shared_ptr<Graphic::QuadImage> image() const;
 protected:
-	bool onParse();
+	bool onParse() override;
 
 	std::shared_ptr<Graphic::QuadImage> _image;
 };
@@ -37,7 +37,7 @@ protected:
 class ScriptImageFromGridClass : public ScriptImageClass
 {
 protected:
-	bool onParse();
+	bool onParse() override;
 };
 
 class ScriptImageGridClass : public ScriptImageClass
@@ -45,7 +45,7 @@ class ScriptImageGridClass : public ScriptImageClass
 public:
 	virtual Graphic::TextureImage::pointer image(int x, int y) const;
 protected:
-	bool onParse();
+	bool onParse() override;
 
 	unsigned _rows = 1, _columns = 1;
 	glm::vec2 _gridSize;
@@ -60,7 +60,7 @@ public:
 
 	std::shared_ptr<Graphic::Image> image() const override;
 protected:
-	bool onParse();
+	bool onParse() override;
 
 	std::vector<std::shared_ptr<Graphic::Image>> _images;
 

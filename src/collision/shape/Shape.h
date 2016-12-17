@@ -31,7 +31,7 @@ public:
 	bool enabled();
 
 	bool linked() const;
-	void Unlink();
+	void Unlink() override;
 	
 	bool intersectsWith(const Shape &shape);
 	float distanceTo(const Shape &shape) const;

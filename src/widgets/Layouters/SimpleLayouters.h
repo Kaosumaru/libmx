@@ -59,7 +59,7 @@ class LayouterWidget : public Widget
 {
 public:
 	LayouterWidget();
-	void AddWidget(const std::shared_ptr<Widget> &widget);
+	void AddWidget(const std::shared_ptr<Widget> &widget) override;
 	void SetLayouter(const Layouter::pointer &layouter);
 	Layouter::pointer &layouter();
 protected:

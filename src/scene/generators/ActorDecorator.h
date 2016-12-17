@@ -87,7 +87,7 @@ public:
 	{
 		actor->geometry.color = geometry.color;
 	}
-	ActorDecorator::pointer clone() { return std::make_shared<ActorDecoratorGeometry>(*this); }
+	ActorDecorator::pointer clone() override { return std::make_shared<ActorDecoratorGeometry>(*this); }
 
 	MX::SpriteActor::Geometry geometry;
 };
@@ -104,7 +104,7 @@ public:
 
 	void DecorateActor(const std::shared_ptr<ScriptableSpriteActor> &actor);
 
-	ActorDecorator::pointer clone() { return std::make_shared<ActorDecoratorPositionInFactory>(*this); }
+	ActorDecorator::pointer clone() override { return std::make_shared<ActorDecoratorPositionInFactory>(*this); }
 
 	MX::SpriteActor::Geometry geometry;
 protected:

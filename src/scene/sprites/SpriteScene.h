@@ -19,7 +19,7 @@ public:
 	void Draw(float x, float y) override;
 	void DrawCustom(float x, float y) override;
 
-	std::shared_ptr<Actor> cloneActor() { return clone(); }
+	std::shared_ptr<Actor> cloneActor() override { return clone(); }
 
     virtual void AddActor(const SpriteActorPtr &actor);
 	virtual void AddActorAtFront(const SpriteActorPtr &actor);

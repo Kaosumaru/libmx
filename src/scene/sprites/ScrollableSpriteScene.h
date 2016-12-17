@@ -11,7 +11,7 @@ class ScrollableSpriteScene : public virtual SpriteScene
 public:
 	ScrollableSpriteScene(const glm::vec2& viewDimensions, const glm::vec2& sceneDimensions);
 
-	void Run();
+	void Run() override;
 
 	float Width() override;
 	float Height() override;
@@ -48,8 +48,8 @@ class ScrollableBaseGraphicScene : public BaseGraphicScene, public ScrollableSpr
 {
 public:
 	ScrollableBaseGraphicScene(const glm::vec2& viewDimensions, const glm::vec2& sceneDimensions);
-	void Draw(float x = 0.0f, float y = 0.0f);
-	void Run();
+	void Draw(float x = 0.0f, float y = 0.0f) override;
+	void Run() override;
 };
 
 }

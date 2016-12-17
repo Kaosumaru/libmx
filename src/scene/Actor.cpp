@@ -78,7 +78,7 @@ Actor::pointer Actor::fromFunctor(const std::function<void (void)> &func)
 
 		void Run()	{_func();}
 
-		std::shared_ptr<Actor> cloneActor() { return std::make_shared<ActorFunctor>(_func); }
+		std::shared_ptr<Actor> cloneActor() override { return std::make_shared<ActorFunctor>(_func); }
 	protected:
 		std::function<void (void)> _func;
 	};

@@ -19,7 +19,7 @@ namespace MX
 		Event(){};
 		Event(const std::string& objectName) : Command(objectName) {}
 
-		bool operator () ()
+		bool operator () () override
 		{
 			Do();
 			return true;

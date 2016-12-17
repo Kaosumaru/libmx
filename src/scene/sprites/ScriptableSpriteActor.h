@@ -31,15 +31,15 @@ public:
 	ScriptableSpriteActor(const ScriptableSpriteActor& other);
 	ScriptableSpriteActor(LScriptObject& script);
 
-	void Run();
-	void Unlink();
+	void Run() override;
+	void Unlink() override;
 
 	ScriptData script;
 
 	SpriteActorPtr clone() override;
 	virtual std::shared_ptr<ScriptableSpriteActor> cloneSprite();
 protected:
-	void OnLinkedToScene();
+	void OnLinkedToScene() override;
 };
 
 
@@ -54,13 +54,13 @@ public:
 	void Run() override;
 	void Draw(float x, float y) override;
 
-	std::shared_ptr<Actor> cloneActor() { return cloneSprite(); }
+	std::shared_ptr<Actor> cloneActor() override { return cloneSprite(); }
 	SpriteActorPtr clone() override { return cloneSprite(); }
 	std::shared_ptr<ScriptableSpriteActor> cloneSprite() override { return std::make_shared<BaseGraphicSceneScriptable>(*this); }
 
-	void Unlink();
+	void Unlink() override;
 protected:
-	void OnLinkedToScene();
+	void OnLinkedToScene() override;
 };
 
 class BaseGraphicTransformSceneScriptable : public BaseGraphicSceneScriptable

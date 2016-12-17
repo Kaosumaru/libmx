@@ -36,15 +36,15 @@ class StringValue : public Scriptable::Detail::ValueMember
 public:
 	StringValue(Scriptable::Value *parentValue, const std::wstring &value) : _parentValue(parentValue), _value(value) { _parsed = false; }
 
-	bool isTrue() { Parse(); return true; }
-	float valueFloat() { Parse(); return std::stof(_value); }
-	std::string valueString() 
+	bool isTrue() override { Parse(); return true; }
+	float valueFloat() override { Parse(); return std::stof(_value); }
+	std::string valueString() override 
 	{
 		Parse();
         static std::wstring_convert<std::codecvt_utf8<wchar_t>> convert;
 		return convert.to_bytes(_value); 
 	}
-	std::wstring valueWstring() { Parse(); return _value; }
+	std::wstring valueWstring() override { Parse(); return _value; }
 protected:
 	void Parse()
 	{
@@ -62,11 +62,11 @@ class BoolValue : public Scriptable::Detail::ValueMember
 public:
 	BoolValue(bool value) : _value(value) {}
 
-	bool isTrue() { return _value; }
+	bool isTrue() override { return _value; }
 
-	float valueFloat() { return _value ? 1.0f : 0.0f; }
-	std::string valueString() { return _value ? "Yes" : "No" ;}
-	std::wstring valueWstring() { return _value ? L"Yes" : L"No" ;}
+	float valueFloat() override { return _value ? 1.0f : 0.0f; }
+	std::string valueString() override { return _value ? "Yes" : "No" ;}
+	std::wstring valueWstring() override { return _value ? L"Yes" : L"No" ;}
 protected:
 	bool _value;
 };
@@ -91,7 +91,7 @@ class FloatValue : public NumericalValueMember
 public:
 	FloatValue(float value) : _value(value) {}
 
-	float valueFloat() { return _value; }
+	float valueFloat() override { return _value; }
 protected:
 	float _value;
 };
@@ -113,7 +113,7 @@ class FunctorValue : public NumericalValueMember
 public:
 	FunctorValue(const std::function<float()> &number_functor) : _number_functor(number_functor) {}
 
-	float valueFloat() { return _number_functor(); }
+	float valueFloat() override { return _number_functor(); }
 
 	bool isConstant() const override { return false; }
 protected:
@@ -149,7 +149,7 @@ public:
 		_text.clear();
 	}
 
-	float valueFloat() 
+	float valueFloat() override
 	{ 
 #ifdef RPN_USE_JIT
 		return _function();

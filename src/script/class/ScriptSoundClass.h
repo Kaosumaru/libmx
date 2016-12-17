@@ -16,7 +16,7 @@ public:
 
 	virtual const std::shared_ptr<Sound::Sample>& sound() const;
 protected:
-	bool onParse();
+	bool onParse() override;
 
 	std::shared_ptr<Sound::Sample> _sound;
 };
@@ -29,9 +29,9 @@ class ScriptRandomSound : public ScriptSoundClass
 public:
 	ScriptRandomSound();
 
-	const std::shared_ptr<Sound::Sample>& sound() const;
+	const std::shared_ptr<Sound::Sample>& sound() const override;
 protected:
-	bool onParse();
+	bool onParse() override;
 
 	std::vector<std::shared_ptr<Sound::Sample>> _sounds;
 

@@ -93,7 +93,7 @@ namespace Widgets
 		ScriptLayouterWidget();
 
 		void SetDefaultWidgetName(const std::string& name);
-		void AddWidget(const std::shared_ptr<Widget> &widget);
+		void AddWidget(const std::shared_ptr<Widget> &widget) override;
 
 		virtual NamedWidgetsMap::iterator AddNamedWidget(const std::string& name, const std::shared_ptr<Widget> &widget);
 		void AddLayouterWidget(const std::string& name, const std::shared_ptr<Widget> &widget);

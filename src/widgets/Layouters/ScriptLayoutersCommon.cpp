@@ -23,7 +23,7 @@ public:
 	}
 
 
-	void RelayoutAllWidgets(const NamedWidgetsMap& named_widgets)
+	void RelayoutAllWidgets(const NamedWidgetsMap& named_widgets) override
 	{
 		FindDrawersForAllWidgets(named_widgets);
 
@@ -118,7 +118,7 @@ public:
     }
 
 
-    void RelayoutAllWidgets(const NamedWidgetsMap& named_widgets)
+    void RelayoutAllWidgets(const NamedWidgetsMap& named_widgets) override
     {
         FindDrawersForAllWidgets(named_widgets);
 

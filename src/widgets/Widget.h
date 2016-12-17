@@ -46,7 +46,7 @@ class Widget : public SpriteScene, public ScopeSingleton<Widget>, public shared_
 	friend class ScriptLayouter;
 public:
 	Widget();
-	std::shared_ptr<Actor> cloneActor() { return clone(); }
+	std::shared_ptr<Actor> cloneActor() override { return clone(); }
 
 	virtual void AddWidget(const std::shared_ptr<Widget> &widget);
 	void Clear() override;
@@ -167,17 +167,17 @@ protected:
 
 	void moveChildren(const glm::vec2& delta);
 
-	void onBecameVisible();
-	void onBecameInvisible();
+	void onBecameVisible() override;
+	void onBecameInvisible() override;
 
-	void AddActor(const SpriteActorPtr &actor);
+	void AddActor(const SpriteActorPtr &actor) override;
 	void onParentMove(const glm::vec2& delta);
 
 	void onParentTransformMatrixChanged(const glm::mat4 &transform);
 	
 
-	void OnLinkedToScene();
-	void OnUnlinkedFromScene();
+	void OnLinkedToScene() override;
+	void OnUnlinkedFromScene() override;
 
 	float _width = 0.0f;
 	float _height = 0.0f;

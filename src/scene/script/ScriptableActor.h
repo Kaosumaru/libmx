@@ -38,14 +38,14 @@ public:
 class ScriptableActor : public virtual Actor, public ScopeSingleton<ScriptableActor>
 {
 public:
-	void Run();
-	void Unlink();
+	void Run() override;
+	void Unlink() override;
 
 	CommandSignal onRun;
 	ScriptSignal onLink;
 	ScriptSignal onUnlink;
 protected:
-	void OnLinkedToScene();
+	void OnLinkedToScene() override;
 };
 
 

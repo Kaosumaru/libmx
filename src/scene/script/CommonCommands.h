@@ -18,11 +18,11 @@ namespace MX
 		WaitCommand(float seconds);
 		WaitCommand(LScriptObject& script);
 		WaitCommand(const WaitCommand& other);
-		void Restart();
-		bool operator () ();
+		void Restart() override;
+		bool operator () () override;
 
 		float percent();
-		Command::pointer clone() { return std::make_shared<WaitCommand>(*this); }
+		Command::pointer clone() override { return std::make_shared<WaitCommand>(*this); }
 	protected:
 		virtual void OnWait() {}
 

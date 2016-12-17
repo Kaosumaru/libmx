@@ -54,7 +54,7 @@ struct SceneInfo
 class InfoScene : public BaseScene
 {
 public:
-	void Run();
+	void Run() override;
 	bool RunInterrupted();
 };
 

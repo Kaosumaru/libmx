@@ -15,7 +15,7 @@ class SpriteSceneStackManager : public BaseSpriteSceneManager
 public:
 	SpriteSceneStackManager();
 
-	void SelectScene(const SpriteScenePtr &scene, const std::shared_ptr<SceneTransition> &transition = nullptr);
+	void SelectScene(const SpriteScenePtr &scene, const std::shared_ptr<SceneTransition> &transition = nullptr) override;
 	void PushScene(const std::shared_ptr<SpriteScene> &scene, const std::shared_ptr<SceneTransition> &transition = nullptr);
 	void PopScene(const std::shared_ptr<SceneTransition> &transition = nullptr);
 
