@@ -455,7 +455,10 @@ protected:
     Time::FloatPerSecond _speed;
 };
 
-
+std::shared_ptr<Command> rotate(float speed)
+{
+	return std::make_shared<RotateCommand>(speed);
+}
 
 
 class SetRandomAngle : public Command

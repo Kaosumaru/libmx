@@ -18,7 +18,7 @@ namespace MX
 	std::shared_ptr<Command> warp_scale(float x, float y, float seconds);
     std::shared_ptr<Command> move_in_direction(const glm::vec2 &vec, float speed);
 	std::shared_ptr<Command> nail_to(const SpriteActorPtr& original, const SpriteActorPtr& ptr);
-
+	std::shared_ptr<Command> rotate(float speed);
 
 
 	struct glue_to_options
