@@ -93,7 +93,7 @@ namespace MX
 			};
 
 
-			DijkstraPath::Functions f;
+			typename DijkstraPath::Functions f;
 			f.getNeighbors = getNeighbors;
 			f.setDistanceIfLower = setDistanceIfLower;
 
