@@ -287,9 +287,12 @@ void operator & (std::shared_ptr<T> &t, MX::Scriptable::Variable&& var)
 }
 #endif
 
+#define MXTOKENPASTE(x, y) x ## y
+#define MXTOKENPASTE2(x, y) MXTOKENPASTE(x, y)
+
 #define MXREGISTER_CLASS(strname, classname) \
 namespace {\
-struct Autoregister__LINE__  {\
-Autoregister__LINE__(){MX::ScriptClassParser::AddCreator(strname, new MX::OutsideScriptClassCreatorContructor<classname>());} \
-} autoregister_inst__LINE__  ;\
+struct MXTOKENPASTE2(Autoregister,__LINE__)  {\
+MXTOKENPASTE2(Autoregister,__LINE__) (){MX::ScriptClassParser::AddCreator(strname, new MX::OutsideScriptClassCreatorContructor<classname>());} \
+} MXTOKENPASTE2(autoregister_inst,__LINE__);\
 }
