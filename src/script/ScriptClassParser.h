@@ -286,3 +286,10 @@ void operator & (std::shared_ptr<T> &t, MX::Scriptable::Variable&& var)
 
 }
 #endif
+
+#define MXREGISTER_CLASS(strname, classname) \
+namespace {\
+struct Autoregister__LINE__  {\
+Autoregister__LINE__(){MX::ScriptClassParser::AddCreator(strname, new MX::OutsideScriptClassCreatorContructor<classname>());} \
+} autoregister_inst__LINE__  ;\
+}
