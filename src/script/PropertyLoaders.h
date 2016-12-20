@@ -7,6 +7,7 @@
 #include <sstream>
 #include <utility>
 #include "utils/SignalizingVariable.h"
+#include "utils/clone_ptr.h"
 #include "graphic/Blender.h"
 #include "graphic/OpenGL.h"
 #include "script/class/ScriptSoundClass.h"
@@ -367,6 +368,18 @@ namespace MX
 			}
 				
 			return false;
+		}
+	};
+
+	template<typename T, typename Y>
+	struct PropertyLoader<MX::clone_ptr<T, Y>>
+	{
+		using type = PropertyLoader_Standard;
+		static bool load(MX::clone_ptr<T, Y>& out, const Scriptable::Value::pointer& obj)
+		{
+			std::shared_ptr<T> t = obj->to_object<T>();
+			out = std::move(t);
+			return t != nullptr;
 		}
 	};
 
