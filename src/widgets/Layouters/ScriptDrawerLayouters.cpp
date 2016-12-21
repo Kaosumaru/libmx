@@ -57,7 +57,8 @@ protected:
 	{
 		auto &w = Context<Widget>::current();
 		auto r = MX::Rectangle::fromWH(0.0f, 0.0f, w.Width() - w.margins().hMargins(), w.Height() - w.margins().vMargins());
-		auto guard2 = Context<Drawer::Destination>::Lock(Drawer::Destination(r));
+		auto dest_rect = Drawer::Destination( r );
+		auto guard2 = Context<Drawer::Destination>::Lock(dest_rect);
 		auto guard = Context<ScriptLayouterDrawer>::Lock(this);
 		for (auto &c : _children)
 			c->DrawBackground();

@@ -3,7 +3,6 @@
 #include "application/Window.h"
 #include "Game/Resources/Resources.h"
 #include "Collision/Area/EventsToCollisions.h"
-#include <iostream>
 #include "devices/Touches.h"
 
 using namespace MX;

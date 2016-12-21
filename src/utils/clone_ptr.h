@@ -20,6 +20,11 @@ namespace MX
 		clone_ptr( const std::shared_ptr<T>& other ) : clone_ptr(Strategy::clone(other))  {}
 		clone_ptr( std::shared_ptr<T>&& other ) : _ptr(other)  {}
 
+		template<typename Y>
+		clone_ptr( const std::shared_ptr<Y>& other ) : clone_ptr(Strategy::clone(other))  {}
+		template<typename Y>
+		clone_ptr( std::shared_ptr<Y>&& other ) : _ptr(other)  {}
+
 		operator bool() const { return (bool)_ptr; }
 		auto operator->() { return _ptr.operator->(); }
 		auto operator->() const { return _ptr.operator->(); }

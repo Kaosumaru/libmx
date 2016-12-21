@@ -74,9 +74,8 @@ struct Context : public ScopeSingleton<T, T1>
 		return typename ScopeSingleton<T, T1>::ContextGuard();
 	}
 
-	static typename ScopeSingleton<T, T1>::ContextGuard Lock(T&& t)
+	static void Lock(T&& t)
 	{
-		return typename ScopeSingleton<T, T1>::ContextGuard((T&)t);
 	}
 
 	static typename ScopeSingleton<T, T1>::ContextGuard Lock(T& t)

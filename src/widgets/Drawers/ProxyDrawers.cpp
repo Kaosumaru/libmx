@@ -101,8 +101,8 @@ protected:
 		if (_passDrawers.empty())
 			return;
 
-
-		auto guard_dest = Context<Drawer::Destination>::Lock(Drawer::Destination(Rectangle::fromWH(0.0f, 0.0f, dimensions.x, dimensions.y)));
+		auto dest_rect = Drawer::Destination( Rectangle::fromWH( 0.0f, 0.0f, dimensions.x, dimensions.y ) );
+		auto guard_dest = Context<Drawer::Destination>::Lock(dest_rect);
 
 
 		for (auto &drawer : _passDrawers)

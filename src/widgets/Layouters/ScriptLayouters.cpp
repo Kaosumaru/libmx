@@ -277,7 +277,8 @@ ScriptLayouterWidget::NamedWidgetsMap::iterator ScriptLayouterWidget::AddNamedWi
 	auto d = dimensionsInside();
 
 	auto guard2 = Context<ScriptLayouterWidget>::Lock(this);
-	auto guard3 = Context<Drawer::Destination>::Lock(Drawer::Destination(Rectangle::fromWH(0.0, 0.0, d.x, d.y)));
+	auto dest_rect = Drawer::Destination( Rectangle::fromWH( 0.0, 0.0, d.x, d.y ) );
+	auto guard3 = Context<Drawer::Destination>::Lock(dest_rect);
 	if (_layouter && !_layoutDirty)
 		_layouter->LayoutWidget(name, widget);
 
@@ -323,10 +324,11 @@ void ScriptLayouterWidget::SetLayouter(const ScriptLayouter::pointer &layouter)
 	{ 
 		//this potentially add new widgets
 		auto d = dimensionsInside();
+		auto dest_rect = Drawer::Destination( Rectangle::fromWH( 0.0, 0.0, d.x, d.y ) );
 
 		auto guard = Context<Widget>::Lock(this);
 		auto guard2 = Context<ScriptLayouterWidget>::Lock(this);
-		auto guard3 = Context<Drawer::Destination>::Lock(Drawer::Destination(Rectangle::fromWH(0.0, 0.0, d.x, d.y)));
+		auto guard3 = Context<Drawer::Destination>::Lock(dest_rect);
 
 		_layouter->OnLinkedToWidget();
 #ifdef _DEBUG
@@ -376,10 +378,11 @@ const ScriptLayouter::pointer &ScriptLayouterWidget::layouter()
 void ScriptLayouterWidget::relayoutNamedWidgets()
 {
 	auto d = dimensionsInside();
+	auto dest_rect = Drawer::Destination( Rectangle::fromWH( 0.0, 0.0, d.x, d.y ) );
 
 	auto guard = Context<Widget>::Lock(this);
 	auto guard2 = Context<ScriptLayouterWidget>::Lock(this);
-	auto guard3 = Context<Drawer::Destination>::Lock(Drawer::Destination(Rectangle::fromWH(0.0, 0.0, d.x, d.y)));
+	auto guard3 = Context<Drawer::Destination>::Lock(dest_rect);
 
 	if (!_layouter)
 		return;

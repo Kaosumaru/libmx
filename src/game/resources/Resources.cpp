@@ -38,8 +38,14 @@ namespace MX
 			return fit->second;
 		auto path = Paths::get().pathToImage(image);
 		auto image_pointer = Graphic::TextureImage::Create(path);
-		if (!image_pointer)
-			return Resources::loadImageFromSpriteSheet(image);
+		if ( !image_pointer )
+		{
+			auto res = Resources::loadImageFromSpriteSheet(image);
+			if ( !res )
+				std::cout << "Couldn't load " << image << std::endl;
+			return res;
+		}
+			
 
 		fit = _imageMap.insert(std::make_pair(image, image_pointer)).first;
 		return fit->second;

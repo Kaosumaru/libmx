@@ -149,7 +149,8 @@ void MX::Widgets::Widget::Draw(float x, float y)
 
 	auto guardc = Context<Drawer::ContextData>::Lock(contextData);
 	auto guard1 = Context<Widget>::Lock(this);
-	auto guard2 = Context<Drawer::Destination>::Lock(Drawer::Destination(Rectangle::fromWH(x, y, Width(), Height())));
+	auto dest = Drawer::Destination( Rectangle::fromWH( x, y, Width(), Height() ) );
+	auto guard2 = Context<Drawer::Destination>::Lock(dest);
 
 	//TODO remove this, let widget handle this
 	if (Drawer::isDragged() && !Drawer::drawDragged())

@@ -289,7 +289,7 @@ protected:
 MX::Widgets::ColorDrawer::ColorDrawer(LScriptObject& script) : ImageDrawer(script)
 {
 	if (!_image)
-		_image = MX::Resources::get().loadImage("Misc/White128.png");
+		_image = MX::Resources::get().loadImage("misc/White128.png");
 }
 
 void MX::Widgets::ColorDrawer::DrawImage()
