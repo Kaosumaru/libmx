@@ -250,7 +250,7 @@ public:
 			*_objectName = objectName;
 	}
 
-	std::string object()
+	std::string object() override
 	{
 		if (_objectName)
 			return *_objectName;

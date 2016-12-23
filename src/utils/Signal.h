@@ -58,6 +58,9 @@ namespace MX
 	public:
 		using Function = std::function<R(Args...)>;
 		using FunctionExtended = std::function<R(Connection&, Args...)>;
+
+        Signal() {}
+        Signal( const Signal& ) {};
 	protected:
 
 
