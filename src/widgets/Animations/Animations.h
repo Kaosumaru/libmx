@@ -29,6 +29,32 @@ namespace MX
 
 				glm::vec2 _p;
 			};
+
+            class WidgetMoveToCommand : public EasingWaitCommand
+            {
+            public:
+	            WidgetMoveToCommand(const glm::vec2 &p, float time) : EasingWaitCommand(time), _vec(p)
+	            {
+
+	            }
+            protected:
+	            void OnWait() override
+	            {
+		            auto &w = Context<Widget>::current();
+
+		            if (_start)
+		            {
+			            _vecOrig = w.position();
+			            _start = false;
+		            }
+
+		            w.SetPosition(MX::lerp(_vecOrig, _vec, percent()));
+	            }
+
+	            bool _start = true;
+	            glm::vec2 _vecOrig;
+	            glm::vec2 _vec;
+            };
 		}
 
 		class WidgetAnimationsInit

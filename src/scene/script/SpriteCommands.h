@@ -14,7 +14,7 @@ namespace MX
 	std::shared_ptr<Command> lerp_color(const Color &color1, const Color &color2, float seconds);
     std::shared_ptr<Command> lerp_color(const Color &color, float seconds);
 	std::shared_ptr<Command> blink_color(const Color &color, float seconds);
-	std::shared_ptr<Command> move_to(float x, float y, float seconds);
+	std::shared_ptr<Command> move_to(const glm::vec2 &vec, float seconds);
 	std::shared_ptr<Command> warp_scale(float x, float y, float seconds);
     std::shared_ptr<Command> move_in_direction(const glm::vec2 &vec, float speed);
 	std::shared_ptr<Command> nail_to(const SpriteActorPtr& original, const SpriteActorPtr& ptr);

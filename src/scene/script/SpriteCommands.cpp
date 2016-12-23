@@ -285,7 +285,6 @@ std::shared_ptr<Command> blink_color(const Color &color, float seconds)
 class MoveToCommand : public WaitCommand
 {
 public:
-	MoveToCommand(float x, float y, float seconds) : _vec(x, y), WaitCommand(seconds) {}
 	MoveToCommand(const glm::vec2 &vec, float seconds) : _vec(vec), WaitCommand(seconds) {}
 	MoveToCommand(LScriptObject& script) : WaitCommand(script)
 	{
@@ -310,16 +309,16 @@ public:
 		return ret;
 	}
 
-	Command::pointer clone() override { return std::make_shared<MoveToCommand>(_vec.x, _vec.y, (float)_seconds); }
+	Command::pointer clone() override { return std::make_shared<MoveToCommand>(_vec, (float)_seconds); }
 protected:
 	bool _start = true;
 	glm::vec2 _vecOrig;
 	glm::vec2 _vec;
 };
 
-std::shared_ptr<Command> move_to(float x, float y, float seconds)
+std::shared_ptr<Command> move_to(const glm::vec2 &vec, float seconds)
 {
-	return make_shared<MoveToCommand>(x, y, seconds);
+	return make_shared<MoveToCommand>(vec, seconds);
 }
 
 class WarpScaleCommand : public WaitCommand
