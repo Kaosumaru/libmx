@@ -37,7 +37,7 @@ namespace MX
 
 
 	protected:
-		glm::vec2 _position;
+		glm::vec2 _position = {-1, -1};
 		int _wheel = 0;
 	};
 

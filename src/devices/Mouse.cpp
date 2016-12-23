@@ -94,6 +94,7 @@ protected:
 		}
 		else if (event.window.event == SDL_WINDOWEVENT_LEAVE)
 		{
+			_position = { -1, -1 };
 			on_mouse_leave(_position);
 		}
 	}
