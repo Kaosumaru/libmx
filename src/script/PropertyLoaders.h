@@ -557,11 +557,11 @@ namespace MX
 		}
 	};
 
-	template<>
-	struct PropertyLoader<glm::vec2>
+	template<typename X, glm::precision P>
+	struct PropertyLoader<glm::tvec2<X, P>>
 	{
 		using type = PropertyLoader_Standard;
-		static bool load(glm::vec2& out, const Scriptable::Value::pointer& obj)
+		static bool load(glm::tvec2<X, P>& out, const Scriptable::Value::pointer& obj)
 		{
 			if (obj->size() == 0)
 			{
