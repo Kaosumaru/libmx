@@ -52,6 +52,40 @@ namespace MX
 		Easing::Function _easingFunc = Easing::linear<float>;
 	};
 
+	Command::pointer command_from_functor(const std::function<bool(void)> &f);
+
+	class CompositeCommand : public Command
+	{
+	public:
+		CompositeCommand(const CompositeCommand& other)
+		{
+			_commands = other._commands;
+			for (auto &command : _commands)
+				command = command->clone();
+		}
+
+		CompositeCommand(LScriptObject& script)
+		{
+			script.load_property_children(_commands, "Commands");
+		}
+
+		CompositeCommand(std::list<Command::pointer> &&c) : _commands(c)
+		{
+		}
+
+		void AddCommand(const Command::pointer& c)
+		{
+			_commands.push_back(c);
+		}
+
+		void AddLambda(const std::function<bool(void)> &f)
+		{
+			AddCommand(command_from_functor(f));
+		}
+	protected:
+		std::list<Command::pointer> _commands;
+	};
+
 	std::shared_ptr<Command> wait(float seconds);
 
 	class CommonCommandsInit
@@ -61,13 +95,12 @@ namespace MX
 	};
 
 
-	Command::pointer command_from_functor(const std::function<bool(void)> &f);
 
 	//std::shared_ptr<Command> l(p0, p1, ..., pn);
-Command::pointer l(std::list<Command::pointer> &&l);
-Command::pointer l(int i, std::list<Command::pointer> &&l);
-Command::pointer s(std::list<Command::pointer> &&l);
-Command::pointer q(std::list<Command::pointer> &&l);
+std::shared_ptr<CompositeCommand> l(std::list<Command::pointer> &&l);
+std::shared_ptr<CompositeCommand> l(int i, std::list<Command::pointer> &&l);
+std::shared_ptr<CompositeCommand> s(std::list<Command::pointer> &&l);
+std::shared_ptr<CompositeCommand> q(std::list<Command::pointer> &&l);
 
 
 

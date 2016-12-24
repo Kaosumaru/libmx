@@ -37,29 +37,6 @@ namespace MX
 		return _stopWatch.percent();
 	}
 
-
-	class CompositeCommand : public Command
-	{
-	public:
-		CompositeCommand(const CompositeCommand& other)
-		{
-			_commands = other._commands;
-			for (auto &command : _commands)
-				command = command->clone();
-		}
-
-		CompositeCommand(LScriptObject& script)
-		{
-			script.load_property_children(_commands, "Commands");
-		}
-
-		CompositeCommand(list<Command::pointer> &&c) : _commands(c)
-		{
-		}
-	protected:
-		list<Command::pointer> _commands;
-	};
-
 	class QueueCommand : public CompositeCommand
 	{
 	public:
@@ -195,21 +172,21 @@ namespace MX
 	}
 
 
-	Command::pointer l(std::list<Command::pointer> &&l)
+	std::shared_ptr<CompositeCommand> l(std::list<Command::pointer> &&l)
 	{
 		return std::make_shared<LoopCommand>(std::move(l));
 	}
 
-	Command::pointer l(int i, std::list<Command::pointer> &&l)
+	std::shared_ptr<CompositeCommand> l(int i, std::list<Command::pointer> &&l)
 	{
 		return std::make_shared<LoopCommand>(std::move(l), i);
 	}
 
-	Command::pointer s(std::list<Command::pointer> &&l)
+	std::shared_ptr<CompositeCommand> s(std::list<Command::pointer> &&l)
 	{
 		return std::make_shared<SimultaneusCommand>(std::move(l));
 	}
-	Command::pointer q(std::list<Command::pointer> &&l)
+	std::shared_ptr<CompositeCommand> q(std::list<Command::pointer> &&l)
 	{
 		return std::make_shared<QueueCommand>(std::move(l));
 	}
