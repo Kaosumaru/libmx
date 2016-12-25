@@ -3,7 +3,7 @@
 #include<memory>
 #include<algorithm>
 #include<vector>
-
+#include "glm/vec2.hpp"
 
 
 
@@ -36,6 +36,9 @@ public:
 	T& at(int x, int y) { return _data[x + y*_width]; }
 	const T& at(int x, int y) const { return _data[x + y*_width]; }
 
+	bool contains(const glm::ivec2& v) { return v.x >= 0 && v.y >= 0 && v.x < _width && v.y < _height; }
+	T& at(const glm::ivec2& v) { return _data[v.x + v.y*_width]; }
+	const T& at(const glm::ivec2& v) const { return _data[v.x + v.y*_width]; }
 
 	Column operator [](int x) { return Row(*this, x); }
 
