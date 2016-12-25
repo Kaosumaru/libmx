@@ -27,7 +27,7 @@ namespace MX
 		virtual void OnWait() {}
 
 		float _seconds;
-		Time::ManualStopWatch _stopWatch;
+		Time::ManualStopWatchAbsolute _stopWatch;
 	};
 
 
