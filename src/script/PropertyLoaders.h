@@ -624,6 +624,17 @@ namespace MX
 	};
 
 	template<>
+	struct PropertyLoader<std::wstring>
+	{
+		using type = PropertyLoader_Standard;
+		static bool load(std::wstring& out, const Scriptable::Value::pointer& obj)
+		{
+			out = obj->text();
+			return true;
+		}
+	};
+
+	template<>
 	struct PropertyLoader<MX::SpriteActor::Geometry>
 	{
 		using type = PropertyLoader_Custom;
