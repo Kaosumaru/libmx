@@ -34,7 +34,7 @@ namespace MX
 #ifdef _DEBUG
 		using PriorityQueue = reservable_priority_queue<QueuePair, std::vector<QueuePair>, std::greater<QueuePair>>;
 #else
-		using PriorityQueue = priority_queue<QueuePair, std::vector<QueuePair>, std::greater<QueuePair>>;
+		using PriorityQueue = std::priority_queue<QueuePair, std::vector<QueuePair>, std::greater<QueuePair>>;
 #endif
 
 		template<typename GetNeighborsType, typename SetDistanceIfLowerType>
