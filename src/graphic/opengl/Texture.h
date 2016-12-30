@@ -9,10 +9,15 @@ namespace MX
 namespace gl
 {
 
-
 	class Texture : public shared_ptr_init<Texture>
 	{
 	public:
+		struct LoadInfo
+		{
+			int minFilter = GL_LINEAR;
+			int magFilter = GL_LINEAR;
+		};
+
 		Texture(unsigned w, unsigned h, GLint target, GLint format, const GLvoid *data);
 		Texture(const glm::ivec2& size, bool alpha = true);
 		Texture(const std::string& path);

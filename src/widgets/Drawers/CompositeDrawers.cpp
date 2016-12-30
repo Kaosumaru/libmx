@@ -313,9 +313,7 @@ public:
 		script.load_property(_condition, "Condition");
 		script.load_property_children(_drawers, "Case");
 		script.load_property_children(_defaultCase, "Default");
-
 	}
-
 
 	void DrawBackground()
 	{
@@ -333,15 +331,10 @@ public:
 		it->second->DrawBackground();
 	}
 
-
-
 protected:
-
 	Scriptable::Value::pointer _condition;
 	std::map<float, std::shared_ptr<Widgets::Drawer>> _drawers;
 	std::shared_ptr<Widgets::Drawer>                  _defaultCase;
-
-
 };
 
 
@@ -373,8 +366,6 @@ public:
 			drawer->DrawBackground();
 	}
 
-
-
 protected:
 
 	Scriptable::Value::pointer _condition;
@@ -399,8 +390,6 @@ public:
 			drawer->DrawBackground();
 	}
 
-
-
 protected:
 	MX::Graphic::Blender                           _blender{ GL_FUNC_ADD, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA };
 	std::vector<std::shared_ptr<Widgets::Drawer>>  _drawers;
@@ -410,11 +399,7 @@ protected:
 class CurrentDrawer : public Widgets::Drawer
 {
 public:
-    CurrentDrawer(LScriptObject& script)
-    {
-
-    }
-
+    CurrentDrawer(LScriptObject& script){ }
 
     void DrawBackground()
     {
@@ -422,12 +407,6 @@ public:
             return;
         Context<Widgets::Drawer>::current().DrawBackground();
     }
-
-
-
-protected:
-    MX::Graphic::Blender                           _blender{ GL_FUNC_ADD, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA };
-    std::vector<std::shared_ptr<Widgets::Drawer>>  _drawers;
 };
 
 void MX::Widgets::CompositeDrawersInit::Init()
