@@ -61,7 +61,7 @@ namespace MX
 
 
 		auto get() { return _ptr.get(); }
-		const auto& underlying_shared() { return _ptr; }
+		const auto& underlying_shared() const { return _ptr; }
 	protected:
 		std::shared_ptr<T> _ptr;
 	};
