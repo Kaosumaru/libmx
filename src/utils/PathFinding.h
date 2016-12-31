@@ -131,7 +131,7 @@ namespace MX
 				if (r.second)
 					return true;
 				auto &old_pair = *(r.first);
-				if (old_pair.second < distance)
+				if (old_pair.second <= distance)
 					return false;
 
 				old_pair.second = distance;
