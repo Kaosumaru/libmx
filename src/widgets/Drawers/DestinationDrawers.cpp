@@ -273,7 +273,37 @@ protected:
 	bool _flipY = false;
 };
 
+class RepeatDrawer : public DestinationDrawer
+{
+public:
+	RepeatDrawer(LScriptObject& script) : DestinationDrawer(script)
+	{
+		script.load_property(_times, "Times");
+		script.load_property(_size, "Size");
+	}
 
+
+	void DrawBackground() override
+	{
+		int repeat = *_times;
+		auto oldDestination = Drawer::Destination::current();
+		float size = *_size;
+		oldDestination.rectangle.SetWidth(size);
+
+		for (int i = 0; i < repeat; i++)
+		{
+			auto guard = oldDestination.Use();
+			DestinationDrawer::DrawBackground();
+			oldDestination.rectangle.Shift(size, 0);
+		}
+	}
+
+
+protected:
+	Scriptable::Value::pointer _times;
+	Scriptable::Value::pointer _size;
+};
+MXREGISTER_CLASS(L"Repeat", RepeatDrawer);
 
 //tables
 

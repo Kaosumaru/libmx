@@ -128,7 +128,7 @@ class CreateSpriteAtSprite : public Event
 public:
     CreateSpriteAtSprite(const std::string& objectName) : Event(objectName)
     {
-        load_property(_actor, "Sprite");
+        load_property_child(_actor, "Sprite");
         load_property(_rotateToCurrent, "RotateToCurrent");
     }
 

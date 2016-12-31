@@ -175,7 +175,7 @@ ScSingleRunAnimatedSpriteActor::ScSingleRunAnimatedSpriteActor(const ScSingleRun
 ScSingleRunAnimatedSpriteActor::ScSingleRunAnimatedSpriteActor(LScriptObject& script) : SingleRunAnimatedSpriteAdapter<ScriptableSpriteActor>(script)
 {
 	Graphic::SingleAnimation::pointer single_animation;
-	script.load_property(single_animation, "Animation");
+	script.load_property_child(single_animation, "Animation");
 
 	Graphic::Animation::pointer animation;
 	if (single_animation)
