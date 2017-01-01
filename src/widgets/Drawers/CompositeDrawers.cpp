@@ -345,6 +345,7 @@ public:
 	{
 		script.load_property(_condition, "Condition");
 		script.load_property_children(_drawers, "Drawers");
+		script.load_property(_elseDrawers, "Else");
 
 		assert(_condition);
 	}
@@ -357,12 +358,9 @@ public:
 
 		float cond = *_condition;
 
-		if (cond == 0.0f)
-		{
-			return;
-		}
+		auto& drawers = cond == 0.0f ? _elseDrawers : _drawers;
 
-		for (auto &drawer : _drawers)
+		for (auto &drawer : drawers)
 			drawer->DrawBackground();
 	}
 
@@ -370,6 +368,7 @@ protected:
 
 	Scriptable::Value::pointer _condition;
 	std::vector<std::shared_ptr<Widgets::Drawer>>  _drawers;
+	std::vector<std::shared_ptr<Widgets::Drawer>>  _elseDrawers;
 };
 
 

@@ -49,4 +49,7 @@ void WidgetScriptBinding::onReload()
 	{ 
 		return ScopeSingleton<TextData>::current().actualWidth();
 	});
+
+
+	RPN::Functions::AddLambda("Time.Current", []() { return (float)Time::Timer::current().total_seconds(); });
 }
