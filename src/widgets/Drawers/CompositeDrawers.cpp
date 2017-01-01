@@ -312,7 +312,7 @@ public:
 	{
 		script.load_property(_condition, "Condition");
 		script.load_property_children(_drawers, "Case");
-		script.load_property_children(_defaultCase, "Default");
+		script.load_property(_defaultCase, "Default");
 	}
 
 	void DrawBackground()
