@@ -82,6 +82,8 @@ namespace MX
 		{
 			AddCommand(command_from_functor(f));
 		}
+
+		bool empty() const { return _commands.empty(); }
 	protected:
 		std::list<Command::pointer> _commands;
 	};
