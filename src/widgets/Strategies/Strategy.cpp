@@ -133,6 +133,7 @@ void Button::OnTouchEndCollision(const MX::Collision::Shape::pointer& shape)
 	auto touch = std::static_pointer_cast<MX::Collision::TouchShape>(shape)->touch.lock();
 	if (touch == _touch)
 	{
+		auto g = buttonWidget().shared_from_this();
 		buttonWidget().onClicked();
 	}
 		

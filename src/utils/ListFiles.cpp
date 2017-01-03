@@ -26,7 +26,7 @@ namespace MX
 			FileData data;
 
 			data.path = path + name;
-			data.is_folder = ent->d_type & DT_DIR;
+			data.is_folder = ent->d_type & DT_DIR ? true : false;
 			callback(data);
 		}
 

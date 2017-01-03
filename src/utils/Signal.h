@@ -61,6 +61,10 @@ namespace MX
 
         Signal() {}
         Signal( const Signal& ) {};
+		~Signal()
+		{
+			disconnect_all_slots();
+		}
 	protected:
 
 
