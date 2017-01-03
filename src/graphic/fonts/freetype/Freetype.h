@@ -161,6 +161,12 @@ namespace Graphic
             return x.height();
         }
 
+		int X_height() 
+		{ 
+			auto &x = LoadCharCached( 'X' );
+			return x.height();
+		}
+
 		int size() { return _size; }
 	protected:
 		void SetCharSize(FT_F26Dot6 width, FT_F26Dot6 height = 0, FT_UInt hres = 100, FT_UInt vres = 0)

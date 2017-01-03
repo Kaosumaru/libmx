@@ -68,9 +68,9 @@ public:
 		fm->x_height = fnt->x_ext().height;
 		fm->draw_spaces = false;
 #endif
-        fm->ascent = font->ascender();
-		fm->descent = font->descender();
-		fm->height = font->height();
+        fm->ascent = font->X_height()-font->x_height();
+		fm->descent = -font->descender();
+		fm->height = font->X_height()-font->descender();
 		fm->x_height = font->x_height();
 		fm->draw_spaces = false;
 
@@ -96,6 +96,8 @@ public:
 
         font->draw_text( text, pen, [&](int x, int y, uint8_t p) 
 	    {
+			if (!surface.contains(x, y))
+				return;
             auto& out = surface.at( x, y );
             out.r = 255;
             out.g = 255;
