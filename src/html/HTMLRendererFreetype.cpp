@@ -112,7 +112,7 @@ public:
 	int	get_default_font_size() const override
 	{
 		if (_defaultFont)
-			return _defaultFont->height();
+			return _defaultFont->size();
 		return 16;
 	}
 	const tchar_t* get_default_font_name() const override
@@ -233,6 +233,8 @@ public:
 Graphic::TextureImage::pointer HTMLRendererFreetype::DrawOnBitmap(const std::wstring &str, int width, const Graphic::Font::pointer& defaultFont)
 {
     auto ftFace = Graphic::Face::Create(Paths::get().pathToResource("font/arial.ttf"), 16);
+	if (defaultFont)
+		ftFace = defaultFont->face();
 
     ft_html_container painter;
 	if (ftFace)

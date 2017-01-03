@@ -93,6 +93,7 @@ namespace Graphic
 			auto error = FT_New_Face(Freetype::library(), path.c_str(), 0, &_face);
 			_hasKerning = FT_HAS_KERNING( _face );
 			SetCharSize((int)size << 6);
+			_size = size;
 			//WIPerror
 		}
 
@@ -160,6 +161,7 @@ namespace Graphic
             return x.height();
         }
 
+		int size() { return _size; }
 	protected:
 		void SetCharSize(FT_F26Dot6 width, FT_F26Dot6 height = 0, FT_UInt hres = 100, FT_UInt vres = 0)
 		{
@@ -195,6 +197,7 @@ namespace Graphic
         bool _hasKerning;
 		std::map<FT_ULong, Glyph> _charToGlyph;
 		FT_Face _face;
+		int _size = 0;
 	};
 
 

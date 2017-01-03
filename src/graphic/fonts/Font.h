@@ -27,6 +27,7 @@ namespace Graphic
 		const auto& size() { return _size; }
 		const auto& path() { return _path; }
 		const auto& face_name() { return _face_name; }
+		const auto& face() { return _ftFace; }
 	protected:
 		std::string _face_name;
 		std::string _path;

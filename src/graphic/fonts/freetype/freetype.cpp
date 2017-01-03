@@ -58,11 +58,11 @@ std::shared_ptr<Graphic::Face> Graphic::Face::Create(const std::string& path, un
 
 std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::drawLine( const std::shared_ptr<Face>& face, const std::string& text)
 {
-	int ascender = face->face()->ascender >> 6;
+	int ascender = face->ascender();
     FT_Vector     pen = { 0, ascender };
 
 	int width = measureLine(face, text);
-	int height = ascender - (face->face()->descender >> 6);
+	int height = ascender - face->descender();
 	width = roundUp(width, 4);
 	height = roundUp(height, 4);
 
@@ -71,17 +71,19 @@ std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::drawLine( const s
 	{
 		surface.at( x, y ) += p;
     } );
-	return Graphic::TextureImage::Create(surface);
+	auto texture = Graphic::TextureImage::Create(surface);
+	texture->SetCenter({ 0.0f, (float)(face->height() - ascender)/2.0f });
+	return texture;
 }
 
 
 std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::drawLine( const std::shared_ptr<Face>& face, const std::wstring& text)
 {
-	int ascender = face->face()->ascender >> 6;
+	int ascender = face->ascender();
     FT_Vector     pen = { 0, ascender };
 
 	int width = measureLine(face, text);
-	int height = ascender - (face->face()->descender >> 6);
+	int height = ascender - face->descender();
 	width = roundUp(width, 4);
 	height = roundUp(height, 4);
 
@@ -90,8 +92,12 @@ std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::drawLine( const s
 	{
 		if (surface.contains(x,y))
 			surface.at( x, y ) += p;
+
     } );
-	return Graphic::TextureImage::Create(surface);
+
+	auto texture = Graphic::TextureImage::Create(surface);
+	texture->SetCenter({ 0.0f, (float)(face->height() - ascender)/2.0f });
+	return texture;
 }
 
 int Graphic::FreetypeUtils::measureLine( const std::shared_ptr<Face>& face, const std::string& text )
