@@ -93,7 +93,7 @@ namespace MX
 					queue.push(std::make_pair(newDistance, node));
 
 				};
-				getNeighbors(p.second, forN);
+				getNeighbors(current, p.second, forN);
 			}
 		}
 	};
