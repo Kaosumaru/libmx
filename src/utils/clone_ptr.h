@@ -17,7 +17,7 @@ namespace MX
 		clone_ptr( std::nullptr_t other ) {}
 		clone_ptr( const clone_ptr& other ) { if ( other ) *this = Strategy::clone(other); }
 		clone_ptr( clone_ptr&& other ) : _ptr(other._ptr)  {}
-		clone_ptr( const std::shared_ptr<T>& other ) : clone_ptr(Strategy::clone(other))  {}
+		explicit clone_ptr( const std::shared_ptr<T>& other ) : clone_ptr(Strategy::clone(other))  {}
 		clone_ptr( std::shared_ptr<T>&& other ) : _ptr(other)  {}
 
 		template<typename Y>
@@ -57,6 +57,17 @@ namespace MX
 		{
 			_ptr = nullptr;
 			return *this;
+		}
+
+		bool operator == (const clone_ptr& other) const
+		{
+			return other._ptr == _ptr;
+		}
+
+		template<typename Y>
+		bool operator == (const std::shared_ptr<Y>& other) const
+		{
+			return other == _ptr;
 		}
 
 
