@@ -39,6 +39,7 @@ namespace MX
 	};
 
 	using FloatOrExpression = XOrExpression<float>;
+	using IntOrExpression = XOrExpression<int>;
 
 	template<typename XType>
 	struct PropertyLoader<MX::XOrExpression<XType>>
