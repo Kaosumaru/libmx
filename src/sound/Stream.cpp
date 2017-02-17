@@ -18,19 +18,19 @@ class StreamAllGatherer : public Singleton<StreamAllGatherer>
 public:
 	void AddStream(Stream *stream)
 	{
-		_streams.insert(stream);
+		//_streams.insert(stream);
 	}
 
 
 	void RemoveStream(Stream *stream)
 	{
-		_streams.erase(stream);
+		//_streams.erase(stream);
 	}
 
 	void CloseAll()
 	{
-		for (auto &stream : _streams)
-			stream->Close();
+		//for (auto &stream : _streams)
+		//	stream->Close();
 	}
 
 #ifdef SDLAUDIO
