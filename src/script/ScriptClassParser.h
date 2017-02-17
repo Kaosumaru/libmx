@@ -296,3 +296,10 @@ struct MXTOKENPASTE2(Autoregister,__LINE__)  {\
 MXTOKENPASTE2(Autoregister,__LINE__) (){MX::ScriptClassParser::AddCreator(strname, new MX::OutsideScriptClassCreatorContructor<classname>());} \
 } MXTOKENPASTE2(autoregister_inst,__LINE__);\
 }
+
+#define MXREGISTER_CLASS_DEFAULT(strname, classname) \
+namespace {\
+struct MXTOKENPASTE2(Autoregister,__LINE__)  {\
+MXTOKENPASTE2(Autoregister,__LINE__) (){MX::ScriptClassParser::AddCreator(strname, new MX::DefaultClassCreatorContructor<classname>());} \
+} MXTOKENPASTE2(autoregister_inst,__LINE__);\
+}
