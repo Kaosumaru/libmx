@@ -15,7 +15,8 @@ namespace MX
         class Action;
 		class ActionBase;
         std::shared_ptr<Action> actionForKey(int keycode);
-		std::shared_ptr<Action> actionForJoystickButton(int joy, int button);
+		std::shared_ptr<Action> actionForJoystickButton(unsigned joy, unsigned button);
+		std::shared_ptr<Action> actionForJoystickAxis(unsigned joy, unsigned axis, float margin);
 
 
         class ControlScheme
@@ -259,6 +260,11 @@ namespace MX
                 actions[index].bind(actionForKey(keycode));
             }
 
+			void bindJoyButton(unsigned index, unsigned joy, int button)
+			{
+				actions[index].bind(actionForJoystickButton(joy, button));
+			}
+
             void whileOn(const std::function<Action::Callback(unsigned)>& c)
             {
                 for (unsigned i = 0; i < actions.size(); i++)
@@ -306,6 +312,15 @@ namespace MX
                 bindKey(Type{ -1, 0 }, left);
                 bindKey(Type{ 1, 0 }, right);
             }
+
+			void BindJoypad(unsigned joy)
+			{
+				float m = 0.25f;
+				bind(Type{ 0, -1 }, actionForJoystickAxis(joy, 1, -m));
+				bind(Type{ 0, 1 }, actionForJoystickAxis(joy, 1, m));
+				bind(Type{ -1, 0 }, actionForJoystickAxis(joy, 0, -m));
+				bind(Type{ 1, 0 }, actionForJoystickAxis(joy, 0, m));
+			}
 
 			void bindKeysWSAD()
 			{

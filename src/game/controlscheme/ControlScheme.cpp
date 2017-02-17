@@ -35,7 +35,10 @@ public:
 		if (button >= buttons.size())
 			return;
 
-		buttons[button].onValueChanged.connect([&](bool v, bool old) { SetState(v); }, this);
+		buttons[button].onValueChanged.connect([&](bool v, bool old) 
+		{ 
+			SetState(v); 
+		}, this);
 	} 
 };
 
@@ -55,10 +58,10 @@ public:
 
 		auto& raxis = axes[axis];
 
-		raxis.onValueChanged.connect([&](float v, float old) 
+		raxis.onValueChanged.connect([this, margin](float v, float old) 
 		{
-			if (margin > 0)
-			SetState(v); 
+			bool active = (margin >= 0.0f && v >= margin) || (margin < 0.0f && v <= margin);
+			SetState(active); 
 		}, this);
 	} 
 };
@@ -79,9 +82,14 @@ namespace Game
         return std::make_shared<KeyAction>(nullptr, keycode);
     }
 
-	std::shared_ptr<Action> actionForJoystickButton(int joy, int button)
+	std::shared_ptr<Action> actionForJoystickButton(unsigned joy, unsigned button)
 	{
 		return std::make_shared<JoyButtonAction>(nullptr, joy, button);
+	}
+
+	std::shared_ptr<Action> actionForJoystickAxis(unsigned joy, unsigned axis, float margin)
+	{
+		return std::make_shared<JoyAxisAction>(nullptr, joy, axis, margin);
 	}
 }
 }

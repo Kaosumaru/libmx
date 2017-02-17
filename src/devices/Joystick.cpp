@@ -30,7 +30,7 @@ public:
 protected:
 	void OnEvent(SDL_Event& event) override
 	{
-		if (event.type == SDL_JOYBUTTONDOWN || SDL_JOYBUTTONUP)
+		if (event.type == SDL_JOYBUTTONDOWN || event.type == SDL_JOYBUTTONUP)
 		{
 			SDL_JoyButtonEvent& ev = (SDL_JoyButtonEvent&)event;
 			if (ev.which != _id)
@@ -44,7 +44,7 @@ protected:
 				return;
 
 			float v = (float)ev.value / 32768.0f;
-			_axes[ev.value] = v;
+			_axes[ev.axis] = v;
 		}
 	}
 
