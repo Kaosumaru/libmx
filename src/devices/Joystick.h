@@ -4,6 +4,7 @@
 #include "utils/Utils.h"
 #include "utils/Signal.h"
 #include "glm/vec2.hpp"
+#include "utils/SignalizingVariable.h"
 
 namespace MX
 {
@@ -12,9 +13,15 @@ namespace MX
 	class Joystick : public shared_ptr_init<Joystick>
 	{
 	public:
+		using AxisState = SignalizingVariable<float>;
+		using ButtonState = SignalizingVariable<bool>;
+
+		auto& axes() { return _axes; }
+		auto& buttons() { return _buttons; }
 
 	protected:
-
+		std::vector<AxisState> _axes;
+		std::vector<ButtonState> _buttons;
 	};
 
 	class Joysticks : public shared_ptr_init<Joysticks>
@@ -24,6 +31,7 @@ namespace MX
 
 		static pointer CreateForWindow(Window* window);
 
+		const auto& joysticks() { return _joysticks; }
 	protected:
 		std::vector<Joystick::pointer> _joysticks;
 	};

@@ -2,6 +2,7 @@
 #include "devices/Mouse.h"
 #include "devices/Keyboard.h"
 #include "devices/Touches.h"
+#include "devices/Joystick.h"
 #include "Collision/Area/EventsToCollisions.h"
 #include "Collision/Quadtree/Quadtree.h"
 #include "widgets/systems/DragSystem.h"
@@ -51,6 +52,7 @@ Window::Window(unsigned width, unsigned height, bool fullscreen)
 	_mouse = Mouse::CreateForWindow(this);	
 	_keyboard = Keyboard::CreateForWindow(this);
 	_touches = Touches::CreateForWindow(this);
+	_joysticks = Joysticks::CreateForWindow(this);
 	_mouseTouches = MouseTouches::CreateMouseTouchesForDisplay(_timer, _mouse);
 
 	_dragSystem = std::make_shared<MX::Widgets::DragSystem>();

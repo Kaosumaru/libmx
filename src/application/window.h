@@ -14,7 +14,7 @@ class Mouse;
 class Keyboard;
 class Touches;
 class MouseTouches;
-
+class Joysticks;
 
 namespace Collision
 {
@@ -45,6 +45,7 @@ public:
 
 	const auto& mouse() { return _mouse; }
 	const auto& keyboard() { return _keyboard; }
+	const auto& joysticks() { return _joysticks; }
 
 	const std::shared_ptr<Collision::LayeredArea> &area() { return _windowArea; }
 	auto& dragSystem() { return *_dragSystem; }
@@ -68,6 +69,7 @@ protected:
 	std::shared_ptr<Mouse> _mouse;
 	std::shared_ptr<Keyboard> _keyboard;
 	std::shared_ptr<Touches> _touches;
+	std::shared_ptr<Joysticks> _joysticks;
 	std::shared_ptr<MouseTouches> _mouseTouches;
 
 	std::shared_ptr<Collision::LayeredArea> _windowArea;

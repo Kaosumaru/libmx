@@ -15,6 +15,7 @@ namespace MX
         class Action;
 		class ActionBase;
         std::shared_ptr<Action> actionForKey(int keycode);
+		std::shared_ptr<Action> actionForJoystickButton(int joy, int button);
 
 
         class ControlScheme
