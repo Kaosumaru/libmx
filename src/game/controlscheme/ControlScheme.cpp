@@ -61,6 +61,8 @@ public:
 		raxis.onValueChanged.connect([this, margin](float v, float old) 
 		{
 			bool active = (margin >= 0.0f && v >= margin) || (margin < 0.0f && v <= margin);
+			if (active)
+				_weight = abs(v);
 			SetState(active); 
 		}, this);
 	} 

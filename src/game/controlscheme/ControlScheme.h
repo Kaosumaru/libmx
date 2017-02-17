@@ -108,6 +108,7 @@ namespace MX
             MX::Signal<void(void)> onTrigger;
 
             SignalizingVariable<bool> state = false;
+			float weight() { return _weight; }
 
             void whileOn(const Callback& c)
             {
@@ -144,6 +145,7 @@ namespace MX
                 }, this);
             }
 
+			float _weight = 0.0f;
             std::vector<Callback> _whileOn;
         };
 
@@ -335,13 +337,20 @@ namespace MX
             void recalcState()
             {
                 Type newState;
+				float w = 0.0f;
                 for (auto& e : _actions)
                 {
                     if (!e._action->state)
                         continue;
-                    newState += e._value;
-                    if (_exclusive)
-                        break;
+					if (_exclusive)
+					{
+						if (e._action->weight() < w)
+							continue;
+						w = e._action->weight();
+						newState = e._value;
+					}
+					else
+						newState += e._value;
                 }
                 if (newState == target.directValueAccess())
                     return;
