@@ -2,6 +2,7 @@
 #include "widgets/Widget.h"
 #include "widgets/systems/DragSystem.h"
 #include "script/PropertyLoaders.h"
+#include "script/ScriptClassParser.h"
 
 using namespace MX::Widgets;
 
@@ -45,4 +46,7 @@ void Drawer::widgetDrawChildren()
 DrawerProxy::DrawerProxy(MX::LScriptObject& script)
 {
 	script.load_property(_drawer, "Drawer");
+	script.load_property(_drawerFG, "DrawerFG");
 }
+
+MXREGISTER_CLASS(L"Drawer.Proxy", DrawerProxy)

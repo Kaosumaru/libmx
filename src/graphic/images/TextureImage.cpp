@@ -128,8 +128,8 @@ void TextureImage::DrawArea(const MX::Rectangle &destination, const MX::Rectangl
 	auto dimensions = subDimensions(source.x1, source.y1, source.width(), source.height());
 	Rectangle uvCoords;
 
-	auto coord1 = dimensionToUV({_dimensions.x, _dimensions.y});
-	auto coord2 = dimensionToUV({_dimensions.x + source.width(), _dimensions.y + source.height()});
+	auto coord1 = dimensionToUV({dimensions.x, dimensions.y});
+	auto coord2 = dimensionToUV({dimensions.x + source.width(), dimensions.y + source.height()});
 	uvCoords.x1 = coord1.x;
 	uvCoords.y1 = coord1.y;
 	uvCoords.x2 = coord2.x;

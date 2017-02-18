@@ -136,7 +136,7 @@ void MX::Widgets::Widget::Draw(float x, float y)
 		return;
 
 	//TODO make this optional, or rework #WIDGETFLOAT
-	if (true)
+	if (false)
 	{
 		x = floor(x);
 		y = floor(y);

@@ -88,7 +88,7 @@ public:
 
 
 	void DrawBackground() override { return _drawer->DrawBackground(); };
-	void DrawForeground() override { return _drawer->DrawForeground(); };
+	void DrawForeground() override { _drawer->DrawForeground(); if (_drawerFG) _drawerFG->DrawBackground(); };
 	bool ShouldDrawWidget() override { return _drawer->ShouldDrawWidget(); };
 
 	void OnAssignedToWidget() override { return _drawer->OnAssignedToWidget(); };
@@ -101,6 +101,7 @@ public:
 
 protected:
 	Drawer::pointer _drawer;
+	Drawer::pointer _drawerFG;
 };
 
 

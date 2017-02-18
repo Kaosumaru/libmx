@@ -3,6 +3,7 @@
 #include "Game/Resources/Resources.h"
 #include "graphic/Blender.h"
 #include "script/PropertyLoaders.h"
+#include "graphic/opengl/Texture.h"
 #include <iostream>
 using namespace MX;
 
@@ -54,7 +55,7 @@ bool ScriptImageClass::onParse()
 	load_property(wrap, "Wrap");
 	if ( wrap )
 	{
-		assert( false );
+		_image->texture()->SetWrap(GL_REPEAT, GL_REPEAT);
 #ifdef WIP
 		_image->native_bitmap_handle()->setWrap(GL_REPEAT, GL_REPEAT);
 #endif
