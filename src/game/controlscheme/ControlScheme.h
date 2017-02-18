@@ -317,7 +317,7 @@ namespace MX
 
 			void BindJoypad(unsigned joy)
 			{
-				float m = 0.25f;
+				float m = 0.45f;
 				bind(Type{ 0, -1 }, actionForJoystickAxis(joy, 1, -m));
 				bind(Type{ 0, 1 }, actionForJoystickAxis(joy, 1, m));
 				bind(Type{ -1, 0 }, actionForJoystickAxis(joy, 0, -m));
