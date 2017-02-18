@@ -57,6 +57,26 @@ protected:
 	MX::EventHolder   _elseEvents;
 };
 
+class DelayEvent : public Event
+{
+public:
+	DelayEvent(const std::string& objectName) : Event(objectName)
+	{
+		load_property(_time, "Time");
+		load_property_children(_events, "Events");
+	}
+
+
+	void Do() override
+	{
+		FunctorsQueue::current().planWeakFunctor(_time, [&]() { _events.Do(); }, shared_from_this());
+	}
+
+protected:
+	float _time = 1.0f;
+	MX::EventHolder   _events;
+};
+MXREGISTER_CLASS_DEFAULT(L"Event.CompositeDelay", DelayEvent)
 
 class DoEvent : public Event
 {
