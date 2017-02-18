@@ -3,6 +3,7 @@
 #include "graphic/opengl/Uniform.h"
 #include "graphic/renderer/MVP.h"
 
+#include "graphic/images/Image.h"
 using namespace MX;
 using namespace MX::Graphic;
 
@@ -98,12 +99,13 @@ void InstancedRenderer::Draw(const gl::Texture& tex, const Rectangle& srcArea, c
 	instance.angle = angle;
 
 	instance.uv = { srcArea.x1, srcArea.y1, srcArea.x2, srcArea.y2 };
-#ifdef WIPTHINK
+
+	//WIPTHINK
 	if (Image::Settings::flipX)
 		std::swap(instance.uv[0], instance.uv[2]);
 	if (Image::Settings::flipY)
 		std::swap(instance.uv[1], instance.uv[3]);
-#endif
+
 }
 
 void InstancedRenderer::DrawBatched()
