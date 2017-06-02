@@ -1,6 +1,6 @@
 #include "Blender.h"
 #include "graphic/renderer/TextureRenderer.h"
-#include "OPenGL.h"
+#include "OpenGL.h"
 
 using namespace MX;
 using namespace Graphic;
