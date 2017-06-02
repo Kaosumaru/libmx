@@ -2,7 +2,7 @@
 #include<memory>
 #include "scene/sprites/SpriteScene.h"
 #include "scene/managers/SceneManager.h"
-#include "Utils/Utils.h"
+#include "utils/Utils.h"
 
 namespace MX
 {
