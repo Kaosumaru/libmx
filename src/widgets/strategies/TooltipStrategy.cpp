@@ -1,7 +1,7 @@
 #include "TooltipStrategy.h"
 #include "../Widget.h"
 #include "application/Window.h"
-#include "Game/Resources/Resources.h"
+#include "game/resources/Resources.h"
 #include "collision/area/EventsToCollisions.h"
 #include <iostream>
 #include "widgets/Label.h"

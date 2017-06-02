@@ -2,13 +2,13 @@
 #define MXWIDGET
 #include "utils/Utils.h"
 #include "utils/Vector2.h"
-#include "Drawers/Drawer.h"
+#include "drawers/Drawer.h"
 #include "scene/sprites/SpriteScene.h"
-#include "Collision/Shape/SignalizingShape.h"
-#include "Strategies/Strategy.h"
+#include "collision/shape/SignalizingShape.h"
+#include "strategies/Strategy.h"
 #include "utils/Signal.h"
-#include "Drawers/DrawerManager.h"
-#include "Shapes/Shapes.h"
+#include "drawers/DrawerManager.h"
+#include "shapes/Shapes.h"
 #include "scene/Script/ScriptableActor.h"
 #include "PropertyMap.h"
 

@@ -1,9 +1,9 @@
 #include "ScriptSoundClass.h"
 #include "script/Script.h"
-#include "Game/Resources/Resources.h"
+#include "game/resources/Resources.h"
 #include "script/PropertyLoaders.h"
 #include "utils/Random.h"
-#include "Game/Resources/Paths.h"
+#include "game/resources/Paths.h"
 
 using namespace MX;
 

@@ -1,6 +1,6 @@
 #pragma once
 #include "widgets/Widget.h"
-#include "widgets/Strategies/Strategy.h"
+#include "widgets/strategies/Strategy.h"
 
 namespace MX
 {

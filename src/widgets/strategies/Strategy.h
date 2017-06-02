@@ -4,8 +4,8 @@
 #include "utils/Vector2.h"
 #include "devices/Touches.h"
 #include "widgets/systems/DragSystem.h"
-#include "widgets/Drawers/Drawer.h"
-#include "Collision/Shape/Shape.h"
+#include "widgets/drawers/Drawer.h"
+#include "collision/shape/Shape.h"
 
 namespace MX
 {

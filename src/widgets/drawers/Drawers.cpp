@@ -3,7 +3,7 @@
 #include "script/ScriptClassParser.h"
 #include "script/class/ScriptImageClass.h"
 #include "widgets/Label.h"
-#include "Game/Resources/Resources.h"
+#include "game/resources/Resources.h"
 #include "widgets/Label.h"
 #include "graphic/images/Slice9Image.h"
 #include "utils/ContextStack.h"

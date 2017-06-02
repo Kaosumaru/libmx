@@ -1,7 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <memory>
-#include "Collision/Shape/SignalizingShape.h"
+#include "collision/shape/SignalizingShape.h"
 
 
 namespace MX

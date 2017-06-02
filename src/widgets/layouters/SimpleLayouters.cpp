@@ -1,8 +1,8 @@
 #include "SimpleLayouters.h"
 #include "application/Window.h"
-#include "Game/Resources/Resources.h"
+#include "game/resources/Resources.h"
 
-#include "../Drawers/Drawer.h"
+#include "../drawers/Drawer.h"
 #include <iostream>
 
 using namespace MX::Widgets;

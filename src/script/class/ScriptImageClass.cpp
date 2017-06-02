@@ -1,6 +1,6 @@
 #include "ScriptImageClass.h"
 #include "script/Script.h"
-#include "Game/Resources/Resources.h"
+#include "game/resources/Resources.h"
 #include "graphic/Blender.h"
 #include "script/PropertyLoaders.h"
 #include "graphic/opengl/Texture.h"

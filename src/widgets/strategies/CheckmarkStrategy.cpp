@@ -1,7 +1,7 @@
 #include "CheckmarkStrategy.h"
 #include "../Widget.h"
 #include "application/Window.h"
-#include "Game/Resources/Resources.h"
+#include "game/resources/Resources.h"
 #include <iostream>
 using namespace MX;
 using namespace MX::Widgets;

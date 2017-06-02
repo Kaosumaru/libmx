@@ -1,6 +1,6 @@
 #pragma once
 #include "Widget.h"
-#include "Strategies/DrawableStrategy.h"
+#include "strategies/DrawableStrategy.h"
 
 namespace MX
 {

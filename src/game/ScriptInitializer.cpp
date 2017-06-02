@@ -3,16 +3,16 @@
 
 #include "ScriptInitializer.h"
 
-#include "Game/Resources/Resources.h"
-#include "widgets/Drawers/Drawers.h"
+#include "game/resources/Resources.h"
+#include "widgets/drawers/Drawers.h"
 #ifdef WIP
-#include "widgets/Drawers/ShaderDrawers.h"
+#include "widgets/drawers/ShaderDrawers.h"
 #include "graphic/Effects/EffectActors.h"
 #endif
 #include "widgets/Animations/Animations.h"
-#include "widgets/Drawers/ProxyDrawers.h"
-#include "widgets/Drawers/CompositeDrawers.h"
-#include "widgets/Drawers/DestinationDrawers.h"
+#include "widgets/drawers/ProxyDrawers.h"
+#include "widgets/drawers/CompositeDrawers.h"
+#include "widgets/drawers/DestinationDrawers.h"
 #include "widgets/Layouters/ScriptLayouters.h"
 #include "graphic/Particles/Particles.h"
 #include "scene/Script/Event.h"
