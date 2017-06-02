@@ -3,7 +3,7 @@
 #include "utils/Utils.h"
 #include <memory>
 #include "utils/Time.h"
-#include "utils/Graphic/Easings.h"
+#include "utils/graphic/Easings.h"
 
 
 namespace MX

@@ -1,6 +1,6 @@
 #include "Particle.h"
 #include "script/ScriptClassParser.h"
-#include "utils/Pools/PooledObject.h"
+#include "utils/pools/PooledObject.h"
 #include "utils/Vector2.h"
 
 using namespace MX;

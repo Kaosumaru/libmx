@@ -1,9 +1,9 @@
 #include "ScriptClassParser.h"
 #include "Script.h"
 
-#include "Class/ScriptAnimationClass.h"
-#include "Class/ScriptSoundClass.h"
-#include "Class/ScriptImageClass.h"
+#include "class/ScriptAnimationClass.h"
+#include "class/ScriptSoundClass.h"
+#include "class/ScriptImageClass.h"
 
 using namespace MX;
 
