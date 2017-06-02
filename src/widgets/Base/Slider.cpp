@@ -1,5 +1,5 @@
 #include "Slider.h"
-#include "Collision/Area/EventsToCollisions.h"
+#include "collision/area/EventsToCollisions.h"
 #include "application/Window.h"
 
 

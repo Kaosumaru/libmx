@@ -1,7 +1,7 @@
 #include "Shapes.h"
 #include "widgets/Widget.h"
 #include "application/Window.h"
-#include "Collision/Area/Area.h"
+#include "collision/area/Area.h"
 #include "script/ScriptClassParser.h"
 #include <glm/gtx/transform.hpp>
 

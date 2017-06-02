@@ -2,7 +2,7 @@
 #include "../Widget.h"
 #include "application/Window.h"
 #include "Game/Resources/Resources.h"
-#include "Collision/Area/EventsToCollisions.h"
+#include "collision/area/EventsToCollisions.h"
 #include <iostream>
 #include "widgets/Label.h"
 

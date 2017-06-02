@@ -3,7 +3,7 @@
 #include "devices/Keyboard.h"
 #include "devices/Touches.h"
 #include "devices/Joystick.h"
-#include "Collision/Area/EventsToCollisions.h"
+#include "collision/area/EventsToCollisions.h"
 #include "Collision/Quadtree/Quadtree.h"
 #include "widgets/systems/DragSystem.h"
 #include "widgets/systems/TooltipSystem.h"

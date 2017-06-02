@@ -1,10 +1,10 @@
 #include "ControlScheme.h"
-#include "Collision/Area/EventsToCollisions.h"
+#include "collision/area/EventsToCollisions.h"
 #include "application/Window.h"
 #include "scene/sprites/SpriteScene.h"
 #include "widgets/Widget.h"
 
-#include "Collision/Area/Area.h"
+#include "collision/area/Area.h"
 #include "devices/Keyboard.h"
 #include "devices/Joystick.h"
 
