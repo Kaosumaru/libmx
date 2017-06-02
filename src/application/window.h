@@ -16,16 +16,16 @@ class Touches;
 class MouseTouches;
 class Joysticks;
 
-namespace Collision
-{
-	class LayeredArea;
-	class EventsToCollisions;
-};
-
 namespace Widgets
 {
 	class DragSystem;
 	class TooltipSystem;
+};
+
+namespace Collision
+{
+	class LayeredArea;
+	class EventsToCollisions;
 };
 
 class Window : public shared_ptr_init<Window>, public ScopeSingleton<Window>

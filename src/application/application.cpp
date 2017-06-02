@@ -2,13 +2,13 @@
 #include "Window.h"
 #include "utils/Random.h"
 #include "script/Script.h"
-#include <SDL.h>
-#include <iostream>
 #include "graphic/renderer/TextureRenderer.h"
 #include "graphic/renderer/DefaultRenderers.h"
 #include "game/ScriptInitializer.h"
 #include "Sound/Sample.h"
 #include "Sound/Stream.h"
+#include <SDL.h>
+#include <iostream>
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>

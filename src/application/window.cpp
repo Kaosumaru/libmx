@@ -29,10 +29,8 @@ Window::Window(unsigned width, unsigned height, bool fullscreen)
 	_fullscreen = fullscreen;
 
 	Uint32 flags = SDL_WINDOW_OPENGL;
-	if (_fullscreen)
+	if (_fullscreen) 
 		flags |= SDL_WINDOW_FULLSCREEN;
-
-
 
 	_window.reset(SDL_CreateWindow(
 		"",                  // window title

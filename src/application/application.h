@@ -1,6 +1,4 @@
 #pragma once
-//small hack, fixes clashes with our context
-
 #include "Version.h"
 #include "utils/Time.h"
 #include "utils/Signal.h"
