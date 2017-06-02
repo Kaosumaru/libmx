@@ -7,14 +7,14 @@
 #include "widgets/drawers/Drawers.h"
 #ifdef WIP
 #include "widgets/drawers/ShaderDrawers.h"
-#include "graphic/Effects/EffectActors.h"
+#include "graphic/effects/EffectActors.h"
 #endif
-#include "widgets/Animations/Animations.h"
+#include "widgets/animations/Animations.h"
 #include "widgets/drawers/ProxyDrawers.h"
 #include "widgets/drawers/CompositeDrawers.h"
 #include "widgets/drawers/DestinationDrawers.h"
-#include "widgets/Layouters/ScriptLayouters.h"
-#include "graphic/Particles/Particles.h"
+#include "widgets/layouters/ScriptLayouters.h"
+#include "graphic/particles/Particles.h"
 #include "scene/script/Event.h"
 #include "script/ScriptClassParser.h"
 #include "widgets/WidgetScriptBinding.h"

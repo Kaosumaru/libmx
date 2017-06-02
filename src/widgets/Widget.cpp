@@ -4,7 +4,7 @@
 #include <iostream>
 #include <cmath>
 
-#include "graphic/Renderer/TextureRenderer.h"
+#include "graphic/renderer/TextureRenderer.h"
 
 using namespace MX;
 using namespace MX::Widgets;

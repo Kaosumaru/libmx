@@ -1,7 +1,7 @@
 #ifndef MXCOLORSCRIPTABLE
 #define MXCOLORSCRIPTABLE
 #include "Color.h"
-#include "script/Scriptable/ScriptableValue.h"
+#include "script/scriptable/ScriptableValue.h"
 #include "script/PropertyLoaders.h"
 
 namespace MX{

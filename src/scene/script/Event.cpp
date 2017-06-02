@@ -3,7 +3,7 @@
 #include "scene/managers/SceneStackManager.h"
 #include "scene/sprites/ScriptableSpriteActor.h"
 #include "widgets/Widget.h"
-#include "widgets/Layouters/StackWidget.h"
+#include "widgets/layouters/StackWidget.h"
 
 using namespace MX;
 

@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include "script/ScriptObject.h"
-#include "script/Scriptable/ScriptableValue.h"
+#include "script/scriptable/ScriptableValue.h"
 #include "script/PropertyLoaders.h"
 #include "Command.h"
 

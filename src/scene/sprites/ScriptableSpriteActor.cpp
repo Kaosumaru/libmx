@@ -1,15 +1,15 @@
 #include "ScriptableSpriteActor.h"
 #include <iostream>
 #include "utils/Time.h"
-#include "scene/Generators/ActorFactory.h"
+#include "scene/generators/ActorFactory.h"
 #include "scene/script/CommonCommands.h"
 #include "scene/script/SpriteCommands.h"
 #include "script/ScriptClassParser.h"
 #include "graphic/Blender.h"
 #include "script/class/ScriptAnimationClass.h"
 #include "script/class/ScriptImageClass.h"
-#include "graphic/Renderer/TextureRenderer.h"
-#include "graphic/Renderer/MVP.h"
+#include "graphic/renderer/TextureRenderer.h"
+#include "graphic/renderer/MVP.h"
 using namespace MX;
 
 

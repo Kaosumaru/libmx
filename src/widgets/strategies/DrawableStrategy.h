@@ -2,7 +2,7 @@
 #define MXDRAWABLESTRATEGY
 #include "Strategy.h"
 #include "graphic/images/Image.h"
-#include "graphic/Fonts/Font.h"
+#include "graphic/fonts/Font.h"
 #include "utils/SignalizingVariable.h"
 
 namespace MX

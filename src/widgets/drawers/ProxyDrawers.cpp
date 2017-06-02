@@ -4,7 +4,7 @@
 #include "widgets/Widget.h"
 #include "script/ScriptClassParser.h"
 #include "graphic/images/TextureRental.h"
-#include "graphic/Renderer/MVP.h"
+#include "graphic/renderer/MVP.h"
 
 using namespace MX;
 
