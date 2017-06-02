@@ -1,6 +1,6 @@
 #pragma once
 #include<functional>
-#include "collision/Area/Area.h"
+#include "collision/area/Area.h"
 #include "utils/shapes/Rectangle.h"
 #include "utils/StrongList.h"
 
