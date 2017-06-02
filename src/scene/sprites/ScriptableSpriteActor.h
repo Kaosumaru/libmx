@@ -2,8 +2,8 @@
 #define SCRIPTABLESPRITEACTOR
 #include "scene/sprites/SpriteActor.h"
 #include "scene/sprites/SpriteScene.h"
-#include "scene/Script/Command.h"
-#include "scene/Script/CommandSignal.h"
+#include "scene/script/Command.h"
+#include "scene/script/CommandSignal.h"
 #include "script/ScriptObject.h"
 #include "scene/script/ScriptableActor.h"
 

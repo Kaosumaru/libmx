@@ -9,7 +9,7 @@
 #include "utils/Signal.h"
 #include "drawers/DrawerManager.h"
 #include "shapes/Shapes.h"
-#include "scene/Script/ScriptableActor.h"
+#include "scene/script/ScriptableActor.h"
 #include "PropertyMap.h"
 
 namespace MX

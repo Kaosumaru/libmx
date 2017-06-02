@@ -1,5 +1,5 @@
-#include "scene/Script/Command.h"
-#include "scene/Script/CommonCommands.h"
+#include "scene/script/Command.h"
+#include "scene/script/CommonCommands.h"
 #include "widgets/Widget.h"
 #include "glm/gtx/transform.hpp"
 

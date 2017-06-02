@@ -1,6 +1,6 @@
 #include "WidgetFactory.h"
 #include "script/ScriptClassParser.h"
-#include "scene/Script/Event.h"
+#include "scene/script/Event.h"
 #include "widgets/Label.h"
 
 

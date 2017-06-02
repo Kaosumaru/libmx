@@ -2,8 +2,8 @@
 #include <iostream>
 #include "utils/Time.h"
 #include "scene/Generators/ActorFactory.h"
-#include "scene/Script/CommonCommands.h"
-#include "scene/Script/SpriteCommands.h"
+#include "scene/script/CommonCommands.h"
+#include "scene/script/SpriteCommands.h"
 #include "script/ScriptClassParser.h"
 #include "graphic/Blender.h"
 #include "script/class/ScriptAnimationClass.h"

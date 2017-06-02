@@ -15,7 +15,7 @@
 #include "widgets/drawers/DestinationDrawers.h"
 #include "widgets/Layouters/ScriptLayouters.h"
 #include "graphic/Particles/Particles.h"
-#include "scene/Script/Event.h"
+#include "scene/script/Event.h"
 #include "script/ScriptClassParser.h"
 #include "widgets/WidgetScriptBinding.h"
 
