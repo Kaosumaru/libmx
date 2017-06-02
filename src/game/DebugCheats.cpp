@@ -1,8 +1,8 @@
 #include "DebugCheats.h"
 #include "scene/script/Event.h"
 #include "application/Window.h"
-#include "Devices/Keyboard.h"
-#include "Devices/Mouse.h"
+#include "devices/Keyboard.h"
+#include "devices/Mouse.h"
 #include "scene/sprites/ScriptableSpriteActor.h"
 
 using namespace MX;
