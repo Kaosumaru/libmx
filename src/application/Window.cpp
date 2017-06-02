@@ -4,7 +4,7 @@
 #include "devices/Touches.h"
 #include "devices/Joystick.h"
 #include "collision/area/EventsToCollisions.h"
-#include "Collision/Quadtree/Quadtree.h"
+#include "collision/quadtree/Quadtree.h"
 #include "widgets/systems/DragSystem.h"
 #include "widgets/systems/TooltipSystem.h"
 #include "widgets/Widget.h"
