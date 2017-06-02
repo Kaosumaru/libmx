@@ -1,6 +1,6 @@
 #include "DebugCheats.h"
 #include "scene/script/Event.h"
-#include "Application/Window.h"
+#include "application/Window.h"
 #include "Devices/Keyboard.h"
 #include "Devices/Mouse.h"
 #include "scene/sprites/ScriptableSpriteActor.h"
