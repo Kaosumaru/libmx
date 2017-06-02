@@ -20,7 +20,7 @@
 #include "widgets/WidgetScriptBinding.h"
 
 #include "devices/Keyboard.h"
-#include "application/window.h"
+#include "application/Window.h"
 #include "SDL_keycode.h"
 
 

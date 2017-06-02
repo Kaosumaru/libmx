@@ -1,5 +1,5 @@
 #include "Touches.h"
-#include "application/application.h"
+#include "application/Application.h"
 #include "application/Window.h"
 #include "devices/Mouse.h"
 #include "EventWatcher.h"
