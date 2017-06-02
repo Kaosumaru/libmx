@@ -323,7 +323,7 @@ namespace MX
 			if (obj->size() != size)
 				return false;
 
-			return load_impl(out, obj, std::index_sequence_for<T...>());
+			return load_impl(out, obj, std::index_sequence_for<std::remove_reference<T>::type...>());
 		}
 
 		template<typename Tuple, std::size_t... Is>
