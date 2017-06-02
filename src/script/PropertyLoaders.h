@@ -323,7 +323,7 @@ namespace MX
 			if (obj->size() != size)
 				return false;
 
-			return load_impl(out, obj, std::index_sequence_for<typename std::remove_reference<T>::type...>());
+			return load_impl(out, obj, std::index_sequence_for<T...>());
 		}
 
 		template<typename Tuple, std::size_t... Is>
@@ -333,7 +333,7 @@ namespace MX
 			auto fill_args = {
 				0, ((
 				
-				success &= PropertyLoader<T>::load(std::get<Is>(t), obj->array()[Is])
+				success &= PropertyLoader<typename std::remove_reference<T>::type>::load(std::get<Is>(t), obj->array()[Is])
 					
 				), 0)...
 			};
