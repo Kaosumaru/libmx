@@ -1,6 +1,6 @@
 #include "DrawableStrategy.h"
 #include "../Widget.h"
-#include "application/Window.h"
+#include "application/window.h"
 #include "Game/Resources/Resources.h"
 #include "utils/ContextStack.h"
 #include "graphic/fonts/Font.h"

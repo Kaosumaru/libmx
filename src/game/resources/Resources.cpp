@@ -2,8 +2,8 @@
 #include <sstream>
 #include <fstream>
 #include "graphic/images/TextureImage.h"
-#include "Sound/Sample.h"
-#include "Sound/Stream.h"
+#include "sound/Sample.h"
+#include "sound/Stream.h"
 #include <iostream>
 
 namespace MX

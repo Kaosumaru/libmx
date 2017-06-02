@@ -5,8 +5,8 @@
 #include "graphic/renderer/TextureRenderer.h"
 #include "graphic/renderer/DefaultRenderers.h"
 #include "game/ScriptInitializer.h"
-#include "Sound/Sample.h"
-#include "Sound/Stream.h"
+#include "sound/Sample.h"
+#include "sound/Stream.h"
 #include <SDL.h>
 #include <iostream>
 
