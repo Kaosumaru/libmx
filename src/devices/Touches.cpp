@@ -3,7 +3,7 @@
 #include "application/Window.h"
 #include "devices/Mouse.h"
 #include "EventWatcher.h"
-#include <iostream>
+
 using namespace MX;
 
 
@@ -60,21 +60,20 @@ public:
             return;
 
         auto &t = event.tfinger;
+        float x = t.x * _window->size().x;
+        float y = t.y * _window->size().y;
 
 		if (event.type == SDL_FINGERDOWN)
 		{
-			std::cout << "DOWN " << t.fingerId << " -> " << t.x << ", " << t.y << std::endl;
-            OnTouchBegin(t.fingerId, t.x, t.y, false);
+            OnTouchBegin(t.fingerId, x, y, false);
 		}
 		else if (event.type == SDL_FINGERUP)
 		{
-			std::cout << "UP " << t.fingerId << " -> " << t.x << ", " << t.y << std::endl;
-			OnTouchEnd(t.fingerId, t.x, t.y, false, false);
+			OnTouchEnd(t.fingerId, x, y, false, false);
 		}
 		else if (event.type == SDL_FINGERMOTION)
 		{
-			std::cout << "MOTION " << t.fingerId << " -> " << t.x << ", " << t.y << std::endl;
-			OnTouchMove(t.fingerId, t.x, t.y, false);
+			OnTouchMove(t.fingerId, x, y, false);
 		}
 	}
 protected:
