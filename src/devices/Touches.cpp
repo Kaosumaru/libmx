@@ -63,14 +63,17 @@ public:
 
 		if (event.type == SDL_FINGERDOWN)
 		{
+			std::cout << "DOWN " << t.fingerId << " -> " << t.x << ", " << t.y << std::endl;
             OnTouchBegin(t.fingerId, t.x, t.y, false);
 		}
 		else if (event.type == SDL_FINGERUP)
 		{
+			std::cout << "UP " << t.fingerId << " -> " << t.x << ", " << t.y << std::endl;
 			OnTouchEnd(t.fingerId, t.x, t.y, false, false);
 		}
 		else if (event.type == SDL_FINGERMOTION)
 		{
+			std::cout << "MOTION " << t.fingerId << " -> " << t.x << ", " << t.y << std::endl;
 			OnTouchMove(t.fingerId, t.x, t.y, false);
 		}
 	}
