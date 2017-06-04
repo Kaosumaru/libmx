@@ -122,7 +122,7 @@ namespace MX
 			DijkstraPath Dijkstra(start, getNeighbors, setDistanceIfLower);
 		}
 
-		const auto& distances() { return _distances; }
+		const auto& distances() const { return _distances; }
 	protected:
 		auto CreateCallback()
 		{
