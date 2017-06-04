@@ -72,6 +72,7 @@ namespace MX
 			PathFind(queue, getNeighbors, setDistanceIfLower);
 		}
 
+		DijkstraPathFinding(DijkstraPathFinding&& other) = default;
 
 	protected:
 		template<typename GetNeighborsType, typename SetDistanceIfLowerType>
