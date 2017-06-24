@@ -68,17 +68,6 @@ public:
 
     
 #ifdef WIPSERIALIZE
-	template<typename T>
-	const bool load_variable(T &t, const std::string &name)
-	{
-		return variable(name).load(t);
-	}
-
-	virtual Scriptable::Variable variable(const std::string &name)
-	{
-		return Scriptable::Variable(object() + "." + name);
-	}
-
 
 	virtual void operator & (Scriptable::Variable && var)
 	{
@@ -117,26 +106,11 @@ public:
 	}
 #endif
 
-	template<typename T>
-	std::shared_ptr<T> property_pointer(const std::string &name)
-	{
-		return Script::valueOf(object() + "." + name).object_pointer<T>();
-	}
-
 	virtual std::string object();
 	virtual std::wstring name();
 	virtual std::wstring description();
 
 	std::string pathToChild(const std::string& name) { return object() + "." + name; }
-
-
-
-	void SetSerializePath(const std::string& path) { _serializePath = path; } //TODO should be protected
-protected:
-	std::string _serializePath; //TODO cound be optimized
-
-
-
 };
 
 template<typename ParentType>
