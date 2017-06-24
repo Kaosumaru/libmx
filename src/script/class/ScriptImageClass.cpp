@@ -147,8 +147,8 @@ bool ScriptImageFromGridClass::onParse()
 	std::pair<unsigned, unsigned> pos;
 	load_property(pos, "Pos");
 
-	auto grid = property_pointer<ScriptImageGridClass>("Grid");
-	if (!grid)
+	std::shared_ptr<ScriptImageGridClass> grid;
+	if (!load_property(grid, "Grid"))
 		return false;
 
 	_image = grid->image(pos.first, pos.second);

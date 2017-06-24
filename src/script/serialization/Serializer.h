@@ -21,6 +21,7 @@ namespace MX
 			virtual void Sync(Node& n, __int64 &v) {};
 			virtual void Sync(Node& n, double &v) {};
 			virtual void Sync(Node& n, std::string& v) {};
+			virtual void Sync(Node& n, std::wstring& v) {};
 
 		};
 	}

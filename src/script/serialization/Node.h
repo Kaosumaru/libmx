@@ -23,31 +23,49 @@ namespace MX
 			{
 				Context<Serializer>::current().Sync(*this, t);
 			}
+
 			auto s()
 			{
 				return Context<Serializer>::current();
+			}
+
+			bool saving()
+			{
+				return s().saving();
+			}
+
+			bool loading()
+			{
+				return s().loading();
 			}
 		protected:
 			std::string _path;
 		};
 
 
-		void operator & (bool& v, Node&& n)
+		inline void operator & (bool& v, Node&& n)
+		{
+			int i = v ? 1 : 0;
+			n.Sync(i);
+			v = i != 0;
+		}
+
+		inline void operator & (int& v, Node&& n)
 		{
 			n.Sync(v);
 		}
 
-		void operator & (int& v, Node&& n)
+		inline void operator & (double& v, Node&& n)
 		{
 			n.Sync(v);
 		}
 
-		void operator & (double& v, Node&& n)
+		inline void operator & (std::string& v, Node&& n)
 		{
 			n.Sync(v);
 		}
 
-		void operator & (std::string& v, Node&& n)
+		inline void operator & (std::wstring& v, Node&& n)
 		{
 			n.Sync(v);
 		}

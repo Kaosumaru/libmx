@@ -3,6 +3,7 @@
 #include "utils/Utils.h"
 #include "ScriptClass.h"
 #include "script/PropertyLoaders.h"
+#include "script/serialization/Node.h"
 #include <typeindex>
 
 namespace MX{
@@ -243,12 +244,10 @@ protected:
 
 }
 
-#ifdef WIPSERIALIZE
 template<typename T>
-void operator & (std::shared_ptr<T> &t, MX::Scriptable::Variable&& var)
+void operator& (std::shared_ptr<T>& t, MX::Serialization::Node&& var)
 {
-	//TODO optionals won't work if we don't clear path in serializing
-	if (MX::Scriptable::Variable::currentlySerializing())
+	if (var.saving())
 	{
 		if (!t)
 		{
@@ -263,7 +262,7 @@ void operator & (std::shared_ptr<T> &t, MX::Scriptable::Variable&& var)
 		assert(!className.empty());
 		className & var("Object");
 		data.object() & var("InstancePath");
-		data.SetSerializePath(var.fullPath());
+		//data.SetSerializePath(var.fullPath());
 		data.operator&(std::move(var));
 
 	}
@@ -285,7 +284,6 @@ void operator & (std::shared_ptr<T> &t, MX::Scriptable::Variable&& var)
 	}
 
 }
-#endif
 
 #define MXTOKENPASTE(x, y) x ## y
 #define MXTOKENPASTE2(x, y) MXTOKENPASTE(x, y)
