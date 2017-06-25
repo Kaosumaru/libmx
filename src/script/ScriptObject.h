@@ -1,10 +1,7 @@
 #pragma once
 #include <string>
 #include "Script.h"
-
-#ifdef WIPSERIALIZE
-#include "scriptable/ScriptableVariable.h"
-#endif
+#include "serialization/Node.h"
 
 namespace MX{
 
@@ -67,12 +64,12 @@ public:
 	}
 
     
-#ifdef WIPSERIALIZE
-
-	virtual void operator & (Scriptable::Variable && var)
+	virtual void operator & (Serialization::Node&& n)
 	{
 
 	}
+
+#ifdef WIPSERIALIZE
 
 	void Serialize()
 	{
@@ -98,11 +95,6 @@ public:
 		auto guard = mode.Use();
 		auto lock = MX::Scriptable::Variable::scopedTransaction();
 		*this & Scriptable::Variable(_serializePath.empty() ? object() : _serializePath);
-	}
-
-	void RemoveSerialized()
-	{
-		MX::Scriptable::VariableSerializer::current().RemovePath(_serializePath.empty() ? object() : _serializePath);
 	}
 #endif
 

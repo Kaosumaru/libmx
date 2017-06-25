@@ -14,14 +14,6 @@ namespace MX
 			Serializer() {}
 			virtual ~Serializer() {}
 
-			template<typename T>
-			void SyncRoot(const std::string& path, T& t)
-			{
-				MX::Serialization::Node n(path);
-				auto g = Context<MX::Serialization::Serializer>::Lock(*this);
-				t & std::move(n);
-			}
-
 			virtual bool loading() { return true; }
 			bool saving() { return !loading(); }
 

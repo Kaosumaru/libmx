@@ -11,7 +11,7 @@ namespace MX
 		public:
 			Node() {}
 			Node(const std::string& path) : _path(path) {}
-			Node(Node* parent, const std::string& path) : _path(path) {}
+			Node(Node* parent, const std::string& path) : _parent(parent), _path(path) {}
 
 			Node operator() (const std::string& path)
 			{
@@ -21,12 +21,7 @@ namespace MX
 			template<typename T>
 			void Sync(T &t)
 			{
-				Context<Serializer>::current().Sync(*this, t);
-			}
-
-			auto s()
-			{
-				return Context<Serializer>::current();
+				s().Sync(*this, t);
 			}
 
 			bool saving()
@@ -38,7 +33,24 @@ namespace MX
 			{
 				return s().loading();
 			}
+
+			template<typename C>
+			void ApplyPath(C cb)
+			{
+				if (_parent)
+				{
+					_parent->ApplyPath(cb);
+					cb(".");
+				}
+				cb(_path);
+			}
 		protected:
+			Serializer& s()
+			{
+				return Context<Serializer>::current();
+			}
+
+			Node* _parent = nullptr;
 			std::string _path;
 		};
 
