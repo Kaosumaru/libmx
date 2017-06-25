@@ -54,6 +54,14 @@ namespace MX
 			std::string _path;
 		};
 
+		template<typename T>
+		void SyncObject(MX::Serialization::Serializer& s, const std::string& path, T& t)
+		{
+			MX::Serialization::Node n(path);
+			auto g = Context<MX::Serialization::Serializer>::Lock(s);
+			t & std::move(n);
+		}
+
 
 		inline void operator & (bool& v, Node&& n)
 		{
