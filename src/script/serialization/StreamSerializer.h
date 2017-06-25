@@ -3,7 +3,6 @@
 #include "script/serialization/Serializer.h"
 #include "script/serialization/Node.h"
 #include <iostream>
-#include <cstdint>
 #include "utils/Utils.h"
 
 namespace MX
