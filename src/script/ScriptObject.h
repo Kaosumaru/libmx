@@ -54,15 +54,7 @@ class ScriptObject
 public:
 	virtual ~ScriptObject();
 
-	const Scriptable::Value& property(const std::string &name);
 	const Scriptable::Value::pointer& property_object(const std::string &name);
-
-	template<typename T>
-	const T& property(const std::string &name)
-	{
-		return Script::valueOf(object() + "." + name).object<T>();
-	}
-
     
 	virtual void operator & (Serialization::Node&& n)
 	{
@@ -98,7 +90,7 @@ public:
 	}
 #endif
 
-	virtual std::string object();
+	virtual const std::string& object();
 	virtual std::wstring name();
 	virtual std::wstring description();
 
@@ -169,7 +161,9 @@ protected:
 	template<typename T>
 	bool load_property(const PropertyLoader_Custom& st, T &t, const std::string &name)
 	{
-		return PropertyLoader<T>::load(t, ParentType::property(name));
+		auto p = ParentType::property_object(name);
+		if (!p) return false;
+		return PropertyLoader<T>::load(t, *p);
 	}
 };
 
@@ -216,11 +210,11 @@ public:
 			*_objectName = objectName;
 	}
 
-	std::string object() override
+	const std::string& object() override
 	{
 		if (_objectName)
 			return *_objectName;
-		return "Misc.Object.UnSet";
+		return LoadableScriptObject::object();
 	}
 
 protected:

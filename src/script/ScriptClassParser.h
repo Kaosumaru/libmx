@@ -261,7 +261,7 @@ void operator& (std::shared_ptr<T>& t, MX::Serialization::Node&& var)
 		std::wstring className = MX::ScriptClassParser::GetType(typeid(data));
 		assert(!className.empty());
 		className & var("Object");
-		data.object() & var("InstancePath");
+		const_cast<std::string&>(data.object()) & var("InstancePath");
 		//data.SetSerializePath(var.fullPath());
 		data.operator&(std::move(var));
 

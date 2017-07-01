@@ -57,20 +57,17 @@ ScriptObject::~ScriptObject()
 {
 }
 
-const Scriptable::Value& ScriptObject::property(const std::string &name)
-{
-	std::string obj = object();
-	return Script::valueOf(obj + "." + name);
-}
-
 const Scriptable::Value::pointer& ScriptObject::property_object(const std::string &name)
 {
-	return Script::propertyOrNull(object(), name);
+	auto& obj = object();
+	if (obj.empty()) return nullptr;
+	return Script::propertyOrNull(obj, name);
 }
 
-std::string ScriptObject::object()
+const std::string& ScriptObject::object()
 {
-	return "Misc.UnsetValue";
+	static thread_local std::string p;
+	return p;
 }
 
 std::wstring ScriptObject::name()

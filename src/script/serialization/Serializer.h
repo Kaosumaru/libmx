@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <cstdint>
 #include "utils/Singleton.h"
 
 namespace MX
@@ -18,7 +19,7 @@ namespace MX
 			bool saving() { return !loading(); }
 
 			virtual void Sync(Node& n, int &v) {};
-			virtual void Sync(Node& n, __int64 &v) {};
+			virtual void Sync(Node& n, int64_t &v) {};
 			virtual void Sync(Node& n, double &v) {};
 			virtual void Sync(Node& n, std::string& v) {};
 			virtual void Sync(Node& n, std::wstring& v) {};

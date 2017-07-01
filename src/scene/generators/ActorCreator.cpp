@@ -9,7 +9,7 @@ using namespace MX::Graphic;
 SpecificActorCreator::SpecificActorCreator(LScriptObject& script) : ActorCreator(script)
 {
 	int total_sum = 0;
-	auto &actors = script.property("Actors").array();
+	auto &actors = script.property_object("Actors")->array();
 	for (auto &actor : actors)
 	{
 		using Pair = std::pair<Entry, int>;
