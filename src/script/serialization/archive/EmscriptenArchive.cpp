@@ -13,7 +13,17 @@ void EmscriptenArchive::Load(const LoadCallback& cb)
 {
 #ifdef __EMSCRIPTEN__
 	auto raw_cb = new LoadCallback{cb};
-	cb("", Result::ErrorFatal);
+	emscripten_idb_async_load("EmscriptenArchive", path().c_str(), (void*)raw_cb, 
+		[](void* arg, void* ptr, int num) 
+	{
+		std::unique_ptr<LoadCallback> cb( (LoadCallback*) arg );
+		(*cb)({(char*)ptr, num}, Result::OK);
+	}, 
+		[](void* arg) 
+	{ 
+		std::unique_ptr<LoadCallback> cb( (LoadCallback*) arg );
+		(*cb)("", Result::ErrorFatal);
+	});
 #else
 	cb("", Result::ErrorFatal);
 #endif
