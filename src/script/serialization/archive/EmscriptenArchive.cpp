@@ -17,7 +17,7 @@ void EmscriptenArchive::Load(const LoadCallback& cb)
 		[](void* arg, void* ptr, int num) 
 	{
 		std::unique_ptr<LoadCallback> cb( (LoadCallback*) arg );
-		(*cb)({(char*)ptr, num}, Result::OK);
+		(*cb)({(char*)ptr, (std::string::size_type) num}, Result::OK);
 	}, 
 		[](void* arg) 
 	{ 
