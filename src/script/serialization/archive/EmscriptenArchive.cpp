@@ -1,6 +1,10 @@
 #include "EmscriptenArchive.h"
 #include <fstream>
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
 using namespace MX;
 using namespace Serialization;
 
