@@ -59,8 +59,9 @@ ScriptObject::~ScriptObject()
 
 const Scriptable::Value::pointer& ScriptObject::property_object(const std::string &name)
 {
+    static Scriptable::Value::pointer null;
 	auto& obj = object();
-	if (obj.empty()) return nullptr;
+	if (obj.empty()) return null;
 	return Script::propertyOrNull(obj, name);
 }
 
