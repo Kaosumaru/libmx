@@ -30,7 +30,7 @@ namespace MX
 			virtual void Load(const LoadCallback& cb) = 0;
 			virtual void Save(std::string&& data, const SaveCallback& cb) = 0;
 
-			std::unique_ptr<Archive> CreateDefault(const std::string& path);
+			static std::unique_ptr<Archive> CreateDefault(const std::string& path);
 		protected:
 			std::string _path;
 		};

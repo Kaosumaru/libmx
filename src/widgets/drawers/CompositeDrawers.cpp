@@ -87,7 +87,7 @@ CompositeLayouterDrawer::CompositeLayouterDrawer(LScriptObject& script) : Compos
 
 	auto size = children.size();
 	_children.reserve(size);
-	for (int i = 0; i < size; i++)
+	for (std::size_t i = 0; i < size; i++)
 	{
 		auto &child = children[i];
 
