@@ -21,23 +21,30 @@ namespace MX
 
 			void Save(const Callback& cb)
 			{
+				assert(!_saving);
+				_saving = true;
 				std::stringstream ss;
 				MX::Serialization::OutputStreamSerializer s1{ ss };
 				MX::Serialization::SyncObject(s1, "R", (T&)*this);
 
 				auto archive = Archive::CreateDefault(_serializationPath);
-				archive->Save(ss.str(), [cb](Archive::Result r) 
+				//TODO this should addref our object
+				archive->Save(ss.str(), [cb, this](Archive::Result r) 
 				{
+					_saving = false;
 					if (cb) cb(r);
 				});
 			}
 
 			void Load(const Callback& cb)
 			{
+				assert(!_loading);
+				_loading = true;
 				auto archive = Archive::CreateDefault(_serializationPath);
 				//TODO this should addref our object
 				archive->Load([this, cb](std::string&& str, Archive::Result r) 
 				{
+					_loading = false;
 					if (r != Archive::Result::OK)
 					{
 						cb(r);
@@ -53,6 +60,8 @@ namespace MX
 			}
 
 		private:
+			bool _loading = false;
+			bool _saving = false;
 			std::string _serializationPath;
 		};
 	}
