@@ -36,7 +36,7 @@ namespace MX
 			{
 				auto archive = Archive::CreateDefault(_serializationPath);
 				//TODO this should addref our object
-				archive->Load([this](std::string&& str, Archive::Result r) 
+				archive->Load([this, cb](std::string&& str, Archive::Result r) 
 				{
 					if (r != Archive::Result::OK)
 					{
