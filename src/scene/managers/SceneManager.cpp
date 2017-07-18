@@ -24,11 +24,19 @@ void BaseSpriteSceneManager::SelectScene(const std::shared_ptr<SpriteScene> &sce
 {
 	if(_currentScene == scene)
 		return;
-	std::shared_ptr<SpriteScene> old_scene = _currentScene;
-	
+	auto old_scene = _currentScene;
     
 	_currentScene = scene;
-	
+
+	auto removeOld = [&]()
+	{
+		if (old_scene)
+		{
+			old_scene->SetVisible(false);
+			old_scene->Unlink();
+		}
+	};
+
 	if (transition)
 	{
 		_transitionScene = transition;
@@ -36,14 +44,15 @@ void BaseSpriteSceneManager::SelectScene(const std::shared_ptr<SpriteScene> &sce
 		_currentScene->Run(); //run once, since drawing may depend on running
 		transition->SetScenes(old_scene, _currentScene);
 		_currentScene->ChangeVisibility(1);
+		removeOld();
 		AddActor(transition);
+		return;
 	}
-	else
-	{
-		AddActor(_currentScene);
-	}
-    if (old_scene)
-        old_scene->Unlink();
+
+	removeOld();
+	_currentScene->SetVisible(true);
+	AddActor(_currentScene);
+
 }
 
 
@@ -55,6 +64,7 @@ void BaseSpriteSceneManager::Run()
 	if (_transitionScene && !_transitionScene->linked() && _currentScene)
 	{
 		_transitionScene = nullptr;
+		_currentScene->SetVisible(true);
 		AddActor(_currentScene);
 	}
 
