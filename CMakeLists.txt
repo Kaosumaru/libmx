@@ -28,25 +28,25 @@ ADDFILES(source_list "${PROJECT_SOURCE_DIR}/src")
 add_library(MXLib ${source_list})
 
 
+set(MX_INCLUDES ${MX_INCLUDES} ${FREETYPE_INCLUDE_DIRS} ${SOLOUD_INCLUDE_DIRS})
 
 if (EMSCRIPTEN)
   message("Building for emscripten")
   find_package(Freetype REQUIRED)
 
   add_definitions("-std=c++14")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=2 --use-preload-plugins")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=2 --use-preload-plugins" PARENT_SCOPE)
 
-  set(MX_INCLUDES ${MX_INCLUDES} ${FREETYPE_INCLUDE_DIRS} ${SOLOUD_INCLUDE_DIRS})
-  set(MX_LINK_FLAGS " -s USE_SDL=2 --use-preload-plugins --preload-file ${PROJECT_SOURCE_DIR}/res@/res" PARENT_SCOPE)
-
+  set(CMAKE_EXECUTABLE_SUFFIX ".html" PARENT_SCOPE)
+  target_compile_options(MXLib PUBLIC -s USE_SDL=2 --use-preload-plugins)
+  target_link_libraries(MXLib PUBLIC --use-preload-plugins)
+  target_link_libraries(MXLib PUBLIC "-s USE_SDL=2")
+  target_link_libraries(MXLib PUBLIC "--preload-file ${PROJECT_SOURCE_DIR}/res@/res")
 else(EMSCRIPTEN)
   find_package(SDL2 REQUIRED)
   find_package(OpenGL REQUIRED)
   find_package(Freetype REQUIRED)
 
-  set(MX_INCLUDES ${MX_INCLUDES} ${SDL_INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS} ${SOLOUD_INCLUDE_DIRS})
-  set(MX_LINK_FLAGS "" PARENT_SCOPE)
+  set(MX_INCLUDES ${MX_INCLUDES} ${SDL_INCLUDE_DIR})
   target_link_libraries(MXLib PUBLIC ${SDL_LIBRARY}/SDL2.lib glew32.lib ${OPENGL_LIBRARIES})
 endif(EMSCRIPTEN)
 
