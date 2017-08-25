@@ -11,9 +11,6 @@ set(MX_INCLUDES ${Boost_INCLUDE_DIRS}
 set(CMAKE_MODULE_PATH ${MX_MODULES} CACHE TYPE STRING FORCE)
 include(CommonFunctions)
 
-
-add_definitions("${MX_DEFINES}")
-
 #deps
 SET(RPN_USE_JIT OFF CACHE BOOL "Don't use jit")
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/RPNParser/RPN" "${CMAKE_CURRENT_BINARY_DIR}/RPN")
@@ -24,57 +21,42 @@ add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/soloud" "${CMAKE_CURRENT_BINARY
 set(MX_INCLUDES ${MX_INCLUDES} ${RPN_Includes} ${CMAKE_CURRENT_LIST_DIR}/deps/MSL/MSL ${CMAKE_CURRENT_LIST_DIR}/deps/RPNParser/RPN ${CMAKE_CURRENT_LIST_DIR}/deps/litehtml)
 #deps
 
+project (MXLib)
+option (GAME_RELEASE "Build release?" FALSE)
+
+ADDFILES(source_list "${PROJECT_SOURCE_DIR}/src")
+add_library(MXLib ${source_list})
+
+
+
 if (EMSCRIPTEN)
   message("Building for emscripten")
   find_package(Freetype REQUIRED)
 
-  add_definitions("-std=c++14 ${MX_DEFINES}")
+  add_definitions("-std=c++14")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=2 --use-preload-plugins")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=2 --use-preload-plugins" PARENT_SCOPE)
 
   set(MX_INCLUDES ${MX_INCLUDES} ${FREETYPE_INCLUDE_DIRS} ${SOLOUD_INCLUDE_DIRS})
   set(MX_LINK_FLAGS " -s USE_SDL=2 --use-preload-plugins --preload-file ${PROJECT_SOURCE_DIR}/res@/res" PARENT_SCOPE)
-  set(MX_LIBS MXLib MSL RPN litehtml soloud ${FREETYPE_LIBRARY} PARENT_SCOPE)
+
 else(EMSCRIPTEN)
-  #find_package(GLEW REQUIRED)
   find_package(SDL2 REQUIRED)
- # find_package(SDL_mixer REQUIRED)
   find_package(OpenGL REQUIRED)
   find_package(Freetype REQUIRED)
-  #find_package(Vorbis REQUIRED)
-
-#message("Building for emscripten ${OPENGL_INCLUDE_DIR}")
 
   set(MX_INCLUDES ${MX_INCLUDES} ${SDL_INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS} ${SOLOUD_INCLUDE_DIRS})
   set(MX_LINK_FLAGS "" PARENT_SCOPE)
-  set(MX_LIBS MXLib MSL RPN litehtml soloud ${SDL_LIBRARY}/SDL2.lib glew32.lib ${OPENGL_LIBRARIES} ${FREETYPE_LIBRARY} PARENT_SCOPE)
+  target_link_libraries(MXLib PUBLIC ${SDL_LIBRARY}/SDL2.lib glew32.lib ${OPENGL_LIBRARIES})
 endif(EMSCRIPTEN)
 
-
-
-project (MXLib)
-option (GAME_RELEASE "Build release?" FALSE)
-
-
 if (MSVC)
-add_definitions( "/MP /W3 /D_CRT_SECURE_NO_WARNINGS /wd4005 /wd4996 /wd4503 /nologo" )
-#configure_msvc_runtime()
+	add_definitions( "/MP /W3 /D_CRT_SECURE_NO_WARNINGS /wd4005 /wd4996 /wd4503 /nologo" )
 endif(MSVC)
 
 
-ADDFILES(source_list "${PROJECT_SOURCE_DIR}/src")
-
 include_directories(${SDL2_INCLUDE_DIR})
-include_directories(${MX_INCLUDES})
-
-add_library(MXLib ${source_list})
-
-##dependencies
-set(bitness 32)
-if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-  set(bitness 64)
-endif()
-
+target_compile_definitions(MXLib PUBLIC ${MX_DEFINES})
+target_include_directories(MXLib PUBLIC ${MX_INCLUDES})
+target_link_libraries(MXLib PUBLIC MSL RPN litehtml soloud ${FREETYPE_LIBRARY})
 set(MX_MODULES ${MX_MODULES} PARENT_SCOPE)
-set(MX_INCLUDES ${MX_INCLUDES} PARENT_SCOPE)
-set(MX_DEFINES ${MX_DEFINES} PARENT_SCOPE)
