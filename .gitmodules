@@ -15,4 +15,4 @@
 	url = https://github.com/litehtml/litehtml.git
 [submodule "deps/EmTools"]
 	path = deps/EmTools
-	url = https://github.com/Kaosumaru/EmTools
+	url = https://github.com/Kaosumaru/EmTools.git
