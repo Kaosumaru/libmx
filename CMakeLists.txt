@@ -41,6 +41,7 @@ if (EMSCRIPTEN)
   target_link_libraries(MXLib PUBLIC "--preload-file ${CMAKE_SOURCE_DIR}/res@/res")
 
   #EmTools
+  set(EM_BINARY_NAME "${EM_BINARY_NAME}" PARENT_SCOPE)
   add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/EmTools" "${CMAKE_CURRENT_BINARY_DIR}/EmTools")
   target_link_libraries(MXLib PUBLIC EmTools)
 else(EMSCRIPTEN)
