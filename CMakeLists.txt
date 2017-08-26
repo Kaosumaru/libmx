@@ -39,6 +39,10 @@ if (EMSCRIPTEN)
   target_compile_options(MXLib PUBLIC "-s" "USE_SDL=2" "-s " "USE_FREETYPE=1" --use-preload-plugins)
   target_link_libraries(MXLib PUBLIC "-s USE_SDL=2" "-s USE_FREETYPE=1"  --use-preload-plugins)
   target_link_libraries(MXLib PUBLIC "--preload-file ${CMAKE_SOURCE_DIR}/res@/res")
+
+  #EmTools
+  add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/EmTools" "${CMAKE_CURRENT_BINARY_DIR}/EmTools")
+  target_link_libraries(MXLib PUBLIC EmTools)
 else(EMSCRIPTEN)
   find_package(SDL2 REQUIRED)
   find_package(OpenGL REQUIRED)
