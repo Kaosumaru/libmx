@@ -85,7 +85,7 @@ public:
 		return _randomActors.randomItem()->cloneSprite();
 	}
 
-	virtual ActorCreator::pointer clone() { return std::make_shared<RandomActorCreator>(*this); }
+	ActorCreator::pointer clone() override { return std::make_shared<RandomActorCreator>(*this); }
 
 	RandomActor _randomActors;
 };

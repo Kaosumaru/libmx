@@ -44,7 +44,7 @@ namespace MX
 		QueueCommand(LScriptObject& script) : CompositeCommand(script){}
 		QueueCommand(list<Command::pointer> &&c) : CompositeCommand(std::move(c)){}
 
-		bool operator () ()
+		bool operator()() override
 		{
 			while (!_commands.empty())
 			{
@@ -55,7 +55,7 @@ namespace MX
 			return false;
 		}
 
-		Command::pointer clone()
+		Command::pointer clone() override
 		{
 			return std::make_shared<QueueCommand>(*this);
 		}
@@ -70,7 +70,7 @@ namespace MX
 		LoopCommand(list<Command::pointer> &&c, int i) : _iterations(i+1), CompositeCommand(std::move(c)){}
 		LoopCommand(list<Command::pointer> &&c) : CompositeCommand(std::move(c)){}
 
-		virtual void Restart()
+		void Restart() override
 		{
 			if (_iterations > 0)
 				_iterations--;
@@ -79,7 +79,7 @@ namespace MX
 		}
 
 
-		bool operator () ()
+		bool operator()() override
 		{
 			if (_iterations == 0)
 				return false;
@@ -99,7 +99,7 @@ namespace MX
 			return true;
 		}
 
-		Command::pointer clone()
+		Command::pointer clone() override
 		{
 			return std::make_shared<LoopCommand>(*this);
 		}
@@ -117,7 +117,7 @@ namespace MX
 		SimultaneusCommand(list<Command::pointer> &&c) : CompositeCommand(std::move(c)) {}
 
 
-		bool operator () ()
+		bool operator()() override
 		{
 			auto it = _commands.begin();
 			while (it != _commands.end())
@@ -130,7 +130,7 @@ namespace MX
 			return !_commands.empty();
 		}
 
-		Command::pointer clone()
+		Command::pointer clone() override
 		{
 			return std::make_shared<SimultaneusCommand>(*this);
 		}
@@ -159,7 +159,7 @@ namespace MX
 	public:
 		typedef std::function<bool(void)> Function;
 		LambdaCommand(const Function &t) : _t(t) {}
-		bool operator()() { return _t(); }
+		bool operator()() override { return _t(); }
 
 		Command::pointer clone() override { return std::make_shared<LambdaCommand>(_t); }
 	protected:

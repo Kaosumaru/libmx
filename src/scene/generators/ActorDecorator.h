@@ -52,13 +52,13 @@ public:
 		script.load_property(onUnlink, "On.Unlink");
 	}
 
-	void DecorateActor(const std::shared_ptr<ScriptableSpriteActor> &actor)
+	void DecorateActor(const std::shared_ptr<ScriptableSpriteActor> &actor) override
 	{
 		actor->script.onRun += onRun;
 		actor->script.onLink += onLink;
 		actor->script.onUnlink += onUnlink;
 	}
-	ActorDecorator::pointer clone() 
+	ActorDecorator::pointer clone() override
 	{
 		auto col = std::make_shared<ActorDecoratorScripts>();
 		col->onRun += onRun;
@@ -83,7 +83,7 @@ public:
 		script.load_property(geometry, "Geometry");
 	}
 
-	void DecorateActor(const std::shared_ptr<ScriptableSpriteActor> &actor)
+	void DecorateActor(const std::shared_ptr<ScriptableSpriteActor> &actor) override
 	{
 		actor->geometry.color = geometry.color;
 	}
@@ -102,7 +102,7 @@ public:
 		script.load_property(_offset, "Offset");
 	}
 
-	void DecorateActor(const std::shared_ptr<ScriptableSpriteActor> &actor);
+	void DecorateActor(const std::shared_ptr<ScriptableSpriteActor> &actor) override;
 
 	ActorDecorator::pointer clone() override { return std::make_shared<ActorDecoratorPositionInFactory>(*this); }
 

@@ -62,7 +62,7 @@ public:
 		{
 			bool active = (margin >= 0.0f && v >= margin) || (margin < 0.0f && v <= margin);
 			if (active)
-				_weight = abs(v);
+				_weight = std::abs(v);
 			SetState(active); 
 		}, this);
 	} 

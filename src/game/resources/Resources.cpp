@@ -40,7 +40,7 @@ namespace MX
 		auto image_pointer = Graphic::TextureImage::Create(path);
 		if ( !image_pointer )
 		{
-			auto res = Resources::loadImageFromSpriteSheet(image);
+			auto& res = Resources::loadImageFromSpriteSheet(image);
 			if ( !res )
 				std::cout << "Couldn't load " << image << std::endl;
 			return res;

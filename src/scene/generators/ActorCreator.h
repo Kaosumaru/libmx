@@ -127,7 +127,7 @@ public:
 		return actor;
 	}
 
-	virtual ActorCreator::pointer clone() { return std::make_shared<SpecificActorCreator>(*this); }
+	ActorCreator::pointer clone() override { return std::make_shared<SpecificActorCreator>(*this); }
 
 	using Entry = ActorCreatorEntry;
 	std::vector<std::pair<Entry, int>> _actors;

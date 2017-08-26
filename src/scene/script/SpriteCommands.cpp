@@ -24,7 +24,7 @@ public:
 		return ptr;
 	}
 
-	bool operator () () 
+	bool operator()() override
 	{
 		ScriptableSpriteActor::current().StopThenUnlink();
 		return false;
@@ -43,7 +43,7 @@ public:
 		return ptr;
 	}
 
-	bool operator () ()
+	bool operator()() override
 	{
 		if (ScriptableSpriteActor::current().empty())
 		{
@@ -75,7 +75,7 @@ public:
 		script.load_property(_color, "Color");
 	}
 
-	bool operator () () 
+	bool operator()() override
 	{
 		ScriptableSpriteActor::current().geometry.color = _color;
 		return false;
@@ -101,7 +101,7 @@ public:
 		script.load_property(_vec, "Position");
 	}
 
-	bool operator () () 
+	bool operator()() override
 	{
 		ScriptableSpriteActor::current().geometry.position = _vec;
 		return false;
@@ -138,7 +138,7 @@ public:
 		script.load_property(_color2, "Color2");
 	}
 
-	bool operator () () 
+	bool operator()() override
 	{
 		bool ret = WaitCommand::operator()();
 		ScriptableSpriteActor::current().geometry.color = Color::lerp(_color1, _color2, percent());
@@ -161,7 +161,7 @@ public:
 
 	}
 
-	bool operator () ()
+	bool operator()() override
 	{
 		auto &current = ScriptableSpriteActor::current();
 
@@ -297,7 +297,7 @@ public:
 		WaitCommand::Restart();
 	}
 	
-	bool operator () () 
+	bool operator()() override
 	{
 		if (_start)
 		{
@@ -337,7 +337,7 @@ public:
 		WaitCommand::Restart();
 	}
 	
-	bool operator () () 
+	bool operator()() override
 	{
 		if (_start)
 		{
@@ -374,7 +374,7 @@ public:
 		WaitCommand::Restart();
 	}
 
-	bool operator () ()
+	bool operator()() override
 	{
 		if (_start)
 		{
@@ -416,7 +416,7 @@ public:
 		script.load_property(_speed, "Speed");
 	}
 
-	bool operator () ()
+	bool operator()() override
 	{
 		ScriptableSpriteActor::current().geometry.position += _vec * _speed;
 		return true;
@@ -443,7 +443,7 @@ public:
 	}
 
 
-	bool operator () ()
+	bool operator()() override
 	{
 		ScriptableSpriteActor::current().geometry.angle += _speed;
 		return true;
@@ -470,7 +470,7 @@ public:
 		script.load_property(_angle, "Angle");
 	}
 
-	bool operator () ()
+	bool operator()() override
 	{
 		ScriptableSpriteActor::current().geometry.angle = Random::randomRange(_angle) * MX_2PI;
 		return false;
@@ -490,7 +490,7 @@ public:
 		script.load_property_child(_sound, "Sound");
 	}
 
-	bool operator () ()
+	bool operator()() override
 	{
 		if (_sound)
 			_sound->sound()->Play();
@@ -525,7 +525,7 @@ public:
 
     }
 
-	bool operator () ()
+	bool operator()() override
 	{
 		auto ptr = _ptr.lock();
 		if (!ptr || !ptr->linked())
@@ -570,7 +570,7 @@ public:
 
     }
 	
-	bool operator () ()
+	bool operator()() override
 	{
 		if (GlueToCommand::operator()())
 		{
@@ -619,7 +619,7 @@ public:
 		_length = deltaVector.length();
     }
 	
-	bool operator () ()
+	bool operator()() override
 	{
 		auto ptr = _ptr.lock();
 		if (!ptr || !ptr->linked())
@@ -664,7 +664,7 @@ public:
 		script.load_property_child(_event, "Event");
 	}
 
-	bool operator () ()
+	bool operator()() override
 	{
 		if (_event)
 			_event->Do();

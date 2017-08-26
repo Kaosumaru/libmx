@@ -95,9 +95,9 @@ namespace MX
         {
             out.Clear();
 
-            if (out._event = obj->to_object<Event>())
+            if ((out._event = obj->to_object<Event>()))
                 return true;
-            if (out._generic_object = obj->to_object<MX::ScriptObject>())
+            if ((out._generic_object = obj->to_object<MX::ScriptObject>()))
                 return true;
             return true;
         }
