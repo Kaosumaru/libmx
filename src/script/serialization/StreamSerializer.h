@@ -11,6 +11,15 @@ namespace MX
 {
 	namespace Serialization
 	{
+		namespace
+		{
+			template<typename Stream>
+			void AddPathToStream(Stream &ss, Node& n)
+			{
+				n.ApplyPath([&](const std::string& s, int index) { ss << s; if (index>=0) ss << index; });
+			}
+		}
+
 		class OutputStreamSerializer : public Serializer
 		{
 		public:
@@ -28,7 +37,7 @@ namespace MX
 			template<typename T>
 			void GenericSync(Node& n, const T &v)
 			{
-				n.ApplyPath([&](const std::string& s) { _stream << s; });
+				AddPathToStream(_stream, n);
 				_stream << ": ";
 				_stream << v;
 				_stream << "\r\n";
@@ -76,7 +85,7 @@ namespace MX
 			{
 				static std::string v;
 				std::stringstream ss;
-				n.ApplyPath([&](const std::string& s) { ss << s; });
+				AddPathToStream(ss, n);
 				auto it = _map.find(ss.str());
 				if (it == _map.end()) return v;
 				return it->second;

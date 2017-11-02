@@ -10,12 +10,18 @@ namespace MX
 		{
 		public:
 			Node() {}
-			Node(const std::string& path) : _path(path) {}
-			Node(Node* parent, const std::string& path) : _parent(parent), _path(path) {}
+			Node(const std::string& id) : _id(id) {}
+			Node(Node* parent, const std::string& id) : _parent(parent), _id(id) {}
+			Node(Node* parent, int index) : _parent(parent), _index(index) {}
 
 			Node operator() (const std::string& path)
 			{
 				return { this, path };
+			}
+
+			Node operator() (int index)
+			{
+				return { this, index };
 			}
 
 			template<typename T>
@@ -40,9 +46,9 @@ namespace MX
 				if (_parent)
 				{
 					_parent->ApplyPath(cb);
-					cb(".");
+					cb(".", _index);
 				}
-				cb(_path);
+				cb(_id, _index);
 			}
 		protected:
 			Serializer& s()
@@ -51,7 +57,8 @@ namespace MX
 			}
 
 			Node* _parent = nullptr;
-			std::string _path;
+			int _index = -1;
+			std::string _id;
 		};
 
 		template<typename T>
