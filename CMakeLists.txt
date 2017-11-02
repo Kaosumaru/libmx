@@ -48,13 +48,15 @@ else(EMSCRIPTEN)
   find_package(SDL2 REQUIRED)
   find_package(OpenGL REQUIRED)
   find_package(Freetype REQUIRED)
+  find_package(GLEW REQUIRED)
 
-  set(MX_INCLUDES ${MX_INCLUDES} ${FREETYPE_INCLUDE_DIRS} ${SDL_INCLUDE_DIR})
-  target_link_libraries(MXLib PUBLIC ${SDL_LIBRARY}/SDL2.lib glew32.lib ${OPENGL_LIBRARIES} ${FREETYPE_LIBRARY})
+  set(MX_INCLUDES ${MX_INCLUDES} ${FREETYPE_INCLUDE_DIRS} ${SDL_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS})
+  target_link_libraries(MXLib PUBLIC ${SDL_LIBRARY}/SDL2.lib ${GLEW_LIBRARY} ${OPENGL_LIBRARIES} ${FREETYPE_LIBRARY})
 endif(EMSCRIPTEN)
 
 if (MSVC)
 	add_definitions( "/MP /W3 /D_CRT_SECURE_NO_WARNINGS /wd4005 /wd4996 /wd4503 /nologo" )
+    target_compile_options(MXLib PUBLIC "/std:c++17")
 endif(MSVC)
 
 
