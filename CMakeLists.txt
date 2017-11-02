@@ -21,8 +21,9 @@ add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/soloud" "${CMAKE_CURRENT_BINARY
 set(MX_INCLUDES ${MX_INCLUDES} ${RPN_Includes} ${CMAKE_CURRENT_LIST_DIR}/deps/MSL/MSL ${CMAKE_CURRENT_LIST_DIR}/deps/RPNParser/RPN ${CMAKE_CURRENT_LIST_DIR}/deps/litehtml)
 #deps
 
-project (MXLib)
-option (GAME_RELEASE "Build release?" FALSE)
+project(MXLib)
+option(GAME_RELEASE "Build release?" FALSE)
+option(EMSCRIPTEN_WASM "Webassebmly?" OFF)
 
 ADDFILES(source_list "${PROJECT_SOURCE_DIR}/src")
 add_library(MXLib ${source_list})
@@ -40,6 +41,11 @@ if (EMSCRIPTEN)
   target_link_libraries(MXLib PUBLIC "-s USE_SDL=2" "-s USE_FREETYPE=1"  --use-preload-plugins)
   target_link_libraries(MXLib PUBLIC "--preload-file ${CMAKE_SOURCE_DIR}/res@/res")
 
+  if (EMSCRIPTEN_WASM)
+    message("Building webassembly")
+    target_link_libraries(MXLib PUBLIC "-s WASM=1" )
+  endif(EMSCRIPTEN_WASM)
+  
   #EmTools
   set(EM_BINARY_NAME "${EM_BINARY_NAME}" PARENT_SCOPE)
   add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/EmTools" "${CMAKE_CURRENT_BINARY_DIR}/EmTools")
