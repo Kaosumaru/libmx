@@ -44,8 +44,9 @@ if (EMSCRIPTEN)
   if (EMSCRIPTEN_WASM)
     message("Building webassembly")
     target_link_libraries(MXLib PUBLIC "-s WASM=1" )
+  else (EMSCRIPTEN_WASM)
   endif(EMSCRIPTEN_WASM)
-  
+
   #EmTools
   set(EM_BINARY_NAME "${EM_BINARY_NAME}" PARENT_SCOPE)
   add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/EmTools" "${CMAKE_CURRENT_BINARY_DIR}/EmTools")
