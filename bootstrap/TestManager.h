@@ -16,6 +16,7 @@ public:
 
 
 	void AddSomething();
+    void Run() override;
 	void Draw(float x = 0.0f, float y = 0.0f);
 protected: 
     std::shared_ptr<struct CheatObject> _cheats;
