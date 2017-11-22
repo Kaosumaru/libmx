@@ -1,6 +1,6 @@
 #include "TestManager.h"
-#include "Game/Resources/Paths.h"
-#include "Game/Resources/Resources.h"
+#include "game/resources/Paths.h"
+#include "game/resources/Resources.h"
 #include "script/Script.h"
 #include "script/ScriptObject.h"
 #include "application/Window.h"
