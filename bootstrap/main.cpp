@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <iostream>
-#include "application/application.h"
-#include "application/window.h"
+#include "application/Application.h"
+#include "application/Window.h"
 #include "game/ScriptInitializer.h"
 #include "game/resources/Paths.h"
 #include "game/resources/Resources.h"
