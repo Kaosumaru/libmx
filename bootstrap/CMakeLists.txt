@@ -24,5 +24,8 @@ set(CMAKE_MODULE_PATH ${MX_MODULES} CACHE TYPE STRING FORCE)
 add_definitions("${MX_DEFINES}")
 include_directories(${PROJECT_SOURCE_DIR})
 
+target_compile_options(BootstrapProject PUBLIC "-s     " "TOTAL_MEMORY=134217728")
+target_link_libraries(BootstrapProject PUBLIC "-s TOTAL_MEMORY=134217728")
+
 add_executable(BootstrapProject main.cpp TestManager.cpp TestManager.h ${SRCS})
 target_link_libraries(BootstrapProject MXLib)
