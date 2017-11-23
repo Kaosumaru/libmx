@@ -23,6 +23,7 @@ using namespace MX;
 typedef std::chrono::high_resolution_clock Time;
 typedef std::chrono::milliseconds ms;
 typedef std::chrono::duration<float> fsec;
+#define TESTV
 
 namespace
 {
@@ -52,6 +53,12 @@ public:
         _speed = { Random::randomRange( std::make_pair( 0.0f, 10.0f ) ), Random::randomRange( std::make_pair( -5.0f, 5.0f ) ) };
     }
 
+    Bunny( Bunny&& b )
+    {
+        _image = b._image;
+        geometry = b.geometry;
+    }
+
     const std::shared_ptr<Graphic::TextureImage>& GetBunnyImage()
     {
         static std::shared_ptr<Graphic::TextureImage> image;
@@ -60,7 +67,7 @@ public:
     }
 
 
-    void Run() override
+    void Run()
     {
         geometry.position += _speed;
         _speed.y += gravity;
@@ -93,14 +100,33 @@ public:
         }
     }
 
+#ifdef TESTV
+    void Draw( float x, float y ) override
+    {
+        _image->DrawCentered( {}, geometry.position, geometry.scale, geometry.angle, geometry.color );
+    }
+#endif
+
 protected:
     glm::vec2 _speed;
 };
 
+
+std::vector<Bunny> bvec;
+
+
+
+
+
 void AddBunny( TestManager* m )
 {
+    
+#ifdef TESTV
+    bvec.emplace_back(   );
+#else
     auto bunny = std::make_shared<Bunny>();
     m->AddActor( bunny );
+#endif
     bcount++;
 }
 
@@ -182,10 +208,19 @@ void TestManager::Run()
     {
         AddBunnies( this, amount );
     }
+#ifdef TESTV
+    for( auto& bunny : bvec ) bunny.Run();
+#else
     MX::DisplaySceneTimer::Run();
+#endif
 }
 
 void TestManager::Draw(float x, float y)
 {
-    MX::DisplaySceneTimer::Draw(x, y);
+#ifdef TESTV
+    for( auto& bunny : bvec ) bunny.Draw(x, y);
+#else
+    MX::DisplaySceneTimer::Draw( x, y );
+#endif
+    
 }
