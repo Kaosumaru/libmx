@@ -16,10 +16,13 @@
 #include "script/ScriptClassParser.h"
 #include "utils/Random.h"
 #include <iostream>
-
+#include <chrono>
 
 using namespace MX;
 
+typedef std::chrono::high_resolution_clock Time;
+typedef std::chrono::milliseconds ms;
+typedef std::chrono::duration<float> fsec;
 
 namespace
 {
@@ -31,6 +34,10 @@ namespace
     int startBunnyCount = 10;
     int isAdding = false;
     int bcount = 0;
+
+    std::chrono::steady_clock::time_point t0;
+    int steps = 0;
+    int fps = 0;
 }
 
 class Bunny : public ImageSpriteActor
@@ -119,7 +126,7 @@ TestManager::TestManager() : DisplaySceneTimer(MX::Window::current().size())
 
     MX::Window::current().mouse()->on_specific_button_down[1].static_connect( []( auto& x ) { isAdding = true;  } );
     MX::Window::current().mouse()->on_specific_button_up[1].static_connect( []( auto& x ) { isAdding = false;  } );
-    MX::Window::current().mouse()->on_specific_button_up[3].static_connect( []( auto& x ) { std::cout << "Bunnies " << bcount << "\n";  } );
+    MX::Window::current().mouse()->on_specific_button_up[3].static_connect( []( auto& x ) { std::cout << "bunnies: " << bcount << " | fps: " << fps << "\n"; } );
 
 
 	reloadScripts();
@@ -143,21 +150,34 @@ void TestManager::AddSomething()
 
 void TestManager::clearReloadScripts()
 {
-#ifdef WIP
-	MX::Resources::get().Clear();
-#endif
-	reloadScripts();
+    AddBunnies( this, 200000 );
 }
 
 void TestManager::reloadScripts()
 {
-
-
+    std::cout << "bunnies: " << bcount << " | fps: " << fps << "\n";
 }
 
 
 void TestManager::Run()
 {
+    steps++;
+    if( !t0.time_since_epoch().count() )
+    {
+        t0 = std::chrono::high_resolution_clock::now();
+    }
+    else
+    {
+        auto t1 = std::chrono::high_resolution_clock::now();
+        fsec fs = t1 - t0;
+        if( fs.count() >= 1.f )
+        {
+            fps = steps / fs.count();
+            steps = 0;
+            t0 = t1;
+        }
+    }
+
     if( isAdding )
     {
         AddBunnies( this, amount );
@@ -169,6 +189,3 @@ void TestManager::Draw(float x, float y)
 {
     MX::DisplaySceneTimer::Draw(x, y);
 }
-
-
-

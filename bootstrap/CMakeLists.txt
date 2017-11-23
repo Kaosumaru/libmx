@@ -25,6 +25,9 @@ add_definitions("${MX_DEFINES}")
 include_directories(${PROJECT_SOURCE_DIR})
 
 add_executable(BootstrapProject main.cpp TestManager.cpp TestManager.h ${SRCS})
-target_compile_options(BootstrapProject PUBLIC "-s     " "TOTAL_MEMORY=134217728")
-target_link_libraries(BootstrapProject PUBLIC "-s TOTAL_MEMORY=134217728")
 target_link_libraries(BootstrapProject MXLib)
+
+if (EMSCRIPTEN)
+    target_compile_options(BootstrapProject PUBLIC "-s     " "TOTAL_MEMORY=134217728")
+    target_link_libraries(BootstrapProject PUBLIC "-s TOTAL_MEMORY=134217728")
+endif(EMSCRIPTEN)
