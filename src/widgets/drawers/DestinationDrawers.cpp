@@ -204,6 +204,21 @@ public:
 	}
 };
 
+class DebugDestinationDrawer : public DestinationDrawer
+{
+public:
+	using DestinationDrawer::DestinationDrawer;
+
+	void DrawBackground() override
+	{
+		if (!Context<Drawer::ContextData>::isCurrent())
+			return;
+		if (!Context<Drawer::ContextData>::current().drawDebugDrawers)
+			return;
+		DestinationDrawer::DrawBackground();
+	}
+};
+
 class ShiftDrawer : public DrawerWithChildren
 {
 public:
@@ -506,6 +521,9 @@ void DestinationDrawersInit::Init()
 {
 	ScriptClassParser::AddCreator(L"Clip", new OutsideScriptClassCreatorContructor<ClipDrawer>());
 	ScriptClassParser::AddCreator(L"Destination", new OutsideScriptClassCreatorContructor<DestinationDrawer>());
+	ScriptClassParser::AddCreator(L"DebugDestination", new OutsideScriptClassCreatorContructor<DebugDestinationDrawer>());
+	
+
     ScriptClassParser::AddCreator(L"Shift", new OutsideScriptClassCreatorContructor<ShiftDrawer>());
 	ScriptClassParser::AddCreator(L"Transform", new OutsideScriptClassCreatorContructor<TransformDrawer>());
 
