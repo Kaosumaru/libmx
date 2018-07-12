@@ -50,6 +50,11 @@ void WidgetScriptBinding::onReload()
 		return ScopeSingleton<TextData>::current().actualWidth();
 	});
 
+	script.SetPairFunctor("Widget.Text.Height", []()-> float
+	{
+		return ScopeSingleton<TextData>::current().actualHeight();
+	});
+
 
 	RPN::Functions::AddLambda("Time.Current", []() { return (float)Time::Timer::current().total_seconds(); });
 }

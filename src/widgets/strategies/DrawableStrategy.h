@@ -52,6 +52,14 @@ public:
 			return tex->Width();
 		return 0;
 	}
+
+	unsigned actualHeight()
+	{
+		auto tex = textImage();
+		if (tex)
+			return tex->Height();
+		return 0;
+	}
 protected:
 	void SetTextImage(const std::shared_ptr<Graphic::Image>& image) { _textImage = image; _dirty = false; }
 

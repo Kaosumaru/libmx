@@ -14,7 +14,8 @@ class ScriptLayouterList : public ScriptLayouterBase
 public:
 	ScriptLayouterList(MX::LScriptObject& script) : ScriptLayouterBase(script)
 	{
-		script.load_property(_spacing, "Spacing");		
+		script.load_property(_spacing, "Spacing");
+		script.load_property(_fill, "Fill");
 	}
 
 	void LayoutWidget(const std::string& name, const std::shared_ptr<Widget> &widget) override
@@ -68,10 +69,22 @@ protected:
 			auto &widget = pair.second;
 			auto minSize = widget->minDimensions();
 
-			MX::Rectangle r = MX::Rectangle::fromWH(_horizontal ? mainDimensionOffset : 0.0f, _horizontal ? 0.0f : mainDimensionOffset, minSize.x, minSize.y);
+			auto w = minSize.x;
+			auto h = minSize.y;
+
+			if (_fill)
+			{
+				if (_horizontal)
+					h = Context<ScriptLayouterWidget>::current().dimensionsInside().y;
+				else
+					w = Context<ScriptLayouterWidget>::current().dimensionsInside().x;
+			}
+
+			MX::Rectangle r = MX::Rectangle::fromWH(_horizontal ? mainDimensionOffset : 0.0f, _horizontal ? 0.0f : mainDimensionOffset, w, h);
 			f(widget, r);
 
-			mainDimensionOffset += _horizontal ? minSize.x : minSize.y;
+			mainDimensionOffset += _horizontal ? widget->Width() : widget->Height();
+			//TODO fix for fill
 			secondaryDimensionMax = std::max(secondaryDimensionMax, _horizontal ? minSize.y : minSize.x);
 		}
 		if (_horizontal)
@@ -82,6 +95,7 @@ protected:
 
 	bool _horizontal = true;
 	float _spacing = 0;
+	bool _fill = false;
 };
 
 
