@@ -401,10 +401,10 @@ void ScriptLayouterWidget::clipSize(float &width, float &height)
 {
 	auto guard = Context<Widget>::Lock(this);
 	auto guard2 = Context<ScriptLayouterWidget>::Lock(this);
-	if (_drawer)
-		_drawer->clipSize(width, height);
 	if (_layouter)
 		_layouter->clipSize(width, height);
+	if (_drawer)
+		_drawer->clipSize(width, height);
 }
 
 
