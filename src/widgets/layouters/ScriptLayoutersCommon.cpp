@@ -18,6 +18,11 @@ public:
 		script.load_property(_fill, "Fill");
 	}
 
+	void OnLinkedToWidget() override
+	{
+		ScriptLayouterBase::OnLinkedToWidget();
+	}
+
 	void LayoutWidget(const std::string& name, const std::shared_ptr<Widget> &widget) override
 	{
 		Context<ScriptLayouterWidget>::current().InvalidateLayout();

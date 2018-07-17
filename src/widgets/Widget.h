@@ -80,6 +80,7 @@ public:
 	void SetVerticalScroll(float y);
 	void SetHorizontalScroll(float x);
 	const glm::vec2& scroll() { return _scroll; }
+	MX::Rectangle scrollViewport() { return MX::Rectangle::fromWH(scroll().x, scroll().y, dimensionsInside().x, dimensionsInside().y); }
 
 	
 	void AddStrategy(const Strategy::Strategy::pointer& strategy);
@@ -88,6 +89,10 @@ public:
 
 	void SetMargins(const MX::Margins &margins);
 	const MX::Margins &margins() { return _margins; }
+
+	void ResetContentBounds() { _contentBounds = MX::Rectangle {}; }
+	void SetContentBounds(const MX::Rectangle &bounds) { _contentBounds = bounds; }
+	const MX::Rectangle &contentBounds() { return _contentBounds; }
 	
 	const auto& shape() { return _shapePolicy.shape(); }
 	PropertyMap &properties() { return _properties; }
@@ -196,7 +201,7 @@ protected:
 
 	MX::Margins     _margins;        // _margins - interpreted by layouter (and helper dimensionsInside)
 	glm::vec2       _scroll;         // scroll offset
-	MX::Rectangle   _childrenBounds; // calculated by layouter!
+	MX::Rectangle   _contentBounds; // calculated by layouter!
 
 	PropertyMap _properties;
 

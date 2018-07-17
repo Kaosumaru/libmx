@@ -17,6 +17,7 @@ void ScriptLayouter::ChangeInnerDimension(const glm::vec2& size)
 
 	auto &margins = widget.margins();
 
+	widget.SetContentBounds(MX::Rectangle{margins.left, margins.top, margins.left + size.x,margins.top + size.y});
 	widget.SetSize(size.x + margins.hMargins(), size.y + margins.vMargins());
 	widget.NotifyParentAboutSizeUpdate();
 }
@@ -314,6 +315,7 @@ void ScriptLayouterWidget::SetLayouter(const ScriptLayouter::pointer &layouter)
 	if (_layouter == layouter)
 		return;
 	RemoveLayouterWidgets();
+	ResetContentBounds();
 	_layouter = layouter;
 
 	InvalidateLayout();
