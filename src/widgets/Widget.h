@@ -60,10 +60,10 @@ public:
 
 	glm::vec2 position();
 	glm::vec2 relativePosition(); //position relative to parent
-	float Width() override { return _width; }
-	float Height() override { return _height; }
-	glm::vec2 dimensions() { return{ (float)Width(), (float)Height() }; }
-	glm::vec2 dimensionsInside() { return{ (float)Width() - _margins.hMargins(), (float)Height() - _margins.vMargins() }; }
+	float Width() override { return _dimensions.x; }
+	float Height() override { return _dimensions.y; }
+	glm::vec2 dimensions() { return _dimensions; }
+	glm::vec2 dimensionsInside() { return{ Width() - _margins.hMargins(), Height() - _margins.vMargins() }; }
 
 	virtual glm::vec2 minDimensions();
 	virtual glm::vec2 maxDimensions();
@@ -179,29 +179,29 @@ protected:
 	void OnLinkedToScene() override;
 	void OnUnlinkedFromScene() override;
 
-	float _width = 0.0f;
-	float _height = 0.0f;
+	glm::vec2 _dimensions;
     int   _zValue = 0;
 
-	std::shared_ptr<Drawer> _drawer;
+	std::shared_ptr<Drawer> _drawer; // current drawer - object/script which handles visual representation of this widget
 #ifdef _DEBUG
 	int                     _drawerVersion = 0;
 	int                     _debugID = -1;
 #endif
 
-	StrongList<Widget> _subWidgets;
-	std::vector<Strategy::Strategy::pointer> _strategies;
+	StrongList<Widget> _subWidgets;  // children
+	std::vector<Strategy::Strategy::pointer> _strategies;  // strategies - components providing logic (autoscroll, etc) or data (text, images for drawers)
 	std::vector<Strategy::Strategy*> _runnableStrategies;
 	std::vector<Strategy::Strategy*> _drawableStrategies;
 	std::vector<Strategy::Strategy*> _staticStrategies;
 
-	MX::Margins _margins;
-	glm::vec2   _scroll;
+	MX::Margins     _margins;        // _margins - interpreted by layouter (and helper dimensionsInside)
+	glm::vec2       _scroll;         // scroll offset
+	MX::Rectangle   _childrenBounds; // calculated by layouter!
 
 	PropertyMap _properties;
 
-	WidgetTransform       _transform;
-	ShapePolicyController _shapePolicy;
+	WidgetTransform       _transform;   // transformation matrix
+	ShapePolicyController _shapePolicy; // transformation matrix
 
 	int                   _requestedInteraction = 0;
 

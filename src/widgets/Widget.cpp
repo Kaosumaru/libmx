@@ -270,7 +270,7 @@ void MX::Widgets::Widget::SetDrawer(const Drawer::pointer& drawer)
 
 	if (_drawer->defaultMargins())
 		SetMargins(_drawer->defaultMargins().value());
-	if (_width == 0)
+	if (Width() == 0)
 	{
 		for (auto &strategy : _drawableStrategies)
 			strategy->BeforeDraw();
@@ -289,7 +289,7 @@ void MX::Widgets::Widget::SetDrawer(const Drawer::pointer& drawer)
 		
 
 
-	float width = _width, height = _height;
+	float width = Width(), height = Height();
 	clipSize(width, height);
 	SetSize(width, height);
 
@@ -445,14 +445,14 @@ void MX::Widgets::Widget::SetPosition(float x, float y, float width, float heigh
 {
 	clipSize(width, height);
 
-	if (_width == width && _height == height)
+	if (Width() == width && Height() == height)
 	{
 		SetPosition(x, y);
 		return;
 	}
 
-	_width = std::round(width);
-	_height = std::round(height);
+	_dimensions.x = std::round(width);
+	_dimensions.y = std::round(height);
 	if (!SetPosition(x, y))
 		_shapePolicy.OnMoved(*this);
 	OnSizeChanged();
@@ -463,11 +463,11 @@ void MX::Widgets::Widget::SetSize(float width, float height)
 {
 	clipSize(width, height);
 
-	if (_width == width && _height == height)
+	if (Width() == width && Height() == height)
 		return;
 
-    _width = std::round(width);
-    _height = std::round(height);
+	_dimensions.x = std::round(width);
+	_dimensions.y = std::round(height);
 	_shapePolicy.OnMoved(*this);
 	OnSizeChanged();
 }
@@ -502,7 +502,7 @@ void MX::Widgets::Widget::clipSize(float &width, float &height)
 
 void MX::Widgets::Widget::OnSizeChanged()
 {
-	on_size_changed(_width, _height);
+	on_size_changed(Width(), Height());
 	OnAreaInsideChanged();
 }
 

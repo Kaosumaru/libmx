@@ -26,7 +26,7 @@ void StackWidget::PushWidget(const std::shared_ptr<Widget> &widget)
 	}
 
 	_stackSize++;
-	widget->SetSize(_width, _height);
+	widget->SetSize(Width(), Height());
 	AddWidget(widget);
 	_top = widget;
 	onTopWidgetChanged(widget);
@@ -89,7 +89,7 @@ void StackWidget::ReplaceTopWidget(const std::shared_ptr<Widget> &widget)
 	if (last)
 		last->Unlink();
 
-	widget->SetSize(_width, _height);
+	widget->SetSize(Width(), Height());
 	AddWidget(widget);
 	_top = widget;
 	onTopWidgetChanged(widget);
@@ -104,7 +104,7 @@ void StackWidget::OnAreaInsideChanged()
 		auto it = _subWidgets.begin();
 		while (it != _subWidgets.end())
 		{
-			(*it)->SetSize(_width, _height);
+			(*it)->SetSize(Width(), Height());
 			_subWidgets.temp_advance(it);
 		}
 	}
