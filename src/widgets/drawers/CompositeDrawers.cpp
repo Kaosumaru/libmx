@@ -40,6 +40,8 @@ CompositeDrawer::CompositeDrawer(LScriptObject& script)
 
 	script.load_property(_shapePolicy, "Shape");
 	script.load_property(_properties, "Properties");
+	script.load_property(_defaultSizeDrawers, "DefaultSize.Drawers");
+	script.load_property(_clipSizeDrawers, "ClipSize.Drawers");
 }
 
 std::unique_ptr<ShapePolicy> CompositeDrawer::defaultShapePolicy() 
@@ -53,6 +55,12 @@ std::unique_ptr<ShapePolicy> CompositeDrawer::defaultShapePolicy()
 
 void CompositeDrawer::clipSize(float &width, float &height)
 {
+	for (auto &drawer : _clipSizeDrawers)
+	{
+		drawer->DrawBackground();
+		drawer->clipSize(width, height);
+	}
+
 	if (width < _minSize.first)
 		width = _minSize.first;
 	if (height < _minSize.second)

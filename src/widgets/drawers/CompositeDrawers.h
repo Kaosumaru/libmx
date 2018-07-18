@@ -25,6 +25,14 @@ namespace Widgets
 		
 		stx::optional<glm::vec2> defaultSize() override 
 		{ 
+			for (auto& drawer : _defaultSizeDrawers)
+			{
+				drawer->DrawBackground();
+				auto result = drawer->defaultSize();
+				if (result)
+					return result;
+			}
+
 			if (!_defaultSize)
 				return stx::optional<glm::vec2>{};
 			return glm::vec2{ _defaultSize->first, _defaultSize->second };
@@ -44,6 +52,10 @@ namespace Widgets
 		std::shared_ptr<ShapePolicy> _shapePolicy;
 		stx::optional<MX::Margins> _optionalMargins;
 		stx::optional<SizeType> _defaultSize;
+
+		using DrawerList = std::vector<std::shared_ptr<Widgets::Drawer>>;
+		DrawerList _defaultSizeDrawers;
+		DrawerList _clipSizeDrawers;
 	};
 
 	class CompositeLayouterDrawer : public CompositeDrawer
