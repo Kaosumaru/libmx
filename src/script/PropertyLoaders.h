@@ -400,6 +400,11 @@ namespace MX
 				script.load_property(size, "Size");
 				script.load_property(face, "Face");
 				out = MX::Graphic::Font::Create(name, size, face);
+
+				if (out && script.load_property(name, "NameBold"))
+				{
+					out->ReloadFaceBold(name);
+				}
 				return true;
 			}
 			return false;

@@ -44,54 +44,57 @@ public:
 	{
 		_defaultFont = font;
 	}
+
+	void SetDefaultFontBold(const std::shared_ptr<Graphic::Face> &font)
+	{
+		_defaultFontBold = font;
+	}
 protected:
 	std::shared_ptr<Graphic::Face> _defaultFont;
+	std::shared_ptr<Graphic::Face> _defaultFontBold;
 };
 
 class ft_html_container_font : public virtual ft_html_container_base
 {
 public:
 
+	auto& fontForWeight(int weight)
+	{
+		if (weight > 400 && _defaultFontBold)
+			return _defaultFontBold;
+		return _defaultFont;
+	}
 
 	uint_ptr create_font(const tchar_t* faceName, int size, int weight, font_style italic, unsigned int decoration, litehtml::font_metrics* fm) override
 	{
 		static std::wstring_convert<std::codecvt_utf8<wchar_t>> convert;
-		//cairo_font_face_t* fnt = cairo_toy_font_face_create(, CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
-        auto font = _defaultFont;
-#ifdef WIPFONT
-		auto fnt = CairoFontManager::get().getFont(faceName, size, weight, italic == fontStyleItalic);
-
-
-		fm->ascent = fnt->ext().ascent;
-		fm->descent = fnt->ext().descent;
-		fm->height = fnt->ext().height;
-		fm->x_height = fnt->x_ext().height;
-		fm->draw_spaces = false;
-#endif
+		auto font = fontForWeight(weight);
         fm->ascent = font->X_height()-font->x_height();
 		fm->descent = -font->descender();
 		fm->height = font->X_height()-font->descender();
 		fm->x_height = font->x_height();
 		fm->draw_spaces = false;
 
-		return (uint_ptr)0;
+		return (uint_ptr)weight;
 	}
 
 	void delete_font(uint_ptr hFont) override
 	{
-		//cairo_font_face_destroy((cairo_font_face_t*)hFont);
+		//TODO
 	}
 
 	int	text_width(const tchar_t* text, uint_ptr hFont) override
 	{
-        auto font = _defaultFont;
+		int weight = (int)hFont;
+        auto font = fontForWeight(weight);
         return Graphic::FreetypeUtils::measureLine(font, text);
 	}
 
 	void draw_text(uint_ptr hdc, const tchar_t* text, uint_ptr hFont, litehtml::web_color color, const litehtml::position& pos) override
 	{
         FT_Vector     pen = { pos.x, pos.y };
-        auto font = _defaultFont;
+		int weight = (int)hFont;
+        auto font = fontForWeight(weight);
         Graphic::SurfaceRGBA &surface = *((Graphic::SurfaceRGBA*)hdc);
 
         font->draw_text( text, pen, [&](int x, int y, uint8_t p) 
@@ -241,6 +244,8 @@ Graphic::TextureImage::pointer HTMLRendererFreetype::DrawOnBitmap(const std::wst
     ft_html_container painter;
 	if (ftFace)
 		painter.SetDefaultFont(ftFace);
+	if (defaultFont && defaultFont->faceBold())
+		painter.SetDefaultFontBold(defaultFont->faceBold());
 
 	litehtml::context ctx;
 	ctx.load_master_stylesheet(HTMLUtils::mxmaster_css().c_str());

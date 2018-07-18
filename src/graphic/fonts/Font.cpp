@@ -40,6 +40,15 @@ std::shared_ptr<TextureImage> Font::DrawTextOnBitmap(const std::wstring &str)
 	return FreetypeUtils::drawLine(_ftFace, str);
 }
 
+void Font::ReloadFace(const std::string& path)
+{
+	_ftFace = Face::Create(Paths::get().pathToResource(path), _size);
+}
+void Font::ReloadFaceBold(const std::string& path)
+{
+	_ftFaceBold = Face::Create(Paths::get().pathToResource(path), _size);
+}
+
 bool Font::empty()
 {
 	return !_ftFace;

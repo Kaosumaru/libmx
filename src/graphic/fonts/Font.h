@@ -28,11 +28,16 @@ namespace Graphic
 		const auto& path() { return _path; }
 		const auto& face_name() { return _face_name; }
 		const auto& face() { return _ftFace; }
+		const auto& faceBold() { return _ftFaceBold; }
+
+		void ReloadFace(const std::string& path);
+		void ReloadFaceBold(const std::string& path);
 	protected:
 		std::string _face_name;
 		std::string _path;
 		float _size = 16.0f;
 		std::shared_ptr<Face> _ftFace;
+		std::shared_ptr<Face> _ftFaceBold;
 	};
 }
 }
