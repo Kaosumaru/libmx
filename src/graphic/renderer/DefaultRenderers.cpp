@@ -26,12 +26,12 @@ Graphic::Renderers::Renderers()
 
 
 	{
-		auto instance = std::make_shared<gl::ProgramInstance>(createProgram("shader/instanced.vertex", "shader/text.fragment"));
+		auto instance = std::make_shared<gl::ProgramInstance>(createProgram(defaultVertexShaderPath(), "shader/text.fragment"));
 		_textRenderer = std::make_shared<Graphic::InstancedRenderer>(instance);
 	}
     
 	{
-		auto instance = std::make_shared<gl::ProgramInstance>(createProgram("shader/instanced.vertex", "shader/basic.fragment"));
+		auto instance = std::make_shared<gl::ProgramInstance>(createProgram(defaultVertexShaderPath(), "shader/basic.fragment"));
 		_defaultRenderer = std::make_shared<Graphic::InstancedRenderer>(instance);
 	}
 }

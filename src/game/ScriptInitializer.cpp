@@ -6,12 +6,12 @@
 #include "game/resources/Resources.h"
 #include "widgets/drawers/Drawers.h"
 #ifdef WIP
-#include "widgets/drawers/ShaderDrawers.h"
 #include "graphic/effects/EffectActors.h"
 #endif
 #include "widgets/animations/Animations.h"
 #include "widgets/drawers/ProxyDrawers.h"
 #include "widgets/drawers/CompositeDrawers.h"
+#include "widgets/drawers/ShaderDrawers.h"
 #include "widgets/drawers/DestinationDrawers.h"
 #include "widgets/layouters/ScriptLayouters.h"
 #include "graphic/particles/Particles.h"
@@ -36,7 +36,6 @@ void MX::ScriptInitializer::Init()
 	MX::EventInit::Init();
 
 #ifdef WIP
-	MX::Widgets::ShaderDrawersInit::Init();
 	MX::Graphic::EffectActorsInit::Init();
 #endif
 
@@ -44,6 +43,7 @@ void MX::ScriptInitializer::Init()
 	MX::Widgets::DrawersInit::Init();
 	MX::Widgets::ProxyDrawersInit::Init();
 	MX::Widgets::CompositeDrawersInit::Init();
+	MX::Widgets::ShaderDrawersInit::Init();
 	MX::Widgets::DestinationDrawersInit::Init();
 	MX::Widgets::ShapePolicyInit::Init();
 	MX::Widgets::ScriptLayouterInit::Init();
