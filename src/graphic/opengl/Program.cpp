@@ -9,16 +9,16 @@ namespace MX
 {
 	namespace gl
 	{
-		Program createProgramFromFiles(const std::string& vertexShader, const std::string& fragmentShader, std::string& errorLog)
+		Program::pointer createProgramFromFiles(const std::string& vertexShader, const std::string& fragmentShader, std::string& errorLog)
 		{
 			std::string vertex = MX::Resources::get().openTextFile(vertexShader);
 			std::string fragment = MX::Resources::get().openTextFile(fragmentShader);
 			return createProgram(vertex, fragment, errorLog);
 		}
 
-		Program createProgram(const std::string& vertexShader, const std::string& fragmentShader, std::string& errorLog)
+		Program::pointer createProgram(const std::string& vertexShader, const std::string& fragmentShader, std::string& errorLog)
 		{
-			Program program;
+			Program::pointer program = std::make_shared<Program>();
 
 			Shader vertex;
 			if (!vertex.Compile(vertexShader, Shader::Type::Vertex))
@@ -34,12 +34,12 @@ namespace MX
 				return program;
 			}
 
-			program.AttachShader(vertex);
-			program.AttachShader(fragment);
+			program->AttachShader(vertex);
+			program->AttachShader(fragment);
 
-			if (!program.Link())
+			if (!program->Link())
 			{
-				errorLog = program.infoLog();
+				errorLog = program->infoLog();
 				return program;
 			}
 

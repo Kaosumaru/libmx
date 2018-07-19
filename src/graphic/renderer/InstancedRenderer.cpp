@@ -45,33 +45,25 @@ void InstancedRenderer::InitData()
 	}
 }
 
-InstancedRenderer::InstancedRenderer( const std::string& vertexPath, const std::string& fragmentPath )
+InstancedRenderer::InstancedRenderer(const std::shared_ptr<gl::ProgramInstance>& instance)
 {
+	_programInstance = instance;
 	InitData();
 	std::string out;
-	_program = gl::createProgramFromFiles(vertexPath, fragmentPath, out);
-	if (_program)
-	{
-		std::cout << "Shader compiled" << std::endl;
 
-		_mvp_uniform = _program.GetUniformLocation("MVP");
+	auto& program = _programInstance->program();
+	assert(program);
+	if (program)
+	{
+		_mvp_uniform = program->GetUniformLocation("MVP");
 		//shader->uniform("tex0", 0);
-		_vertices_attribute = _program.GetAttribLocation("squareVertices");
-		_position_attribute = _program.GetAttribLocation("xywh");
-		_color_attribute = _program.GetAttribLocation("instance_color");
-		_angle_attribute = _program.GetAttribLocation("instance_angle");
-		_uv_attribute = _program.GetAttribLocation("instance_uv");
-		_center_attribute = _program.GetAttribLocation("instance_center");
+		_vertices_attribute = program->GetAttribLocation("squareVertices");
+		_position_attribute = program->GetAttribLocation("xywh");
+		_color_attribute = program->GetAttribLocation("instance_color");
+		_angle_attribute = program->GetAttribLocation("instance_angle");
+		_uv_attribute = program->GetAttribLocation("instance_uv");
+		_center_attribute = program->GetAttribLocation("instance_center");
 	}
-	else
-	{
-		std::cout << "Shader error: " << out << std::endl;
-	}
-}
-
-InstancedRenderer::InstancedRenderer() : InstancedRenderer("shader/instanced.vertex", "shader/basic.fragment")
-{
-
 }
 
 void InstancedRenderer::Flush()
@@ -113,9 +105,11 @@ void InstancedRenderer::DrawBatched()
 
 	glBindTexture(GL_TEXTURE_2D, _lastTex);
 
-	_program.Use();
+	auto& program = _programInstance->program();
+
+	program->Use();
 	auto& mvp = MVP::mvp();
-	gl::Uniform(_mvp_uniform, mvp);
+	gl::SetUniform(_mvp_uniform, mvp);
 
 
 
@@ -232,4 +226,9 @@ void InstancedRenderer::OnEnded()
 {
 	DrawBatched();
 	_lastTex = -1;
+}
+
+void InstancedRenderer::OnSetAsCurrent()
+{
+	_programInstance->Use();
 }

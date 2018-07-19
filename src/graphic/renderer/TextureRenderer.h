@@ -42,11 +42,18 @@ protected:
 		if (old_target)
 		{
 			old_target->EndBatch();
+			old_target->OnNoLongerCurrent();
 		}
 
 		if (target)
+		{
+			target->OnSetAsCurrent();
 			target->StartBatch();
+		}
 	}
+
+	virtual void OnSetAsCurrent() {}
+	virtual void OnNoLongerCurrent() {}
 
 	virtual void OnStarted() {}
 	virtual void OnEnded() {}

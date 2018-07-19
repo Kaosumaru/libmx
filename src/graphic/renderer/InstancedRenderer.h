@@ -1,6 +1,6 @@
 #pragma once
 #include "TextureRenderer.h"
-#include "graphic/opengl/Program.h"
+#include "graphic/opengl/ProgramInstance.h"
 #include "graphic/opengl/Buffer.h"
 #include <string>
 
@@ -13,8 +13,7 @@ class InstancedRenderer : public TextureRenderer
 private:
 	void InitData();
 public:
-    InstancedRenderer(const std::string& vertexPath, const std::string& fragmentPath);
-	InstancedRenderer();
+    InstancedRenderer(const std::shared_ptr<gl::ProgramInstance>& instance);
 
 	void Flush() override;
 	void Draw(const gl::Texture& tex, const Rectangle& srcArea, const glm::vec2& pos, const glm::vec2& relativeCenter, const glm::vec2& size, const MX::Color& color, float angle) override;
@@ -23,6 +22,7 @@ protected:
 	void DrawBatched();
 	void OnStarted() override;
 	void OnEnded() override;
+	void OnSetAsCurrent() override;
 
 	const static int _maxInstances = 5000;
 	int _minInstancesToOptimize = 5;
@@ -52,7 +52,7 @@ protected:
 	static std::shared_ptr<StaticOGData> _d1, _d2;
 	static std::shared_ptr<StaticOGData> _data;
 
-	gl::Program _program;
+	std::shared_ptr<gl::ProgramInstance> _programInstance;
 
 	GLuint _mvp_uniform;
 	GLuint _vertices_attribute;

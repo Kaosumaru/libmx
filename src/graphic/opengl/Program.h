@@ -69,7 +69,7 @@ namespace gl
 		}
 	};
 
-	Program createProgramFromFiles(const std::string& vertexShader, const std::string& fragmentShader, std::string& errorLog);
-	Program createProgram(const std::string& vertexShader, const std::string& fragmentShader, std::string& errorLog);
+	Program::pointer createProgramFromFiles(const std::string& vertexShader, const std::string& fragmentShader, std::string& errorLog);
+	Program::pointer createProgram(const std::string& vertexShader, const std::string& fragmentShader, std::string& errorLog);
 }
 }
