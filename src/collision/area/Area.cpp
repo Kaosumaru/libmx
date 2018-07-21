@@ -133,7 +133,7 @@ void Area::ValidateExistingCollisions(Shape *shape, bool unlink)
 			return;
 		auto &other_shape = other;
 
-		if (!unlink && !shape->intersectsWith(*other_shape))
+		if (!unlink && shape->intersectsWith(*other_shape))
 			return;
 		//mark for erasure
 		data.value->onCollisionEnd();
