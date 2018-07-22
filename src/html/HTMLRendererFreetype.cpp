@@ -87,7 +87,8 @@ public:
 	{
 		int weight = (int)hFont;
         auto font = fontForWeight(weight);
-        return Graphic::FreetypeUtils::measureLine(font, text);
+		auto wtext = MX::stringToWide(text);
+        return Graphic::FreetypeUtils::measureLine(font, wtext);
 	}
 
 	void draw_text(uint_ptr hdc, const tchar_t* text, uint_ptr hFont, litehtml::web_color color, const litehtml::position& pos) override
@@ -97,7 +98,8 @@ public:
         auto font = fontForWeight(weight);
         Graphic::SurfaceRGBA &surface = *((Graphic::SurfaceRGBA*)hdc);
 
-        font->draw_text( text, pen, [&](int x, int y, uint8_t p) 
+		auto wtext = MX::stringToWide(text);
+        font->draw_text(wtext.c_str(), pen, [&](int x, int y, uint8_t p)
 	    {
 			if (!surface.contains(x, y))
 				return;

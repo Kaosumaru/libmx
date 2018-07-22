@@ -190,9 +190,6 @@ namespace Graphic
 		{
             auto glyph_index = FT_Get_Char_Index( _face, c);
 
-			std::cout << "Glyph for 0x" << std::hex << c << "(" << char(c) << ") is " << std::dec << glyph_index << "\n";
-
-
             int error = FT_Load_Glyph( _face, glyph_index, FT_LOAD_RENDER );
             if ( error != 0 )
                 return false;
