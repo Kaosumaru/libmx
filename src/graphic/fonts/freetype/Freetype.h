@@ -3,6 +3,7 @@
 #include<memory>
 #include<string>
 #include<map>
+#include<iostream>
 #include "glm/vec4.hpp"
 
 #include <ft2build.h>
@@ -188,6 +189,10 @@ namespace Graphic
 		bool LoadGlyph(FT_ULong c, Glyph &glyph)
 		{
             auto glyph_index = FT_Get_Char_Index( _face, c);
+#ifdef _DEBUG
+			std::cout << "Glyph for 0x" << std::hex << c << "(" << char(c) << ") is " << std::dec << glyph_index << "\n";
+#endif
+
             int error = FT_Load_Glyph( _face, glyph_index, FT_LOAD_RENDER );
             if ( error != 0 )
                 return false;
