@@ -12,7 +12,7 @@
 	url = https://github.com/tcbrindle/cpp17_headers.git
 [submodule "deps/litehtml"]
 	path = deps/litehtml
-	url = https://github.com/litehtml/litehtml.git
+	url = https://github.com/Kaosumaru/litehtml.git
 [submodule "deps/EmTools"]
 	path = deps/EmTools
 	url = https://github.com/Kaosumaru/EmTools.git
