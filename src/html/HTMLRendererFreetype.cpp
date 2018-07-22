@@ -247,8 +247,14 @@ Graphic::TextureImage::pointer HTMLRendererFreetype::DrawOnBitmap(const std::wst
 	if (defaultFont && defaultFont->faceBold())
 		painter.SetDefaultFontBold(defaultFont->faceBold());
 
-	litehtml::context ctx;
-	ctx.load_master_stylesheet(HTMLUtils::mxmaster_css().c_str());
+	static litehtml::context ctx;
+	static bool initialized = false;
+	if (!initialized)
+	{
+		initialized = true;
+		ctx.load_master_stylesheet(HTMLUtils::mxmaster_css().c_str());
+	}
+	
 
 #ifndef LITEHTML_UTF8
 	auto document = document::createFromString(str.c_str(), &painter, &ctx);
