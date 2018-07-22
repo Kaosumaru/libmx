@@ -29,7 +29,25 @@ namespace MX::gl
 		GLuint _location = -1;
     };
 
+    class ProgramInstance
+    {
+	public:
+		ProgramInstance() {}
+		ProgramInstance(const Program::pointer& program) : _program(program) {}
 
+		const Program::pointer& program() { return _program; }
+
+		void Use();
+		bool IsCurrent() { return s_current	== this; }
+    protected:
+		std::vector<UniformBase*> _uniforms;
+        Program::pointer _program;
+
+		static ProgramInstance* s_current;
+    };
+
+
+	
 	template<typename T>
 	class Uniform : public UniformBase
 	{
@@ -50,22 +68,4 @@ namespace MX::gl
 
 		T _value {};
 	};
-
-
-    class ProgramInstance
-    {
-	public:
-		ProgramInstance() {}
-		ProgramInstance(const Program::pointer& program) : _program(program) {}
-
-		const Program::pointer& program() { return _program; }
-
-		void Use();
-		bool IsCurrent() { return s_current	== this; }
-    protected:
-		std::vector<UniformBase*> _uniforms;
-        Program::pointer _program;
-
-		static ProgramInstance* s_current;
-    };
 }
