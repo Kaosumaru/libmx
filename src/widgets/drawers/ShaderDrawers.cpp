@@ -20,29 +20,13 @@ class CompositeLayouterDrawerShader : public CompositeLayouterDrawer
 public:
 	CompositeLayouterDrawerShader(LScriptObject& script) : CompositeLayouterDrawer(script)
 	{
-		// TODO refactor
-		auto createProgram = [](const char* vertexPath, const char* fragmentPath)
-		{
-			std::string out;
-			auto program = gl::createProgramFromFiles(vertexPath, fragmentPath, out);
-			if (program)
-			{
-				std::cout << "Shader compiled" << std::endl;
-			}
-			else
-			{
-				std::cout << "Shader error: " << out << std::endl;
-			}
-			return program;
-		};
-
 		std::string vertexPath, fragmentPath;
 		if (!script.load_property(vertexPath, "VertexPath"))
 			vertexPath = Graphic::Renderers::get().defaultVertexShaderPath();
 		script.load_property(fragmentPath, "FragmentPath");
 
-
-		_instance = std::make_shared<gl::ProgramInstance>(createProgram(vertexPath.c_str(), fragmentPath.c_str()));
+		auto program = Graphic::Renderers::get().createProgram(fragmentPath.c_str(), vertexPath.c_str());
+		_instance = std::make_shared<gl::ProgramInstance>();
 		if (_instance)
 			_renderer = std::make_shared<Graphic::InstancedRenderer>(_instance);
 	}
