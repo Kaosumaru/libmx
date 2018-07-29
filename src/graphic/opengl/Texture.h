@@ -14,8 +14,11 @@ namespace gl
 	public:
 		struct LoadInfo
 		{
+			bool generateMipMap = false;
 			int minFilter = GL_LINEAR;
 			int magFilter = GL_LINEAR;
+
+			void setupMipMap();
 		};
 
 		Texture(unsigned w, unsigned h, GLint target, GLint format, const GLvoid *data);

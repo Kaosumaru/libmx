@@ -5,6 +5,13 @@
 using namespace MX;
 using namespace MX::gl;
 
+void Texture::LoadInfo::setupMipMap()
+{
+	generateMipMap = true;
+	minFilter = GL_LINEAR_MIPMAP_LINEAR;
+	magFilter = GL_LINEAR_MIPMAP_NEAREST;
+}
+
 Texture::Texture(unsigned w, unsigned h, GLint target, GLint format, const GLvoid *data)
 {
 	constructTexture(w, h, target, format, data);
@@ -53,18 +60,6 @@ void Texture::constructTexture(unsigned w, unsigned h, GLint target, GLint forma
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-	if (Context<LoadInfo>::isCurrent())
-	{
-		auto &c = Context<LoadInfo>::current();
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, c.minFilter);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, c.magFilter);
-	}
-	else
-	{
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	}
-
 	glTexImage2D(GL_TEXTURE_2D,
 		0,
 		target,
@@ -74,6 +69,22 @@ void Texture::constructTexture(unsigned w, unsigned h, GLint target, GLint forma
 		format,
 		GL_UNSIGNED_BYTE,
 		data);
+
+	if (Context<LoadInfo>::isCurrent())
+	{
+		auto &c = Context<LoadInfo>::current();
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, c.minFilter);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, c.magFilter);
+		if (c.generateMipMap)
+		{
+			glGenerateMipmap(GL_TEXTURE_2D);
+		}
+	}
+	else
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	}
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
