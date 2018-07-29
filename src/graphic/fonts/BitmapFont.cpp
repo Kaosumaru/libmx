@@ -165,6 +165,20 @@ void BitmapFont::DrawText(const char* txt, glm::vec2 pos, float scale)
 	GenericDraw(func, txt, pos, scale);
 }
 
+void BitmapFont::QueueText(BitmapFontRenderQueue& queue, const char* txt, glm::vec2 pos, float scale)
+{
+	auto func = [&queue](auto c, const glm::vec2 &p, float scale)
+	{
+		BitmapFontRenderQueue::Item item;
+		item.glyph = c->image();
+		item.pos = p;
+		item.scale = scale;
+		queue.AddItem(item);
+	};
+
+	GenericDraw(func, txt, pos, scale);
+}
+
 int BitmapFont::MeasureText(const char* txt, float scale)
 {
 	auto func = [](auto c, const glm::vec2 &p, float scale)

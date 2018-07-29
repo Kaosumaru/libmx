@@ -135,6 +135,50 @@ namespace MX::Graphic
 		};
 	}
 
+	class BitmapFontRenderQueue
+	{
+	public:
+		struct Item
+		{
+			std::shared_ptr<MX::Graphic::TextureImage> glyph;
+			glm::vec2 pos;
+			float scale = 1.0f;
+			void Render()
+			{
+				glyph->DrawScaled({}, pos, {scale, scale});
+			}
+		};
+
+		using Queue = std::vector<Item>;
+
+		BitmapFontRenderQueue()
+		{
+
+		}
+
+		BitmapFontRenderQueue(const BitmapFontRenderQueue& other) : _queue(other._queue)
+		{
+		}
+
+		BitmapFontRenderQueue(BitmapFontRenderQueue&& other) : _queue(std::move(other._queue))
+		{
+		}
+
+		void AddItem(const Item& item)
+		{
+			_queue.push_back(item);
+		}
+
+		void Render()
+		{
+			for (auto& item : _queue)
+			{
+				item.Render();
+			}
+		}
+	protected:
+		Queue _queue;
+	};
 
 	class BitmapFont
 	{
@@ -173,6 +217,7 @@ namespace MX::Graphic
 		}
 
 		void DrawText(const char* txt, glm::vec2 pos, float scale = 1.0f);
+		void QueueText(BitmapFontRenderQueue& queue, const char* txt, glm::vec2 pos, float scale = 1.0f);
 		int MeasureText(const char* txt, float scale = 1.0f);
 
 	protected:
