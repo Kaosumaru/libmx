@@ -173,8 +173,33 @@ namespace MX::Graphic
 		}
 
 		void DrawText(const char* txt, glm::vec2 pos, float scale = 1.0f);
+		int MeasureText(const char* txt, float scale = 1.0f);
 
 	protected:
+		template<typename Func>
+		int GenericDraw(Func &f, const char* txt, glm::vec2 pos, float scale = 1.0f)
+		{
+			uint32_t prev = 0;
+			uint32_t current = 0;
+			while (*txt != 0)
+			{
+				current = *txt;
+				if (auto c = character(current))
+				{
+					auto& info = *(c->info());
+					auto p = pos;
+					p += glm::vec2(info.xoffset, info.yoffset) * scale;
+					p.x += kernings.kerning(prev, current) * scale;
+					f(c, p, scale);
+					pos.x += info.xadvance * scale;
+
+					prev = current;
+				}
+				txt++;
+			}
+			return pos.x;
+		}
+
 		void load_atlases();
 
 		std::string _basepath;

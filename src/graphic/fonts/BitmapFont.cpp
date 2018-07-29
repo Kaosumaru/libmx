@@ -157,26 +157,20 @@ void BitmapFont::load_atlases()
 
 void BitmapFont::DrawText(const char* txt, glm::vec2 pos, float scale)
 {
-	uint32_t prev = 0;
-	uint32_t current = 0;
-	while (*txt != 0)
+	auto func = [](auto c, const glm::vec2 &p, float scale)
 	{
-		current = *txt;
-		auto c = character(current);
-		if (c)
-		{
-			auto& info = *(c->info());
-			if (auto i = c->image())
-			{
-				auto p = pos;
-				p += glm::vec2(info.xoffset, info.yoffset) * scale;
-				p.x += kernings.kerning(prev, current) * scale;
-				i->DrawScaled({}, p, {scale, scale});
-				pos.x += info.xadvance * scale;
-			}
-			prev = current;
-		}
-		txt++;
-	}
+		c->image()->DrawScaled({}, p, {scale, scale});
+	};
+
+	GenericDraw(func, txt, pos, scale);
+}
+
+int BitmapFont::MeasureText(const char* txt, float scale)
+{
+	auto func = [](auto c, const glm::vec2 &p, float scale)
+	{
+		
+	};
+	return GenericDraw(func, txt, {}, scale);
 }
 
