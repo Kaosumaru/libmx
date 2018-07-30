@@ -26,7 +26,7 @@ public:
 		script.load_property(fragmentPath, "FragmentPath");
 
 		auto program = Graphic::Renderers::get().createProgram(fragmentPath.c_str(), vertexPath.c_str());
-		_instance = std::make_shared<gl::ProgramInstance>();
+		_instance = std::make_shared<gl::ProgramInstance>(program);
 		if (_instance)
 			_renderer = std::make_shared<Graphic::InstancedRenderer>(_instance);
 	}
