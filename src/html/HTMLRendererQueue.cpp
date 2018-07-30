@@ -51,35 +51,71 @@ namespace
 		{
 			_defaultFontBold = font;
 		}
+
+		struct FontInfo
+		{
+			Graphic::BitmapFont::pointer         _font;
+			float                                _scale;
+			int                                  _weight;
+			int                                  _size;
+			int                                  _id = 0;
+
+			void FillMetric(litehtml::font_metrics* fm)
+			{
+				auto X = _font->character('X');
+				auto x = _font->character('x');
+
+				fm->ascent = X->info()->height - x->info()->height;
+				fm->height = _font->baseline() + x->info()->height/2.; //fake
+				fm->descent = _font->baseline();
+				fm->x_height = x->info()->height;
+				fm->draw_spaces = false;
+
+				fm->ascent *= _scale;
+				fm->height *= _scale;
+				fm->descent *= _scale;
+				fm->x_height *= _scale;
+
+			}
+		};
+
+		auto& AddFont(const Graphic::BitmapFont::pointer& font, int weight, int size)
+		{
+			auto fontSize = font->size();
+			FontInfo info;
+			info._font = font;
+			info._weight = weight;
+			info._size = size;
+
+			info._scale = (float)size / (float)fontSize;
+			info._id = _fonts.size();
+			_fonts.push_back(info);
+
+			return _fonts.back();
+		}
+
+		auto& fontForID(uint_ptr hFont)
+		{
+			return _fonts[hFont];
+		}
 	protected:
-		std::shared_ptr<Graphic::BitmapFont> _defaultFont;
-		std::shared_ptr<Graphic::BitmapFont> _defaultFontBold;
+		Graphic::BitmapFont::pointer _defaultFont;
+		Graphic::BitmapFont::pointer _defaultFontBold;
+
+		std::vector<FontInfo> _fonts;
 	};
 
 	class ft_html_container_font : public virtual ft_html_container_base
 	{
 	public:
 
-		auto& fontForWeight(int weight)
-		{
-			if (weight > 400 && _defaultFontBold)
-				return _defaultFontBold;
-			return _defaultFont;
-		}
+
 
 		uint_ptr create_font(const tchar_t* faceName, int size, int weight, font_style italic, unsigned int decoration, litehtml::font_metrics* fm) override
 		{
-			auto font = fontForWeight(weight);
-			auto X = font->character('X');
-			auto x = font->character('x');
-
-			fm->ascent = X->info()->height - x->info()->height;
-			fm->height = font->baseline() + x->info()->height; //fake
-			fm->descent = font->baseline();
-			fm->x_height = x->info()->height;
-			fm->draw_spaces = false;
-
-			return (uint_ptr)weight;
+			auto& f = AddFont(_defaultFont, weight, size);
+			f.FillMetric(fm);
+			return f._id;
 		}
 
 		void delete_font(uint_ptr hFont) override
@@ -89,18 +125,17 @@ namespace
 
 		int	text_width(const tchar_t* text, uint_ptr hFont) override
 		{
-			int weight = (int)hFont;
-			auto font = fontForWeight(weight);
-			return font->MeasureText(text);
+			auto font = fontForID(hFont);
+			return font._font->MeasureText(text) * font._scale;
 		}
 
 		void draw_text(uint_ptr hdc, const tchar_t* text, uint_ptr hFont, litehtml::web_color color, const litehtml::position& pos) override
 		{
 			Graphic::RenderQueue &queue = *((Graphic::RenderQueue*)hdc);
 			int weight = (int)hFont;
-			auto font = fontForWeight(weight);
+			auto font = fontForID(hFont);
 
-			font->QueueText(queue, text, {pos.x, pos.y}, 1.0f);
+			font._font->QueueText(queue, text, {pos.x, pos.y}, font._scale);
 		}
 
 		int	pt_to_px(int pt) override
@@ -110,7 +145,7 @@ namespace
 
 		int	get_default_font_size() const override
 		{
-			return 16;
+			return 24;
 		}
 		const tchar_t* get_default_font_name() const override
 		{
