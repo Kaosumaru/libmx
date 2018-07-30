@@ -67,7 +67,6 @@ public:
 
 	uint_ptr create_font(const tchar_t* faceName, int size, int weight, font_style italic, unsigned int decoration, litehtml::font_metrics* fm) override
 	{
-		static std::wstring_convert<std::codecvt_utf8<wchar_t>> convert;
 		auto font = fontForWeight(weight);
         fm->ascent = font->X_height()-font->x_height();
 		fm->descent = -font->descender();
@@ -87,8 +86,7 @@ public:
 	{
 		int weight = (int)hFont;
         auto font = fontForWeight(weight);
-		auto wtext = MX::stringToWide(text);
-        return Graphic::FreetypeUtils::measureLine(font, wtext);
+        return Graphic::FreetypeUtils::measureLine(font, text);
 	}
 
 	void draw_text(uint_ptr hdc, const tchar_t* text, uint_ptr hFont, litehtml::web_color color, const litehtml::position& pos) override
@@ -98,8 +96,7 @@ public:
         auto font = fontForWeight(weight);
         Graphic::SurfaceRGBA &surface = *((Graphic::SurfaceRGBA*)hdc);
 
-		auto wtext = MX::stringToWide(text);
-        font->draw_text(wtext.c_str(), pen, [&](int x, int y, uint8_t p)
+        font->draw_text(text, pen, [&](int x, int y, uint8_t p)
 	    {
 			if (!surface.contains(x, y))
 				return;

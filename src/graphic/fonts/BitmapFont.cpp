@@ -155,6 +155,7 @@ void BitmapFont::load_atlases()
 	}
 }
 
+
 void BitmapFont::DrawText(const char* txt, glm::vec2 pos, float scale)
 {
 	auto func = [](auto c, const glm::vec2 &p, float scale)
@@ -164,6 +165,7 @@ void BitmapFont::DrawText(const char* txt, glm::vec2 pos, float scale)
 
 	GenericDraw(func, txt, pos, scale);
 }
+
 
 void BitmapFont::QueueText(BitmapFontRenderQueue& queue, const char* txt, glm::vec2 pos, float scale)
 {
@@ -184,6 +186,40 @@ int BitmapFont::MeasureText(const char* txt, float scale)
 	auto func = [](auto c, const glm::vec2 &p, float scale)
 	{
 		
+	};
+	return GenericDraw(func, txt, {}, scale);
+}
+
+void BitmapFont::DrawText(const wchar_t* txt, glm::vec2 pos, float scale)
+{
+	auto func = [](auto c, const glm::vec2 &p, float scale)
+	{
+		c->image()->DrawScaled({}, p, {scale, scale});
+	};
+
+	GenericDraw(func, txt, pos, scale);
+}
+
+
+void BitmapFont::QueueText(BitmapFontRenderQueue& queue, const wchar_t* txt, glm::vec2 pos, float scale)
+{
+	auto func = [&queue](auto c, const glm::vec2 &p, float scale)
+	{
+		BitmapFontRenderQueue::Item item;
+		item.glyph = c->image();
+		item.pos = p;
+		item.scale = scale;
+		queue.AddItem(item);
+	};
+
+	GenericDraw(func, txt, pos, scale);
+}
+
+int BitmapFont::MeasureText(const wchar_t* txt, float scale)
+{
+	auto func = [](auto c, const glm::vec2 &p, float scale)
+	{
+
 	};
 	return GenericDraw(func, txt, {}, scale);
 }

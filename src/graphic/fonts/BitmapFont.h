@@ -4,7 +4,7 @@
 #include <map>
 #include <fstream>
 #include "graphic/images/TextureImage.h"
-
+#include "utils/Utf8.h"
 
 namespace MX::Graphic
 {
@@ -220,16 +220,21 @@ namespace MX::Graphic
 		void QueueText(BitmapFontRenderQueue& queue, const char* txt, glm::vec2 pos, float scale = 1.0f);
 		int MeasureText(const char* txt, float scale = 1.0f);
 
+		void DrawText(const wchar_t* txt, glm::vec2 pos, float scale = 1.0f);
+		void QueueText(BitmapFontRenderQueue& queue, const wchar_t* txt, glm::vec2 pos, float scale = 1.0f);
+		int MeasureText(const wchar_t* txt, float scale = 1.0f);
+
 	protected:
-		template<typename Func>
-		int GenericDraw(Func &f, const char* txt, glm::vec2 pos, float scale = 1.0f)
+		template<typename Text, typename Func>
+		int GenericDraw(Func &f, const Text* txt, glm::vec2 pos, float scale = 1.0f)
 		{
 			uint32_t prev = 0;
-			uint32_t current = 0;
-			while (*txt != 0)
+			auto current = MX::utf8::next_character(txt);
+			while (current != 0)
 			{
-				current = *txt;
-				if (auto c = character(current))
+				auto c = character(current);
+				if (!c)  c = character('?');
+				if (c)
 				{
 					auto& info = *(c->info());
 					auto p = pos;
@@ -240,7 +245,7 @@ namespace MX::Graphic
 
 					prev = current;
 				}
-				txt++;
+				current = MX::utf8::next_character(txt);
 			}
 			return pos.x;
 		}

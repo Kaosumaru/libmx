@@ -5,6 +5,7 @@
 #include<map>
 #include<iostream>
 #include "glm/vec4.hpp"
+#include "utils/Utf8.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -127,10 +128,11 @@ namespace Graphic
 		template<typename Text,typename T>
 		int draw_text( const Text* text, FT_Vector pen, const T&& t )
 		{
-            FT_UInt       previous = 0;
-            while ( *text != 0 )
+            FT_UInt previous = 0;
+			auto current = MX::utf8::next_character(text);
+            while ( current != 0 )
             {
-			    auto& glyph = LoadCharCached( *text );
+			    auto& glyph = LoadCharCached(current);
 
                 if ( _hasKerning && previous && glyph._index )
                 {
@@ -146,7 +148,7 @@ namespace Graphic
 
 			    pen.x += advance_x >> 16;
                 previous = glyph._index;
-                text++;
+				current = MX::utf8::next_character(text);
             }
             return pen.x;
 		}
