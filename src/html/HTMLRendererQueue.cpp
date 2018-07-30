@@ -1,4 +1,4 @@
-#include "HTMLRendererFreetype.h"
+#include "HTMLRendererQueue.h"
 #include "graphic/images/Surface.h"
 #include "graphic/images/TextureImage.h"
 #include <memory>
@@ -15,7 +15,7 @@
 
 
 #include "graphic/opengl/Utils.h"
-#include "graphic/fonts/freetype/Freetype.h"
+
 
 
 using namespace MX;
@@ -42,18 +42,18 @@ namespace
 
 		}
 
-		void SetDefaultFont(const std::shared_ptr<Graphic::Face> &font)
+		void SetDefaultFont(const std::shared_ptr<Graphic::BitmapFont> &font)
 		{
 			_defaultFont = font;
 		}
 
-		void SetDefaultFontBold(const std::shared_ptr<Graphic::Face> &font)
+		void SetDefaultFontBold(const std::shared_ptr<Graphic::BitmapFont> &font)
 		{
 			_defaultFontBold = font;
 		}
 	protected:
-		std::shared_ptr<Graphic::Face> _defaultFont;
-		std::shared_ptr<Graphic::Face> _defaultFontBold;
+		std::shared_ptr<Graphic::BitmapFont> _defaultFont;
+		std::shared_ptr<Graphic::BitmapFont> _defaultFontBold;
 	};
 
 	class ft_html_container_font : public virtual ft_html_container_base
@@ -70,10 +70,13 @@ namespace
 		uint_ptr create_font(const tchar_t* faceName, int size, int weight, font_style italic, unsigned int decoration, litehtml::font_metrics* fm) override
 		{
 			auto font = fontForWeight(weight);
-			fm->ascent = font->X_height() - font->x_height();
-			fm->descent = -font->descender();
-			fm->height = font->X_height() - font->descender();
-			fm->x_height = font->x_height();
+			auto X = font->character('X');
+			auto x = font->character('x');
+
+			fm->ascent = X->info()->height - x->info()->height;
+			fm->height = font->baseline() + x->info()->height; //fake
+			fm->descent = font->baseline();
+			fm->x_height = x->info()->height;
 			fm->draw_spaces = false;
 
 			return (uint_ptr)weight;
@@ -88,26 +91,16 @@ namespace
 		{
 			int weight = (int)hFont;
 			auto font = fontForWeight(weight);
-			return Graphic::FreetypeUtils::measureLine(font, text);
+			return font->MeasureText(text);
 		}
 
 		void draw_text(uint_ptr hdc, const tchar_t* text, uint_ptr hFont, litehtml::web_color color, const litehtml::position& pos) override
 		{
-			FT_Vector     pen = {pos.x, pos.y};
+			Graphic::RenderQueue &queue = *((Graphic::RenderQueue*)hdc);
 			int weight = (int)hFont;
 			auto font = fontForWeight(weight);
-			Graphic::SurfaceRGBA &surface = *((Graphic::SurfaceRGBA*)hdc);
 
-			font->draw_text(text, pen, [&](int x, int y, uint8_t p)
-			{
-				if (!surface.contains(x, y))
-					return;
-				auto& out = surface.at(x, y);
-				out.r = 255;
-				out.g = 255;
-				out.b = 255;
-				out.a = p;
-			});
+			font->QueueText(queue, text, {pos.x, pos.y}, 1.0f);
 		}
 
 		int	pt_to_px(int pt) override
@@ -117,8 +110,6 @@ namespace
 
 		int	get_default_font_size() const override
 		{
-			if (_defaultFont)
-				return _defaultFont->size();
 			return 16;
 		}
 		const tchar_t* get_default_font_name() const override
@@ -237,7 +228,7 @@ namespace
 	};
 }
 
-Graphic::TextureImage::pointer HTMLRendererFreetype::DrawOnBitmap(const std::wstring &str, int width, const Graphic::Font::pointer& defaultFont)
+Graphic::RenderQueue HTMLRendererQueue::Render(const char* str, float width, const std::shared_ptr<Graphic::BitmapFont>& defaultFont)
 {
 	static litehtml::context ctx;
 	static bool initialized = false;
@@ -246,29 +237,23 @@ Graphic::TextureImage::pointer HTMLRendererFreetype::DrawOnBitmap(const std::wst
 		initialized = true;
 		ctx.load_master_stylesheet(HTMLUtils::mxmaster_css().c_str());
 	}
-	
+
 	ft_html_container painter;
 
 	//specific
-	auto tstr = wideToUTF(str);
-	auto ftFace = Graphic::Face::Create(Paths::get().pathToResource("font/arial.ttf"), 16);
-	if (defaultFont)
-		ftFace = defaultFont->face();
-	if (ftFace)
-		painter.SetDefaultFont(ftFace);
-	if (defaultFont && defaultFont->faceBold())
-		painter.SetDefaultFontBold(defaultFont->faceBold());
+	painter.SetDefaultFont(defaultFont);
 	//end
 
-	auto document = document::createFromString(tstr.c_str(), &painter, &ctx);
+	Graphic::RenderQueue queue;
+
+	auto document = document::createFromString(str, &painter, &ctx);
 	document->render(width);
 
-    int w = document->width(), h = document->height();
-    
-    Graphic::SurfaceRGBA surface(w, h);
+	int w = document->width(), h = document->height();
 
-    auto clip = litehtml::position(0, 0, w, h);
-    document->draw((uint_ptr)&surface, 0, 0, &clip);
+	auto clip = litehtml::position(0, 0, w, h);
+	document->draw((uint_ptr)&queue, 0, 0, &clip);
 
-    return Graphic::TextureImage::Create(surface);
+	
+	return queue;
 }

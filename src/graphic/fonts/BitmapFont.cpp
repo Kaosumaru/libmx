@@ -167,11 +167,11 @@ void BitmapFont::DrawText(const char* txt, glm::vec2 pos, float scale)
 }
 
 
-void BitmapFont::QueueText(BitmapFontRenderQueue& queue, const char* txt, glm::vec2 pos, float scale)
+void BitmapFont::QueueText(RenderQueue& queue, const char* txt, glm::vec2 pos, float scale)
 {
 	auto func = [&queue](auto c, const glm::vec2 &p, float scale)
 	{
-		BitmapFontRenderQueue::Item item;
+		RenderQueue::Item item;
 		item.glyph = c->image();
 		item.pos = p;
 		item.scale = scale;
@@ -201,11 +201,11 @@ void BitmapFont::DrawText(const wchar_t* txt, glm::vec2 pos, float scale)
 }
 
 
-void BitmapFont::QueueText(BitmapFontRenderQueue& queue, const wchar_t* txt, glm::vec2 pos, float scale)
+void BitmapFont::QueueText(RenderQueue& queue, const wchar_t* txt, glm::vec2 pos, float scale)
 {
 	auto func = [&queue](auto c, const glm::vec2 &p, float scale)
 	{
-		BitmapFontRenderQueue::Item item;
+		RenderQueue::Item item;
 		item.glyph = c->image();
 		item.pos = p;
 		item.scale = scale;

@@ -135,7 +135,7 @@ namespace MX::Graphic
 		};
 	}
 
-	class BitmapFontRenderQueue
+	class RenderQueue
 	{
 	public:
 		struct Item
@@ -151,18 +151,25 @@ namespace MX::Graphic
 
 		using Queue = std::vector<Item>;
 
-		BitmapFontRenderQueue()
+		RenderQueue()
 		{
 
 		}
 
-		BitmapFontRenderQueue(const BitmapFontRenderQueue& other) : _queue(other._queue)
+		RenderQueue(const RenderQueue& other) : _queue(other._queue)
 		{
 		}
 
-		BitmapFontRenderQueue(BitmapFontRenderQueue&& other) : _queue(std::move(other._queue))
+		RenderQueue(RenderQueue&& other) : _queue(std::move(other._queue))
 		{
 		}
+
+		RenderQueue& operator = (RenderQueue&& other)
+		{
+			_queue = std::move(other._queue);
+			return *this;
+		}
+
 
 		void AddItem(const Item& item)
 		{
@@ -217,13 +224,15 @@ namespace MX::Graphic
 		}
 
 		void DrawText(const char* txt, glm::vec2 pos, float scale = 1.0f);
-		void QueueText(BitmapFontRenderQueue& queue, const char* txt, glm::vec2 pos, float scale = 1.0f);
+		void QueueText(RenderQueue& queue, const char* txt, glm::vec2 pos, float scale = 1.0f);
 		int MeasureText(const char* txt, float scale = 1.0f);
 
 		void DrawText(const wchar_t* txt, glm::vec2 pos, float scale = 1.0f);
-		void QueueText(BitmapFontRenderQueue& queue, const wchar_t* txt, glm::vec2 pos, float scale = 1.0f);
+		void QueueText(RenderQueue& queue, const wchar_t* txt, glm::vec2 pos, float scale = 1.0f);
 		int MeasureText(const wchar_t* txt, float scale = 1.0f);
 
+		auto baseline() { return common.base; }
+		auto size() { return info.fontSize; }
 	protected:
 		template<typename Text, typename Func>
 		int GenericDraw(Func &f, const Text* txt, glm::vec2 pos, float scale = 1.0f)
