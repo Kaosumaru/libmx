@@ -14,7 +14,9 @@
 #include "script/class/ScriptImageClass.h"
 #include "script/class/ScriptAnimationClass.h"
 #include "stx/optional.hpp"
+#include "game/resources/Resources.h"
 #include "graphic/fonts/Font.h"
+#include "graphic/fonts/BitmapFont.h"
 #include "scene/sprites/SpriteActor.h"
 #include <array>
 
@@ -405,6 +407,44 @@ namespace MX
 				{
 					out->ReloadFaceBold(name);
 				}
+				return true;
+			}
+			return false;
+		}
+	};
+
+	template<>
+	struct PropertyLoader<MX::Graphic::BitmapFont::pointer>
+	{
+		using type = PropertyLoader_Custom;
+		static bool load(MX::Graphic::BitmapFont::pointer& out, const MX::Scriptable::Value &value)
+		{
+			ScriptObjectString script(value.fullPath());
+
+			std::string name;
+			if (script.load_property_child(name, "Name"))
+			{
+				out = Resources::get().loadBitmapFont(name);
+				return true;
+			}
+			return false;
+		}
+	};
+
+	template<>
+	struct PropertyLoader<MX::Graphic::BitmapFontSized::pointer>
+	{
+		using type = PropertyLoader_Custom;
+		static bool load(MX::Graphic::BitmapFontSized::pointer& out, const MX::Scriptable::Value &value)
+		{
+			ScriptObjectString script(value.fullPath());
+
+			std::string name;
+			float size = 10.0f;
+			if (script.load_property_child(name, "Name"))
+			{
+				script.load_property(size, "Size");
+				out = MX::Graphic::BitmapFontSized::Create(name, size);
 				return true;
 			}
 			return false;

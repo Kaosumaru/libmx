@@ -20,6 +20,7 @@ public:
 		script.load_property(_index, "Index");
 		script.load_property(_color, "Color");
 		script.load_property(_font, "Font");
+		script.load_property(_bitmapFont, "BitmapFont");
 		script.load_property(_width, "Width");
 		script.load_property(_pos, "Pos");
         script.load_property(_offset, "Offset");
@@ -28,6 +29,7 @@ public:
         script.load_property(_offset.y, "Offset.Y");
 
 		//TODO horrible hack to make TextDrawer Prototyping work
+#if 0
 		if (!_font)
 		{
 			std::string name;
@@ -41,6 +43,8 @@ public:
 				_font = MX::Graphic::Font::Create(name, size, face);
 			}
 		}
+#endif
+		
 
 		bool center = true;
 		if (script.load_property(center, "Center"))
@@ -62,6 +66,8 @@ public:
 
 			if (_font)
 				textData.SetFont(_font);
+			if (_bitmapFont)
+				textData.SetBitmapFont(_bitmapFont);
 
 			float width = -1.0f;
 
@@ -74,36 +80,44 @@ public:
 			else
 				textData.SetWidth(Destination::current().rectangle.width());
 
-			auto &image = textData.textImage();
-			if (!image)
-				return;
+
 			float x = Destination::current().x(), y = Destination::current().y();
 
 			MX::Rectangle source;
-			source.SetWidth(image->Width());
-			source.SetHeight(image->Height());
+			source.SetWidth(textData.actualWidth());
+			source.SetHeight(textData.actualHeight());
 
 			source.NumLayoutIn(Destination::current().rectangle, _pos);
-
-			MX::Color color = _color;
-			color.SetA(widget.geometry.color.a() * color.a());
-
-            source.Shift(_offset);
+			source.Shift(_offset);
 
 			//clip to int
 			float t;
 			source.Shift(-std::modf(source.x1, &t), -std::modf(source.y1, &t));
-			
-			if (textData.HTML())
+
+			MX::Color color = _color;
+			color.SetA(widget.geometry.color.a() * color.a());
+
+			if (textData.isBitmapFont())
 			{
-				image->DrawArea(source, color);
+				auto &renderQueue = textData.renderQueue();
+				renderQueue.Render({source.x1, source.y1}, color);
 			}
-            else
-            {
-                MX::Graphic::TextureRenderer::Context guard(Graphic::Renderers::get().textRenderer());
-                image->DrawArea(source, color);
-            }
-            
+			else
+			{
+				auto &image = textData.textImage();
+				if (!image)
+					return;
+
+				if (textData.HTML())
+				{
+					image->DrawArea(source, color);
+				}
+				else
+				{
+					MX::Graphic::TextureRenderer::Context guard(Graphic::Renderers::get().textRenderer());
+					image->DrawArea(source, color);
+				}
+			}
 				
 		}
 	}
@@ -114,6 +128,7 @@ protected:
 	int _pos = 0;
 	MX::ScriptableColor _color;
 	Graphic::Font::pointer _font;
+	Graphic::BitmapFontSized::pointer _bitmapFont;
 	Scriptable::Value::pointer _width;
     glm::vec2 _offset;
 };

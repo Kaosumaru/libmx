@@ -3,6 +3,7 @@
 #include "Strategy.h"
 #include "graphic/images/Image.h"
 #include "graphic/fonts/Font.h"
+#include "graphic/fonts/BitmapFont.h"
 #include "utils/SignalizingVariable.h"
 
 namespace MX
@@ -30,13 +31,12 @@ public:
 	void SetText(const std::wstring& text) { if (_text == text) return; _dirty = true; _text = text; }
 
 	const Graphic::Font::pointer& font() const { return _font; }
-	void SetFont(const Graphic::Font::pointer& font) { if (_font == font) return;  _dirty = true; _font = font; }
+	void SetFont(const Graphic::Font::pointer& font) { if (_font == font && !_bitmapFont) return;  _bitmapFont = nullptr;  _dirty = true; _font = font; }
+	void SetBitmapFont(const Graphic::BitmapFontSized::pointer& font) { if (_bitmapFont == font && !_font) return;  _font = nullptr;  _dirty = true; _bitmapFont = font; }
 
 	const unsigned width() const { return _width; }
 	void SetWidth(unsigned width) { if (_width == width) return; _dirty = true; _width = width; }
 
-
-	const std::shared_ptr<Graphic::Image>& textImage() { UpdateTextImage(); return _textImage; }
 
 	bool dirty() const { return _dirty; }
 
@@ -45,32 +45,28 @@ public:
 	void SetHTML(bool html) { if (_html == html) return; _html = html; _dirty = true; }
 	bool HTML() const { return _html; }
 
-	unsigned actualWidth() 
-	{ 
-		auto tex = textImage();
-		if (tex)
-			return tex->Width();
-		return 0;
-	}
+	unsigned actualWidth();
+	unsigned actualHeight();
 
-	unsigned actualHeight()
-	{
-		auto tex = textImage();
-		if (tex)
-			return tex->Height();
-		return 0;
-	}
+	bool isBitmapFont() { return _bitmapFont != nullptr; }
+	const std::shared_ptr<Graphic::Image>& textImage() { UpdateTextImage(); return _textImage; }
+	const Graphic::RenderQueue& renderQueue()          { UpdateTextImage(); return _renderQueue; }
 protected:
 	void SetTextImage(const std::shared_ptr<Graphic::Image>& image) { _textImage = image; _dirty = false; }
 
 	std::wstring _text;
 	Graphic::Font::pointer _font;
+	std::shared_ptr<Graphic::Image> _textImage;
+
+	Graphic::BitmapFontSized::pointer _bitmapFont;
+	Graphic::RenderQueue         _renderQueue;
+
 	unsigned _width = 0;
 	unsigned _textureWidth = 0;
 
 	bool _html = false;
 	bool _dirty = false;
-	std::shared_ptr<Graphic::Image> _textImage;
+	
 
 };
 

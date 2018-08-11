@@ -31,7 +31,7 @@ namespace
 	class ft_html_container_base : public litehtml::document_container
 	{
 	public:
-		ft_html_container_base()
+		ft_html_container_base(const HTMLRendererQueue::Options& options = {}) : _options(options)
 		{
 
 		}
@@ -81,13 +81,12 @@ namespace
 
 		auto& AddFont(const Graphic::BitmapFont::pointer& font, int weight, int size)
 		{
-			auto fontSize = font->size();
 			FontInfo info;
 			info._font = font;
 			info._weight = weight;
 			info._size = size;
 
-			info._scale = (float)size / (float)fontSize;
+			info._scale = font->scaleForSize(size);
 			info._id = _fonts.size();
 			_fonts.push_back(info);
 
@@ -103,12 +102,12 @@ namespace
 		Graphic::BitmapFont::pointer _defaultFontBold;
 
 		std::vector<FontInfo> _fonts;
+		const HTMLRendererQueue::Options& _options;
 	};
 
 	class ft_html_container_font : public virtual ft_html_container_base
 	{
 	public:
-
 
 
 		uint_ptr create_font(const tchar_t* faceName, int size, int weight, font_style italic, unsigned int decoration, litehtml::font_metrics* fm) override
@@ -145,7 +144,8 @@ namespace
 
 		int	get_default_font_size() const override
 		{
-			return 24;
+			if (_options.default_size != 0.0f) return _options.default_size;
+			return _defaultFont ? _defaultFont->size() : 24;
 		}
 		const tchar_t* get_default_font_name() const override
 		{
@@ -257,13 +257,16 @@ namespace
 	class ft_html_container : public ft_html_container_font, public ft_html_container_image, public ft_html_container_other
 	{
 	public:
+		ft_html_container(const HTMLRendererQueue::Options& options) : ft_html_container_base(options)
+		{
 
+		}
 
 
 	};
 }
 
-Graphic::RenderQueue HTMLRendererQueue::Render(const char* str, float width, const std::shared_ptr<Graphic::BitmapFont>& defaultFont)
+Graphic::RenderQueue HTMLRendererQueue::Render(const char* str, float width, const std::shared_ptr<Graphic::BitmapFont>& defaultFont, const Options& options)
 {
 	static litehtml::context ctx;
 	static bool initialized = false;
@@ -273,7 +276,7 @@ Graphic::RenderQueue HTMLRendererQueue::Render(const char* str, float width, con
 		ctx.load_master_stylesheet(HTMLUtils::mxmaster_css().c_str());
 	}
 
-	ft_html_container painter;
+	ft_html_container painter {options};
 
 	//specific
 	painter.SetDefaultFont(defaultFont);
@@ -291,4 +294,10 @@ Graphic::RenderQueue HTMLRendererQueue::Render(const char* str, float width, con
 
 	
 	return queue;
+}
+
+Graphic::RenderQueue HTMLRendererQueue::Render(const wchar_t* str, float width, const std::shared_ptr<Graphic::BitmapFont>& defaultFont, const Options& options)
+{
+	auto tstr = wideToUTF(str);
+	return Render(tstr.c_str(), width, defaultFont, options);
 }

@@ -9,6 +9,7 @@ namespace MX
 	namespace Graphic
 	{
 		class TextureImage;
+		class BitmapFont;
 		class Blender;
 	}
 
@@ -25,6 +26,7 @@ public:
 	const std::shared_ptr<Graphic::TextureImage>& loadCenteredImage(float cx, float cy, const std::string &image);
 	const std::shared_ptr<Sound::Sample>& loadSound(const std::string &sound);
 	const std::shared_ptr<Sound::Stream>& loadStream(const std::string &stream);
+	const std::shared_ptr<Graphic::BitmapFont>& loadBitmapFont(const std::string &font);
 	bool loadSpriteSheet(const std::string& path);
 	bool isSpriteSheet(const std::string& path);
 
@@ -37,7 +39,7 @@ protected:
 	std::map<std::string, std::shared_ptr<Graphic::TextureImage>> _imageMap;
 	std::map<std::string, std::shared_ptr<Sound::Sample>> _sampleMap;
 	std::map<std::string, std::shared_ptr<Sound::Stream>> _streamMap;
-
+	std::map<std::string, std::shared_ptr<Graphic::BitmapFont>> _bitmapFontMap;
 };
 
 }

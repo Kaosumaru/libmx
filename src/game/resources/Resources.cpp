@@ -2,6 +2,7 @@
 #include <sstream>
 #include <fstream>
 #include "graphic/images/TextureImage.h"
+#include "graphic/fonts/BitmapFont.h"
 #include "sound/Sample.h"
 #include "sound/Stream.h"
 #include <iostream>
@@ -204,4 +205,13 @@ namespace MX
 		return dummy;
 	}
 
+	const std::shared_ptr<Graphic::BitmapFont>& Resources::loadBitmapFont(const std::string &font)
+	{
+		auto fit = _bitmapFontMap.find(font);
+		if (fit != _bitmapFontMap.end())
+			return fit->second;
+		auto font_pointer = Graphic::BitmapFont::Create(font);
+		fit = _bitmapFontMap.insert(std::make_pair(font, font_pointer)).first;
+		return fit->second;
+	}
 }

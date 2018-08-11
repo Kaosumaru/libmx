@@ -143,9 +143,14 @@ namespace MX::Graphic
 			std::shared_ptr<MX::Graphic::TextureImage> glyph;
 			glm::vec2 pos;
 			float scale = 1.0f;
-			void Render()
+			void Render(const glm::vec2& p, const Color &color) const
 			{
-				glyph->DrawScaled({}, pos, {scale, scale});
+				glyph->DrawCentered({}, p + pos, {scale, scale}, 0.0f, color);
+			}
+
+			glm::vec2 bounds() const
+			{
+				return pos + glm::vec2{glyph->dimensions()} *scale;
 			}
 		};
 
@@ -156,17 +161,18 @@ namespace MX::Graphic
 
 		}
 
-		RenderQueue(const RenderQueue& other) : _queue(other._queue)
+		RenderQueue(const RenderQueue& other) : _queue(other._queue), _bounds(other._bounds)
 		{
 		}
 
-		RenderQueue(RenderQueue&& other) : _queue(std::move(other._queue))
+		RenderQueue(RenderQueue&& other) : _queue(std::move(other._queue)), _bounds(other._bounds)
 		{
 		}
 
 		RenderQueue& operator = (RenderQueue&& other)
 		{
 			_queue = std::move(other._queue);
+			_bounds = other._bounds;
 			return *this;
 		}
 
@@ -174,16 +180,26 @@ namespace MX::Graphic
 		void AddItem(const Item& item)
 		{
 			_queue.push_back(item);
+			_bounds = glm::max(_bounds, item.bounds());
 		}
 
-		void Render()
+		void Render(const glm::vec2& pos = {}, const Color &color = Color::white()) const
 		{
 			for (auto& item : _queue)
 			{
-				item.Render();
+				item.Render(pos, color);
 			}
 		}
+
+		void Clear()
+		{
+			_bounds = {};
+			_queue.clear();
+		}
+
+		const auto& bounds() const { return _bounds; }
 	protected:
+		glm::vec2 _bounds;
 		Queue _queue;
 	};
 
@@ -233,6 +249,7 @@ namespace MX::Graphic
 
 		auto baseline() { return common.base; }
 		auto size() { return info.fontSize; }
+		auto scaleForSize(float size) { return  (float)size / (float)this->size(); }
 	protected:
 		template<typename Text, typename Func>
 		int GenericDraw(Func &f, const Text* txt, glm::vec2 pos, float scale = 1.0f)
@@ -276,5 +293,31 @@ namespace MX::Graphic
 		std::map<uint32_t, Character> _characters;
 	};
 
+	class BitmapFontSized
+	{
+	public:
+		using pointer = std::shared_ptr<BitmapFontSized>;
 
+		BitmapFontSized()
+		{
+
+		}
+
+		static pointer Create(const std::string& path, float size)
+		{
+			auto parentFont = std::make_shared<BitmapFont>();
+			if (!parentFont->load(path)) return nullptr;
+
+			auto ptr = std::make_shared<BitmapFontSized>();
+			ptr->_parentFont = parentFont;
+			ptr->_size = size;
+			return ptr;
+		}
+
+		auto& parentFont() { return _parentFont; }
+		auto size() { return _size; }
+	protected:
+		BitmapFont::pointer _parentFont;
+		float               _size = 16.0f;
+	};
 }

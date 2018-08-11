@@ -6,6 +6,7 @@
 #include "graphic/fonts/Font.h"
 #include "graphic/images/TextureImage.h"
 #include "html/HTMLRendererFreetype.h"
+#include "html/HTMLRendererQueue.h"
 
 #include <iostream>
 
@@ -19,17 +20,56 @@ void MX::Widgets::TextData::UpdateTextImage()
 {
 	if (!_dirty)
 		return;
-	Graphic::Font::pointer font = _font ? _font : MX::Graphic::Font::CreateDefault();
 
-	if (_html)
+	if (!_bitmapFont)
 	{
-		SetTextImage(HTMLRendererFreetype::DrawOnBitmap(_text, _width, _font));
+		Graphic::Font::pointer font = _font ? _font : MX::Graphic::Font::CreateDefault();
+
+		if (_html)
+		{
+			SetTextImage(HTMLRendererFreetype::DrawOnBitmap(_text, _width, _font));
+		}
+		else
+		{
+			SetTextImage(font->DrawTextOnBitmap(_text));
+		}
 	}
 	else
 	{
-		SetTextImage(font->DrawTextOnBitmap(_text));
+		_renderQueue.Clear();
+		auto bitmapFont = _bitmapFont->parentFont();
+		if (_html)
+		{
+			MX::HTMLRendererQueue::Options options;
+			options.default_size = _bitmapFont->size();
+			_renderQueue = MX::HTMLRendererQueue::Render(_text.c_str(), _width, bitmapFont, options);
+		}
+		else
+		{
+			auto scale = bitmapFont->scaleForSize(_bitmapFont->size());
+			bitmapFont->QueueText(_renderQueue, _text.c_str(), {}, scale);
+		}
 	}
 }
+
+unsigned MX::Widgets::TextData::actualWidth()
+{
+	if (isBitmapFont()) return _renderQueue.bounds().x;
+	auto tex = textImage();
+	if (tex)
+		return tex->Width();
+	return 0;
+}
+
+unsigned MX::Widgets::TextData::actualHeight()
+{
+	if (isBitmapFont()) return _renderQueue.bounds().y;
+	auto tex = textImage();
+	if (tex)
+		return tex->Height();
+	return 0;
+}
+
 void Text::BeforeDraw()
 { 
 	_old = &(ScopeSingleton<TextData>::current());
