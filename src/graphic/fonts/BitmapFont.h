@@ -246,9 +246,12 @@ namespace MX::Graphic
 				if (c)
 				{
 					auto& info = *(c->info());
+					auto kerning = kernings.kerning(prev, current) * scale;
+					pos.x += kerning;
+
 					auto p = pos;
 					p += glm::vec2(info.xoffset, info.yoffset) * scale;
-					p.x += kernings.kerning(prev, current) * scale;
+					
 					f(c, p, scale);
 					pos.x += info.xadvance * scale;
 
