@@ -261,9 +261,8 @@ Graphic::TextureImage::pointer HTMLRendererFreetype::DrawOnBitmap(const char* st
 	//end
 
 	auto document = document::createFromString(str, &painter, &ctx);
-	document->render(width);
-
-	int w = document->width(), h = document->height();
+	int w = document->render(width);
+	int h = document->height();
 
 	Graphic::SurfaceRGBA surface(w, h);
 

@@ -287,7 +287,8 @@ Graphic::RenderQueue HTMLRendererQueue::Render(const char* str, float width, con
 	auto document = document::createFromString(str, &painter, &ctx);
 	document->render(width);
 
-	int w = document->width(), h = document->height();
+	int w = document->render(width);
+	int h = document->height();
 
 	auto clip = litehtml::position(0, 0, w, h);
 	document->draw((uint_ptr)&queue, 0, 0, &clip);
