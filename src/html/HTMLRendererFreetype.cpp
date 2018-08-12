@@ -237,7 +237,7 @@ namespace
 	};
 }
 
-Graphic::TextureImage::pointer HTMLRendererFreetype::DrawOnBitmap(const std::wstring &str, int width, const Graphic::Font::pointer& defaultFont)
+Graphic::TextureImage::pointer HTMLRendererFreetype::DrawOnBitmap(const char* str, int width, const Graphic::Font::pointer& defaultFont)
 {
 	static litehtml::context ctx;
 	static bool initialized = false;
@@ -246,11 +246,11 @@ Graphic::TextureImage::pointer HTMLRendererFreetype::DrawOnBitmap(const std::wst
 		initialized = true;
 		ctx.load_master_stylesheet(HTMLUtils::mxmaster_css().c_str());
 	}
-	
+
 	ft_html_container painter;
 
 	//specific
-	auto tstr = wideToUTF(str);
+	
 	auto ftFace = Graphic::Face::Create(Paths::get().pathToResource("font/arial.ttf"), 16);
 	if (defaultFont)
 		ftFace = defaultFont->face();
@@ -260,15 +260,21 @@ Graphic::TextureImage::pointer HTMLRendererFreetype::DrawOnBitmap(const std::wst
 		painter.SetDefaultFontBold(defaultFont->faceBold());
 	//end
 
-	auto document = document::createFromString(tstr.c_str(), &painter, &ctx);
+	auto document = document::createFromString(str, &painter, &ctx);
 	document->render(width);
 
-    int w = document->width(), h = document->height();
-    
-    Graphic::SurfaceRGBA surface(w, h);
+	int w = document->width(), h = document->height();
 
-    auto clip = litehtml::position(0, 0, w, h);
-    document->draw((uint_ptr)&surface, 0, 0, &clip);
+	Graphic::SurfaceRGBA surface(w, h);
 
-    return Graphic::TextureImage::Create(surface);
+	auto clip = litehtml::position(0, 0, w, h);
+	document->draw((uint_ptr)&surface, 0, 0, &clip);
+
+	return Graphic::TextureImage::Create(surface);
+}
+
+Graphic::TextureImage::pointer HTMLRendererFreetype::DrawOnBitmap(const std::wstring &str, int width, const Graphic::Font::pointer& defaultFont)
+{
+	auto tstr = wideToUTF(str);
+	return DrawOnBitmap(tstr.c_str(), width, defaultFont);
 }

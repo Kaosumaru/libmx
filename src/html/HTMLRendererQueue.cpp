@@ -125,7 +125,7 @@ namespace
 		int	text_width(const tchar_t* text, uint_ptr hFont) override
 		{
 			auto font = fontForID(hFont);
-			return font._font->MeasureText(text) * font._scale;
+			return font._font->MeasureText(text, font._scale);
 		}
 
 		void draw_text(uint_ptr hdc, const tchar_t* text, uint_ptr hFont, litehtml::web_color color, const litehtml::position& pos) override
@@ -292,7 +292,8 @@ Graphic::RenderQueue HTMLRendererQueue::Render(const char* str, float width, con
 	auto clip = litehtml::position(0, 0, w, h);
 	document->draw((uint_ptr)&queue, 0, 0, &clip);
 
-	
+	queue.SetBounds({(float)w, (float)h});
+
 	return queue;
 }
 

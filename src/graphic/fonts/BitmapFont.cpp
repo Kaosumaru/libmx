@@ -169,6 +169,7 @@ void BitmapFont::DrawText(const char* txt, glm::vec2 pos, float scale)
 
 void BitmapFont::QueueText(RenderQueue& queue, const char* txt, glm::vec2 pos, float scale)
 {
+	auto x_bounds = queue.bounds().x;
 	auto func = [&queue](auto c, const glm::vec2 &p, float scale)
 	{
 		RenderQueue::Item item;
@@ -178,10 +179,12 @@ void BitmapFont::QueueText(RenderQueue& queue, const char* txt, glm::vec2 pos, f
 		queue.AddItem(item);
 	};
 
-	GenericDraw(func, txt, pos, scale);
+	auto w = GenericDraw(func, txt, pos, scale);
+	if (x_bounds < w) x_bounds = w;
+	queue.SetBounds({x_bounds, queue.bounds().y});
 }
 
-int BitmapFont::MeasureText(const char* txt, float scale)
+float BitmapFont::MeasureText(const char* txt, float scale)
 {
 	auto func = [](auto c, const glm::vec2 &p, float scale)
 	{
@@ -203,6 +206,7 @@ void BitmapFont::DrawText(const wchar_t* txt, glm::vec2 pos, float scale)
 
 void BitmapFont::QueueText(RenderQueue& queue, const wchar_t* txt, glm::vec2 pos, float scale)
 {
+	auto x_bounds = queue.bounds().x;
 	auto func = [&queue](auto c, const glm::vec2 &p, float scale)
 	{
 		RenderQueue::Item item;
@@ -212,10 +216,13 @@ void BitmapFont::QueueText(RenderQueue& queue, const wchar_t* txt, glm::vec2 pos
 		queue.AddItem(item);
 	};
 
-	GenericDraw(func, txt, pos, scale);
+	auto w = GenericDraw(func, txt, pos, scale);
+	if (x_bounds < w) x_bounds = w;
+	queue.SetBounds({x_bounds, queue.bounds().y});
+	
 }
 
-int BitmapFont::MeasureText(const wchar_t* txt, float scale)
+float BitmapFont::MeasureText(const wchar_t* txt, float scale)
 {
 	auto func = [](auto c, const glm::vec2 &p, float scale)
 	{

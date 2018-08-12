@@ -197,6 +197,7 @@ namespace MX::Graphic
 			_queue.clear();
 		}
 
+		void SetBounds(const glm::vec2& bounds) { _bounds = bounds;  }
 		const auto& bounds() const { return _bounds; }
 	protected:
 		glm::vec2 _bounds;
@@ -241,18 +242,18 @@ namespace MX::Graphic
 
 		void DrawText(const char* txt, glm::vec2 pos, float scale = 1.0f);
 		void QueueText(RenderQueue& queue, const char* txt, glm::vec2 pos, float scale = 1.0f);
-		int MeasureText(const char* txt, float scale = 1.0f);
+		float MeasureText(const char* txt, float scale = 1.0f);
 
 		void DrawText(const wchar_t* txt, glm::vec2 pos, float scale = 1.0f);
 		void QueueText(RenderQueue& queue, const wchar_t* txt, glm::vec2 pos, float scale = 1.0f);
-		int MeasureText(const wchar_t* txt, float scale = 1.0f);
+		float MeasureText(const wchar_t* txt, float scale = 1.0f);
 
 		auto baseline() { return common.base; }
 		auto size() { return info.fontSize; }
 		auto scaleForSize(float size) { return  (float)size / (float)this->size(); }
 	protected:
 		template<typename Text, typename Func>
-		int GenericDraw(Func &f, const Text* txt, glm::vec2 pos, float scale = 1.0f)
+		float GenericDraw(Func &f, const Text* txt, glm::vec2 pos, float scale = 1.0f)
 		{
 			uint32_t prev = 0;
 			auto current = MX::utf8::next_character(txt);
