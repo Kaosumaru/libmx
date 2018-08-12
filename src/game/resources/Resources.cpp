@@ -214,4 +214,9 @@ namespace MX
 		fit = _bitmapFontMap.insert(std::make_pair(font, font_pointer)).first;
 		return fit->second;
 	}
+
+	const std::shared_ptr<Graphic::TextureImage>& Resources::whiteSurface()
+	{
+		return loadImage("misc/White128.png");
+	}
 }

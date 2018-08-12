@@ -32,6 +32,8 @@ public:
 
 	std::string openTextFile(const std::string& path);
 
+	const std::shared_ptr<Graphic::TextureImage>& whiteSurface();
+
     void Clear();
 protected:
 	const std::shared_ptr<Graphic::TextureImage> &loadImageFromSpriteSheet(const std::string &path);

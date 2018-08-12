@@ -1,6 +1,8 @@
 #include "Rectangle.h"
 #include "utils/Random.h"
 #include <algorithm>
+#include "game/resources/Resources.h"
+#include "graphic/images/TextureImage.h"
 
 using namespace MX;
 
@@ -167,13 +169,21 @@ bool Rectangle::empty() const
 	return x1 == 0.0f && x2 == 0.0f && y1 == 0.0f && y2 == 0.0f;
 }
 
-void Rectangle::Draw()
+void Rectangle::Draw(const MX::Color& c)
 {
-#ifdef WIP
-	auto renderer = Graphic::CinderRenderer::get().Use();
-	ci::gl::color(0.0f,0.0f,1.0f);
-	ci::gl::drawStrokedRect({ x1, y1, x2, y2});
-#endif
+	static auto image = MX::Resources::get().whiteSurface();
+
+	auto drawLine = [&](auto f)
+	{
+		auto r = *this;
+		f(r);
+		image->DrawArea(r, c);
+	};
+
+	drawLine([](auto& r) { r.x2 = r.x1 + 1; });
+	drawLine([](auto& r) { r.x1 = r.x2 - 1; });
+	drawLine([](auto& r) { r.y2 = r.y1 + 1; });
+	drawLine([](auto& r) { r.y1 = r.y2 - 1; });
 }
 
 

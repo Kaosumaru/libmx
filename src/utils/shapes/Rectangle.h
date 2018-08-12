@@ -2,6 +2,8 @@
 #define MXRECTANGLE
 #include<memory>
 #include "Shapes.h"
+#include "graphic/Color.h"
+
 namespace MX
 {
 
@@ -55,7 +57,7 @@ struct Rectangle : public Geometry
 
 	float& point(int i);
 
-	void Draw();
+	void Draw(const MX::Color& c = {0.0f,0.0f,1.0f});
 };
 
 

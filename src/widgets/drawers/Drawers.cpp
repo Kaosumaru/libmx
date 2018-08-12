@@ -101,6 +101,12 @@ public:
 			{
 				auto &renderQueue = textData.renderQueue();
 				renderQueue.Render({source.x1, source.y1}, color);
+
+				if (Context<Drawer::ContextData>::current().drawDebugDrawers)
+				{
+					MX::Rectangle::fromWH(source.x1, source.y1, renderQueue.bounds().x, renderQueue.bounds().y).Draw();
+				}
+
 			}
 			else
 			{
@@ -304,7 +310,7 @@ protected:
 MX::Widgets::ColorDrawer::ColorDrawer(LScriptObject& script) : ImageDrawer(script)
 {
 	if (!_image)
-		_image = MX::Resources::get().loadImage("misc/White128.png");
+		_image = MX::Resources::get().whiteSurface();
 }
 
 void MX::Widgets::ColorDrawer::DrawImage()
