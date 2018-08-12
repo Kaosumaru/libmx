@@ -65,9 +65,9 @@ namespace
 				auto X = _font->character('X');
 				auto x = _font->character('x');
 
-				fm->ascent = X->info()->height - x->info()->height;
-				fm->height = _font->baseline() + x->info()->height/2.; //fake
-				fm->descent = _font->baseline();
+				fm->ascent = _font->baseline();
+				fm->height = _font->lineHeight();
+				fm->descent = _font->lineHeight() - _font->baseline();
 				fm->x_height = x->info()->height;
 				fm->draw_spaces = false;
 

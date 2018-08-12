@@ -249,6 +249,7 @@ namespace MX::Graphic
 		float MeasureText(const wchar_t* txt, float scale = 1.0f);
 
 		auto baseline() { return common.base; }
+		auto lineHeight() { return common.lineHeight; }
 		auto size() { return info.fontSize; }
 		auto scaleForSize(float size) { return  (float)size / (float)this->size(); }
 	protected:

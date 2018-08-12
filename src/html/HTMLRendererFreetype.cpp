@@ -70,9 +70,9 @@ namespace
 		uint_ptr create_font(const tchar_t* faceName, int size, int weight, font_style italic, unsigned int decoration, litehtml::font_metrics* fm) override
 		{
 			auto font = fontForWeight(weight);
-			fm->ascent = font->X_height() - font->x_height();
-			fm->descent = -font->descender();
-			fm->height = font->X_height() - font->descender();
+			fm->ascent = font->ascender();
+			fm->descent = font->descender();
+			fm->height = font->height();
 			fm->x_height = font->x_height();
 			fm->draw_spaces = false;
 
@@ -93,9 +93,9 @@ namespace
 
 		void draw_text(uint_ptr hdc, const tchar_t* text, uint_ptr hFont, litehtml::web_color color, const litehtml::position& pos) override
 		{
-			FT_Vector     pen = {pos.x, pos.y};
 			int weight = (int)hFont;
 			auto font = fontForWeight(weight);
+			FT_Vector     pen = {pos.x, pos.y + font->ascender()};
 			Graphic::SurfaceRGBA &surface = *((Graphic::SurfaceRGBA*)hdc);
 
 			font->draw_text(text, pen, [&](int x, int y, uint8_t p)
