@@ -7,6 +7,7 @@
 #include "graphic/images/TextureImage.h"
 #include "html/HTMLRendererFreetype.h"
 #include "html/HTMLRendererQueue.h"
+#include "scene/sprites/SpriteScene.h"
 
 #include <iostream>
 
@@ -85,6 +86,30 @@ void Text::AfterDraw()
 
 	ScopeSingleton<TextData>::SetCurrent(*_old);
 	_old = nullptr;
+}
+
+bool SceneHolder::Run()
+{
+	if (_scene) _scene->Run();
+	return true;
+}
+
+void SceneHolder::BeforeDraw()
+{
+	_old = &(ScopeSingleton<MX::SpriteScene>::current());
+	ScopeSingleton<MX::SpriteScene>::SetCurrent(*_scene);
+}
+void SceneHolder::AfterDraw()
+{
+	ScopeSingleton<MX::SpriteScene>::SetCurrent(*_old);
+	_old = nullptr;
+}
+
+void SceneHolder::SetScene(const MX::SpriteScenePtr& scene)
+{
+	if (_scene) _scene->ChangeVisibility(1);
+	_scene = scene;
+	if (_scene) _scene->ChangeVisibility(-1);
 }
 
 

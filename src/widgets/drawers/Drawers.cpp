@@ -187,8 +187,6 @@ public:
 	}
 };
 
-
-
 class TransformedImageDrawer : public MX::Widgets::ImageDrawer
 {
 public:
@@ -388,7 +386,24 @@ public:
     }
 };
 
+class SceneHolderDrawer : public MX::Widgets::Drawer
+{
+public:
+	SceneHolderDrawer(MX::LScriptObject& script) : MX::Widgets::Drawer(script)
+	{
 
+	}
+
+	void DrawBackground() override
+	{
+		float x = Destination::current().x(), y = Destination::current().y();
+
+		if (!Context<MX::SpriteScene>::isCurrent()) return;
+
+		auto& scene = Context<MX::SpriteScene>::current();
+		scene.Draw(x, y);
+	}
+};
 
 void MX::Widgets::DrawersInit::Init()
 {
@@ -400,4 +415,5 @@ void MX::Widgets::DrawersInit::Init()
 	ScriptClassParser::AddCreator(L"Drawer.Color", new OutsideScriptClassCreatorContructor<ColorDrawer>());
 	ScriptClassParser::AddCreator(L"Drawer.QuadImage", new OutsideScriptClassCreatorContructor<QuadImageDrawer>());
     ScriptClassParser::AddCreator(L"Drawer.Debug.Color", new OutsideScriptClassCreatorContructor<DebugColorDrawer>());
+	ScriptClassParser::AddCreator(L"Drawer.Scene", new OutsideScriptClassCreatorContructor<SceneHolderDrawer>());
 }

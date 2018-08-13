@@ -8,6 +8,8 @@
 
 namespace MX
 {
+class SpriteScene;
+
 namespace Widgets
 {
 
@@ -70,7 +72,6 @@ protected:
 
 };
 
-
 namespace Strategy
 {
 	namespace Drawable
@@ -91,6 +92,24 @@ namespace Strategy
 			std::shared_ptr<Graphic::Image> _image;
 		};
 
+		class SceneHolder : public Drawable
+		{
+		public:
+			using SpriteScenePtr = std::shared_ptr<MX::SpriteScene>;
+			SceneHolder() {}
+			SceneHolder(const SpriteScenePtr& scene){ SetScene(scene);	}
+
+			bool Run() override;
+
+			void BeforeDraw() override;
+			void AfterDraw() override;
+
+			const auto &scene() const { return _scene; }
+			void SetScene(const SpriteScenePtr& scene);
+		protected:
+			MX::SpriteScene *_old = nullptr; //TODO remove
+			SpriteScenePtr _scene;
+		};
 
 		class Text : public Drawable
 		{
