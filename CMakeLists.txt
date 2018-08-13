@@ -62,7 +62,7 @@ else(EMSCRIPTEN)
 endif(EMSCRIPTEN)
 
 if (MSVC)
-	add_definitions( "/MP /W3 /D_CRT_SECURE_NO_WARNINGS /wd4005 /wd4996 /wd4503 /nologo" )
+	add_definitions( "/MP /W3 /D_CRT_SECURE_NO_WARNINGS /wd4005 /wd4996 /wd4503 /nologo /permissive-" )
     target_compile_options(MXLib PUBLIC "/std:c++17")
 endif(MSVC)
 

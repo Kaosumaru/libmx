@@ -95,7 +95,7 @@ namespace
 
 		auto& fontForID(uint_ptr hFont)
 		{
-			return _fonts[hFont];
+			return _fonts[(unsigned)hFont];
 		}
 	protected:
 		Graphic::BitmapFont::pointer _defaultFont;

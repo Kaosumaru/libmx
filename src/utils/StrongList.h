@@ -1,5 +1,6 @@
 #pragma once
 #include<list>
+#include<cassert>
 #include<memory>
 #include"ClassID.h"
 

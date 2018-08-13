@@ -3,6 +3,7 @@
 #include<memory>
 #include<map>
 #include<vector>
+#include<algorithm>
 
 namespace MX
 {
