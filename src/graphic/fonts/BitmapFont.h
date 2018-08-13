@@ -144,6 +144,8 @@ namespace MX::Graphic
 			std::shared_ptr<MX::Graphic::TextureImage> glyph;
 			glm::vec2 pos;
 			float scale = 1.0f;
+			MX::Color color;
+
 			void Render(const glm::vec2& p, const Color &color) const
 			{
 				glyph->DrawCentered({}, p + pos, {scale, scale}, 0.0f, color);
@@ -243,11 +245,11 @@ namespace MX::Graphic
 		}
 
 		void DrawText(const char* txt, glm::vec2 pos, float scale = 1.0f);
-		void QueueText(RenderQueue& queue, const char* txt, glm::vec2 pos, float scale = 1.0f);
+		void QueueText(RenderQueue& queue, const char* txt, glm::vec2 pos, float scale = 1.0f, const MX::Color& color = MX::Color::white());
 		float MeasureText(const char* txt, float scale = 1.0f);
 
 		void DrawText(const wchar_t* txt, glm::vec2 pos, float scale = 1.0f);
-		void QueueText(RenderQueue& queue, const wchar_t* txt, glm::vec2 pos, float scale = 1.0f);
+		void QueueText(RenderQueue& queue, const wchar_t* txt, glm::vec2 pos, float scale = 1.0f, const MX::Color& color = MX::Color::white());
 		float MeasureText(const wchar_t* txt, float scale = 1.0f);
 
 		auto baseline() { return common.base; }

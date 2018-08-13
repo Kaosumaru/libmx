@@ -134,7 +134,8 @@ namespace
 			int weight = (int)hFont;
 			auto font = fontForID(hFont);
 
-			font._font->QueueText(queue, text, {pos.x, pos.y}, font._scale);
+			MX::Color c {color.red, color.blue, color.green, color.alpha};
+			font._font->QueueText(queue, text, {pos.x, pos.y}, font._scale, c);
 		}
 
 		int	pt_to_px(int pt) override
