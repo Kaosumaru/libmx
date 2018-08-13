@@ -285,7 +285,6 @@ Graphic::RenderQueue HTMLRendererQueue::Render(const char* str, float width, con
 	Graphic::RenderQueue queue;
 
 	auto document = document::createFromString(str, &painter, &ctx);
-	document->render(width);
 
 	int w = document->render(width);
 	int h = document->height();

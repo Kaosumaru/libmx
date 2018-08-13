@@ -49,6 +49,7 @@ void MX::Widgets::TextData::UpdateTextImage()
 			auto scale = bitmapFont->scaleForSize(_bitmapFont->size());
 			bitmapFont->QueueText(_renderQueue, _text.c_str(), {}, scale);
 		}
+		_dirty = false;
 	}
 }
 

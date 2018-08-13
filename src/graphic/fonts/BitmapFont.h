@@ -5,6 +5,7 @@
 #include <fstream>
 #include "graphic/images/TextureImage.h"
 #include "utils/Utf8.h"
+#include "script/PropertyLoaders.h"
 
 namespace MX::Graphic
 {
@@ -199,6 +200,7 @@ namespace MX::Graphic
 
 		void SetBounds(const glm::vec2& bounds) { _bounds = bounds;  }
 		const auto& bounds() const { return _bounds; }
+		const auto& items() const { return _queue; }
 	protected:
 		glm::vec2 _bounds;
 		Queue _queue;
@@ -271,7 +273,7 @@ namespace MX::Graphic
 					auto p = pos;
 					p += glm::vec2(info.xoffset, info.yoffset) * scale;
 					
-					f(c, p, scale);
+					f(c, glm::round(p), scale);
 					pos.x += info.xadvance * scale;
 
 					prev = current;
@@ -321,5 +323,46 @@ namespace MX::Graphic
 	protected:
 		BitmapFont::pointer _parentFont;
 		float               _size = 16.0f;
+	};
+}
+
+namespace MX
+{
+	template<>
+	struct PropertyLoader<MX::Graphic::BitmapFont::pointer>
+	{
+		using type = PropertyLoader_Custom;
+		static bool load(MX::Graphic::BitmapFont::pointer& out, const MX::Scriptable::Value &value)
+		{
+			ScriptObjectString script(value.fullPath());
+
+			std::string name;
+			if (script.load_property_child(name, "Name"))
+			{
+				out = Resources::get().loadBitmapFont(name);
+				return true;
+			}
+			return false;
+		}
+	};
+
+	template<>
+	struct PropertyLoader<MX::Graphic::BitmapFontSized::pointer>
+	{
+		using type = PropertyLoader_Custom;
+		static bool load(MX::Graphic::BitmapFontSized::pointer& out, const MX::Scriptable::Value &value)
+		{
+			ScriptObjectString script(value.fullPath());
+
+			std::string name;
+			float size = 10.0f;
+			if (script.load_property_child(name, "Name"))
+			{
+				script.load_property(size, "Size");
+				out = MX::Graphic::BitmapFontSized::Create(name, size);
+				return true;
+			}
+			return false;
+		}
 	};
 }

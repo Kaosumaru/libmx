@@ -100,6 +100,9 @@ public:
 			if (textData.isBitmapFont())
 			{
 				auto &renderQueue = textData.renderQueue();
+				if (!Context<Drawer::ContextData>::isCurrent())
+					return;
+
 				renderQueue.Render({source.x1, source.y1}, color);
 
 				if (Context<Drawer::ContextData>::current().drawDebugDrawers)
@@ -111,6 +114,8 @@ public:
 			else
 			{
 				auto &image = textData.textImage();
+				if (!Context<Drawer::ContextData>::isCurrent())
+					return;
 				if (!image)
 					return;
 
