@@ -66,6 +66,18 @@ protected:
 		bool first = true;
 		for (auto &pair : named_widgets)
 		{
+			WidgetLayoutHint hint;
+			Context<WidgetLayoutHint>::SetCurrent(hint);
+			if (_fill)
+			{
+				auto dim = _horizontal ? Context<ScriptLayouterWidget>::current().dimensionsInside().y : Context<ScriptLayouterWidget>::current().dimensionsInside().x;
+				if (dim < 0) dim = 0;
+				if (_horizontal)
+					hint.suggested_height = dim;
+				else
+					hint.suggested_width = dim;
+			}
+
 			if (first)
 				first = false;
 			else

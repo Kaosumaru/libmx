@@ -38,6 +38,11 @@ protected:
 	glm::mat4 _absoluteTransform; //transform stacked on parent transform
 };
 
+struct WidgetLayoutHint
+{
+	float suggested_width = 0;
+	float suggested_height = 0;
+};
 
 class Widget : public SpriteScene, public ScopeSingleton<Widget>, public shared_ptr_init<Widget>
 {
