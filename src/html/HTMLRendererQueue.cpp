@@ -114,7 +114,7 @@ namespace
 		{
 			auto& f = AddFont(_defaultFont, weight, size);
 			f.FillMetric(fm);
-			return f._id;
+			return (uint_ptr)f._id;
 		}
 
 		void delete_font(uint_ptr hFont) override
