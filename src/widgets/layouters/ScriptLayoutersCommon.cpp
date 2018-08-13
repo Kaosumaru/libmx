@@ -67,7 +67,7 @@ protected:
 		for (auto &pair : named_widgets)
 		{
 			WidgetLayoutHint hint;
-			Context<WidgetLayoutHint>::SetCurrent(hint);
+			auto l = Context<WidgetLayoutHint>::Lock(hint);
 			if (_fill)
 			{
 				auto dim = _horizontal ? Context<ScriptLayouterWidget>::current().dimensionsInside().y : Context<ScriptLayouterWidget>::current().dimensionsInside().x;

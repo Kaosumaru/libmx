@@ -106,6 +106,8 @@ namespace Strategy
 
 			const auto &scene() const { return _scene; }
 			void SetScene(const SpriteScenePtr& scene);
+
+			bool runnable() override { return true; }
 		protected:
 			MX::SpriteScene *_old = nullptr; //TODO remove
 			SpriteScenePtr _scene;
