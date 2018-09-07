@@ -46,6 +46,16 @@ public:
 		_current_static_singleton = &_target;
 	}
 
+	static void SetCurrent(T* _target)
+	{
+		_current_static_singleton = _target;
+	}
+
+	static void SetCurrent(const std::shared_ptr<T>& _target)
+	{
+		_current_static_singleton = _target.get();
+	}
+
 	static T& current()
 	{
 		return *_current_static_singleton;
