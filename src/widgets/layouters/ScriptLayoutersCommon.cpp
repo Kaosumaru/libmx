@@ -39,6 +39,14 @@ public:
 			widget->SetPositionRect(r);
 		});
 
+		if (_fill)
+		{
+			if (_horizontal)
+				d.y = -1;
+			else
+				d.x = -1;
+		}
+
 		ChangeInnerDimension(d);
 	}
 
@@ -53,8 +61,10 @@ public:
 			
 		});
 
-		width = d.x + w.margins().hMargins();
-		height = d.y + w.margins().vMargins();
+		if (!(_fill && !_horizontal))
+			width = d.x + w.margins().hMargins();
+		if (!(_fill && _horizontal))
+			height = d.y + w.margins().vMargins();
 	}
 
 protected:

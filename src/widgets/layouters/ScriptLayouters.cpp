@@ -11,14 +11,22 @@
 
 using namespace MX::Widgets;
 
+//Called when changes in children cause this widget to change size (dimensions)
+//-1 means dont change this dimension
 void ScriptLayouter::ChangeInnerDimension(const glm::vec2& size)
 {
 	auto &widget = Context<ScriptLayouterWidget>::current();
 
 	auto &margins = widget.margins();
+	auto s = size;
+	s.x = size.x + margins.hMargins();
+	s.y = size.y + margins.vMargins();
+	if (size.x == -1) s.x = widget.Width();
+	if (size.y == -1) s.y = widget.Height();
 
+	if (widget.dimensions() == s) return;
 	widget.SetContentBounds(MX::Rectangle{margins.left, margins.top, margins.left + size.x,margins.top + size.y});
-	widget.SetSize(size.x + margins.hMargins(), size.y + margins.vMargins());
+	widget.SetSize(s.x, s.y);
 	widget.NotifyParentAboutSizeUpdate();
 }
 

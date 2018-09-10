@@ -142,6 +142,7 @@ protected:
 
 	glm::vec2 parentWidgetOffset();
 
+	// only called, if child wanted to cahnge it's own dimensions
 	void NotifyParentAboutSizeUpdate()
 	{
 		auto parent = parentWidget();
