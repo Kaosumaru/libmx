@@ -11,6 +11,14 @@ namespace MX
 {
 
 
+	struct CommandContext
+	{
+		static void Reset()
+		{
+			elapsedTime = 0.0f;
+		}
+		static float elapsedTime; // used by commands which elapsed from timeout - they inform how much time left, and they "eat it up"
+	};
 
 
 class Command : public ScriptObjectString, public shared_ptr_init<Command>

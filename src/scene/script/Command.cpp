@@ -3,7 +3,7 @@
 namespace MX
 {
 
-
+float CommandContext::elapsedTime = 0.0f;
 
 
 void ScriptHolder::connect_command(const Command::pointer& com, int p)
@@ -18,6 +18,7 @@ void ScriptHolder::Clear()
 
 void ScriptHolder::operator () ()
 {
+	CommandContext::Reset();
 	auto it = commands.begin();
 	while (it != commands.end())
 	{

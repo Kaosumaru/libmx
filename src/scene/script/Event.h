@@ -79,6 +79,7 @@ namespace MX
 
 		void Do()
 		{
+			CommandContext::Reset();
 			auto it = _events.begin();
 			while (it != _events.end())
 			{
