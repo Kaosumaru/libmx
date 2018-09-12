@@ -261,6 +261,7 @@ namespace MX::Graphic
 		float GenericDraw(Func &f, const Text* txt, glm::vec2 pos, float scale = 1.0f)
 		{
 			uint32_t prev = 0;
+			glm::round(pos);
 			auto current = MX::utf8::next_character(txt);
 			while (current != 0)
 			{
@@ -275,7 +276,7 @@ namespace MX::Graphic
 					auto p = pos;
 					p += glm::vec2(info.xoffset, info.yoffset) * scale;
 					
-					f(c, glm::round(p), scale);
+					f(c, p, scale);
 					pos.x += info.xadvance * scale;
 
 					prev = current;

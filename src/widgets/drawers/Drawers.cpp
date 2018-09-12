@@ -19,8 +19,6 @@ public:
 	{
 		script.load_property(_index, "Index");
 		script.load_property(_color, "Color");
-		script.load_property(_font, "Font");
-		script.load_property(_bitmapFont, "BitmapFont");
 		script.load_property(_width, "Width");
 		script.load_property(_pos, "Pos");
         script.load_property(_offset, "Offset");
@@ -29,8 +27,7 @@ public:
         script.load_property(_offset.y, "Offset.Y");
 
 		//TODO horrible hack to make TextDrawer Prototyping work
-#if 0
-		if (!_font)
+#if 1
 		{
 			std::string name;
 			std::string face;
@@ -43,6 +40,21 @@ public:
 				_font = MX::Graphic::Font::Create(name, size, face);
 			}
 		}
+
+		{
+			std::string name;
+			std::string face;
+			float size;
+
+			if (script.load_property(name, "BitmapFont.Name") &&
+				script.load_property(size, "BitmapFont.Size"))
+			{
+				_bitmapFont = MX::Graphic::BitmapFontSized::Create(name, size);
+			}
+		}
+#else
+		script.load_property(_font, "Font");
+		script.load_property(_bitmapFont, "BitmapFont");
 #endif
 		
 
