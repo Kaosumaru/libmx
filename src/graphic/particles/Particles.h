@@ -22,6 +22,7 @@ class ParticleSystem;
 class ParticleContainer
 {
 public:
+	~ParticleContainer();
 	void Run(ParticleSystem *system, const std::shared_ptr<ParticleDecorator>& decorator);
 	void Run();
 	void Draw(float x, float y);
@@ -30,7 +31,7 @@ public:
 
 	bool empty() { return _particles.empty(); }
 
-	void AddParticle(std::unique_ptr<Particle>&& particle) { _particles.push_back(std::move(particle)); }
+	void AddParticle(std::unique_ptr<Particle>&& particle);
 protected:
 	std::list<std::unique_ptr<Particle>> _particles;
 };

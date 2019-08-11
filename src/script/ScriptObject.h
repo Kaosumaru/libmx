@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <sstream>
 #include "Script.h"
 #include "serialization/Node.h"
 

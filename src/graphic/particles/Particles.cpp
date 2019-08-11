@@ -13,6 +13,16 @@
 using namespace MX;
 using namespace MX::Graphic;
 
+ParticleContainer::~ParticleContainer()
+{
+
+}
+
+void ParticleContainer::AddParticle(std::unique_ptr<Particle>&& particle) 
+{ 
+	_particles.push_back(std::move(particle)); 
+}
+
 void ParticleContainer::Run()
 {
 	auto it = _particles.begin();

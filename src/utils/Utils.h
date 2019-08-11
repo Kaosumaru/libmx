@@ -2,6 +2,7 @@
 
 #include<memory>
 #include<set>
+#include<string>
 #include"ClassID.h"
 
 namespace MX

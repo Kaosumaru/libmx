@@ -57,15 +57,15 @@ public:
 	virtual Graphic::Image* baseImage() const { return nullptr; }
 	virtual Graphic::Image* normalsImage() const { return nullptr; }
 
-	glm::vec2              _directionForce;
-	glm::vec2              _acceleration;
-	float				 _angular_vel;
+	glm::vec2			_directionForce;
+	glm::vec2			_acceleration;
+	float				 _angular_vel = 0;
 	double				 _timeToColorChange = 0.0;
 
-	glm::vec2              _scale1, _scale2;
-	float                _angle1, _angle2;
-	Color                _color1, _color2;
-	Time::ManualStopWatchAbsolute      _stopWatch;
+	glm::vec2			_scale1, _scale2;
+	float				_angle1 = 0, _angle2 = 0;
+	Color				_color1, _color2;
+	Time::ManualStopWatchAbsolute	_stopWatch;
 
 
 	SpriteActor::Geometry geometry;
