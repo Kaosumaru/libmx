@@ -28,3 +28,5 @@
 *.out
 *.app
 bootstrap/build/
+/.vs
+/out/

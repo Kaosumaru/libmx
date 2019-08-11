@@ -19,7 +19,7 @@ if (EMSCRIPTEN)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=2 --use-preload-plugins")
 else(EMSCRIPTEN)
     find_package(SDL2 REQUIRED)
-    include_directories(${SDL_INCLUDE_DIR})
+    include_directories(${SDL2_INCLUDE_DIR})
 endif(EMSCRIPTEN)
 
 ADDFILES(core_list "${PROJECT_SOURCE_DIR}/src/core")
