@@ -11,8 +11,11 @@ set(MX_INCLUDES ${Boost_INCLUDE_DIRS}
 set(CMAKE_MODULE_PATH ${MX_MODULES} CACHE TYPE STRING FORCE)
 include(CommonFunctions)
 
+project(MXLib)
 #deps
 SET(RPN_USE_JIT OFF CACHE BOOL "Don't use jit")
+
+add_definitions(-DLITEHTML_UTF8)
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/RPNParser/RPN" "${CMAKE_CURRENT_BINARY_DIR}/RPN")
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/MSL/MSL" "${CMAKE_CURRENT_BINARY_DIR}/MSL")
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/litehtml" "${CMAKE_CURRENT_BINARY_DIR}/litehtml")
@@ -21,7 +24,6 @@ add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/soloud" "${CMAKE_CURRENT_BINARY
 set(MX_INCLUDES ${MX_INCLUDES} ${RPN_Includes} ${CMAKE_CURRENT_LIST_DIR}/deps/MSL/MSL ${CMAKE_CURRENT_LIST_DIR}/deps/RPNParser/RPN ${CMAKE_CURRENT_LIST_DIR}/deps/litehtml)
 #deps
 
-project(MXLib)
 option(GAME_RELEASE "Build release?" FALSE)
 option(EMSCRIPTEN_WASM "Webassebmly?" OFF)
 
