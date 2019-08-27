@@ -87,5 +87,5 @@ MX::Rectangle MX::Quad::bounds() const
 	auto pair_x = std::minmax({ point[0].x, point[1].x, point[2].x, point[3].x });
 	auto pair_y = std::minmax({ point[0].y, point[1].y, point[2].y, point[3].y });
 
-	return Rectangle::Rectangle(pair_x.first, pair_y.first, pair_x.second, pair_y.second);
+	return MX::Rectangle(pair_x.first, pair_y.first, pair_x.second, pair_y.second);
 }
