@@ -3,8 +3,8 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(MX_DEFINES -DGLM_PRECISION_MEDIUMP_FLOAT)
 set(MX_MODULES ${CMAKE_CURRENT_LIST_DIR}/modules)
-set(MX_INCLUDES ${Boost_INCLUDE_DIRS}
-    ${CMAKE_CURRENT_LIST_DIR}/src
+set(MX_INCLUDES 
+	${CMAKE_CURRENT_LIST_DIR}/src
     ${CMAKE_CURRENT_LIST_DIR}/deps/glm
     ${CMAKE_CURRENT_LIST_DIR}/deps/cpp17_headers/include )
 
@@ -25,7 +25,6 @@ set(MX_INCLUDES ${MX_INCLUDES} ${RPN_Includes} ${CMAKE_CURRENT_LIST_DIR}/deps/MS
 #deps
 
 option(GAME_RELEASE "Build release?" FALSE)
-option(EMSCRIPTEN_WASM "Webassebmly?" OFF)
 
 ADDFILES(source_list "${PROJECT_SOURCE_DIR}/src")
 add_library(MXLib ${source_list})
@@ -43,12 +42,6 @@ if (EMSCRIPTEN)
   target_link_libraries(MXLib PUBLIC "-s USE_SDL=2" "-s USE_FREETYPE=1"  --use-preload-plugins)
   target_link_libraries(MXLib PUBLIC "--preload-file ${CMAKE_SOURCE_DIR}/res@/res")
 
-  if (EMSCRIPTEN_WASM)
-    message("Building webassembly")
-    target_link_libraries(MXLib PUBLIC "-s WASM=1" )
-  else (EMSCRIPTEN_WASM)
-  endif(EMSCRIPTEN_WASM)
-
   #EmTools
   set(EM_BINARY_NAME "${EM_BINARY_NAME}" PARENT_SCOPE)
   add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/EmTools" "${CMAKE_CURRENT_BINARY_DIR}/EmTools")
@@ -65,7 +58,6 @@ endif(EMSCRIPTEN)
 
 if (MSVC)
 	add_definitions( "/MP /W3 /D_CRT_SECURE_NO_WARNINGS /wd4005 /wd4996 /wd4503 /nologo /permissive-" )
-    target_compile_options(MXLib PUBLIC "/std:c++17")
 endif(MSVC)
 
 
