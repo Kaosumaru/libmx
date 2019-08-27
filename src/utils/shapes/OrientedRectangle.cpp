@@ -27,7 +27,7 @@ OrientedRectangle::OrientedRectangle(const glm::vec2& center, const float w, con
 
 OrientedRectangle::OrientedRectangle(const Line& centerLine, float width)
 {
-	_corners = MX::Quad::Quad(centerLine, width);
+	_corners = MX::Quad(centerLine, width);
 	computeAxes();
 }
 
