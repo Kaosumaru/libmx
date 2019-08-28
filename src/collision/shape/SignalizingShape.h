@@ -21,7 +21,7 @@ public:
 		SignalizingShapeCollisionSignal onFirstCollided;
 	};
 
-	const std::shared_ptr<ClassCollisionData> &with(unsigned classID)
+	const std::shared_ptr<ClassCollisionData> &with(ClassID<>::type classID)
 	{
 		auto it = _classIDToSignal.find(classID);
 		if (it == _classIDToSignal.end())

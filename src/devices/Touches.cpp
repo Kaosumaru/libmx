@@ -11,6 +11,12 @@ Touch::Touch()
 {
 
 }
+
+Touch::~Touch()
+{
+
+}
+
 float Touch::duration()
 {
     return (float)_timer->elapsed_seconds() - _timestamp;

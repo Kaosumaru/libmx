@@ -3,6 +3,7 @@
 #include<cassert>
 #include<memory>
 #include"ClassID.h"
+#include<typeindex>
 
 namespace MX
 {
@@ -17,27 +18,27 @@ public:
 	}
 	virtual void unlink() = 0;
 
-	virtual ClassID<>::type type() { return 0; }
+	virtual ClassID<>::type type() { return ClassID<>::id(); }
 };
 
 template<typename T>
 class StrongList_Link : public List_Link
 {
 public:
-	StrongList_Link() { _type = 0; }
+	StrongList_Link() {  }
 
     virtual void SetType(ClassID<>::type type)
 	{
 		_type = type;
 	}
 
-    virtual void Set(T& container, typename T::iterator it, const unsigned &iterating, bool &dirty, ClassID<>::type type = 0)
+    virtual void Set(T& container, typename T::iterator it, const unsigned &iterating, bool &dirty, ClassID<>::type type = ClassID<>::id())
     {
         _container = &container;
         _it = it;
         _iterating = &iterating;
         _dirty = &dirty;
-		if (type != 0)
+		if (type != ClassID<>::id())
 			_type = type;
     }
     
@@ -59,7 +60,7 @@ protected:
 	T* _container;
 	const unsigned* _iterating;
 	bool *          _dirty;
-	ClassID<>::type _type;
+	ClassID<>::type _type = ClassID<>::id();
 };
 
 
@@ -349,7 +350,7 @@ public:
 	}
 
 
-	void push_back(const shared_pointer& v, ClassID<>::type type = 0)
+	void push_back(const shared_pointer& v, ClassID<>::type type = ClassID<>::id())
 	{
 		_list.push_back(v);
         auto link = new LinkType();
@@ -357,7 +358,7 @@ public:
 		SetLink(*v, link);
 	}
 
-	void push_front(const shared_pointer& v, ClassID<>::type type = 0)
+	void push_front(const shared_pointer& v, ClassID<>::type type = ClassID<>::id())
 	{
 		_list.push_front(v);
         auto link = new LinkType();

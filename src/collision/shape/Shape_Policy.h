@@ -9,7 +9,7 @@ namespace MX
 {
 namespace Collision
 {
-	struct PointShape_Policy_Tag;
+	struct PointShape_Policy_Tag {};
 
 	template<typename Parent>
 	class PointShape_Policy : public Parent
@@ -52,7 +52,7 @@ namespace Collision
 	};
 
 
-	struct RectangleShape_Policy_Tag;
+	struct RectangleShape_Policy_Tag {};
 	template<typename Parent>
 	class RectangleShape_Policy : public Parent
 	{
@@ -89,7 +89,7 @@ namespace Collision
 	};
 
 
-	struct CircleShape_Policy_Tag;
+	struct CircleShape_Policy_Tag {};
 	template<typename Parent>
 	class CircleShape_Policy : public Parent
 	{
@@ -131,7 +131,7 @@ namespace Collision
 	};
 
 
-	struct OrientedRectangle_Policy_Tag;
+	struct OrientedRectangle_Policy_Tag {};
 	template<typename Parent>
 	class OrientedRectangleShape_Policy : public Parent
 	{

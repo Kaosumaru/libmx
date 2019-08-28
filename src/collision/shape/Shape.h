@@ -59,8 +59,8 @@ protected:
 
 	bool boundsIntersectsWith(const Shape &shape);
 	Rectangle _bounds;
-	ClassID<>::type _shapeID = 0;
-	ClassID<>::type _classID = 0;
+	ClassID<>::type _shapeID = ClassID<>::id();
+	ClassID<>::type _classID = ClassID<>::id();
 	bool     _enabled = true;
 	bool     _trackCollisions = false;
 	Area* _area = nullptr;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include<memory>
+#include<typeindex>
 
 namespace MX
 {
@@ -9,7 +10,7 @@ namespace MX
 	{
 		T *t;
 	public:
-		using type = intptr_t;
-		static inline type id() {return (type)&ClassID::id;}
+		using type = std::type_index;
+		constexpr static inline type id() {return std::type_index(typeid(T));}
 	};
 }

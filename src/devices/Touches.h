@@ -14,6 +14,7 @@ class Touch : public shared_ptr_init<Touch>
 	friend class MouseTouches;
 public:
     Touch();
+	virtual ~Touch();
     float duration();
     const glm::vec2& startPoint();
     const glm::vec2& point();
