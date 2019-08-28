@@ -49,11 +49,12 @@ if (EMSCRIPTEN)
 else(EMSCRIPTEN)
   find_package(SDL2 REQUIRED)
   find_package(OpenGL REQUIRED)
-  find_package(Freetype REQUIRED)
   find_package(GLEW REQUIRED)
-
+  find_package(Freetype REQUIRED)
+  
+  target_link_libraries(MXLib PUBLIC GLEW::GLEW)
   set(MX_INCLUDES ${MX_INCLUDES} ${FREETYPE_INCLUDE_DIRS} ${SDL2_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS})
-  target_link_libraries(MXLib PUBLIC ${SDL2_LIBRARY} ${GLEW_LIBRARY} ${OPENGL_LIBRARIES} ${FREETYPE_LIBRARY})
+  target_link_libraries(MXLib PUBLIC ${SDL2_LIBRARY} ${OPENGL_LIBRARIES} ${FREETYPE_LIBRARY})
 endif(EMSCRIPTEN)
 
 if (MSVC)
