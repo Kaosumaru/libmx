@@ -55,7 +55,7 @@ namespace MX::Graphic::bmfont
 		file.read(data.get(), header.length);
 
 		page_len = strlen(data.get()) + 1;
-		pages = header.length / page_len;
+		pages = (uint16_t) header.length / page_len;
 		return true;
 	}
 

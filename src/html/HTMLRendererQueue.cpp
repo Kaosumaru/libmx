@@ -58,7 +58,7 @@ namespace
 			float                                _scale;
 			int                                  _weight;
 			int                                  _size;
-			int                                  _id = 0;
+			std::size_t                          _id = 0;
 
 			void FillMetric(litehtml::font_metrics* fm)
 			{

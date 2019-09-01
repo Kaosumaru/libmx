@@ -71,7 +71,7 @@ namespace MX::Graphic
 
 			int pages = 0;
 		protected:
-			int page_len;
+			std::size_t page_len;
 			std::unique_ptr<char[]> data;
 		};
 
