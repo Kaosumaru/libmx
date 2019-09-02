@@ -43,6 +43,7 @@ namespace Widgets
 		{
 			script.load_property_child(_image, "Image");
 			script.load_property(_position, "Pos");
+			script.load_property(_angle, "Angle");
 		}
 
 		void DrawBackground()
@@ -61,17 +62,20 @@ namespace Widgets
 			if (_position == -1)
 			{
 				float x = Destination::current().x(), y = Destination::current().y();
-				image().DrawCentered( {}, { x, y }, { 1.0f, 1.0f }, MX::Widgets::Widget::current().geometry.angle, imageColor() );
+				image().DrawCentered( {}, { x, y }, { 1.0f, 1.0f }, angle(), imageColor() );
 				return;
 			}
 
 
 			auto r = MX::Rectangle::fromWH(.0f, .0f, image().Width(), image().Height());
 			r.NumLayoutIn(Destination::current().rectangle, _position);
-			image().DrawCentered( {}, { r.x1, r.y1 }, { 1.0f, 1.0f }, MX::Widgets::Widget::current().geometry.angle, imageColor() );
+			image().DrawCentered( {}, { r.x1, r.y1 }, { 1.0f, 1.0f }, angle(), imageColor() );
 		}
 	protected:
-
+		float angle()
+		{
+			return MX::Widgets::Widget::current().geometry.angle + (_angle ? *_angle : 0.0f);
+		}
 
 		bool hasImage()
 		{
@@ -85,6 +89,7 @@ namespace Widgets
 			return Context<MX::Graphic::Image>::current();
 		}
 
+		Scriptable::Value::pointer _angle;
 		MX::Graphic::ImagePtr _image;
 		int _position = -1;
 	};

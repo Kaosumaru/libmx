@@ -177,7 +177,7 @@ public:
 
 		auto &img = image();
 		auto w2 = img.Width(), h2 = img.Height();
-		img.DrawCentered( {}, { x, y }, { w1 / w2, h1 / h2 }, MX::Widgets::Widget::current().geometry.angle, imageColor() );
+		img.DrawCentered( {}, { x, y }, { w1 / w2, h1 / h2 }, angle(), imageColor() );
 	}
 };
 
