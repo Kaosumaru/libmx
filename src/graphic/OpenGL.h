@@ -61,6 +61,7 @@ namespace MX
 			Delete();
 			_object = obj;
 		}
+
 	protected:
 		GLuint _object = 0;
 	};

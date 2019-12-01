@@ -45,8 +45,6 @@ namespace MX::gl
 
 		static ProgramInstance* s_current;
     };
-
-
 	
 	template<typename T>
 	class Uniform : public UniformBase
