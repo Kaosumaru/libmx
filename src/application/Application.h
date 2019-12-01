@@ -5,7 +5,6 @@
 #include "utils/Singleton.h"
 #include "utils/FunctorsQueue.h"
 
-
 namespace MX
 {
 	class Window;

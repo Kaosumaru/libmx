@@ -45,7 +45,6 @@ namespace MX
 			static void DrawPolygon(const cinder::Path2d &path, const MX::Color &color = MX::Color());
 		};
 
-
 		class ShaderContainer
 		{
 		protected:
@@ -88,7 +87,6 @@ namespace MX
 					_renderer = std::make_shared<MX::Graphic::InstanceGLRenderer>(_shader);
 			}
 
-
 			void DrawUsingShader()
 			{
 				if (!_renderer)
@@ -119,14 +117,9 @@ namespace MX
 
 			std::shared_ptr<MX::Graphic::InstanceGLRenderer> _renderer;
 		};
-
 	}
-
-
 }
 
-
 void operator & (cinder::Shape2d &path, MX::Scriptable::Variable&& var);
-
 
 #endif
