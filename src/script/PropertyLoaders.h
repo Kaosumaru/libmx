@@ -617,6 +617,12 @@ namespace MX
 				float x = *obj;
 				out.x = out.y = out.z = x;
 			}
+			else if (obj->size() == 2)
+			{
+				out.x = *(obj->array()[0]);
+				out.y = *(obj->array()[1]);
+				out.z = 0;
+			}
 			else if (obj->size() == 3)
 			{
 				out.x = *(obj->array()[0]);
