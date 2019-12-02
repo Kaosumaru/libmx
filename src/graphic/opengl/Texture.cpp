@@ -1,117 +1,116 @@
-#include <memory>
 #include "Texture.h"
 #include "deps/lodepng.h"
+#include <memory>
 
 using namespace MX;
 using namespace MX::gl;
 
 void Texture::LoadInfo::setupMipMap()
 {
-	generateMipMap = true;
-	minFilter = GL_LINEAR_MIPMAP_LINEAR;
-	magFilter = GL_LINEAR_MIPMAP_NEAREST;
+    generateMipMap = true;
+    minFilter = GL_LINEAR_MIPMAP_LINEAR;
+    magFilter = GL_LINEAR_MIPMAP_NEAREST;
 }
 
-Texture::Texture(unsigned w, unsigned h, GLint target, GLint format, const GLvoid *data)
+Texture::Texture(unsigned w, unsigned h, GLint target, GLint format, const GLvoid* data)
 {
-	constructTexture(w, h, target, format, data);
+    constructTexture(w, h, target, format, data);
 }
 
 Texture::Texture(const glm::ivec2& size, bool alpha)
 {
-	auto format = alpha ? GL_RGBA : GL_RGB;
-	constructTexture(size.x, size.y, format, format, nullptr);
+    auto format = alpha ? GL_RGBA : GL_RGB;
+    constructTexture(size.x, size.y, format, format, nullptr);
 }
 
-Texture::Texture(const std::string & path)
+Texture::Texture(const std::string& path)
 {
-	std::vector<unsigned char> out;
-	unsigned w = 0, h = 0;
-	auto ret = lodepng::decode(out, w, h, path);
-	if (ret == 0)
-		constructTexture(w, h, GL_RGBA, GL_RGBA, out.data());
+    std::vector<unsigned char> out;
+    unsigned w = 0, h = 0;
+    auto ret = lodepng::decode(out, w, h, path);
+    if (ret == 0)
+        constructTexture(w, h, GL_RGBA, GL_RGBA, out.data());
 }
 
 Texture::~Texture()
 {
-	if (_textureID != -1)
-		glDeleteTextures(1, &_textureID);
-
+    if (_textureID != -1)
+        glDeleteTextures(1, &_textureID);
 }
 
 void Texture::bind(int unit)
 {
-	glActiveTexture(GL_TEXTURE0 + unit);
-	glBindTexture(GL_TEXTURE_2D, _textureID);
+    glActiveTexture(GL_TEXTURE0 + unit);
+    glBindTexture(GL_TEXTURE_2D, _textureID);
 }
 void Texture::unbind(int unit)
 {
-	glActiveTexture(GL_TEXTURE0 + unit);
-	glBindTexture(GL_TEXTURE_2D, 0);
+    glActiveTexture(GL_TEXTURE0 + unit);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Texture::constructTexture(unsigned w, unsigned h, GLint target, GLint format, const GLvoid *data)
+void Texture::constructTexture(unsigned w, unsigned h, GLint target, GLint format, const GLvoid* data)
 {
-	_width = w;
-	_height = h;
-	glGenTextures(1, &_textureID);
-	glBindTexture(GL_TEXTURE_2D, _textureID);
+    _width = w;
+    _height = h;
+    glGenTextures(1, &_textureID);
+    glBindTexture(GL_TEXTURE_2D, _textureID);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-	glTexImage2D(GL_TEXTURE_2D,
-		0,
-		target,
-		(GLsizei)_width,
-		(GLsizei)_height,
-		0,
-		format,
-		GL_UNSIGNED_BYTE,
-		data);
+    glTexImage2D(GL_TEXTURE_2D,
+        0,
+        target,
+        (GLsizei)_width,
+        (GLsizei)_height,
+        0,
+        format,
+        GL_UNSIGNED_BYTE,
+        data);
 
-	if (Context<LoadInfo>::isCurrent())
-	{
-		auto &c = Context<LoadInfo>::current();
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, c.minFilter);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, c.magFilter);
-		if (c.generateMipMap)
-		{
-			glGenerateMipmap(GL_TEXTURE_2D);
-		}
-	}
-	else
-	{
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	}
+    if (Context<LoadInfo>::isCurrent())
+    {
+        auto& c = Context<LoadInfo>::current();
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, c.minFilter);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, c.magFilter);
+        if (c.generateMipMap)
+        {
+            glGenerateMipmap(GL_TEXTURE_2D);
+        }
+    }
+    else
+    {
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    }
 
-	glBindTexture(GL_TEXTURE_2D, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 glm::vec2 Texture::pixelToUV(const glm::vec2& pixel)
 {
-	return { pixel.x / _width,  pixel.y / _height };
+    return { pixel.x / _width, pixel.y / _height };
 }
 
 void Texture::SetWrap(GLint wrap_s, GLint wrap_t)
 {
-	bind();
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_s);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_t);
-	unbind();
+    bind();
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_s);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_t);
+    unbind();
 }
 
 Texture::pointer Texture::Create(const glm::vec2& size, bool alpha)
 {
-	return std::make_shared<Texture>(size, alpha);
+    return std::make_shared<Texture>(size, alpha);
 }
 
-Texture::pointer Texture::Create(const std::string & str)
+Texture::pointer Texture::Create(const std::string& str)
 {
-	auto tex = std::make_shared<Texture>(str);
-	if (tex->empty())
-		return nullptr;
+    auto tex = std::make_shared<Texture>(str);
+    if (tex->empty())
+        return nullptr;
 
-	return tex;
+    return tex;
 }

@@ -1,13 +1,12 @@
 #include "ScriptLayouters.h"
-#include "application/Window.h"
-#include "game/resources/Resources.h"
-#include <iostream>
-#include "script/PropertyLoaders.h"
-#include "script/ScriptClassParser.h"
 #include "ScriptDrawerLayouters.h"
 #include "ScriptLayoutersCommon.h"
 #include "WidgetFactory.h"
+#include "application/Window.h"
+#include "game/resources/Resources.h"
 #include "script/PropertyLoaders.h"
+#include "script/ScriptClassParser.h"
+#include <iostream>
 
 using namespace MX::Widgets;
 
@@ -15,462 +14,424 @@ using namespace MX::Widgets;
 //-1 means dont change this dimension
 void ScriptLayouter::ChangeInnerDimension(const glm::vec2& size)
 {
-	auto &widget = Context<ScriptLayouterWidget>::current();
+    auto& widget = Context<ScriptLayouterWidget>::current();
 
-	auto &margins = widget.margins();
-	auto s = size;
-	s.x = size.x + margins.hMargins();
-	s.y = size.y + margins.vMargins();
-	if (size.x == -1) s.x = widget.Width();
-	if (size.y == -1) s.y = widget.Height();
+    auto& margins = widget.margins();
+    auto s = size;
+    s.x = size.x + margins.hMargins();
+    s.y = size.y + margins.vMargins();
+    if (size.x == -1)
+        s.x = widget.Width();
+    if (size.y == -1)
+        s.y = widget.Height();
 
-	if (widget.dimensions() == s) return;
-	widget.SetContentBounds(MX::Rectangle{margins.left, margins.top, margins.left + size.x,margins.top + size.y});
-	widget.SetSize(s.x, s.y);
-	widget.NotifyParentAboutSizeUpdate();
+    if (widget.dimensions() == s)
+        return;
+    widget.SetContentBounds(MX::Rectangle { margins.left, margins.top, margins.left + size.x, margins.top + size.y });
+    widget.SetSize(s.x, s.y);
+    widget.NotifyParentAboutSizeUpdate();
 }
 
 ScriptLayouterBase::ScriptLayouterBase(MX::LScriptObject& script)
 {
-	script.load_property(_customWidgets, "Widgets");
-	script.load_property(_drawer, "Drawer");
+    script.load_property(_customWidgets, "Widgets");
+    script.load_property(_drawer, "Drawer");
 
-	{
-		using Pair = std::pair<std::shared_ptr<Drawer>, std::vector<std::string>>;
-		std::vector<Pair> drawers;
-		script.load_property(drawers, "Drawers");
+    {
+        using Pair = std::pair<std::shared_ptr<Drawer>, std::vector<std::string>>;
+        std::vector<Pair> drawers;
+        script.load_property(drawers, "Drawers");
 
-		for (auto &pair : drawers)
-		{
-			for (auto &name : pair.second)
-				_drawers[name] = pair.first;
-		}
-	}
+        for (auto& pair : drawers)
+        {
+            for (auto& name : pair.second)
+                _drawers[name] = pair.first;
+        }
+    }
 
-	{
-		using Pair = std::pair<Scriptable::Value::pointer, std::vector<std::string>>;
-		std::vector<Pair> layouters;
-		script.load_property(layouters, "Layouters");
+    {
+        using Pair = std::pair<Scriptable::Value::pointer, std::vector<std::string>>;
+        std::vector<Pair> layouters;
+        script.load_property(layouters, "Layouters");
 
-		for (auto &pair : layouters)
-		{
-			std::string path;
-			Scriptable::Value::pointer root = pair.first;
-			while (root->pointer_to_next())
-				root = root->pointer_to_next();
-			path = root->fullPath();
+        for (auto& pair : layouters)
+        {
+            std::string path;
+            Scriptable::Value::pointer root = pair.first;
+            while (root->pointer_to_next())
+                root = root->pointer_to_next();
+            path = root->fullPath();
 
-			for (auto &name : pair.second)
-				_layouters[name] = path;
-		}
-	}
-
+            for (auto& name : pair.second)
+                _layouters[name] = path;
+        }
+    }
 }
 
 void ScriptLayouterBase::OnLinkedToWidget()
 {
-	auto &widget = Context<ScriptLayouterWidget>::current();
+    auto& widget = Context<ScriptLayouterWidget>::current();
 
-	if (_drawer)
-		widget.SetDrawer(_drawer);
+    if (_drawer)
+        widget.SetDrawer(_drawer);
 
-	for (auto& data : _customWidgets)
-	{
-		auto w = data.factory ? data.factory->Create() : std::make_shared<Widget>();
-		widget.AddLayouterWidget(data.name, w);
-	}
-		
+    for (auto& data : _customWidgets)
+    {
+        auto w = data.factory ? data.factory->Create() : std::make_shared<Widget>();
+        widget.AddLayouterWidget(data.name, w);
+    }
 }
 
-
-void ScriptLayouterBase::LayoutWidget(const std::string& name, const std::shared_ptr<Widget> &widget)
+void ScriptLayouterBase::LayoutWidget(const std::string& name, const std::shared_ptr<Widget>& widget)
 {
-	FindDrawerForWidget(name, widget);
+    FindDrawerForWidget(name, widget);
 }
 
-void ScriptLayouterBase::FindDrawerForWidget(const std::string& name, const std::shared_ptr<Widget> &widget)
+void ScriptLayouterBase::FindDrawerForWidget(const std::string& name, const std::shared_ptr<Widget>& widget)
 {
-	{
-		auto it = _drawers.find(name);
-		if (it != _drawers.end())
-			widget->SetDrawer(it->second);
-	}
+    {
+        auto it = _drawers.find(name);
+        if (it != _drawers.end())
+            widget->SetDrawer(it->second);
+    }
 
-	{
-		auto it = _layouters.find(name);
-		if (it != _layouters.end())
-		{
-			auto layouterWidget = std::dynamic_pointer_cast<ScriptLayouterWidget>(widget);
-			if (layouterWidget)
-				layouterWidget->SetLayouter(it->second);
-		}
-			
-	}
+    {
+        auto it = _layouters.find(name);
+        if (it != _layouters.end())
+        {
+            auto layouterWidget = std::dynamic_pointer_cast<ScriptLayouterWidget>(widget);
+            if (layouterWidget)
+                layouterWidget->SetLayouter(it->second);
+        }
+    }
 }
-
 
 class ScriptLayouterManagerLayouterProxy : public ScriptLayouter
 {
 public:
-	ScriptLayouterManagerLayouterProxy(const std::string& objectPath)
-	{
-		_objectPath = objectPath;
-		loadLayouter();
-	}
+    ScriptLayouterManagerLayouterProxy(const std::string& objectPath)
+    {
+        _objectPath = objectPath;
+        loadLayouter();
+    }
 
-	void LayoutWidget(const std::string& name, const std::shared_ptr<Widget> &widget) override { return _layouter->LayoutWidget(name, widget); };
+    void LayoutWidget(const std::string& name, const std::shared_ptr<Widget>& widget) override { return _layouter->LayoutWidget(name, widget); };
 
-	int version() override
-	{
-		return _version;
-	}
+    int version() override
+    {
+        return _version;
+    }
 
-	void loadLayouter()
-	{
-		_layouter = MX::Script::valueOf(_objectPath).to_object<ScriptLayouter>();
-		_version++;
-		assert(_layouter);
-	}
+    void loadLayouter()
+    {
+        _layouter = MX::Script::valueOf(_objectPath).to_object<ScriptLayouter>();
+        _version++;
+        assert(_layouter);
+    }
 
-	void OnLinkedToWidget() override
-	{
-		return _layouter->OnLinkedToWidget();
-	}
+    void OnLinkedToWidget() override
+    {
+        return _layouter->OnLinkedToWidget();
+    }
 
-	void DrawBackground() override
-	{
-		return _layouter->DrawBackground();
-	}
+    void DrawBackground() override
+    {
+        return _layouter->DrawBackground();
+    }
 
-	void RelayoutAllWidgets(const NamedWidgetsMap& named_widgets) override
-	{
-		_layouter->RelayoutAllWidgets(named_widgets);
-	}
+    void RelayoutAllWidgets(const NamedWidgetsMap& named_widgets) override
+    {
+        _layouter->RelayoutAllWidgets(named_widgets);
+    }
 
-	void clipSize(float &width, float &height) override
-	{
-		_layouter->clipSize(width, height);
-	}
-
+    void clipSize(float& width, float& height) override
+    {
+        _layouter->clipSize(width, height);
+    }
 
 protected:
-	int _version = 0;
-	ScriptLayouter::pointer _layouter;
-	std::string _objectPath;
+    int _version = 0;
+    ScriptLayouter::pointer _layouter;
+    std::string _objectPath;
 };
-
 
 ScriptLayouterManager::ScriptLayouterManager()
 {
 #ifdef _DEBUG
-	Script::onParsed.static_connect([&]() { onReload(); });
+    Script::onParsed.static_connect([&]() { onReload(); });
 #endif
 }
 
 ScriptLayouter::pointer ScriptLayouterManager::getLayouter(const std::string& objectPath)
 {
-	auto &layouter = _layouters[objectPath];
-	if (layouter)
-		return layouter;
+    auto& layouter = _layouters[objectPath];
+    if (layouter)
+        return layouter;
 
 #ifdef _DEBUG
-	layouter = std::make_shared<ScriptLayouterManagerLayouterProxy>(objectPath);
+    layouter = std::make_shared<ScriptLayouterManagerLayouterProxy>(objectPath);
 #else
-	layouter = Script::valueOf(objectPath).to_object<ScriptLayouter>();
+    layouter = Script::valueOf(objectPath).to_object<ScriptLayouter>();
 #endif
 
-	
-
-	assert(layouter);
-	return layouter;
+    assert(layouter);
+    return layouter;
 }
-
-
 
 void ScriptLayouterManager::Deinitialize()
 {
-	_layouters.clear();
+    _layouters.clear();
 }
-
 
 void ScriptLayouterManager::onReload()
 {
-	for (auto& pair : _layouters)
-	{
-		auto layouter = std::static_pointer_cast<ScriptLayouterManagerLayouterProxy>(pair.second);
-		layouter->loadLayouter();
-	}
+    for (auto& pair : _layouters)
+    {
+        auto layouter = std::static_pointer_cast<ScriptLayouterManagerLayouterProxy>(pair.second);
+        layouter->loadLayouter();
+    }
 }
-
-
-
-
-
 
 ScriptLayouterWidget::ScriptLayouterWidget()
 {
 }
 
-
 void ScriptLayouterWidget::DrawBackground()
 {
-	Widget::DrawBackground();
-
-
+    Widget::DrawBackground();
 
     if (_layouter)
         _layouter->DrawBackground();
-
 }
-
 
 void ScriptLayouterWidget::Run()
 {
-	if (_layouter)
-	{
-		auto guard = Context<Widget>::Lock(this);
-		auto guard2 = Context<ScriptLayouterWidget>::Lock(this);
+    if (_layouter)
+    {
+        auto guard = Context<Widget>::Lock(this);
+        auto guard2 = Context<ScriptLayouterWidget>::Lock(this);
 
 #ifdef _DEBUG
-		if (_layouterVersion != _layouter->version())
-		{
-			auto layouter = _layouter;
-			_layouter = nullptr;
-			SetLayouter(layouter);
-		}
+        if (_layouterVersion != _layouter->version())
+        {
+            auto layouter = _layouter;
+            _layouter = nullptr;
+            SetLayouter(layouter);
+        }
 #endif
-		InternalsOnRun();
-		RelayoutIfNeeded();
-		ChildrenOnRun();
-		RelayoutIfNeeded(); // childs could changed their size by themself, we need to relayout them
+        InternalsOnRun();
+        RelayoutIfNeeded();
+        ChildrenOnRun();
+        RelayoutIfNeeded(); // childs could changed their size by themself, we need to relayout them
 
-		return;
-	}
+        return;
+    }
 
-	Widget::Run();
+    Widget::Run();
 }
-
 
 void ScriptLayouterWidget::RelayoutIfNeeded()
 {
-	if (!_layoutDirty || !_layouter)
-		return;
-	_layoutDirty = false;
-	relayoutNamedWidgets();
+    if (!_layoutDirty || !_layouter)
+        return;
+    _layoutDirty = false;
+    relayoutNamedWidgets();
 }
-
 
 void ScriptLayouterWidget::SetDefaultWidgetName(const std::string& name)
 {
-	_defaultWidgetName = name;
+    _defaultWidgetName = name;
 }
 
-void ScriptLayouterWidget::AddWidget(const std::shared_ptr<Widget> &widget)
+void ScriptLayouterWidget::AddWidget(const std::shared_ptr<Widget>& widget)
 {
-	auto guard = Context<Widget>::Lock(this);
-	//layouter()->LayoutNewItem(widget);
-	if (!_defaultWidgetName.empty())
-	{
-		AddNamedWidget(_defaultWidgetName, widget);
-		return;
-	}
+    auto guard = Context<Widget>::Lock(this);
+    //layouter()->LayoutNewItem(widget);
+    if (!_defaultWidgetName.empty())
+    {
+        AddNamedWidget(_defaultWidgetName, widget);
+        return;
+    }
 
-	Widget::AddWidget(widget);
+    Widget::AddWidget(widget);
 }
 
-ScriptLayouterWidget::NamedWidgetsMap::iterator ScriptLayouterWidget::AddNamedWidget(const std::string& name, const std::shared_ptr<Widget> &widget)
+ScriptLayouterWidget::NamedWidgetsMap::iterator ScriptLayouterWidget::AddNamedWidget(const std::string& name, const std::shared_ptr<Widget>& widget)
 {
-	auto guard = Context<Widget>::Lock(this);
-	Widget::AddWidget(widget);
+    auto guard = Context<Widget>::Lock(this);
+    Widget::AddWidget(widget);
 
-	auto d = dimensionsInside();
+    auto d = dimensionsInside();
 
-	auto guard2 = Context<ScriptLayouterWidget>::Lock(this);
-	auto dest_rect = Drawer::Destination( Rectangle::fromWH( 0.0, 0.0, d.x, d.y ) );
-	auto guard3 = Context<Drawer::Destination>::Lock(dest_rect);
-	if (_layouter && !_layoutDirty)
-		_layouter->LayoutWidget(name, widget);
+    auto guard2 = Context<ScriptLayouterWidget>::Lock(this);
+    auto dest_rect = Drawer::Destination(Rectangle::fromWH(0.0, 0.0, d.x, d.y));
+    auto guard3 = Context<Drawer::Destination>::Lock(dest_rect);
+    if (_layouter && !_layoutDirty)
+        _layouter->LayoutWidget(name, widget);
 
-	return _namedWidgets.emplace(name, widget);
+    return _namedWidgets.emplace(name, widget);
 }
 
-void ScriptLayouterWidget::AddLayouterWidget(const std::string& name, const std::shared_ptr<Widget> &widget)
+void ScriptLayouterWidget::AddLayouterWidget(const std::string& name, const std::shared_ptr<Widget>& widget)
 {
-	auto it = AddNamedWidget(name, widget);
-	_layouterWidgets.push_back(it);
+    auto it = AddNamedWidget(name, widget);
+    _layouterWidgets.push_back(it);
 }
 
 void ScriptLayouterWidget::RemoveLayouterWidgets()
 {
-	std::vector<NamedWidgetsMap::iterator> layouterWidgets;
-	std::swap(layouterWidgets, _layouterWidgets);
+    std::vector<NamedWidgetsMap::iterator> layouterWidgets;
+    std::swap(layouterWidgets, _layouterWidgets);
 
-	for (auto &it : layouterWidgets)
-		it->second->Unlink();
-
+    for (auto& it : layouterWidgets)
+        it->second->Unlink();
 }
 
 void ScriptLayouterWidget::Clear()
 {
-	RemoveLayouterWidgets();
-	_namedWidgets.clear();
-	Widget::Clear();
+    RemoveLayouterWidgets();
+    _namedWidgets.clear();
+    Widget::Clear();
 }
 
-
-void ScriptLayouterWidget::SetLayouter(const ScriptLayouter::pointer &layouter)
+void ScriptLayouterWidget::SetLayouter(const ScriptLayouter::pointer& layouter)
 {
-	if (_layouter == layouter)
-		return;
-	RemoveLayouterWidgets();
-	ResetContentBounds();
-	_layouter = layouter;
+    if (_layouter == layouter)
+        return;
+    RemoveLayouterWidgets();
+    ResetContentBounds();
+    _layouter = layouter;
 
-	InvalidateLayout();
-	//relayoutNamedWidgets();
+    InvalidateLayout();
+    //relayoutNamedWidgets();
 
+    if (_layouter)
+    {
+        //this potentially add new widgets
+        auto d = dimensionsInside();
+        auto dest_rect = Drawer::Destination(Rectangle::fromWH(0.0, 0.0, d.x, d.y));
 
-	if (_layouter)
-	{ 
-		//this potentially add new widgets
-		auto d = dimensionsInside();
-		auto dest_rect = Drawer::Destination( Rectangle::fromWH( 0.0, 0.0, d.x, d.y ) );
+        auto guard = Context<Widget>::Lock(this);
+        auto guard2 = Context<ScriptLayouterWidget>::Lock(this);
+        auto guard3 = Context<Drawer::Destination>::Lock(dest_rect);
 
-		auto guard = Context<Widget>::Lock(this);
-		auto guard2 = Context<ScriptLayouterWidget>::Lock(this);
-		auto guard3 = Context<Drawer::Destination>::Lock(dest_rect);
-
-		_layouter->OnLinkedToWidget();
+        _layouter->OnLinkedToWidget();
 #ifdef _DEBUG
-		_layouterVersion = layouter->version();
+        _layouterVersion = layouter->version();
 #endif
-	}
-		
-	
+    }
 }
-
 
 void ScriptLayouterWidget::onChildSizeChanged()
 {
-	InvalidateLayout();
+    InvalidateLayout();
 }
 
 void ScriptLayouterWidget::onChildRemoved(Widget& child)
 {
-	//remove from named, if exists
-	{
-		auto iter = _namedWidgets.begin();
-		for (; iter != _namedWidgets.end(); ++iter)
-		{
-			if (iter->second.get() != &child)
-				continue;
-			_namedWidgets.erase(iter);
-			break;
-		}
-	}
+    //remove from named, if exists
+    {
+        auto iter = _namedWidgets.begin();
+        for (; iter != _namedWidgets.end(); ++iter)
+        {
+            if (iter->second.get() != &child)
+                continue;
+            _namedWidgets.erase(iter);
+            break;
+        }
+    }
 
-
-	InvalidateLayout();
+    InvalidateLayout();
 }
 
 void ScriptLayouterWidget::SetLayouter(const std::string& objectPath)
 {
-	auto layouter = MX::Widgets::ScriptLayouterManager::layouter(objectPath);
-	SetLayouter(layouter);
+    auto layouter = MX::Widgets::ScriptLayouterManager::layouter(objectPath);
+    SetLayouter(layouter);
 }
 
-
-const ScriptLayouter::pointer &ScriptLayouterWidget::layouter()
+const ScriptLayouter::pointer& ScriptLayouterWidget::layouter()
 {
-	return _layouter;
+    return _layouter;
 }
 
 void ScriptLayouterWidget::relayoutNamedWidgets()
 {
-	auto d = dimensionsInside();
-	auto dest_rect = Drawer::Destination( Rectangle::fromWH( 0.0, 0.0, d.x, d.y ) );
+    auto d = dimensionsInside();
+    auto dest_rect = Drawer::Destination(Rectangle::fromWH(0.0, 0.0, d.x, d.y));
 
-	auto guard = Context<Widget>::Lock(this);
-	auto guard2 = Context<ScriptLayouterWidget>::Lock(this);
-	auto guard3 = Context<Drawer::Destination>::Lock(dest_rect);
+    auto guard = Context<Widget>::Lock(this);
+    auto guard2 = Context<ScriptLayouterWidget>::Lock(this);
+    auto guard3 = Context<Drawer::Destination>::Lock(dest_rect);
 
-	if (!_layouter)
-		return;
-	_layouter->RelayoutAllWidgets(_namedWidgets);
+    if (!_layouter)
+        return;
+    _layouter->RelayoutAllWidgets(_namedWidgets);
 }
-
 
 void ScriptLayouterWidget::OnAreaInsideChanged()
 {
-	Widget::OnAreaInsideChanged();
-	InvalidateLayout();
-	//relayoutNamedWidgets();
+    Widget::OnAreaInsideChanged();
+    InvalidateLayout();
+    //relayoutNamedWidgets();
 }
 
-void ScriptLayouterWidget::clipSize(float &width, float &height)
+void ScriptLayouterWidget::clipSize(float& width, float& height)
 {
-	auto guard = Context<Widget>::Lock(this);
-	auto guard2 = Context<ScriptLayouterWidget>::Lock(this);
-	if (_layouter)
-		_layouter->clipSize(width, height);
-	if (_drawer)
-		_drawer->clipSize(width, height);
+    auto guard = Context<Widget>::Lock(this);
+    auto guard2 = Context<ScriptLayouterWidget>::Lock(this);
+    if (_layouter)
+        _layouter->clipSize(width, height);
+    if (_drawer)
+        _drawer->clipSize(width, height);
 }
-
-
-
 
 class LayouterRectangle
 {
 public:
-	LayouterRectangle()
-	{
-		_rectangle.x2 = _rectangle.y2 = -1.0f;
-		memset(_coordAbsolute, 0, sizeof(_coordAbsolute));
-	}
+    LayouterRectangle()
+    {
+        _rectangle.x2 = _rectangle.y2 = -1.0f;
+        memset(_coordAbsolute, 0, sizeof(_coordAbsolute));
+    }
 
-	Drawer::Destination destination()
-	{
-		if (!Drawer::Destination::isCurrent())
-			return Drawer::Destination();
+    Drawer::Destination destination()
+    {
+        if (!Drawer::Destination::isCurrent())
+            return Drawer::Destination();
 
-		auto &currentD = Drawer::Destination::current();
+        auto& currentD = Drawer::Destination::current();
 
-		Drawer::Destination dest(_rectangle);
+        Drawer::Destination dest(_rectangle);
 
-		auto minus = [](float &number, float max) { number = number < 0.0f ? max + number : number; };
+        auto minus = [](float& number, float max) { number = number < 0.0f ? max + number : number; };
 
-		float wh[] = { currentD.width(), currentD.height(), currentD.width(), currentD.height() };
+        float wh[] = { currentD.width(), currentD.height(), currentD.width(), currentD.height() };
 
-		for (int i = 0; i < 4; i++)
-		{
-			if (!_coordAbsolute[i])
-				minus(dest.rectangle.point(i), wh[i]);
-		}
+        for (int i = 0; i < 4; i++)
+        {
+            if (!_coordAbsolute[i])
+                minus(dest.rectangle.point(i), wh[i]);
+        }
 
-		if (_coordAbsolute[2])
-			dest.rectangle.SetWidth(dest.rectangle.x2);
+        if (_coordAbsolute[2])
+            dest.rectangle.SetWidth(dest.rectangle.x2);
 
-		if (_coordAbsolute[3])
-			dest.rectangle.SetHeight(dest.rectangle.y2);
+        if (_coordAbsolute[3])
+            dest.rectangle.SetHeight(dest.rectangle.y2);
 
+        dest.rectangle.Shift(currentD.rectangle.pointTopLeft());
 
-		dest.rectangle.Shift(currentD.rectangle.pointTopLeft());
+        return dest;
+    }
 
+    std::pair<float&, bool&> coord(int i)
+    {
+        return std::make_pair(std::ref(_rectangle.point(i)), std::ref(_coordAbsolute[i]));
+    }
 
-
-		return dest;
-
-	}
-
-	std::pair<float&, bool&> coord(int i)
-	{
-		return std::make_pair(std::ref(_rectangle.point(i)), std::ref(_coordAbsolute[i]));
-	}
-
-	MX::Rectangle _rectangle;
-	bool  _coordAbsolute[4];
-
+    MX::Rectangle _rectangle;
+    bool _coordAbsolute[4];
 };
 
 /*
@@ -480,100 +441,94 @@ public:
 */
 namespace MX
 {
-	template<>
-	struct PropertyLoader<LayouterRectangle>
-	{
-		using type = PropertyLoader_Standard;
-		static bool load(LayouterRectangle& out, const Scriptable::Value::pointer& obj)
-		{
-			if (obj->size() == 0)
-				return false;
-			
-			auto &o = *obj;
-			
-			int coord_index = 0;
+template <>
+struct PropertyLoader<LayouterRectangle>
+{
+    using type = PropertyLoader_Standard;
+    static bool load(LayouterRectangle& out, const Scriptable::Value::pointer& obj)
+    {
+        if (obj->size() == 0)
+            return false;
 
-			for (auto &coord_obj_ptr : obj->array())
-			{
-				auto &coord_obj = *coord_obj_ptr;
+        auto& o = *obj;
 
-				//absolute
-				if (coord_obj.size() > 0)
-				{
-					for (auto &sub : coord_obj.array())
-					{
-						auto &sub_coord_obj = *sub;
-						auto coord = out.coord(coord_index);
+        int coord_index = 0;
 
-						coord.first = sub_coord_obj;
-						coord.second = true;
+        for (auto& coord_obj_ptr : obj->array())
+        {
+            auto& coord_obj = *coord_obj_ptr;
 
-						coord_index++;
-						if (coord_index == 4)
-							return true;
-					}
+            //absolute
+            if (coord_obj.size() > 0)
+            {
+                for (auto& sub : coord_obj.array())
+                {
+                    auto& sub_coord_obj = *sub;
+                    auto coord = out.coord(coord_index);
 
+                    coord.first = sub_coord_obj;
+                    coord.second = true;
 
-					//TODO
-					continue;
-				}
-			
-				//relative
-				{
-					auto coord = out.coord(coord_index);
-					coord.first = coord_obj;
-					coord.second = false;
+                    coord_index++;
+                    if (coord_index == 4)
+                        return true;
+                }
 
-					coord_index++;
-					if (coord_index == 4)
-						return true;
-				}
+                //TODO
+                continue;
+            }
 
-			}
+            //relative
+            {
+                auto coord = out.coord(coord_index);
+                coord.first = coord_obj;
+                coord.second = false;
 
-			return true;
-		}
-	};
+                coord_index++;
+                if (coord_index == 4)
+                    return true;
+            }
+        }
+
+        return true;
+    }
+};
 }
-
-
-
 
 class ScriptLayouterSimple : public ScriptLayouterBase
 {
 public:
-	ScriptLayouterSimple(MX::LScriptObject& script) : ScriptLayouterBase(script)
-	{	
-		script.load_property(_layout, "Layout");
-	}
+    ScriptLayouterSimple(MX::LScriptObject& script)
+        : ScriptLayouterBase(script)
+    {
+        script.load_property(_layout, "Layout");
+    }
 
-	void LayoutWidget(const std::string& name, const std::shared_ptr<Widget> &widget) override
-	{
-		{
-			auto it = _layout.find(name);
-			if (it != _layout.end())
-			{
-				auto destination = it->second.destination();
-				auto guard = destination.Use();
+    void LayoutWidget(const std::string& name, const std::shared_ptr<Widget>& widget) override
+    {
+        {
+            auto it = _layout.find(name);
+            if (it != _layout.end())
+            {
+                auto destination = it->second.destination();
+                auto guard = destination.Use();
 
-				widget->SetPositionRect(destination.rectangle);
-			}
-		}
+                widget->SetPositionRect(destination.rectangle);
+            }
+        }
 
-		ScriptLayouterBase::LayoutWidget(name, widget);
+        ScriptLayouterBase::LayoutWidget(name, widget);
+    }
 
-	}
 protected:
-	std::map<std::string, LayouterRectangle> _layout;
+    std::map<std::string, LayouterRectangle> _layout;
 };
-
-
 
 void ScriptLayouterInit::Init()
 {
-	ScriptClassParser::AddCreator(L"Layouter.Simple", new OutsideScriptClassCreatorContructor<ScriptLayouterSimple>());
+    ScriptClassParser::AddCreator(L"Layouter.Simple", new OutsideScriptClassCreatorContructor<ScriptLayouterSimple>());
 
-	WidgetFactoryInit::Init();
-	ScriptDrawerLayouterInit::Init();
-	ScriptLayouterCommonInit::Init();
+    WidgetFactoryInit::Init();
+    ScriptDrawerLayouterInit::Init();
+    ScriptLayouterCommonInit::Init();
 }

@@ -2,8 +2,7 @@
 
 const litehtml::tstring& HTMLUtils::mxmaster_css()
 {
-	static litehtml::tstring mxmaster_css =
-		_t(R"X*X(
+    static litehtml::tstring mxmaster_css = _t(R"X*X(
 html {
     display: block;
 	position: relative;
@@ -316,5 +315,5 @@ article, aside, footer, header, hgroup, nav, section
 
 )X*X");
 
-return mxmaster_css;
+    return mxmaster_css;
 }

@@ -1,60 +1,51 @@
 #include "WidgetScriptBinding.h"
-#include "script/Script.h"
-#include "widgets/drawers/Drawer.h"
-#include "widgets/Widget.h"
-#include "widgets/strategies/DrawableStrategy.h"
 #include "RPN/Function.h"
-
+#include "script/Script.h"
+#include "widgets/Widget.h"
+#include "widgets/drawers/Drawer.h"
+#include "widgets/strategies/DrawableStrategy.h"
 
 using namespace MX;
 using namespace MX::Widgets;
 
-
-
 void WidgetScriptBinding::Init()
 {
-	Script::onParsed.static_connect([&]() { onReload(); });
-	onReload();
+    Script::onParsed.static_connect([&]() { onReload(); });
+    onReload();
 }
-
 
 void WidgetScriptBinding::onReload()
 {
-	auto &script = Script::current();
-	script.SetPairFunctor("Area.X", []()-> float { return Drawer::Destination::current().x(); });
-	script.SetPairFunctor("Area.Y", []()-> float { return Drawer::Destination::current().y(); });
-	script.SetPairFunctor("Area.Width", []()-> float { return Drawer::Destination::current().width(); });
-	script.SetPairFunctor("Area.Height", []()-> float { return Drawer::Destination::current().height(); });
-	script.SetPairFunctor("Area.AspectRatio", []()-> float { if (!Drawer::Destination::isCurrent()) return 0.0f; return Drawer::Destination::current().width() / Drawer::Destination::current().height(); });
+    auto& script = Script::current();
+    script.SetPairFunctor("Area.X", []() -> float { return Drawer::Destination::current().x(); });
+    script.SetPairFunctor("Area.Y", []() -> float { return Drawer::Destination::current().y(); });
+    script.SetPairFunctor("Area.Width", []() -> float { return Drawer::Destination::current().width(); });
+    script.SetPairFunctor("Area.Height", []() -> float { return Drawer::Destination::current().height(); });
+    script.SetPairFunctor("Area.AspectRatio", []() -> float { if (!Drawer::Destination::isCurrent()) return 0.0f; return Drawer::Destination::current().width() / Drawer::Destination::current().height(); });
 
-	script.SetPairFunctor("Button.Pressed", []()-> float { return dynamic_cast<ButtonWidget&>(Widget::current()).pressed() ? 1.0f : 0.0f; });
-	script.SetPairFunctor("Button.Selected", []()-> float { return dynamic_cast<ButtonWidget&>(Widget::current()).selected() ? 1.0f : 0.0f; });
-	script.SetPairFunctor("Button.Enabled", []()-> float { return dynamic_cast<ButtonWidget&>(Widget::current()).enabled() ? 1.0f : 0.0f; });
-	script.SetPairFunctor("Button.Hover", []()-> float { return dynamic_cast<ButtonWidget&>(Widget::current()).hover() ? 1.0f : 0.0f; });
+    script.SetPairFunctor("Button.Pressed", []() -> float { return dynamic_cast<ButtonWidget&>(Widget::current()).pressed() ? 1.0f : 0.0f; });
+    script.SetPairFunctor("Button.Selected", []() -> float { return dynamic_cast<ButtonWidget&>(Widget::current()).selected() ? 1.0f : 0.0f; });
+    script.SetPairFunctor("Button.Enabled", []() -> float { return dynamic_cast<ButtonWidget&>(Widget::current()).enabled() ? 1.0f : 0.0f; });
+    script.SetPairFunctor("Button.Hover", []() -> float { return dynamic_cast<ButtonWidget&>(Widget::current()).hover() ? 1.0f : 0.0f; });
 
-	script.SetPairFunctor("Widget.Progress", []()-> float 
-		{ 
-			if (!ProgressData::isCurrent())
-			{
-				assert(false);
-				return 0.0f;
-			}
-			return ProgressData::current().value(); 
-		});
+    script.SetPairFunctor("Widget.Progress", []() -> float {
+        if (!ProgressData::isCurrent())
+        {
+            assert(false);
+            return 0.0f;
+        }
+        return ProgressData::current().value();
+    });
 
+    RPN::Functions::AddLambda("Widget.Property", [](const std::string& name) { return Widget::current().properties().valueOf<float>(name); });
 
-	RPN::Functions::AddLambda("Widget.Property", [](const std::string& name) { return Widget::current().properties().valueOf<float>(name); });
+    script.SetPairFunctor("Widget.Text.Width", []() -> float {
+        return ScopeSingleton<TextData>::current().actualWidth();
+    });
 
-	script.SetPairFunctor("Widget.Text.Width", []()-> float 
-	{ 
-		return ScopeSingleton<TextData>::current().actualWidth();
-	});
+    script.SetPairFunctor("Widget.Text.Height", []() -> float {
+        return ScopeSingleton<TextData>::current().actualHeight();
+    });
 
-	script.SetPairFunctor("Widget.Text.Height", []()-> float
-	{
-		return ScopeSingleton<TextData>::current().actualHeight();
-	});
-
-
-	RPN::Functions::AddLambda("Time.Current", []() { return (float)Time::Timer::current().total_seconds(); });
+    RPN::Functions::AddLambda("Time.Current", []() { return (float)Time::Timer::current().total_seconds(); });
 }

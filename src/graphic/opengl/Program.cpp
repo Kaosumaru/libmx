@@ -1,5 +1,5 @@
-#include "Shader.h"
 #include "Program.h"
+#include "Shader.h"
 #include "game/resources/Resources.h"
 
 using namespace MX;
@@ -7,43 +7,43 @@ using namespace MX::gl;
 
 namespace MX
 {
-	namespace gl
-	{
-		Program::pointer createProgramFromFiles(const std::string& vertexShader, const std::string& fragmentShader, std::string& errorLog)
-		{
-			std::string vertex = MX::Resources::get().openTextFile(vertexShader);
-			std::string fragment = MX::Resources::get().openTextFile(fragmentShader);
-			return createProgram(vertex, fragment, errorLog);
-		}
+namespace gl
+{
+    Program::pointer createProgramFromFiles(const std::string& vertexShader, const std::string& fragmentShader, std::string& errorLog)
+    {
+        std::string vertex = MX::Resources::get().openTextFile(vertexShader);
+        std::string fragment = MX::Resources::get().openTextFile(fragmentShader);
+        return createProgram(vertex, fragment, errorLog);
+    }
 
-		Program::pointer createProgram(const std::string& vertexShader, const std::string& fragmentShader, std::string& errorLog)
-		{
-			Program::pointer program = std::make_shared<Program>();
+    Program::pointer createProgram(const std::string& vertexShader, const std::string& fragmentShader, std::string& errorLog)
+    {
+        Program::pointer program = std::make_shared<Program>();
 
-			Shader vertex;
-			if (!vertex.Compile(vertexShader, Shader::Type::Vertex))
-			{
-				errorLog = vertex.infoLog();
-				return program;
-			}
+        Shader vertex;
+        if (!vertex.Compile(vertexShader, Shader::Type::Vertex))
+        {
+            errorLog = vertex.infoLog();
+            return program;
+        }
 
-			Shader fragment;
-			if (!fragment.Compile(fragmentShader, Shader::Type::Fragment))
-			{
-				errorLog = fragment.infoLog();
-				return program;
-			}
+        Shader fragment;
+        if (!fragment.Compile(fragmentShader, Shader::Type::Fragment))
+        {
+            errorLog = fragment.infoLog();
+            return program;
+        }
 
-			program->AttachShader(vertex);
-			program->AttachShader(fragment);
+        program->AttachShader(vertex);
+        program->AttachShader(fragment);
 
-			if (!program->Link())
-			{
-				errorLog = program->infoLog();
-				return program;
-			}
+        if (!program->Link())
+        {
+            errorLog = program->infoLog();
+            return program;
+        }
 
-			return program;
-		}
-	}
+        return program;
+    }
+}
 }
