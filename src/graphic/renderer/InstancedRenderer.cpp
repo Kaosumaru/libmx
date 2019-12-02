@@ -1,5 +1,6 @@
 #include "InstancedRenderer.h"
 #include "graphic/opengl/Uniform.h"
+#include "graphic/renderer/DefaultRenderers.h"
 #include "graphic/renderer/MVP.h"
 #include <iostream>
 
@@ -66,6 +67,18 @@ InstancedRenderer::InstancedRenderer(const std::shared_ptr<gl::ProgramInstance>&
         _uv_attribute = program->GetAttribLocation("instance_uv");
         _center_attribute = program->GetAttribLocation("instance_center");
     }
+}
+
+std::shared_ptr<InstancedRenderer> InstancedRenderer::Create(const char* fragmentPath, const char* vertexPath)
+{
+    auto program = Graphic::Renderers::get().createProgram(fragmentPath, vertexPath);
+    auto instance = std::make_shared<gl::ProgramInstance>(program);
+    return std::make_shared<InstancedRenderer>(instance);
+}
+
+std::shared_ptr<InstancedRenderer> InstancedRenderer::Create(const std::shared_ptr<gl::ProgramInstance>& instance)
+{
+    return std::make_shared<InstancedRenderer>(instance);
 }
 
 void InstancedRenderer::Flush()

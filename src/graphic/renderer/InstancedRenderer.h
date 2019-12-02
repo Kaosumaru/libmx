@@ -15,6 +15,9 @@ private:
 public:
     InstancedRenderer(const std::shared_ptr<gl::ProgramInstance>& instance);
 
+	static std::shared_ptr<InstancedRenderer> Create(const char* fragmentPath, const char* vertexPath = nullptr);
+    static std::shared_ptr<InstancedRenderer> Create(const std::shared_ptr<gl::ProgramInstance>& instance);
+
 	void Flush() override;
 	void Draw(const gl::Texture& tex, const Rectangle& srcArea, const glm::vec2& pos, const glm::vec2& relativeCenter, const glm::vec2& size, const MX::Color& color, float angle) override;
 
