@@ -12,30 +12,34 @@ class UniformBase
 public:
     UniformBase(ProgramInstance* parent, const char* name);
 
-    void Apply()
+    void Apply(bool onlyIfDirty=true)
     {
         if (_location == -1)
         {
             _location = program()->GetUniformLocation(_name);
         }
+        if (onlyIfDirty && !_dirty)
+            return;
+        _dirty = false;
         onApply();
     }
 
 protected:
-    void MarkParentAsDirty();
+    void MarkAsDirty();
     const Program::pointer& program();
-    virtual void onApply() {}
+    virtual void onApply() { }
 
     const char* _name;
     ProgramInstance* _parent;
     GLuint _location = -1;
+    bool _dirty = false;
 };
 
 class ProgramInstance
 {
 public:
     friend class UniformBase;
-    ProgramInstance() {}
+    ProgramInstance() { }
     ProgramInstance(const Program::pointer& program)
         : _program(program)
     {
@@ -48,7 +52,7 @@ public:
     void Use();
 
 protected:
-    bool _dirty = false;
+    bool _hasDirtyUniforms = false;
     std::vector<UniformBase*> _uniforms;
     Program::pointer _program;
 
@@ -69,7 +73,7 @@ public:
     Uniform& operator=(const T& v)
     {
         _value = v;
-        MarkParentAsDirty();
+        MarkAsDirty();
         return *this;
     }
 

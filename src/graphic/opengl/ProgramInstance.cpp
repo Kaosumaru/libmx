@@ -11,9 +11,10 @@ UniformBase::UniformBase(ProgramInstance* parent, const char* name)
     _parent->_uniforms.push_back(this);
 }
 
-void UniformBase::MarkParentAsDirty()
+void UniformBase::MarkAsDirty()
 {
-    _parent->_dirty = true;
+    _dirty = true;
+    _parent->_hasDirtyUniforms = true;
 }
 
 const Program::pointer& UniformBase::program()
@@ -30,16 +31,18 @@ void ProgramInstance::Use()
 {
     program()->Use();
     s_current = this;
+
+	bool shaderOwnerChanged = false;
     if (program()->owner() != (std::uintptr_t)this)
     {
-        _dirty = true;
+        shaderOwnerChanged = true;
         program()->SetOwner((std::uintptr_t)this);
-	}
-    if (!_dirty)
+    }
+    if (!shaderOwnerChanged && !_hasDirtyUniforms)
         return;
     for (auto& uniform : _uniforms)
-        uniform->Apply();
-    _dirty = false;
+        uniform->Apply(shaderOwnerChanged);
+    _hasDirtyUniforms = false;
 }
 
 ProgramInstance* ProgramInstance::s_current = nullptr;
