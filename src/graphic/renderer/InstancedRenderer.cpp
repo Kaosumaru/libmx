@@ -1,5 +1,6 @@
 #include "InstancedRenderer.h"
 #include "graphic/opengl/Uniform.h"
+#include "graphic/renderer/DefaultRenderers.h"
 #include "graphic/renderer/MVP.h"
 #include <iostream>
 
@@ -68,6 +69,18 @@ InstancedRenderer::InstancedRenderer(const std::shared_ptr<gl::ProgramInstance>&
     }
 }
 
+std::shared_ptr<InstancedRenderer> InstancedRenderer::Create(const char* fragmentPath, const char* vertexPath)
+{
+    auto program = Graphic::Renderers::get().createProgram(fragmentPath, vertexPath);
+    auto instance = std::make_shared<gl::ProgramInstance>(program);
+    return std::make_shared<InstancedRenderer>(instance);
+}
+
+std::shared_ptr<InstancedRenderer> InstancedRenderer::Create(const std::shared_ptr<gl::ProgramInstance>& instance)
+{
+    return std::make_shared<InstancedRenderer>(instance);
+}
+
 void InstancedRenderer::Flush()
 {
     DrawBatched();
@@ -107,9 +120,7 @@ void InstancedRenderer::DrawBatched()
 
     glBindTexture(GL_TEXTURE_2D, _lastTex);
 
-    auto& program = _programInstance->program();
-
-    program->Use();
+    _programInstance->Use();
     auto& mvp = MVP::mvp();
     gl::SetUniform(_mvp_uniform, mvp);
 

@@ -5,65 +5,89 @@
 
 namespace MX::gl
 {
-	class ProgramInstance;
+class ProgramInstance;
 
-    class UniformBase
+class UniformBase
+{
+public:
+    UniformBase(ProgramInstance* parent, const char* name);
+
+    void Apply(bool onlyIfDirty=true)
     {
-    public:
-		UniformBase(const char* name, ProgramInstance* parent);
+        if (_location == -1)
+        {
+            _location = program()->GetUniformLocation(_name);
+        }
+        if (onlyIfDirty && !_dirty)
+            return;
+        _dirty = false;
+        onApply();
+    }
 
-		void Apply() 
-		{ 
-			if (_location == -1)
-			{
-				_location = program()->GetUniformLocation(_name);
-			}
-			onApply(); 
-		}
-	protected:
-		const Program::pointer& program();
-		virtual void onApply() {}
+protected:
+    void MarkAsDirty();
+    const Program::pointer& program();
+    virtual void onApply() { }
 
-		const char*      _name;
-		ProgramInstance* _parent;
-		GLuint _location = -1;
-    };
+    const char* _name;
+    ProgramInstance* _parent;
+    GLuint _location = -1;
+    bool _dirty = false;
+};
 
-    class ProgramInstance
+class ProgramInstance
+{
+public:
+    friend class UniformBase;
+    ProgramInstance() { }
+    ProgramInstance(const Program::pointer& program)
+        : _program(program)
     {
-	public:
-		ProgramInstance() {}
-		ProgramInstance(const Program::pointer& program) : _program(program) {}
+    }
 
-		const Program::pointer& program() { return _program; }
+    ProgramInstance(const char* fragmentPath, const char* vertexPath = nullptr);
 
-		void Use();
-		bool IsCurrent() { return s_current	== this; }
-    protected:
-		std::vector<UniformBase*> _uniforms;
-        Program::pointer _program;
+    const Program::pointer& program() { return _program; }
 
-		static ProgramInstance* s_current;
-    };
-	
-	template<typename T>
-	class Uniform : public UniformBase
-	{
-	public:
-		using UniformBase::UniformBase;
+    void Use();
 
-		Uniform & operator = (const T& v)
-		{
-			_value = v;
-			if (_parent->IsCurrent()) onApply();
-			return *this;
-		}
-	protected:
-		void onApply() override
-		{
-			SetUniform(_location, _value);
-		}
+protected:
+    bool _hasDirtyUniforms = false;
+    std::vector<UniformBase*> _uniforms;
+    Program::pointer _program;
 
-		T _value {};
-	};
+    static ProgramInstance* s_current;
+};
+
+template <typename T>
+class Uniform : public UniformBase
+{
+public:
+    using UniformBase::UniformBase;
+    Uniform(ProgramInstance* parent, const char* name, const T& v)
+        : UniformBase(parent, name)
+    {
+        _value = v;
+    }
+
+    Uniform& operator=(const T& v)
+    {
+        _value = v;
+        MarkAsDirty();
+        return *this;
+    }
+
+    const T& value()
+    {
+        return _value;
+    }
+
+protected:
+    void onApply() override
+    {
+        SetUniform(_location, _value);
+    }
+
+    T _value {};
+};
 }

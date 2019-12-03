@@ -26,13 +26,6 @@ gl::Program::pointer Graphic::Renderers::createProgram(const char* fragmentPath,
 
 Graphic::Renderers::Renderers()
 {
-    {
-        auto instance = std::make_shared<gl::ProgramInstance>(createProgram("shader/text.fragment"));
-        _textRenderer = std::make_shared<Graphic::InstancedRenderer>(instance);
-    }
-
-    {
-        auto instance = std::make_shared<gl::ProgramInstance>(createProgram("shader/basic.fragment"));
-        _defaultRenderer = std::make_shared<Graphic::InstancedRenderer>(instance);
-    }
+    _textRenderer = Graphic::InstancedRenderer::Create("shader/text.fragment");
+    _defaultRenderer = Graphic::InstancedRenderer::Create("shader/basic.fragment");
 }
