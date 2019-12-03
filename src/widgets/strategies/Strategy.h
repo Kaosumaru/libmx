@@ -1,183 +1,179 @@
 #ifndef MXSTRATEGY
 #define MXSTRATEGY
+#include "collision/shape/Shape.h"
+#include "devices/Touches.h"
 #include "utils/Utils.h"
 #include "utils/Vector2.h"
-#include "devices/Touches.h"
-#include "widgets/systems/DragSystem.h"
 #include "widgets/drawers/Drawer.h"
-#include "collision/shape/Shape.h"
+#include "widgets/systems/DragSystem.h"
 
 namespace MX
 {
 namespace Widgets
 {
 
-class Widget;
-class ButtonWidget;
+    class Widget;
+    class ButtonWidget;
 
-namespace Strategy
-{
+    namespace Strategy
+    {
 
+        class Strategy : public shared_ptr_init<Strategy>, public MX::SignalTrackable
+        {
+        public:
+            Strategy(bool interactive = false)
+                : _interactive(interactive)
+            {
+            }
 
+            friend class Widget;
 
-class Strategy : public shared_ptr_init<Strategy>, public MX::SignalTrackable
-{
-public:
-	Strategy(bool interactive = false) : _interactive(interactive)
-	{
+            virtual ~Strategy() { }
+            void InitStrategy(Widget& widget)
+            {
+                _widget = &widget;
+                if (_interactive)
+                    IncInteractive();
+                OnInit();
+                OnShapeChanged();
+            }
 
-	}
+            bool hasWidget() { return _widget != nullptr; }
+            Widget& widget() { return *_widget; }
+            virtual bool runnable() { return false; }
+            virtual bool Run() { return true; }
 
-	friend class Widget;
+            virtual bool drawable() { return false; }
+            virtual void BeforeDraw() { }
+            virtual void AfterDraw() { }
 
-	virtual ~Strategy() {}
-	void InitStrategy(Widget& widget)
-	{
-		_widget = &widget;
-		if (_interactive)
-			IncInteractive();
-		OnInit();
-		OnShapeChanged();
-	}
+            virtual void OnRefreshedDrawer() { }
+            virtual void OnShapeChanged() {};
 
-	bool hasWidget() { return _widget != nullptr; }
-	Widget& widget() { return *_widget; }
-	virtual bool runnable() { return false; }
-	virtual bool Run() { return true; }
+        protected:
+            void IncInteractive();
+            void DecInteractive();
 
-	virtual bool drawable() { return false; }
-	virtual void BeforeDraw() { }
-	virtual void AfterDraw() { }
+            virtual void OnInit() {};
 
-	virtual void OnRefreshedDrawer() { }
-	virtual void OnShapeChanged() {};
-protected:
-	void IncInteractive();
-	void DecInteractive();
+            bool _interactive = false;
+            Widget* _widget = nullptr;
+        };
 
+        class Interactive : public Strategy
+        {
+        public:
+            Interactive()
+                : Strategy(true)
+            {
+            }
+        };
 
-	virtual void OnInit() {};
+        class CenterInParent : public Strategy
+        {
+        public:
+            CenterInParent(bool horizontally = true, bool vertically = true);
 
-	bool    _interactive = false;
-	Widget *_widget = nullptr;
-};
+            bool runnable() override { return true; }
+            bool Run() override;
 
+        protected:
+            bool _horizontally;
+            bool _vertically;
+        };
 
-class Interactive : public Strategy
-{
-public:
-	Interactive() : Strategy(true) {}
-};
+        class FillInParent : public Strategy
+        {
+        public:
+            FillInParent(bool horizontally = true, bool vertically = true);
 
-class CenterInParent : public Strategy
-{
-public:
-	CenterInParent(bool horizontally = true, bool vertically = true);
+            bool runnable() override { return true; }
+            bool Run() override;
 
-	bool runnable() override { return true; }
-	bool Run() override;
-protected:
-	bool _horizontally;
-	bool _vertically;
-};
+        protected:
+            bool _horizontally;
+            bool _vertically;
+        };
 
-class FillInParent : public Strategy
-{
-public:
-	FillInParent(bool horizontally = true, bool vertically = true);
+        class Button : public Interactive
+        {
+        public:
+            Button();
 
-	bool runnable() override { return true; }
-	bool Run() override;
-protected:
-	bool _horizontally;
-	bool _vertically;
-};
+            const Touch::pointer& touch() { return _touch; }
 
-class Button : public Interactive
-{
-public:
-	Button();
+        protected:
+            ButtonWidget& buttonWidget();
+            void OnShapeChanged() override;
 
+            void OnTouch(const Collision::Shape::pointer& shape);
+            void OnTouchEndCollision(const Collision::Shape::pointer& shape);
 
-	const Touch::pointer& touch() { return _touch; }
-protected:
-	ButtonWidget &buttonWidget();
-	void OnShapeChanged() override;
+            void OnMouseFirstCollision(const MX::Collision::Shape::pointer& shape, const Collision::ShapeCollision::pointer& collision);
+            void OnMouseCollisionEnds();
 
-	void OnTouch(const Collision::Shape::pointer& shape);
-	void OnTouchEndCollision(const Collision::Shape::pointer& shape);
+            virtual void OnTouchBegin();
+            virtual void OnTouchEnd();
 
-	void OnMouseFirstCollision(const MX::Collision::Shape::pointer& shape, const Collision::ShapeCollision::pointer &collision);
-	void OnMouseCollisionEnds();
+            void IncrementHovers();
+            void DecrementHovers();
 
-	virtual void OnTouchBegin();
-	virtual void OnTouchEnd();
+            Touch::pointer _touch;
+            ButtonWidget* _buttonWidget;
 
-	void IncrementHovers();
-	void DecrementHovers();
+            int hovers_count = 0;
+        };
 
-	Touch::pointer  _touch;
-	ButtonWidget *_buttonWidget;
+        class PushButton : public Interactive
+        {
+        public:
+            PushButton();
 
-	int hovers_count = 0;
-};
+        protected:
+            void OnInit() override;
+            void OnPressed();
+        };
 
-class PushButton : public Interactive
-{
-public:
-	PushButton();
-protected:
-	void OnInit() override;
-	void OnPressed();
-};
+        class Draggable : public Interactive, public MX::Widgets::DragTarget
+        {
+        public:
+            Draggable();
+            void OnShapeChanged() override;
+            void DrawDrag(float x, float y) override;
 
+        protected:
+            void OnTouchBegin(const Collision::Shape::pointer& shape);
+            void OnTouchMove();
+            void OnTouchEnd();
 
-class Draggable : public Interactive, public MX::Widgets::DragTarget
-{
-public:
-	Draggable();
-	void OnShapeChanged() override;
-	void DrawDrag(float x, float y) override;
+            void StartDrag(const glm::vec2& position);
+            bool TryToStartDrag(const glm::vec2& position);
+            void EndDrag();
 
-protected:
-	void OnTouchBegin(const Collision::Shape::pointer& shape);
-	void OnTouchMove();
-	void OnTouchEnd();
+            glm::vec2 _initialDragPosition;
+            float _distanceToDrag = 4.5f;
+            bool _dragStarted = false;
+            Drawer::Drag _dragDrawerInfo;
+            static Drawer::Drag emptyDrag;
+            glm::vec2 _offset;
+            Touch::pointer _touch;
+        };
 
-    void StartDrag(const glm::vec2& position);
-	bool TryToStartDrag(const glm::vec2& position);
-	void EndDrag();
+        class DropTarget : public Interactive, public MX::Widgets::DropTarget
+        {
+        public:
+            DropTarget();
+            void OnShapeChanged();
 
-    glm::vec2 _initialDragPosition;
-    float _distanceToDrag = 4.5f;
-    bool _dragStarted = false;
-	Drawer::Drag _dragDrawerInfo;
-	static Drawer::Drag emptyDrag;
-	glm::vec2 _offset;
-	Touch::pointer  _touch;
+        protected:
+            void OnDrop();
+        };
 
-};
-
-
-
-
-class DropTarget : public Interactive, public MX::Widgets::DropTarget
-{
-public:
-	DropTarget();
-	void OnShapeChanged();
-protected:
-	void OnDrop();
-};
-
-}
+    }
 
 }
 
 namespace Strategies = Widgets::Strategy;
 }
-
-
-
 
 #endif

@@ -1,27 +1,27 @@
 #pragma once
-#include <string>
-#include "utils/Utils.h"
 #include "ScriptObject.h"
+#include "utils/Utils.h"
+#include <string>
 
-namespace MX{
-
+namespace MX
+{
 
 namespace Scriptable
 {
-	class Value;
+    class Value;
 }
 
 class ScriptClass : public ScriptObjectString
 {
 public:
-	virtual ~ScriptClass();
+    virtual ~ScriptClass();
 
-	bool Parse(const std::wstring& className, const std::string& instancePath);
+    bool Parse(const std::wstring& className, const std::string& instancePath);
+
 protected:
-	virtual bool onParse(){return true; }
+    virtual bool onParse() { return true; }
 
-	std::wstring _class;
+    std::wstring _class;
 };
-
 
 }

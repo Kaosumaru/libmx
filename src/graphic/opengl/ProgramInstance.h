@@ -12,7 +12,7 @@ class UniformBase
 public:
     UniformBase(ProgramInstance* parent, const char* name);
 
-    void Apply(bool onlyIfDirty=true)
+    void Apply(bool onlyIfDirty = true)
     {
         if (_location == -1)
         {
@@ -27,7 +27,7 @@ public:
 protected:
     void MarkAsDirty();
     const Program::pointer& program();
-    virtual void onApply() { }
+    virtual void onApply() {}
 
     const char* _name;
     ProgramInstance* _parent;
@@ -39,7 +39,7 @@ class ProgramInstance
 {
 public:
     friend class UniformBase;
-    ProgramInstance() { }
+    ProgramInstance() {}
     ProgramInstance(const Program::pointer& program)
         : _program(program)
     {

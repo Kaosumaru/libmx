@@ -6,38 +6,33 @@ namespace MX
 namespace Widgets
 {
 
+    class StackWidget : public Widget
+    {
+    public:
+        StackWidget();
 
+        void PushWidget(const std::shared_ptr<Widget>& widget);
+        void PopWidget();
 
-class StackWidget : public Widget
-{
-public:
-	StackWidget();
+        void ReplaceTopWidget(const std::shared_ptr<Widget>& widget);
 
+        static StackWidget* stack_of(Widget* widget);
 
-	void PushWidget(const std::shared_ptr<Widget> &widget);
-	void PopWidget();
+        unsigned stackSize() { return _stackSize; }
 
-	void ReplaceTopWidget(const std::shared_ptr<Widget> &widget);
+        const std::shared_ptr<Widget>& top() { return _top; }
+        Signal<void(const std::shared_ptr<Widget>&)> onTopWidgetChanged;
 
-	static StackWidget* stack_of(Widget *widget);
+    protected:
+        void OnAreaInsideChanged() override;
+        void AddWidget(const std::shared_ptr<Widget>& widget) override { return Widget::AddWidget(widget); }
 
-	unsigned stackSize() { return _stackSize; }
-
-	const std::shared_ptr<Widget>& top() { return _top; }
-	Signal<void(const std::shared_ptr<Widget> &)> onTopWidgetChanged;
-protected:
-	void OnAreaInsideChanged() override;
-	void AddWidget(const std::shared_ptr<Widget> &widget) override { return Widget::AddWidget(widget);  }
-	
-	std::shared_ptr<Widget> _top;
-	unsigned _stackSize = 0;
-};
-
-
+        std::shared_ptr<Widget> _top;
+        unsigned _stackSize = 0;
+    };
 
 }
 typedef std::shared_ptr<Widgets::StackWidget> StackWidgetPtr;
-
 
 }
 

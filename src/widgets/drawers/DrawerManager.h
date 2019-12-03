@@ -7,29 +7,28 @@ namespace MX
 namespace Widgets
 {
 
-class Widget;
+    class Widget;
 
+    class DrawerManager : public Singleton<DrawerManager>
+    {
+    public:
+        DrawerManager();
 
-class DrawerManager : public Singleton < DrawerManager >
-{
-public:
-	DrawerManager();
+        Drawer::pointer getDrawer(const std::string& objectPath);
 
-	Drawer::pointer getDrawer(const std::string& objectPath);
+        static Drawer::pointer drawer(const std::string& objectPath)
+        {
+            return DrawerManager::get().getDrawer(objectPath);
+        }
 
-	static Drawer::pointer drawer(const std::string& objectPath)
-	{
-		return DrawerManager::get().getDrawer(objectPath);
-	}
+        void Deinitialize();
 
-	void Deinitialize();
-protected:
-	void onReload();
+    protected:
+        void onReload();
 
-	using Map = std::map < std::string, Drawer::pointer > ;
-	Map _drawers;
-};
-
+        using Map = std::map<std::string, Drawer::pointer>;
+        Map _drawers;
+    };
 
 }
 }

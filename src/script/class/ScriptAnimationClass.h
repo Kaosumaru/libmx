@@ -1,61 +1,59 @@
 #pragma once
-#include <string>
 #include "ScriptImageClass.h"
-#include "utils/Utils.h"
-#include "script/ScriptClass.h"
 #include "graphic/animation/SingleAnimation.h"
+#include "script/ScriptClass.h"
+#include "utils/Utils.h"
+#include <string>
 
-namespace MX{
-
-
+namespace MX
+{
 
 class ScriptAnimationClass : public ScriptImageClass
 {
 public:
-	ScriptAnimationClass();
+    ScriptAnimationClass();
 
-	virtual const std::shared_ptr<Graphic::SingleAnimation>& animation() const;
-	std::shared_ptr<Graphic::Image> image() const;
+    virtual const std::shared_ptr<Graphic::SingleAnimation>& animation() const;
+    std::shared_ptr<Graphic::Image> image() const;
+
 protected:
-
-	std::shared_ptr<Graphic::SingleAnimation> _animation;
+    std::shared_ptr<Graphic::SingleAnimation> _animation;
 };
 
 class ScriptAnimationFromFileClass : public ScriptAnimationClass
 {
 public:
-	ScriptAnimationFromFileClass();
+    ScriptAnimationFromFileClass();
+
 protected:
-	bool onParse() override;	
+    bool onParse() override;
 };
 
 class ScriptAnimationFromFilesClass : public ScriptAnimationClass
 {
 public:
-	ScriptAnimationFromFilesClass();
+    ScriptAnimationFromFilesClass();
+
 protected:
-	bool onParse() override;
+    bool onParse() override;
 
-	float _frameDuration = 0.0f;
-	unsigned _framesCount = 0;
-	std::string _filenameTemplate;
-	glm::vec2 _pivot;
-
-	
+    float _frameDuration = 0.0f;
+    unsigned _framesCount = 0;
+    std::string _filenameTemplate;
+    glm::vec2 _pivot;
 };
 
 class ScriptRandomAnimation : public ScriptAnimationClass
 {
 public:
-	ScriptRandomAnimation();
+    ScriptRandomAnimation();
 
-	 const std::shared_ptr<Graphic::SingleAnimation>& animation() const override;
+    const std::shared_ptr<Graphic::SingleAnimation>& animation() const override;
+
 protected:
-	bool onParse() override;
+    bool onParse() override;
 
-	std::vector<std::shared_ptr<Graphic::SingleAnimation>> _animations;
-
-	
+    std::vector<std::shared_ptr<Graphic::SingleAnimation>> _animations;
 };
 
 }

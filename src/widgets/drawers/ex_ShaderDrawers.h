@@ -9,14 +9,11 @@ namespace MX
 namespace Widgets
 {
 
-
-
-	class ShaderDrawersInit
-	{
-	public:
-		static void Init();
-	};
-
+    class ShaderDrawersInit
+    {
+    public:
+        static void Init();
+    };
 
 }
 }

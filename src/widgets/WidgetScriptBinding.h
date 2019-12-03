@@ -2,17 +2,18 @@
 
 namespace MX
 {
-	namespace Widgets
-	{
+namespace Widgets
+{
 
-		class WidgetScriptBinding
-		{
-		public:
-			static void Init();
-		protected:
-			static void onReload();
-		};
+    class WidgetScriptBinding
+    {
+    public:
+        static void Init();
 
-	}
+    protected:
+        static void onReload();
+    };
+
+}
 
 }

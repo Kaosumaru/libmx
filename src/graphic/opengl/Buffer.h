@@ -1,58 +1,57 @@
 #pragma once
-#include "graphic/OpenGL.h"
 #include "Shader.h"
+#include "graphic/OpenGL.h"
 
 namespace MX
 {
 namespace gl
 {
-	inline void BufferDeleter(GLuint obj)
-	{
-		glDeleteProgram(obj);
-	}
+    inline void BufferDeleter(GLuint obj)
+    {
+        glDeleteProgram(obj);
+    }
 
-	class Buffer : public GLObject<BufferDeleter>
-	{
-	public:
-		enum class Type
-		{
-			Array = GL_ARRAY_BUFFER
-		};
+    class Buffer : public GLObject<BufferDeleter>
+    {
+    public:
+        enum class Type
+        {
+            Array = GL_ARRAY_BUFFER
+        };
 
-		Buffer()
-		{
+        Buffer()
+        {
+        }
 
-		}
+        Buffer(Type type)
+        {
+            Create(type);
+        }
 
-		Buffer(Type type)
-		{
-			Create(type);
-		}
+        void Create(Type type)
+        {
+            _type = type;
+            glGenBuffers(1, &_object);
+        }
 
-		void Create(Type type)
-		{
-			_type = type;
-			glGenBuffers(1, &_object);
-		}
+        void Bind()
+        {
+            glBindBuffer((GLuint)_type, _object);
+        }
 
-		void Bind()
-		{
-			glBindBuffer((GLuint)_type, _object);
-		}
+        template <typename T, int size>
+        void Data(T (&data)[size], GLuint usage)
+        {
+            glBufferData((GLuint)_type, size * sizeof(T), data, usage);
+        }
 
-		template<typename T, int size>
-		void Data(T(&data)[size], GLuint usage)
-		{
-			glBufferData((GLuint)_type, size * sizeof(T), data, usage);
-		}
+        void Data(void* data, GLuint size, GLuint usage)
+        {
+            glBufferData((GLuint)_type, size, data, usage);
+        }
 
-		void Data(void *data, GLuint size, GLuint usage)
-		{
-			glBufferData((GLuint)_type, size, data, usage);
-		}
-
-	protected:
-		Type _type;
-	};
+    protected:
+        Type _type;
+    };
 }
 }

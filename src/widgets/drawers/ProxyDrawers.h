@@ -8,14 +8,11 @@ namespace MX
 namespace Widgets
 {
 
-
-
-	class ProxyDrawersInit
-	{
-	public:
-		static void Init();
-	};
-
+    class ProxyDrawersInit
+    {
+    public:
+        static void Init();
+    };
 
 }
 }

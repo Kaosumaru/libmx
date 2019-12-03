@@ -1,51 +1,46 @@
 #ifndef MXCHECKMARKSTRATEGY
 #define MXCHECKMARKSTRATEGY
-#include "devices/Touches.h"
 #include "Strategy.h"
+#include "devices/Touches.h"
 
 namespace MX
 {
 namespace Widgets
 {
 
-class CheckmarkGroup : public MX::SignalTrackable
-{
-public:
-	CheckmarkGroup(){}
-	~CheckmarkGroup(){}
+    class CheckmarkGroup : public MX::SignalTrackable
+    {
+    public:
+        CheckmarkGroup() { }
+        ~CheckmarkGroup() { }
 
-	void AddWidget(const std::shared_ptr<ButtonWidget>& widget);
+        void AddWidget(const std::shared_ptr<ButtonWidget>& widget);
 
-protected:
-	void onWidgetSelected(ButtonWidget* widget);
+    protected:
+        void onWidgetSelected(ButtonWidget* widget);
 
-	std::list<std::shared_ptr<ButtonWidget>> _widgets;
-};
+        std::list<std::shared_ptr<ButtonWidget>> _widgets;
+    };
 
+    namespace Strategy
+    {
+        class Checkmark : public Strategy
+        {
+        public:
+            Checkmark();
 
-namespace Strategy
-{
-	class Checkmark : public Strategy
-	{
-	public:
-		Checkmark();
+            ButtonWidget& buttonWidget();
 
-		ButtonWidget &buttonWidget();
-	protected:
+        protected:
+            void OnInit();
 
-		void OnInit();
+            void OnTouchBeginCollision(const Collision::Shape::pointer& shape);
+            void OnMouseButtonCollision(const Collision::Shape::pointer& shape);
 
-		void OnTouchBeginCollision(const Collision::Shape::pointer& shape);
-		void OnMouseButtonCollision(const Collision::Shape::pointer& shape);
-
-		Touch::pointer  _touch;
-		ButtonWidget *_buttonWidget;
-	};
-}
-
-
-
-
+            Touch::pointer _touch;
+            ButtonWidget* _buttonWidget;
+        };
+    }
 
 }
 }

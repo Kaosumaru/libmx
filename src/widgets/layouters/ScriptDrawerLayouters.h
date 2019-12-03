@@ -6,14 +6,11 @@ namespace MX
 namespace Widgets
 {
 
-
-
-
-	class ScriptDrawerLayouterInit
-	{
-	public:
-		static void Init();
-	};
+    class ScriptDrawerLayouterInit
+    {
+    public:
+        static void Init();
+    };
 }
 }
 

@@ -1,6 +1,6 @@
 #pragma once
-#include "utils/Array2D.h"
 #include "glm/vec4.hpp"
+#include "utils/Array2D.h"
 
 namespace MX
 {
@@ -8,19 +8,19 @@ namespace Graphic
 {
     using PixelRGBA = glm::tvec4<uint8_t>;
 
-    template<typename T>
+    template <typename T>
     class Surface : public Array2D<T>
     {
     public:
         using Array2D<T>::Array2D;
 
-        void Clear( const T& t )
+        void Clear(const T& t)
         {
-            for ( auto& p : *this )
+            for (auto& p : *this)
                 p = t;
         }
-    protected:
 
+    protected:
     };
 
     using SurfaceRGBA = Surface<PixelRGBA>;

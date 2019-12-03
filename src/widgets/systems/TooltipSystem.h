@@ -1,8 +1,8 @@
 #pragma once
-#include "utils/Utils.h"
 #include "utils/Singleton.h"
-#include <set>
+#include "utils/Utils.h"
 #include <map>
+#include <set>
 #include <vector>
 
 namespace MX
@@ -10,54 +10,48 @@ namespace MX
 namespace Widgets
 {
 
-class TooltipSystem;
+    class TooltipSystem;
 
-class TooltipEntry
-{
-public:
-	friend class TooltipSystem;
+    class TooltipEntry
+    {
+    public:
+        friend class TooltipSystem;
 
-	virtual ~TooltipEntry()
-	{
-		Hide();
-	}
+        virtual ~TooltipEntry()
+        {
+            Hide();
+        }
 
-protected:
-	virtual void onDraw() {};
-	virtual void onShow() {};
-	virtual void onHide() {};
+    protected:
+        virtual void onDraw() {};
+        virtual void onShow() {};
+        virtual void onHide() {};
 
+        void Show();
+        void Hide();
 
+        TooltipSystem* _system = nullptr;
+    };
 
-	void Show();
-	void Hide();
+    class TooltipSystem : public shared_ptr_init<TooltipSystem>
+    {
+    public:
+        friend class TooltipEntry;
 
-	TooltipSystem* _system = nullptr;
-};
+        TooltipSystem();
+        void Draw();
 
+        static TooltipSystem& current()
+        {
+            return ScopeSingleton<TooltipSystem>::current();
+        }
 
-class TooltipSystem : public shared_ptr_init<TooltipSystem>
-{
-public:
-	friend class TooltipEntry;
+    protected:
+        void AddEntry(TooltipEntry* entry);
+        void RemoveEntry(TooltipEntry* entry);
 
-	TooltipSystem();
-	void Draw();
-
-	static TooltipSystem& current()
-	{
-		return ScopeSingleton<TooltipSystem>::current();
-	}
-
-
-protected:
-	void AddEntry(TooltipEntry* entry);
-	void RemoveEntry(TooltipEntry* entry);
-
-	std::vector<TooltipEntry*> _entries;
-};
-
-
+        std::vector<TooltipEntry*> _entries;
+    };
 
 }
 }

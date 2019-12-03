@@ -1,44 +1,42 @@
 #ifndef MXPARTICLEDECORATOR
 #define MXPARTICLEDECORATOR
 
+#include "ParticleEmitter.h"
 #include "script/ScriptObject.h"
 #include "utils/Time.h"
-#include "ParticleEmitter.h"
 #include "utils/Utils.h"
 
-namespace MX{
-namespace Graphic{
+namespace MX
+{
+namespace Graphic
+{
 
-	class ParticleSystem;
+    class ParticleSystem;
 
-	class ParticleDecorator : public ScriptObject
-	{
-	public:
-		using pointer = std::shared_ptr<ParticleDecorator>;
+    class ParticleDecorator : public ScriptObject
+    {
+    public:
+        using pointer = std::shared_ptr<ParticleDecorator>;
 
-		ParticleDecorator(LScriptObject& script)
-		{
+        ParticleDecorator(LScriptObject& script)
+        {
+        }
+        ParticleDecorator(const ParticleDecorator& shadow)
+        {
+        }
 
-		}
-		ParticleDecorator(const ParticleDecorator& shadow)
-		{
+        virtual ~ParticleDecorator() { }
 
-		}
+        virtual void DecorateParticle(Particle& p, ParticleSystem& s, bool alive = true)
+        {
+        }
 
-		virtual ~ParticleDecorator() {}
-
-		virtual void DecorateParticle(Particle &p, ParticleSystem &s, bool alive = true)
-		{
-
-		}
-
-		virtual bool isStateless() { return true; }
-		virtual pointer clone()
-		{
-			return std::make_shared<ParticleDecorator>(*this);
-		}
-	};
-
+        virtual bool isStateless() { return true; }
+        virtual pointer clone()
+        {
+            return std::make_shared<ParticleDecorator>(*this);
+        }
+    };
 
 }
 }

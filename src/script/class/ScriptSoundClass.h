@@ -1,41 +1,36 @@
 #pragma once
-#include <string>
+#include "script/ScriptClass.h"
 #include "sound/Sample.h"
 #include "utils/Utils.h"
-#include "script/ScriptClass.h"
+#include <string>
 
-
-namespace MX{
-
-
+namespace MX
+{
 
 class ScriptSoundClass : public ScriptClass
 {
 public:
-	ScriptSoundClass();
+    ScriptSoundClass();
 
-	virtual const std::shared_ptr<Sound::Sample>& sound() const;
+    virtual const std::shared_ptr<Sound::Sample>& sound() const;
+
 protected:
-	bool onParse() override;
+    bool onParse() override;
 
-	std::shared_ptr<Sound::Sample> _sound;
+    std::shared_ptr<Sound::Sample> _sound;
 };
-
-
-
 
 class ScriptRandomSound : public ScriptSoundClass
 {
 public:
-	ScriptRandomSound();
+    ScriptRandomSound();
 
-	const std::shared_ptr<Sound::Sample>& sound() const override;
+    const std::shared_ptr<Sound::Sample>& sound() const override;
+
 protected:
-	bool onParse() override;
+    bool onParse() override;
 
-	std::vector<std::shared_ptr<Sound::Sample>> _sounds;
-
-	
+    std::vector<std::shared_ptr<Sound::Sample>> _sounds;
 };
 
 }

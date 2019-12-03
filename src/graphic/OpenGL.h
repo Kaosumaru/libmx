@@ -4,65 +4,72 @@
 
 namespace MX
 {
-	template<void(*deleter)(GLuint)>
-	struct GLObject
-	{
-		GLObject() {}
-		GLObject(GLuint object) : _object(object) {}
-		GLObject(const GLObject&) = delete;
-		GLObject(GLObject&& other) { _object = other._object; other.Orphan(); }
+template <void (*deleter)(GLuint)>
+struct GLObject
+{
+    GLObject() { }
+    GLObject(GLuint object)
+        : _object(object)
+    {
+    }
+    GLObject(const GLObject&) = delete;
+    GLObject(GLObject&& other)
+    {
+        _object = other._object;
+        other.Orphan();
+    }
 
-		~GLObject()
-		{
-			Delete();
-		}
+    ~GLObject()
+    {
+        Delete();
+    }
 
-		operator bool() const
-		{
-			return _object != 0;
-		}
+    operator bool() const
+    {
+        return _object != 0;
+    }
 
-		operator GLuint() const
-		{
-			return _object;
-		}
+    operator GLuint() const
+    {
+        return _object;
+    }
 
-		GLObject& operator = (GLuint obj)
-		{
-			Set(obj);
-			return *this;
-		}
+    GLObject& operator=(GLuint obj)
+    {
+        Set(obj);
+        return *this;
+    }
 
-		GLObject& operator = (GLObject&& obj)
-		{
-			Set(obj._object);
-			obj.Orphan();
-			return *this;
-		}
+    GLObject& operator=(GLObject&& obj)
+    {
+        Set(obj._object);
+        obj.Orphan();
+        return *this;
+    }
 
-		GLuint Get() const
-		{
-			return _object;
-		}
+    GLuint Get() const
+    {
+        return _object;
+    }
 
-		void Orphan()
-		{
-			_object = 0;
-		}
+    void Orphan()
+    {
+        _object = 0;
+    }
 
-		void Delete()
-		{
-			if (_object)
-				deleter(_object);
-		}
+    void Delete()
+    {
+        if (_object)
+            deleter(_object);
+    }
 
-		void Set(GLuint obj)
-		{
-			Delete();
-			_object = obj;
-		}
+    void Set(GLuint obj)
+    {
+        Delete();
+        _object = obj;
+    }
 
-	protected:
-		GLuint _object = 0;
-	};
+protected:
+    GLuint _object = 0;
+};
 }

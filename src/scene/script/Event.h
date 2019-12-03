@@ -1,134 +1,133 @@
 #pragma once
-#include <memory>
+#include "Command.h"
+#include "script/PropertyLoaders.h"
 #include "script/ScriptObject.h"
 #include "script/scriptable/ScriptableValue.h"
-#include "script/PropertyLoaders.h"
-#include "Command.h"
+#include <memory>
 
 namespace MX
 {
-	struct EventInfo
-	{
-		EventInfo() {}
-		int returnValue = 0;
-	};
+struct EventInfo
+{
+    EventInfo() { }
+    int returnValue = 0;
+};
 
-	class Event : public Command
-	{
-	public:
-		Event(){};
-		Event(const std::string& objectName) : Command(objectName) {}
+class Event : public Command
+{
+public:
+    Event() {};
+    Event(const std::string& objectName)
+        : Command(objectName)
+    {
+    }
 
-		bool operator()() override
-		{
-			Do();
-			return true;
-		}
-        
-		virtual void Do(){}
+    bool operator()() override
+    {
+        Do();
+        return true;
+    }
 
+    virtual void Do() { }
 
-		void Cancel() { _canceled = true; }
-		bool canceled() { return _canceled; }
+    void Cancel() { _canceled = true; }
+    bool canceled() { return _canceled; }
 
-		Command::pointer clone() override { return shared_from_this(); }
-	protected:
-		bool _canceled = false;
-	};
+    Command::pointer clone() override { return shared_from_this(); }
 
-	typedef std::shared_ptr<Event> EventPtr;
+protected:
+    bool _canceled = false;
+};
 
+typedef std::shared_ptr<Event> EventPtr;
 
-	class EventHolder
-	{
-	public:
-		EventHolder(){};
-		virtual ~EventHolder(){}
+class EventHolder
+{
+public:
+    EventHolder() {};
+    virtual ~EventHolder() { }
 
-		void SetEvents(const std::vector<EventPtr>& events)
-		{
-			_events = events;
-		}
+    void SetEvents(const std::vector<EventPtr>& events)
+    {
+        _events = events;
+    }
 
-		void AddEvents(const std::vector<EventPtr>& events)
-		{
-			for (auto &e : events)
-				AddEvent(e);
-		}
+    void AddEvents(const std::vector<EventPtr>& events)
+    {
+        for (auto& e : events)
+            AddEvent(e);
+    }
 
-		void AddEvents(const EventHolder& holder)
-		{
-			AddEvents(holder._events);
-		}
+    void AddEvents(const EventHolder& holder)
+    {
+        AddEvents(holder._events);
+    }
 
-		void Clear()
-		{
-			_events.clear();
-		}
+    void Clear()
+    {
+        _events.clear();
+    }
 
-		void AddEvent(const EventPtr& ptr)
-		{
-			_events.push_back(ptr);
-		}
+    void AddEvent(const EventPtr& ptr)
+    {
+        _events.push_back(ptr);
+    }
 
-		bool empty() const
-		{
-			return _events.empty();
-		}
+    bool empty() const
+    {
+        return _events.empty();
+    }
 
+    void Do()
+    {
+        CommandContext::Reset();
+        auto it = _events.begin();
+        while (it != _events.end())
+        {
+            if ((*it)->canceled())
+            {
+                it = _events.erase(it);
+                continue;
+            }
+            (*it)->Do();
+            ++it;
+        }
+    }
 
-		void Do()
-		{
-			CommandContext::Reset();
-			auto it = _events.begin();
-			while (it != _events.end())
-			{
-				if ((*it)->canceled())
-				{
-					it = _events.erase(it);
-					continue;
-				}
-				(*it)->Do();
-				++ it;
-			}
-		}
+protected:
+    std::vector<EventPtr> _events;
+};
 
-	protected:
-		std::vector<EventPtr> _events;
-	};
+template <>
+struct PropertyLoader<EventHolder>
+{
+    using type = PropertyLoader_Standard;
+    static bool load(EventHolder& out, const Scriptable::Value::pointer& obj)
+    {
+        if (obj->size() > 0)
+        {
+            std::vector<EventPtr> events;
+            PropertyLoader<std::vector<EventPtr>>::load(events, obj);
+            out.SetEvents(events);
+            return true;
+        }
+        else
+        {
+            out.Clear();
+            auto event = obj->to_object<Event>();
+            if (event)
+                out.AddEvent(event);
+            return true;
+        }
 
-	template<>
-	struct PropertyLoader<EventHolder>
-	{
-		using type = PropertyLoader_Standard;
-		static bool load(EventHolder& out, const Scriptable::Value::pointer& obj)
-		{
-			if (obj->size() > 0)
-			{
-				std::vector<EventPtr> events;
-				PropertyLoader< std::vector<EventPtr> >::load(events, obj);
-				out.SetEvents(events);
-				return true;
-			}
-			else
-			{
-				out.Clear();
-				auto event = obj->to_object<Event>();
-				if (event)
-					out.AddEvent(event);
-				return true;
-			}
+        return false;
+    }
+};
 
-			return false;
-		}
-	};
-
-
-	class EventInit
-	{
-	public:
-		static void Init();
-	};
-
+class EventInit
+{
+public:
+    static void Init();
+};
 
 }

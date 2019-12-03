@@ -32,11 +32,11 @@ void ProgramInstance::Use()
     program()->Use();
     s_current = this;
 
-	bool shaderOwnerChanged = false;
-    if (program()->owner() != (std::uintptr_t)this)
+    bool shaderOwnerChanged = false;
+    if (program()->ownerID() != (std::uintptr_t)this)
     {
         shaderOwnerChanged = true;
-        program()->SetOwner((std::uintptr_t)this);
+        program()->SetOwnerID((std::uintptr_t)this);
     }
     if (!shaderOwnerChanged && !_hasDirtyUniforms)
         return;
