@@ -20,8 +20,9 @@ add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/RPNParser/RPN" "${CMAKE_CURRENT
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/MSL/MSL" "${CMAKE_CURRENT_BINARY_DIR}/MSL")
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/litehtml" "${CMAKE_CURRENT_BINARY_DIR}/litehtml")
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/soloud" "${CMAKE_CURRENT_BINARY_DIR}/soloud")
+add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/slang" "${CMAKE_CURRENT_BINARY_DIR}/slang")
 
-set(MX_INCLUDES ${MX_INCLUDES} ${RPN_Includes} ${CMAKE_CURRENT_LIST_DIR}/deps/MSL/MSL ${CMAKE_CURRENT_LIST_DIR}/deps/RPNParser/RPN ${CMAKE_CURRENT_LIST_DIR}/deps/litehtml)
+set(MX_INCLUDES ${MX_INCLUDES} ${RPN_Includes} ${CMAKE_CURRENT_LIST_DIR}/deps/MSL/MSL ${CMAKE_CURRENT_LIST_DIR}/deps/RPNParser/RPN ${CMAKE_CURRENT_LIST_DIR}/deps/litehtml ${CMAKE_CURRENT_LIST_DIR}/deps/slang/src)
 #deps
 
 option(GAME_RELEASE "Build release?" FALSE)
@@ -65,5 +66,5 @@ endif(MSVC)
 include_directories(${SDL2_INCLUDE_DIR})
 target_compile_definitions(MXLib PUBLIC ${MX_DEFINES})
 target_include_directories(MXLib PUBLIC ${MX_INCLUDES})
-target_link_libraries(MXLib PUBLIC MSL RPN litehtml soloud)
+target_link_libraries(MXLib PUBLIC MSL RPN litehtml soloud slang)
 set(MX_MODULES ${MX_MODULES} PARENT_SCOPE)

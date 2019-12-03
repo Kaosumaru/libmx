@@ -16,3 +16,6 @@
 [submodule "deps/EmTools"]
 	path = deps/EmTools
 	url = https://github.com/Kaosumaru/EmTools.git
+[submodule "deps/slang"]
+	path = deps/slang
+	url = https://github.com/madmann91/slang.git
