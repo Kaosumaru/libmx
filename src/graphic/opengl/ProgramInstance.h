@@ -22,6 +22,7 @@ public:
     }
 
 protected:
+    void MarkParentAsDirty();
     const Program::pointer& program();
     virtual void onApply() {}
 
@@ -45,9 +46,9 @@ public:
     const Program::pointer& program() { return _program; }
 
     void Use();
-    bool IsCurrent() { return s_current == this; }
 
 protected:
+    bool _dirty = false;
     std::vector<UniformBase*> _uniforms;
     Program::pointer _program;
 
@@ -68,15 +69,14 @@ public:
     Uniform& operator=(const T& v)
     {
         _value = v;
-        if (_parent->IsCurrent())
-            Apply();
+        MarkParentAsDirty();
         return *this;
     }
 
     const T& value()
     {
         return _value;
-	}
+    }
 
 protected:
     void onApply() override

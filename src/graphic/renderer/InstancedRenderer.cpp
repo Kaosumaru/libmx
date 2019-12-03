@@ -120,9 +120,7 @@ void InstancedRenderer::DrawBatched()
 
     glBindTexture(GL_TEXTURE_2D, _lastTex);
 
-    auto& program = _programInstance->program();
-
-    program->Use();
+    _programInstance->Use();
     auto& mvp = MVP::mvp();
     gl::SetUniform(_mvp_uniform, mvp);
 

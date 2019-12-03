@@ -11,6 +11,11 @@ UniformBase::UniformBase(ProgramInstance* parent, const char* name)
     _parent->_uniforms.push_back(this);
 }
 
+void UniformBase::MarkParentAsDirty()
+{
+    _parent->_dirty = true;
+}
+
 const Program::pointer& UniformBase::program()
 {
     return _parent->program();
@@ -25,8 +30,16 @@ void ProgramInstance::Use()
 {
     program()->Use();
     s_current = this;
+    if (program()->owner() != (std::uintptr_t)this)
+    {
+        _dirty = true;
+        program()->SetOwner((std::uintptr_t)this);
+	}
+    if (!_dirty)
+        return;
     for (auto& uniform : _uniforms)
         uniform->Apply();
+    _dirty = false;
 }
 
 ProgramInstance* ProgramInstance::s_current = nullptr;
