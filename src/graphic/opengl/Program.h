@@ -66,18 +66,18 @@ namespace gl
             return glGetUniformLocation(*this, name);
         }
 
-        void SetOwner(std::uintptr_t owner)
+        void SetOwnerID(std::uintptr_t owner)
         {
-            _owner = owner;
+            _ownerID = owner;
         }
 
-        auto owner()
+        auto ownerID()
         {
-            return _owner;
+            return _ownerID;
         }
 
     protected:
-        std::uintptr_t _owner = 0;
+        std::uintptr_t _ownerID = 0;
     };
 
     Program::pointer createProgramFromFiles(const std::string& vertexShader, const std::string& fragmentShader, std::string& errorLog);
