@@ -19,10 +19,11 @@ namespace gl
     {
         using namespace slang;
         static std::map<std::string, std::vector<Token>> shaders;
-        auto& tokens = shaders[shaderPath];
 
-        if (tokens.empty())
+        auto it = shaders.find(shaderPath);
+        if (it == shaders.end())
         {
+            auto& tokens = shaders[shaderPath];
             auto shaderBody = MX::Resources::get().openTextFile(shaderPath);
             Keywords keys;
             keys.add_all_keywords();
@@ -54,9 +55,10 @@ namespace gl
                     break;
                 tokens.push_back(tok);
             }
+            return tokens;
         }
 
-        return tokens;
+        return it->second;
     }
 
     std::string preprocessShader(const std::string& shaderPath)
