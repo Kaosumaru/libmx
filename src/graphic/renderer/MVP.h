@@ -15,6 +15,12 @@ public:
         get().current().UpdateMVP();
     }
 
+    static void SetView(const glm::mat4& m)
+    {
+        get().current()._view = m;
+        get().current().UpdateMVP();
+    }
+
     static void translate(const glm::vec2& p);
     static void rotateZoom(const glm::vec2& center, const glm::vec2& scale, float angle);
 
