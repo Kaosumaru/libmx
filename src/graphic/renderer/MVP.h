@@ -21,6 +21,13 @@ public:
         get().current().UpdateMVP();
     }
 
+    static void ResetModelView()
+    {
+        get().current()._model = glm::mat4();
+        get().current()._view = glm::mat4();
+        get().current().UpdateMVP();
+    }
+
     static void translate(const glm::vec2& p);
     static void rotateZoom(const glm::vec2& center, const glm::vec2& scale, float angle);
 
