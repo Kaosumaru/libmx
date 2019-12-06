@@ -25,6 +25,7 @@ namespace gl
         {
             auto& tokens = shaders[shaderPath];
             auto shaderBody = MX::Resources::get().openTextFile(shaderPath);
+            assert(!shaderBody.empty());
             Keywords keys;
             keys.add_all_keywords();
 
@@ -51,6 +52,7 @@ namespace gl
             while (true)
             {
                 tok = pp.preprocess();
+                assert(pp.error_count() == 0);
                 if (tok.type() == Token::END)
                     break;
                 tokens.push_back(tok);
@@ -76,6 +78,22 @@ namespace gl
     {
         auto vertex = preprocessShader(vertexShader);
         auto fragment = preprocessShader(fragmentShader);
+
+        bool error = false;
+        if (vertex.empty())
+        {
+            errorLog = "Shader file at " + vertexShader + " not parsed correctly!";
+            error = true;
+        }
+
+        if (fragment.empty())
+        {
+            errorLog = "Shader file at " + fragmentShader + " not parsed correctly!";
+            error = true;
+        }
+
+        if (error)
+            return nullptr;
 
         return createProgram(vertex, fragment, errorLog);
     }
