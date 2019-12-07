@@ -139,6 +139,7 @@ namespace gl
         return program;
     }
 
+#ifdef _DEBUG
     void Program::InitializeDebugReload(const std::string& vertexPath, const std::string& fragmentPath)
     {
         _vertexPath = vertexPath;
@@ -166,6 +167,7 @@ namespace gl
         std::swap(_ownerID, program->_ownerID);
         std::swap(_object, program->_object);
     }
+#endif
 
 }
 }
