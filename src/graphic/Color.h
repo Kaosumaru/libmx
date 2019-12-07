@@ -1,5 +1,7 @@
 #pragma once
 #include "glm/vec4.hpp"
+#include "glm/vec3.hpp"
+
 namespace MX
 {
 
@@ -44,6 +46,7 @@ public:
     unsigned int toIntARGB() const;
 
     glm::vec4 toVec4() const { return { _r, _g, _b, _a }; }
+    glm::vec3 toVec3() const { return { _r, _g, _b }; }
 
 protected:
     union

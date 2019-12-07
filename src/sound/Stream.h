@@ -44,7 +44,9 @@ namespace Sound
     public:
         Stream(const char* path);
         virtual ~Stream();
-        static std::shared_ptr<Stream> Create(const char* path);
+
+        using pointer = std::shared_ptr<Stream>;
+        static pointer Create(const char* path);
 
         void Close() override;
 
@@ -59,7 +61,6 @@ namespace Sound
         bool empty() override;
 
         static void CloseAll();
-
     protected:
         std::shared_ptr<SoLoud::WavStream> _stream = nullptr;
         int _channel = -1;
