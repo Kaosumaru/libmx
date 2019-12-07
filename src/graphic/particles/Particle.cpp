@@ -56,21 +56,6 @@ public:
     {
     }
 
-    void approach_zero(glm::vec2& v, float force)
-    {
-        auto vector = -(normalize(v) * force);
-
-        if (v.x >= 0.0f != (v.x + vector.x) >= 0.0f)
-            v.x = 0.0f;
-        else
-            v.x += vector.x;
-
-        if (v.y >= 0.0f != (v.y + vector.y) >= 0.0f)
-            v.y = 0.0f;
-        else
-            v.y += vector.y;
-    }
-
     virtual bool Run()
     {
         if (!Particle::Run())

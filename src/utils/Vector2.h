@@ -21,6 +21,21 @@ inline bool zero(const glm::vec2& v)
     return v.x == 0 && v.y == 0;
 }
 
+inline void approach_zero(glm::vec2& v, float force)
+{
+    auto vector = -(normalize(v) * force);
+
+    if (v.x >= 0.0f != (v.x + vector.x) >= 0.0f)
+        v.x = 0.0f;
+    else
+        v.x += vector.x;
+
+    if (v.y >= 0.0f != (v.y + vector.y) >= 0.0f)
+        v.y = 0.0f;
+    else
+        v.y += vector.y;
+}
+
 inline float angle(const glm::vec2& v)
 {
     return atan2f(v.x, -v.y);
