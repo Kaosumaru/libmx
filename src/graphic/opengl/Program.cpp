@@ -15,15 +15,19 @@ namespace MX
 {
 namespace gl
 {
+    namespace
+    {
+        std::map<std::string, std::vector<slang::Token>> shaderCache;
+    }
+
     const std::vector<slang::Token>& tokenizeShader(const std::string& shaderPath)
     {
         using namespace slang;
-        static std::map<std::string, std::vector<Token>> shaders;
 
-        auto it = shaders.find(shaderPath);
-        if (it == shaders.end())
+        auto it = shaderCache.find(shaderPath);
+        if (it == shaderCache.end())
         {
-            auto& tokens = shaders[shaderPath];
+            auto& tokens = shaderCache[shaderPath];
             auto shaderBody = MX::Resources::get().openTextFile(shaderPath);
             assert(!shaderBody.empty());
             Keywords keys;
@@ -74,7 +78,7 @@ namespace gl
         return ss.str();
     }
 
-    Program::pointer createProgramFromFiles(const std::string& vertexShader, const std::string& fragmentShader, std::string& errorLog)
+    Program::pointer createProgramFromFiles(const std::string& vertexShader, const std::string& fragmentShader, std::string& errorLog, bool allowDebugReload)
     {
         auto vertex = preprocessShader(vertexShader);
         auto fragment = preprocessShader(fragmentShader);
@@ -95,37 +99,73 @@ namespace gl
         if (error)
             return nullptr;
 
-        return createProgram(vertex, fragment, errorLog);
+        auto program = createProgram(vertex, fragment, errorLog);
+#ifdef _DEBUG
+        if (allowDebugReload && program)
+        {
+            program->InitializeDebugReload(vertexShader, fragmentShader);
+        }
+#endif
+
+        return program;
     }
 
     Program::pointer createProgram(const std::string& vertexShader, const std::string& fragmentShader, std::string& errorLog)
     {
-        Program::pointer program = std::make_shared<Program>();
-
         Shader vertex;
         if (!vertex.Compile(vertexShader, Shader::Type::Vertex))
         {
             errorLog = vertex.infoLog();
-            return program;
+            return nullptr;
         }
 
         Shader fragment;
         if (!fragment.Compile(fragmentShader, Shader::Type::Fragment))
         {
             errorLog = fragment.infoLog();
-            return program;
+            return nullptr;
         }
 
+        Program::pointer program = std::make_shared<Program>();
         program->AttachShader(vertex);
         program->AttachShader(fragment);
 
         if (!program->Link())
         {
             errorLog = program->infoLog();
-            return program;
+            return nullptr;
         }
 
         return program;
     }
+
+    void Program::InitializeDebugReload(const std::string& vertexPath, const std::string& fragmentPath)
+    {
+        _vertexPath = vertexPath;
+        _fragmentPath = fragmentPath;
+        _fileObserver = FileObserver::Create();
+        _fileObserver->RegisterPath(Paths::get().pathToResource(_vertexPath));
+        _fileObserver->RegisterPath(Paths::get().pathToResource(_fragmentPath));
+        _fileObserver->onFilesChanged.static_connect([&]() { DebugReload(); });
+    }
+
+    void Program::DebugReload()
+    {
+        shaderCache.clear();
+        std::string errorLog;
+        Program::pointer program = createProgramFromFiles(_vertexPath, _fragmentPath, errorLog, false);
+
+        std::cout << "Reloading shader " << _fragmentPath << "@" << _vertexPath << std::endl;
+        if (!program)
+        {
+            std::cout << "Failed to reload shared" << std::endl;
+            std::cout << errorLog << std::endl;
+            return;
+        }
+
+        std::swap(_ownerID, program->_ownerID);
+        std::swap(_object, program->_object);
+    }
+
 }
 }

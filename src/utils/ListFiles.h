@@ -1,24 +1,41 @@
 #pragma once
 
+#include "Signal.h"
 #include <ctime>
+#include <filesystem>
 #include <functional>
-#include <memory>
-#include <string>
 #include <vector>
 
 namespace MX
 {
-struct FileData
+
+// TODO move observing on threadpool
+class FileObserver : public shared_ptr_init<FileObserver>
 {
-    std::string path;
-    bool is_folder;
+public:
+    FileObserver();
+    FileObserver(const std::filesystem::path& path);
 
-    std::string extension() const;
+    static pointer Create();
+    static pointer Create(const std::filesystem::path& path);
+
+    void RegisterPath(const std::filesystem::path& path);
+
+    Signal<void(const std::filesystem::path& path)> onFileChanged;
+    Signal<void()> onFilesChanged;
+
+protected:
+    void WaitThenObserve();
+    void Observe();
+
+    struct PathData
+    {
+        std::filesystem::path path;
+        std::filesystem::file_time_type timestamp;
+    };
+
+    std::vector<PathData> _paths;
 };
-using ListFileCallback = std::function<void(const FileData& data)>;
-bool ListFiles(const std::string& path, const ListFileCallback& callback);
-bool ListFilesRecursively(const std::string& path, const ListFileCallback& callback);
 
-std::time_t FileModificationTime(const std::string& path);
 std::string FileExtension(const std::string& path);
 }

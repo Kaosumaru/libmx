@@ -8,6 +8,7 @@
 #include <regex>
 #include <sstream>
 #include <thread>
+#include <filesystem>
 
 #ifdef WIPTHREAD
 #include "utils/ThreadPool.h"
@@ -97,7 +98,7 @@ void Script::ParseDirs(const std::list<std::string>& paths, bool reset)
 
     //last_write_time(
 
-    static std::map<std::string, std::time_t> _fileStamps;
+    static std::map<std::filesystem::path, std::filesystem::file_time_type> _fileStamps;
 
     if (reset)
     {
@@ -112,12 +113,12 @@ void Script::ParseDirs(const std::list<std::string>& paths, bool reset)
         {
             auto& path = pair.first;
             auto& last_stamp = pair.second;
-            auto now_stamp = MX::FileModificationTime(path);
+            auto now_stamp = last_write_time(path);
 
             if (last_stamp != now_stamp)
             {
                 last_stamp = now_stamp;
-                Script::loadScript(path);
+                Script::loadScript(path.string());
             }
         }
 
@@ -125,28 +126,36 @@ void Script::ParseDirs(const std::list<std::string>& paths, bool reset)
         return;
     }
 
-    std::vector<std::string> file_paths;
+    std::vector<std::filesystem::path> file_paths;
 
     const auto& i_paths = paths.empty() ? previousPaths : paths;
     for (auto& p : i_paths)
     {
-        auto iterator = [&](const FileData& data) {
-            //auto path = entry.path();
+        auto pathToP = Paths::get().pathToResource(p);
+        using namespace std::filesystem;
 
-            if (data.extension() == "json" || data.extension() == "msl")
+        if (!is_directory(pathToP))
+            continue;
+
+        for (recursive_directory_iterator i(pathToP), end; i != end; ++i)
+        {
+            auto& path = i->path();
+            if (is_directory(path))
+                continue;
+ 
+            if (path.extension() == ".json" || path.extension() == ".msl")
             {
-                auto& last_stamp = _fileStamps[data.path];
-                auto now_stamp = MX::FileModificationTime(data.path);
+                auto& last_stamp = _fileStamps[path];
+                auto now_stamp = last_write_time(path);
 
                 if (last_stamp != now_stamp)
                 {
                     last_stamp = now_stamp;
-                    file_paths.emplace_back(data.path);
+                    file_paths.emplace_back(path);
                 }
             }
-        };
-
-        MX::ListFilesRecursively(Paths::get().pathToResource(p), iterator);
+        }
+        
     }
 
 #ifdef MX_MT_IMPL
@@ -177,7 +186,7 @@ void Script::ParseDirs(const std::list<std::string>& paths, bool reset)
 #else
     Scriptable::Detail::ValueMember::isOnMainThread = true;
     for (auto& path : file_paths)
-        Script::loadScript(path);
+        Script::loadScript(path.string());
 #endif
 
     onParsed();

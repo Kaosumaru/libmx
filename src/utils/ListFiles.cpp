@@ -1,59 +1,65 @@
 #include "ListFiles.h"
+#include "application/Application.h"
 #include "utils/Time.h"
-#include <windows.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-
-#ifndef __EMSCRIPTEN__
-#include "deps/dirent.h"
-#else
-#include <dirent.h>
-#endif
+#include "utils/Random.h"
 
 namespace MX
 {
-bool ListFiles(const std::string& path, const ListFileCallback& callback)
-{
-    DIR* dir = opendir(path.c_str());
-    dirent* ent;
-    if (dir == NULL)
-        return false;
 
-    while ((ent = readdir(dir)) != NULL)
+FileObserver::FileObserver()
+{
+}
+
+FileObserver::FileObserver(const std::filesystem::path& path)
+    : FileObserver()
+{
+    RegisterPath(path);
+}
+
+FileObserver::pointer FileObserver::Create()
+{
+    auto observer = std::make_shared<FileObserver>();
+    observer->WaitThenObserve();
+    return observer;
+}
+FileObserver::pointer FileObserver::Create(const std::filesystem::path& path)
+{
+    auto observer = std::make_shared<FileObserver>(path);
+    observer->WaitThenObserve();
+    return observer;
+}
+
+void FileObserver::RegisterPath(const std::filesystem::path& path)
+{
+    _paths.push_back({ path, std::filesystem::last_write_time(path) });
+}
+
+void FileObserver::WaitThenObserve()
+{
+    float time = Random::randomRange(std::pair{0.4f, 0.5f});
+    auto& queue = MX::App::current().queue();
+    queue.planWeakFunctor(
+        time, [&]() {
+            Observe();
+            WaitThenObserve();
+        },
+        shared_from_this());
+}
+
+void FileObserver::Observe()
+{
+    bool changed = false;
+    for (auto& [path, stamp] : _paths)
     {
-        std::string name = ent->d_name;
-        if (name == "." || name == "..")
+        auto new_stamp = std::filesystem::last_write_time(path);
+        if (new_stamp == stamp)
             continue;
-        FileData data;
-
-        data.path = path + name;
-        data.is_folder = ent->d_type & DT_DIR ? true : false;
-        callback(data);
+        stamp = new_stamp;
+        changed = true;
+        onFileChanged(path);
     }
-
-    closedir(dir);
-    return true;
-}
-
-bool ListFilesRecursively(const std::string& path, const ListFileCallback& callback)
-{
-    return ListFiles(path, [&](const FileData& data) {
-        if (data.is_folder)
-        {
-            ListFilesRecursively(data.path + "/", callback);
-            return;
-        }
-
-        callback(data);
-    });
-}
-
-std::time_t FileModificationTime(const std::string& path)
-{
-    struct stat t_stat;
-    t_stat.st_mtime = 0;
-    stat(path.c_str(), &t_stat);
-    return t_stat.st_mtime;
+    if (changed)
+        onFilesChanged();
 }
 
 std::string FileExtension(const std::string& path)
@@ -65,8 +71,4 @@ std::string FileExtension(const std::string& path)
     return "";
 }
 
-std::string FileData::extension() const
-{
-    return FileExtension(path);
-}
 }

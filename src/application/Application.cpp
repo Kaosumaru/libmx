@@ -67,10 +67,12 @@ void App::Loop()
     if (_window)
         _window->OnLoop();
     OnLoop();
+    _applicationQueue.Run();
 
     if (_window)
         _window->OnRender();
     OnRender();
+    _renderQueue.Run();
 
     Graphic::TextureRenderer::current().Flush();
 

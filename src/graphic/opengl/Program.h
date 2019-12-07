@@ -2,6 +2,9 @@
 #include "Shader.h"
 #include "graphic/OpenGL.h"
 #include <memory>
+#ifdef _DEBUG
+#include "utils/ListFiles.h"
+#endif
 
 namespace MX
 {
@@ -76,11 +79,22 @@ namespace gl
             return _ownerID;
         }
 
+#ifdef _DEBUG
+        void InitializeDebugReload(const std::string& vertexPath, const std::string& fragmentPath);
+#endif
+
     protected:
         std::uintptr_t _ownerID = 0;
+
+#ifdef _DEBUG
+        void DebugReload();
+        FileObserver::pointer _fileObserver;
+        std::string _vertexPath;
+        std::string _fragmentPath;
+#endif
     };
 
-    Program::pointer createProgramFromFiles(const std::string& vertexShader, const std::string& fragmentShader, std::string& errorLog);
+    Program::pointer createProgramFromFiles(const std::string& vertexShader, const std::string& fragmentShader, std::string& errorLog, bool allowDebugReload = true);
     Program::pointer createProgram(const std::string& vertexShader, const std::string& fragmentShader, std::string& errorLog);
 }
 }
