@@ -96,7 +96,7 @@ protected:
         typename Signal::Function _func;
     };
 
-    template <typename T>
+    template <typename T, bool OneTime=false>
     struct FunctorEntryWeak : public FunctorEntry
     {
         FunctorEntryWeak(const typename Signal::Function& func, const std::weak_ptr<T>& ptr)
@@ -111,7 +111,7 @@ protected:
             if (auto ptr = _ptr.lock())
             {
                 this->_func(std::forward<Args>(arg)...);
-                return true;
+                return !OneTime;
             }
             return false;
         }
@@ -187,6 +187,11 @@ public:
         return connect(func, obj->trackable_data());
     }
 
+    Connection::pointer connect_once(const Function& func, SignalTrackable* obj)
+    {
+        return connect_once(func, obj->trackable_data());
+    }
+
     template <typename T>
     Connection::pointer connect_front(const Function& func, const std::shared_ptr<T>& ptr)
     {
@@ -198,6 +203,13 @@ public:
     Connection::pointer connect(const Function& func, const std::shared_ptr<T>& ptr)
     {
         _functors.emplace_back(std::make_shared<FunctorEntryWeak<T>>(func, ptr));
+        return _functors.back();
+    }
+
+    template <typename T>
+    Connection::pointer connect_once(const Function& func, const std::shared_ptr<T>& ptr)
+    {
+        _functors.emplace_back(std::make_shared<FunctorEntryWeak<T, true>>(func, ptr));
         return _functors.back();
     }
 
