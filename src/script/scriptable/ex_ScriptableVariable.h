@@ -300,7 +300,7 @@ void operator&(SignalizingVariable<T>& t, MX::Scriptable::Variable&& var)
     }
 }
 
-void operator&(MX::Vector2& t, MX::Scriptable::Variable&& var);
+void operator&(glm::vec2& t, MX::Scriptable::Variable&& var);
 
 namespace detail
 {

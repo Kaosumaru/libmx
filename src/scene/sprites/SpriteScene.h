@@ -83,13 +83,13 @@ public:
     {
     }
 
-    void AddActor(const ChildPointer& actor) override
+    void AddActor(const ChildPointer& actor)
     {
         _actors.push_back(actor);
         LinkActor(actor);
     }
 
-    void AddActorAtFront(const ChildPointer& actor) override
+    void AddActorAtFront(const ChildPointer& actor)
     {
         _actors.push_front(actor);
         LinkActor(actor);

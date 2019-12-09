@@ -203,6 +203,14 @@ public:
     {
         return ScriptClassParser::get()._CreateObjectFromTemplate(instancePath);
     }
+
+    template<typename T>
+    static std::shared_ptr<T> CreateFromTemplate(const std::string& instancePath)
+    {
+        auto obj = ScriptClassParser::get()._CreateObjectFromTemplate(instancePath);
+        return std::dynamic_pointer_cast<T>(obj);
+    }
+
     static ScriptObject* CreateRawObjectFromTemplate(const std::string& instancePath)
     {
         return ScriptClassParser::get()._CreateRawObjectFromTemplate(instancePath);

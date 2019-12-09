@@ -13,7 +13,7 @@
 
 using namespace MX;
 
-void operator&(MX::Vector2& t, MX::Scriptable::Variable&& var)
+void operator&(glm::vec2& t, MX::Scriptable::Variable&& var)
 {
     t.x& var("x");
     t.y& var("y");

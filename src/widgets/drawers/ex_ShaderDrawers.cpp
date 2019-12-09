@@ -223,7 +223,7 @@ public:
             functions[typeid(ScriptableUniform<ci::ColorA>)] = UniformGenerator<ci::ColorA> {};
             functions[typeid(ScriptableUniform<ci::Color>)] = UniformGenerator<ci::Color> {};
 
-            //functions[typeid(ScriptableUniform<MX::Vector2>)] = UniformGenerator<MX::Vector2>{};
+            //functions[typeid(ScriptableUniform<glm::vec2>)] = UniformGenerator<glm::vec2>{};
             //functions[typeid(ScriptableUniform<ci::vec2>)] = UniformGenerator<ci::vec2>{};
             functions[typeid(ScriptableUniform<ci::vec3>)] = UniformGenerator<ci::vec3> {};
         }

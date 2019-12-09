@@ -65,10 +65,7 @@ public:
             command = command->clone();
     }
 
-    CompositeCommand(LScriptObject& script)
-    {
-        script.load_property_children(_commands, "Commands");
-    }
+    CompositeCommand(LScriptObject& script);
 
     CompositeCommand(std::list<Command::pointer>&& c)
         : _commands(c)
