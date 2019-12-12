@@ -126,6 +126,25 @@ public:
     std::vector<std::pair<Entry, int>> _actors;
 };
 
+class RandomActorCreator : public ActorCreator
+{
+protected:
+    using RandomActor = RandomItem<ScriptableSpriteActor>;
+
+public:
+    RandomActorCreator();
+    RandomActorCreator(LScriptObject& script);
+
+    std::shared_ptr<ScriptableSpriteActor> onCreateActor() override
+    {
+        return _randomActors.randomItem()->cloneSprite();
+    }
+
+    ActorCreator::pointer clone() override { return std::make_shared<RandomActorCreator>(*this); }
+
+    RandomActor _randomActors;
+};
+
 class ActorCreatorInit
 {
 public:

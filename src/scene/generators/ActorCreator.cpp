@@ -64,31 +64,15 @@ public:
     Entry _defaultCase;
 };
 
-class RandomActorCreator : public ActorCreator
+RandomActorCreator::RandomActorCreator()
 {
-protected:
-    using RandomActor = RandomItem<ScriptableSpriteActor>;
+}
 
-public:
-    RandomActorCreator()
-    {
-    }
-
-    RandomActorCreator(LScriptObject& script)
-        : ActorCreator(script)
-    {
-        script.load_property(_randomActors, "Actors");
-    }
-
-    std::shared_ptr<ScriptableSpriteActor> onCreateActor() override
-    {
-        return _randomActors.randomItem()->cloneSprite();
-    }
-
-    ActorCreator::pointer clone() override { return std::make_shared<RandomActorCreator>(*this); }
-
-    RandomActor _randomActors;
-};
+RandomActorCreator::RandomActorCreator(LScriptObject& script)
+    : ActorCreator(script)
+{
+    script.load_property(_randomActors, "Actors");
+}
 
 void ActorCreatorInit::Init()
 {
