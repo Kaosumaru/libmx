@@ -1,11 +1,15 @@
 #include "Resources.h"
+#include "deps/json/json.h"
 #include "graphic/fonts/BitmapFont.h"
 #include "graphic/images/TextureImage.h"
 #include "sound/Sample.h"
 #include "sound/Stream.h"
+#include "deps/json/json_cpp.h"
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <string>
 
 namespace MX
 {
@@ -84,6 +88,7 @@ const Sound::Sample::pointer& Resources::loadSound(const std::string& sound)
     fit = _sampleMap.insert(std::make_pair(sound, sound_pointer)).first;
     return fit->second;
 }
+
 const std::shared_ptr<Sound::Stream>& Resources::loadStream(const std::string& stream)
 {
     auto fit = _streamMap.find(stream);
@@ -96,18 +101,17 @@ const std::shared_ptr<Sound::Stream>& Resources::loadStream(const std::string& s
 
 bool Resources::loadSpriteSheet(const std::string& path)
 {
-#ifdef WIPSPRITESHEET
-    class SpriteSheetSurface : public MX::Graphic::Surface
+    class SpriteSheetTexture : public MX::Graphic::TextureImage
     {
     public:
-        SpriteSheetSurface(const Surface& parent, int x, int y, int w, int h)
-            : MX::Graphic::Surface(parent, x, y, w, h)
+        SpriteSheetTexture(const TextureImage& parent, int x, int y, int w, int h)
+            : MX::Graphic::TextureImage(parent, x, y, w, h)
         {
         }
 
-        static pointer Create(const Surface::pointer& parent, const MX::Rectangle& rect, const glm::vec2& offset)
+        static pointer Create(const MX::Graphic::TextureImage::pointer& parent, const MX::Rectangle& rect, const glm::vec2& offset)
         {
-            auto ptr = std::make_shared<SpriteSheetSurface>(*parent, (int)rect.x1, (int)rect.y1, (int)rect.width(), (int)rect.height());
+            auto ptr = std::make_shared<SpriteSheetTexture>(*parent, (int)rect.x1, (int)rect.y1, (int)rect.width(), (int)rect.height());
             ptr->_centerOffset = offset;
             return ptr;
         }
@@ -122,8 +126,8 @@ bool Resources::loadSpriteSheet(const std::string& path)
     if (!isSpriteSheet(abs_path))
         return false;
 
-    boost::filesystem::path p(abs_path);
-    p.replace_extension(".png");
+    std::filesystem::path spriteSheetPath(abs_path);
+    spriteSheetPath.replace_extension(".png");
 
     using namespace JSON;
     auto root = Node::CreateFromFile(abs_path);
@@ -134,12 +138,12 @@ bool Resources::loadSpriteSheet(const std::string& path)
     }
     auto& node = *root;
 
-    Image::Settings::mipmap = node["Resources"]["Settings"]["Mipmap"].getBool();
+    MX::Graphic::Image::Settings::mipmap = node["Resources"]["Settings"]["Mipmap"].getBool();
 
-    auto image_pointer = Graphic::Bitmap::Create(p.generic_string());
+    auto image_pointer = MX::Graphic::TextureImage::Create(spriteSheetPath.generic_string());
     if (!image_pointer)
     {
-        Image::Settings::mipmap = false;
+        MX::Graphic::Image::Settings::mipmap = false;
         return false;
     }
 
@@ -147,43 +151,36 @@ bool Resources::loadSpriteSheet(const std::string& path)
     for (auto& f : frames)
     {
         auto& frame = *f;
-        auto name = path + "/" + frame["Name"].getString();
+        std::string name = path + "/" + frame["Name"].getString();
         float cx = frame["OriginalSize"][0].getFloat() / 2.0f, cy = frame["OriginalSize"][1].getFloat() / 2.0f;
 
         float x = frame["Rect"][0].getFloat(), y = frame["Rect"][1].getFloat();
         float w = frame["Rect"][2].getFloat(), h = frame["Rect"][3].getFloat();
 
         auto rect = Rectangle::fromWH(x, y, w, h);
-        auto region = SpriteSheetSurface::Create(image_pointer, rect, { frame["OriginalRect"][0].getFloat(), frame["OriginalRect"][1].getFloat() });
+        auto region = SpriteSheetTexture::Create(image_pointer, rect, { frame["OriginalRect"][0].getFloat(), frame["OriginalRect"][1].getFloat() });
         region->SetCenter({ cx, cy });
 
         _imageMap.insert(std::make_pair(name, region));
     }
 
-    Image::Settings::mipmap = false;
+    MX::Graphic::Image::Settings::mipmap = false;
     return true;
-#endif
-    return false;
 }
 
 bool Resources::isSpriteSheet(const std::string& path)
 {
-
-#ifdef WIPSPRITESHEET
-    boost::filesystem::path p(path);
-    return boost::filesystem::is_regular_file(p) && p.extension() == ".json";
-#endif
-    return false;
+    std::filesystem::path p(path);
+    return std::filesystem::is_regular_file(p) && p.extension() == ".json";
 }
 
 const std::shared_ptr<Graphic::TextureImage>& Resources::loadImageFromSpriteSheet(const std::string& path)
 {
     static Graphic::TextureImage::pointer dummy;
-#ifdef WIPSPRITESHEET
     if (path.find(".json") == std::string::npos)
         return dummy;
 
-    boost::filesystem::path p(path);
+    std::filesystem::path p(path);
 
     while (!p.empty())
     {
@@ -192,8 +189,6 @@ const std::shared_ptr<Graphic::TextureImage>& Resources::loadImageFromSpriteShee
     }
 
     return _imageMap[path];
-#endif
-    return dummy;
 }
 
 const std::shared_ptr<Graphic::BitmapFont>& Resources::loadBitmapFont(const std::string& font)
