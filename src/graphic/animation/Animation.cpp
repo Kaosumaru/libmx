@@ -20,8 +20,9 @@ MX::Graphic::Animation::Animation(const Animation& animation)
 
 Animation::Animation(const SingleAnimation::pointer& parent_animation)
 {
-
     _parent_animation = parent_animation;
+    if (!parent_animation)
+        return;
     _currentFrame = parent_animation->frames().begin();
 }
 Animation::~Animation()
