@@ -3,6 +3,7 @@
 #include "glm/vec2.hpp"
 #include "utils/Time.h"
 
+
 #include <algorithm>
 #include <cmath>
 
@@ -160,4 +161,19 @@ inline float distanceBetweenSquared(const glm::vec2& vector1, const glm::vec2& v
     return a * a + b * b;
 }
 
+struct Rectangle;
+void clampTo(glm::vec2& v, const MX::Rectangle& r);
+
+
+inline glm::vec2 vectorLeftPerpendicular(const glm::vec2& v)
+{
+    return { -v.y, v.x };
 }
+
+inline glm::vec2 vectorRightPerpendicular(const glm::vec2& v)
+{
+    return { v.y, -v.x };
+}
+
+}
+
