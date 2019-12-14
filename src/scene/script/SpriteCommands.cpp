@@ -664,7 +664,7 @@ public:
         auto deltaVector = original->geometry.position - ptr->geometry.position;
         _hitAngle = angle(deltaVector) - ptr->geometry.angle;
         _objectAngle = original->geometry.angle - ptr->geometry.angle;
-        _length = deltaVector.length();
+        _length = length(deltaVector);
     }
 
     bool operator()() override

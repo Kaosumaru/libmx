@@ -87,8 +87,8 @@ void OrientedRectangle::computeAxes()
     _axis[1] = corner(2) - corner(0);
 
     _angle = MX::angle(_axis[0]);
-    _width = (float)_axis[0].length();
-    _height = (float)_axis[1].length();
+    _width = (float)length(_axis[0]);
+    _height = (float)length(_axis[1]);
 
     // Make the length of each axis 1/edge length so we know any
     // dot product must be less than 1 to fall within the edge.
