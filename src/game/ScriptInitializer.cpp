@@ -72,9 +72,9 @@ void MX::ScriptInitializer::ReloadScripts(bool reset)
 {
 
 #ifndef MX_GAME_RELEASE
-    static std::list<std::string> p = { "script/game/", "script/resources/", "script/test/" };
+    static std::list<std::string> p = { "game/", "script/resources/", "script/test/" };
 #else
-    static std::list<std::string> p = { "script/game/", "script/resources/", "script/test/" };
+    static std::list<std::string> p = { "game/", "script/resources/", "script/test/" };
 #endif
 
     Script::ParseDirs(p, reset);
