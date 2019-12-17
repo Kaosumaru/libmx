@@ -10,6 +10,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include "utils/Log.h"
 
 namespace MX
 {
@@ -47,7 +48,7 @@ const std::shared_ptr<Graphic::TextureImage>& Resources::loadImage(const std::st
     {
         auto& res = Resources::loadImageFromSpriteSheet(image);
         if (!res)
-            std::cout << "Couldn't load " << image << std::endl;
+            spdlog::error("Cannot load image {}", image);
         return res;
     }
 
@@ -133,7 +134,7 @@ bool Resources::loadSpriteSheet(const std::string& path)
     auto root = Node::CreateFromFile(abs_path);
     if (!root)
     {
-        assert(false);
+        spdlog::error("Cannot load spritesheet {}", abs_path);
         return false;
     }
     auto& node = *root;

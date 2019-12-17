@@ -1,4 +1,5 @@
 #include "SceneStackManager.h"
+#include "utils/Log.h"
 using namespace std;
 
 using namespace MX;
@@ -21,6 +22,7 @@ void SpriteSceneStackManager::PopScene(const std::shared_ptr<SceneTransition>& t
 {
     if (_scenesStack.empty())
     {
+        spdlog::error("SpriteSceneStackManager::PopScene when stack is empty!");
         assert(false);
         return;
     }
