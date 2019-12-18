@@ -2,6 +2,7 @@
 #include "Stream.h"
 #include "soloud.h"
 #include "soloud_wav.h"
+#include "utils/Log.h"
 #include "utils/Random.h"
 #include <iostream>
 #include <memory>
@@ -91,8 +92,7 @@ Sample::Sample(const char* path)
     }
     else
     {
-        std::cout << "Sample " << path << " load failed\n";
-        //wiplog
+        spdlog::error("Sample {} load failed", path);
     }
 }
 

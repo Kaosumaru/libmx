@@ -4,6 +4,7 @@
 #include "graphic/animation/Animation.h"
 #include "script/PropertyLoaders.h"
 #include "script/Script.h"
+#include "utils/Log.h"
 
 using namespace MX;
 
@@ -44,7 +45,7 @@ bool ScriptAnimationFromFilesClass::onParse()
 
     if (load_property(blender, "Blend"))
     {
-        assert(false);
+        spdlog::error("ScriptAnimationFromFilesClass::onParse canoot load blender!");
     }
 
     auto load_without_blender = [&](const char* image) { return Resources::get().loadCenteredImage(_pivot.x, _pivot.y, image); };

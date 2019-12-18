@@ -4,6 +4,7 @@
 #include "graphic/opengl/Texture.h"
 #include "script/PropertyLoaders.h"
 #include "script/Script.h"
+#include "utils/Log.h"
 #include <iostream>
 using namespace MX;
 
@@ -57,9 +58,7 @@ bool ScriptImageClass::onParse()
 
     if (!_image)
     {
-        //WIPLOG
-        std::cout << "cannot load image " << path << "\n";
-        //assert(_image);
+        spdlog::error("Cannot load image {} in {}", path, object());
     }
 
     return true;

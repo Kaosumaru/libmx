@@ -6,6 +6,7 @@
 #include "slang/parser.h"
 #include "slang/preprocessor.h"
 #include "slang/print.h"
+#include "utils/Log.h"
 #include <sstream>
 
 using namespace MX;
@@ -37,7 +38,7 @@ namespace gl
             Logger logger(shaderPath, true);
             Lexer lexer(is, keys, logger);
             Preprocessor pp(lexer, logger, [](int ver, Profile p) {
-                std::cout << "GLSL version: " << ver << " " << p << std::endl;
+                spdlog::info("GLSL version:  {}", ver);
                 return true;
             });
             pp.register_builtin_macros();
@@ -156,11 +157,11 @@ namespace gl
         std::string errorLog;
         Program::pointer program = createProgramFromFiles(_vertexPath, _fragmentPath, errorLog, false);
 
-        std::cout << "Reloading shader " << _fragmentPath << "@" << _vertexPath << std::endl;
+        spdlog::info("Reloading shader {}@{}", _fragmentPath, _vertexPath);
         if (!program)
         {
-            std::cout << "Failed to reload shared" << std::endl;
-            std::cout << errorLog << std::endl;
+            spdlog::error("Failed to reload shared");
+            spdlog::error(errorLog);
             return;
         }
 

@@ -1,5 +1,6 @@
 #include "ScriptClassParser.h"
 #include "Script.h"
+#include "utils/Log.h"
 
 #include "class/ScriptAnimationClass.h"
 #include "class/ScriptImageClass.h"
@@ -43,7 +44,7 @@ const Scriptable::Value::pointer& ScriptClassParser::_Parse(const std::string& i
     auto it = _creators.find(className);
     if (it == _creators.end())
     {
-        assert(false);
+        spdlog::error("Cannot find className {} for path {}", wideToUTF(className), instancePath);
         return dummy;
     }
 
@@ -63,7 +64,7 @@ std::shared_ptr<ScriptObject> ScriptClassParser::_CreateObject(const std::wstrin
     auto it = _creators.find(className);
     if (it == _creators.end())
     {
-        assert(false);
+        spdlog::error("Cannot find className {} for path {}", wideToUTF(className), instancePath);
         return nullptr;
     }
     return it->second->createSharedPtr(className, instancePath);
@@ -88,7 +89,7 @@ ScriptObject* ScriptClassParser::_CreateRawObjectFromTemplate(const std::string&
     auto it = _creators.find(className);
     if (it == _creators.end())
     {
-        assert(false);
+        spdlog::error("Cannot find className {} for path {}", wideToUTF(className), instancePath);
         return nullptr;
     }
     return it->second->createRaw(className, instancePath);

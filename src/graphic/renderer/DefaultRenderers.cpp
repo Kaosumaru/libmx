@@ -4,6 +4,7 @@
 #include "graphic/renderer/InstancedRenderer.h"
 #include "graphic/renderer/MVP.h"
 #include <iostream>
+#include "utils/Log.h"
 
 using namespace MX;
 
@@ -15,11 +16,11 @@ gl::Program::pointer Graphic::Renderers::createProgram(const char* fragmentPath,
     auto program = gl::createProgramFromFiles(vertexPath, fragmentPath, out);
     if (program)
     {
-        std::cout << "Shader compiled" << std::endl;
+        spdlog::info("Shader compiled: {}@{}", fragmentPath, vertexPath);
     }
     else
     {
-        std::cout << "Shader error: " << out << std::endl;
+        spdlog::error("Shader compiled: {}@{}", fragmentPath, vertexPath);
     }
     return program;
 }
