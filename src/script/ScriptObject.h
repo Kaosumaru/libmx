@@ -13,6 +13,9 @@ struct PropertyLoader_Standard
 struct PropertyLoader_Custom
 {
 };
+struct PropertyLoader_Path
+{
+};
 
 template <typename T, class Enable = void>
 struct PropertyLoader
@@ -168,6 +171,12 @@ protected:
         if (!p)
             return false;
         return PropertyLoader<T>::load(t, *p);
+    }
+
+    template <typename T>
+    bool load_property(const PropertyLoader_Path& st, T& t, const std::string& name)
+    {
+        return PropertyLoader<T>::load(t, ParentType::pathToChild(name));
     }
 };
 

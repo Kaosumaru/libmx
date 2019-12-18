@@ -633,10 +633,10 @@ struct PropertyLoader<std::wstring>
 template <>
 struct PropertyLoader<MX::SpriteActor::Geometry>
 {
-    using type = PropertyLoader_Custom;
-    static bool load(MX::SpriteActor::Geometry& out, const MX::Scriptable::Value& value)
+    using type = PropertyLoader_Path;
+    static bool load(MX::SpriteActor::Geometry& out, const std::string& path)
     {
-        ScriptObjectString script(value.fullPath());
+        ScriptObjectString script(path);
         script.load_property(out.position, "Position");
         script.load_property(out.angle, "Angle");
         script.load_property(out.z, "Z");
