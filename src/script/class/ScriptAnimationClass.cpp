@@ -45,7 +45,7 @@ bool ScriptAnimationFromFilesClass::onParse()
 
     if (load_property(blender, "Blend"))
     {
-        spdlog::error("ScriptAnimationFromFilesClass::onParse canoot load blender!");
+        spdlog::error("ScriptAnimationFromFilesClass::onParse cannot load blender!");
     }
 
     auto load_without_blender = [&](const char* image) { return Resources::get().loadCenteredImage(_pivot.x, _pivot.y, image); };
@@ -61,7 +61,11 @@ bool ScriptAnimationFromFilesClass::onParse()
     {
         sprintf(tmp, _filenameTemplate.c_str(), i + offset);
         auto image = loadImage(tmp);
-        assert(image);
+        if (!image)
+        {
+            spdlog::error("ScriptAnimationFromFilesClass::onParse missing image: {}", tmp);
+            continue;
+        }
         _animation->AddFrame(image, _frameDuration);
     }
 
