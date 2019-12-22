@@ -34,7 +34,10 @@ public:
             std::ifstream instream(_file_path);
             std::filesystem::path resPath { Paths::get().realPathToResourcePath(_file_path) };
 
-            Scriptable::Detail::ValueMember::SetThreadLocalPath(resPath.parent_path().wstring());
+            auto normalizedPath = resPath.parent_path().wstring();
+            std::replace(normalizedPath.begin(), normalizedPath.end(), '\\', '/');
+
+            Scriptable::Detail::ValueMember::SetThreadLocalPath(normalizedPath);
             if (instream.fail())
                 return false;
 

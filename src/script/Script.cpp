@@ -386,7 +386,7 @@ const std::wstring Script::parseString(const std::string& path, const std::wstri
     if (out.size() > 2 && out[0] == '.' && out[1] == '/')
     {
         out.erase(0, 1);
-        out = filePath + L"/" + out;
+        out = filePath + out;
     }
 
     return out;
