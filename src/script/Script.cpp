@@ -184,9 +184,14 @@ void Script::ParseDirs(const std::list<std::string>& paths, bool reset)
 
     first_time = false;
 #else
-    Scriptable::Detail::ValueMember::isOnMainThread = true;
+    Scriptable::Detail::ValueMember::isOnMainThread = false;
     for (auto& path : file_paths)
         Script::loadScript(path.string());
+    Scriptable::Detail::ValueMember::isOnMainThread = true;
+    auto& s = Script::current();
+    for (auto& pair : s._localized_values)
+        pair.second->member()->finalizeOnMainThread();
+
 #endif
 
     onParsed();
@@ -234,6 +239,19 @@ const Scriptable::Value& Script::valueOf(const std::string& label)
 
 const Scriptable::Value::pointer& Script::_object(const std::string& label)
 {
+    auto& p = _objectOrNull(label);
+    if (p)
+        return p;
+
+    Scriptable::Value::pointer& pointer = _localized_values[label];
+    if (pointer == nullptr)
+        pointer = std::make_shared<Scriptable::Value>(label);
+
+    return pointer;
+}
+
+const Scriptable::Value::pointer& Script::_objectOrNull(const std::string& label)
+{
     static Scriptable::Value::pointer null_pointer;
     //relative path ie <TeleportSkill>.Time
     if (label[0] == '<' && Context<std::string, KeyContext>::isCurrent())
@@ -257,17 +275,6 @@ const Scriptable::Value::pointer& Script::_object(const std::string& label)
 
         return pointer;
     }
-
-    Scriptable::Value::pointer& pointer = _localized_values[label];
-    if (pointer == nullptr)
-        pointer = std::make_shared<Scriptable::Value>(label);
-
-    return pointer;
-}
-
-const Scriptable::Value::pointer& Script::_objectOrNull(const std::string& label)
-{
-    static Scriptable::Value::pointer null_pointer;
     auto it = _localized_values.find(label);
     if (it == _localized_values.end())
         return null_pointer;

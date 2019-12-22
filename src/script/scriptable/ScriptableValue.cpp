@@ -6,6 +6,7 @@
 #include <memory>
 #include <regex>
 #include <sstream>
+#include "utils/Log.h"
 
 using namespace MX;
 
@@ -314,7 +315,12 @@ public:
     void finalizeOnMainThread() override
     {
         auto guard = Context<std::string, MX::KeyContext>::Lock(const_cast<std::string&>(_parentValue->fullPath()));
-        _pointer = Script::current().object(_value);
+        _pointer = Script::current().objectOrNull(_value);
+        if (!_pointer)
+        {
+            spdlog::error("Nonexisting pointer in script: &{}", _value);
+            _pointer = Script::current().object(_value);
+        }
         _value.clear();
     }
 
