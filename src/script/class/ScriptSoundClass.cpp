@@ -3,6 +3,7 @@
 #include "game/resources/Resources.h"
 #include "script/PropertyLoaders.h"
 #include "script/Script.h"
+#include "utils/Log.h"
 #include "utils/Random.h"
 
 using namespace MX;
@@ -49,15 +50,21 @@ bool ScriptSoundClass::onParse()
     if (load_property(randomSpeed, "RandomSpeed"))
     {
         auto sample = std::make_shared<RandomSpeedSample>(MX::Paths::get().pathToResource(path));
-        sample->SetRandomSpeed(randomSpeed);
-        _sound = sample;
+        if (!sample->empty())
+        {
+            sample->SetRandomSpeed(randomSpeed);
+            _sound = sample;
+        }
     }
     else
     {
         _sound = Resources::get().loadSound(path.c_str());
     }
 
-    assert(_sound);
+    if (!_sound)
+    {
+        spdlog::error("Cannot load sound {} in {}", path, object());
+    }
     if (!_sound)
         return true;
 

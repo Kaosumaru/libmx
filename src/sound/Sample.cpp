@@ -83,8 +83,11 @@ Sample::Sample(const char* path)
 {
     auto wav = std::make_shared<SoLoud::Wav>();
     auto res = wav->load(path);
-    _duration = wav->getLength();
-    _chunk = std::move(wav);
+    if (res == 0)
+    {
+        _duration = wav->getLength();
+        _chunk = std::move(wav);    
+    }
 
     if (_chunk)
     {
