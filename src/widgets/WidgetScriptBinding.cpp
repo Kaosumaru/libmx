@@ -10,7 +10,7 @@ using namespace MX::Widgets;
 
 void WidgetScriptBinding::Init()
 {
-    Script::onParsed.static_connect([&]() { onReload(); });
+    Script::onParsed().static_connect([&]() { onReload(); });
     onReload();
 }
 

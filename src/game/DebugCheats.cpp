@@ -106,7 +106,7 @@ public:
     DebugNewCheatObject()
     {
         LoadData();
-        Script::onParsed.static_connect(std::bind(&DebugNewCheatObject::LoadData, this));
+        Script::onParsed().static_connect(std::bind(&DebugNewCheatObject::LoadData, this));
 
         using namespace std::placeholders;
 

@@ -165,7 +165,7 @@ public:
     DefaultCachedClassCreatorContructor(const CloneFunction& cloneFunc)
         : _cloneFunction(cloneFunc)
     {
-        Script::onParsed.connect([&]() {
+        Script::onParsed().connect([&]() {
             _cache.clear();
         });
     }
@@ -303,4 +303,18 @@ void operator&(std::shared_ptr<T>& t, MX::Serialization::Node&& var)
             MXTOKENPASTE2(Autoregister, __LINE__)                                                                  \
             () { MX::ScriptClassParser::AddCreator(strname, new MX::DefaultClassCreatorContructor<classname>()); } \
         } MXTOKENPASTE2(autoregister_inst, __LINE__);                                                              \
+    }
+
+
+#define MXREGISTER_SCRIPT(code)                                \
+    namespace                                                  \
+    {                                                          \
+        struct MXTOKENPASTE2(Autoregister, __LINE__)           \
+        {                                                      \
+            MXTOKENPASTE2(Autoregister, __LINE__)              \
+            ()                                                 \
+            {                                                  \
+                Script::onParsed().static_connect([&]() code); \
+            }                                                  \
+        } MXTOKENPASTE2(autoregister_inst, __LINE__);          \
     }

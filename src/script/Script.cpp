@@ -78,8 +78,6 @@ void Script::Clear()
     return Script::current()._localized_values.clear();
 }
 
-Signal<void(void)> Script::onParsed;
-
 void Script::ParseDirs(const std::list<std::string>& paths, bool reset)
 {
     static std::set<std::string> _allUsedPaths;
@@ -122,7 +120,7 @@ void Script::ParseDirs(const std::list<std::string>& paths, bool reset)
             }
         }
 
-        onParsed();
+        onParsed()();
         return;
     }
 
@@ -193,7 +191,7 @@ void Script::ParseDirs(const std::list<std::string>& paths, bool reset)
 
 #endif
 
-    onParsed();
+    onParsed()();
 }
 
 const Scriptable::Value::pointer& Script::propertyOrNull(const std::string& o, const std::string& property)

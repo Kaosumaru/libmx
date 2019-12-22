@@ -33,7 +33,7 @@ protected:
 DrawerManager::DrawerManager()
 {
 #ifdef _DEBUG
-    Script::onParsed.static_connect([&]() { onReload(); });
+    Script::onParsed().static_connect([&]() { onReload(); });
 #endif
 }
 
