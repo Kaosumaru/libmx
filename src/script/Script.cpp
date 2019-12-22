@@ -2,6 +2,7 @@
 #include "ScriptParser.h"
 #include "game/resources/Paths.h"
 #include "utils/ListFiles.h"
+#include "utils/Log.h"
 #include <filesystem>
 #include <iostream>
 #include <iterator>
@@ -234,11 +235,44 @@ const Scriptable::Value& Script::valueOf(const std::string& label)
     return Script::current()._valueOf(label);
 }
 
+std::string Script::_translatePath(const std::string& label)
+{
+    if (label[0] == '<' && Context<std::string, KeyContext>::isCurrent())
+    {
+        auto& key = Context<std::string, KeyContext>::current();
+
+        auto closure = label.find('>');
+        if (closure == std::string::npos)
+        {
+            spdlog::error("Incorrent format of label {}", label);
+            return "";
+        }
+
+        auto match_key = key.rfind(label.c_str() + 1, std::string::npos, closure - 1);
+
+        if (match_key == std::string::npos)
+        {
+            spdlog::error("Incorrent format of label {}", label);
+            return "";        
+        }
+
+        auto nlabel = key.substr(0, match_key + closure - 1) + label.substr(closure + 1);
+        return nlabel;
+    }
+
+    return "";
+}
+
 const Scriptable::Value::pointer& Script::_object(const std::string& label)
 {
-    auto& p = _objectOrNull(label);
-    if (p)
-        return p;
+    if (label[0] == '<' && Context<std::string, KeyContext>::isCurrent())
+    {
+        auto nlabel = _translatePath(label);
+        Scriptable::Value::pointer& pointer = _localized_values[nlabel];
+        if (pointer == nullptr)
+            pointer = std::make_shared<Scriptable::Value>(nlabel);
+        return pointer;
+    }
 
     Scriptable::Value::pointer& pointer = _localized_values[label];
     if (pointer == nullptr)
@@ -253,24 +287,10 @@ const Scriptable::Value::pointer& Script::_objectOrNull(const std::string& label
     //relative path ie <TeleportSkill>.Time
     if (label[0] == '<' && Context<std::string, KeyContext>::isCurrent())
     {
-        auto& key = Context<std::string, KeyContext>::current();
-
-        auto closure = label.find('>');
-        if (closure == std::string::npos)
-            return null_pointer;
-
-        auto match_key = key.rfind(label.c_str() + 1, std::string::npos, closure - 1);
-
-        if (match_key == std::string::npos)
-            return null_pointer;
-
-        auto nlabel = key.substr(0, match_key + closure - 1) + label.substr(closure + 1);
-
+        auto nlabel = _translatePath(label);
         Scriptable::Value::pointer& pointer = _localized_values[nlabel];
-        if (pointer == nullptr)
-            pointer = std::make_shared<Scriptable::Value>(nlabel);
-
-        return pointer;
+        if (pointer)
+            return pointer;
     }
     auto it = _localized_values.find(label);
     if (it == _localized_values.end())

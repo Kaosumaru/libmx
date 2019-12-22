@@ -54,6 +54,8 @@ protected:
     bool _loadScript(const std::string& file);
     const Scriptable::Value& _valueOf(const std::string& label);
     bool _valueExists(const std::string& label);
+
+    std::string _translatePath(const std::string& label);
     const Scriptable::Value::pointer& _object(const std::string& label);
     const Scriptable::Value::pointer& _objectOrNull(const std::string& label);
     const std::wstring _localize(const std::string& label);
