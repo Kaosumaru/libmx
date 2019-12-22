@@ -2,13 +2,13 @@
 #include "ScriptParser.h"
 #include "game/resources/Paths.h"
 #include "utils/ListFiles.h"
+#include <filesystem>
 #include <iostream>
 #include <iterator>
 #include <memory>
 #include <regex>
 #include <sstream>
 #include <thread>
-#include <filesystem>
 
 #ifdef WIPTHREAD
 #include "utils/ThreadPool.h"
@@ -142,7 +142,7 @@ void Script::ParseDirs(const std::list<std::string>& paths, bool reset)
             auto& path = i->path();
             if (is_directory(path))
                 continue;
- 
+
             if (path.extension() == ".json" || path.extension() == ".msl")
             {
                 auto& last_stamp = _fileStamps[path];
@@ -155,7 +155,6 @@ void Script::ParseDirs(const std::list<std::string>& paths, bool reset)
                 }
             }
         }
-        
     }
 
 #ifdef MX_MT_IMPL
@@ -370,7 +369,7 @@ std::wstring formatToValue(const std::string& path, const std::string& label)
     return Script::object(objectPath)->text();
 }
 
-const std::wstring Script::parseString(const std::string& path, const std::wstring& text)
+const std::wstring Script::parseString(const std::string& path, const std::wstring& text, const std::wstring& filePath)
 {
     std::wstringstream ss;
     TokenizeByRegex(text, [&](const std::wstring& t, const std::wstring& match, bool matched) {
@@ -382,7 +381,15 @@ const std::wstring Script::parseString(const std::string& path, const std::wstri
             ss << formatToValue(path, smatch);
         }
     });
-    return ss.str();
+
+    std::wstring out = ss.str();
+    if (out.size() > 2 && out[0] == '.' && out[1] == '/')
+    {
+        out.erase(0, 1);
+        out = filePath + L"/" + out;
+    }
+
+    return out;
 }
 
 bool Script::_loadScript(const std::string& file)

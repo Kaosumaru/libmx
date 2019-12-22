@@ -7,6 +7,16 @@ Paths::Paths()
 {
 }
 
+std::string Paths::realPathToResourcePath(const std::string& path)
+{
+    auto it = path.find(_resourcePath);
+    if (it == std::string::npos)
+        return path;
+    auto p = path;
+    p.erase(it, it + _resourcePath.size());
+    return p;
+}
+
 std::string Paths::pathToResource(const std::string& resource)
 {
     if (resource.size() > 2 && resource[1] == ':')

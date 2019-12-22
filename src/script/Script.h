@@ -33,7 +33,7 @@ public:
     static void Clear();
     static void ParseDirs(const std::list<std::string>& paths, bool reset = false);
 
-    static const std::wstring parseString(const std::string& path, const std::wstring& text);
+    static const std::wstring parseString(const std::string& path, const std::wstring& text, const std::wstring& filePath = L"");
 
     static Signal<void(void)> onParsed;
 

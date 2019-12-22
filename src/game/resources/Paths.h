@@ -10,6 +10,8 @@ class Paths : public Singleton<Paths>
 public:
     Paths();
 
+    std::string realPathToResourcePath(const std::string& path);
+
     std::string pathToResource(const std::string& resource);
     std::string pathToImage(const std::string& image);
     std::string pathToSound(const std::string& sound);

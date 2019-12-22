@@ -34,6 +34,9 @@ namespace Scriptable
             ~ValueMember() { }
 
             static bool isOnMainThread;
+            static void SetThreadLocalPath(const std::wstring& path);
+            static const std::shared_ptr<std::wstring>& ThreadLocalPath();
+
             virtual void finalizeOnMainThread() {};
 
             virtual float valueFloat() { return 0.0f; }

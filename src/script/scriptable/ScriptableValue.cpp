@@ -10,6 +10,11 @@
 
 using namespace MX;
 
+namespace
+{
+thread_local std::shared_ptr<std::wstring> _currentPath;
+}
+
 std::string Scriptable::Detail::ValueMember::valueString()
 {
     return "";
@@ -31,6 +36,16 @@ const Scriptable::Detail::ValueMember::Map& Scriptable::Detail::ValueMember::map
     return arr;
 }
 
+void Scriptable::Detail::ValueMember::SetThreadLocalPath(const std::wstring& path)
+{
+    _currentPath = std::make_shared<std::wstring>(path);
+}
+
+const std::shared_ptr<std::wstring>& Scriptable::Detail::ValueMember::ThreadLocalPath()
+{
+    return _currentPath;
+}
+
 class StringValue : public Scriptable::Detail::ValueMember
 {
 public:
@@ -39,6 +54,7 @@ public:
         , _value(value)
     {
         _parsed = false;
+        _filePath = ThreadLocalPath();
     }
 
     bool isTrue() override
@@ -66,12 +82,20 @@ public:
 protected:
     void Parse()
     {
-        _value = Script::parseString(_parentValue->path(), _value);
+        if (_filePath)
+        {
+            _value = Script::parseString(_parentValue->path(), _value, *_filePath);
+        }
+        else
+        {
+            _value = Script::parseString(_parentValue->path(), _value);
+        }
         _parsed = true;
     }
 
     std::wstring _value;
     Scriptable::Value* _parentValue;
+    std::shared_ptr<std::wstring> _filePath;
     bool _parsed;
 };
 

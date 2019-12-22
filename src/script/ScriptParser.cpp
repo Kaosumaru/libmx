@@ -1,10 +1,12 @@
 #include "ScriptParser.h"
 #include "Script.h"
 #include "ScriptClassParser.h"
+#include "game/resources/Paths.h"
 
 #include "deps/json/json.h"
 #include "msl/MSL.h"
 #include "utils/ListFiles.h"
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <mutex>
@@ -30,7 +32,9 @@ public:
         if (!_is_data)
         {
             std::ifstream instream(_file_path);
+            std::filesystem::path resPath { Paths::get().realPathToResourcePath(_file_path) };
 
+            Scriptable::Detail::ValueMember::SetThreadLocalPath(resPath.parent_path().wstring());
             if (instream.fail())
                 return false;
 
@@ -39,6 +43,7 @@ public:
         }
         else
         {
+            Scriptable::Detail::ValueMember::SetThreadLocalPath(L"");
             input = _file_path;
         }
 
