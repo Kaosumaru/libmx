@@ -4,6 +4,7 @@
 #include "script/ScriptClassParser.h"
 #include "utils/Random.h"
 #include "utils/Time.h"
+#include "utils/Log.h"
 #include <map>
 
 #if WIP
@@ -40,7 +41,7 @@ bool rule_variable(Parser::Context& context)
 
     std::string str = eat_string_in_stream(context.input, charsAllowedInVarName);
 
-    auto& ret = MX::Script::object(str);
+    auto& ret = MX::Script::objectOrNull(str);
 
     class ScriptVariable : public Token
     {
@@ -58,7 +59,15 @@ bool rule_variable(Parser::Context& context)
         MX::Scriptable::Value::pointer _value;
     };
 
-    context.AddToken(new ScriptVariable(ret));
+    if (!ret)
+    {
+        spdlog::error("When parsing RPN script, not found pointer: &{}", str);
+        context.AddToken(new Value(0.0f));
+    }
+    else
+    {
+        context.AddToken(new ScriptVariable(ret));
+    }
 
     return true;
 }
