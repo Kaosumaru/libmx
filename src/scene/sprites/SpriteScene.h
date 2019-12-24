@@ -27,7 +27,7 @@ public:
     virtual float Width() { return 0.0f; } //WIP unsigned
     virtual float Height() { return 0.0f; }
 
-    virtual void Clear() { }
+    virtual void Clear() {}
 
     void SetVisible(bool visible);
     bool visible();
@@ -38,6 +38,7 @@ public:
 
     virtual void translate_child_position(glm::vec2& position);
 
+    virtual glm::vec2 from_screen_point(const glm::vec2& position) { return position; }
     virtual void for_each_child(const std::function<void(const std::shared_ptr<SpriteActor>&)>& functor) {};
 
     template <typename T>

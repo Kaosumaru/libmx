@@ -41,7 +41,14 @@ struct DebugNewArenaCheats_Data
 
     auto& position() const
     {
-        return MX::Window::current().mouse()->position();
+        auto pos = MX::Window::current().mouse()->position();
+        
+        if (Context<BaseGraphicScene>::isCurrent())
+        {
+            pos = Context<BaseGraphicScene>::current().from_screen_point(pos);
+        }
+
+        return pos;
     }
 
     EventPtr _event;

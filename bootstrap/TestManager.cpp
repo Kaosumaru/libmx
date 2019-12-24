@@ -20,6 +20,7 @@ using namespace std;
 
 TestManager::TestManager() : DisplaySceneTimer(MX::Window::current().size())
 {
+    Context<BaseGraphicScene>::SetCurrent(*this);
     //_cheats = CreateCheats();
 	_visibility = -1;
 
@@ -28,7 +29,7 @@ TestManager::TestManager() : DisplaySceneTimer(MX::Window::current().size())
 
 	reloadScripts();
 
-    Context<BaseGraphicScene>::SetCurrent(*this);
+    
 }
 
 void TestManager::AddSomething()

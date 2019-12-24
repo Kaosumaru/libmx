@@ -21,7 +21,7 @@ public:
     glm::vec2 screenCenter();
     glm::vec2 cameraOffsetSinceLastRun() { return _cameraPosition - _cameraPositionOnLastRun; }
 
-    glm::vec2 from_screen_point(const glm::vec2& screen_point);
+    glm::vec2 from_screen_point(const glm::vec2& screen_point) override;
     glm::vec2 to_screen_point(const glm::vec2& arena_point);
 
     float scale() { return _scale; }
