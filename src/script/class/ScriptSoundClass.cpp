@@ -13,20 +13,18 @@ class RandomSpeedSample : public Sound::Sample
 public:
     using Sound::Sample::Sample;
 
-#ifdef SDLAUDIO
-    FMOD_CHANNEL* _playSample(FMOD_SOUND* sound, float gain, float pan, float speed, bool looped, int priority) override
-    {
-        float m = Random::randomRange(_randomSpeed);
-        return Sound::Sample::_playSample(sound, gain, pan, speed * m, looped, priority);
-    }
-#endif
-
     void SetRandomSpeed(const std::pair<float, float>& speed)
     {
         _randomSpeed = speed;
     }
 
 protected:
+    int _playSample(SoLoud::AudioSource* sound, float gain, float pan, float speed, bool looped, int priority) override
+    {
+        float m = Random::randomRange(_randomSpeed);
+        return Sound::Sample::_playSample(sound, gain, pan, speed * m, looped, priority);
+    }
+
     std::pair<float, float> _randomSpeed = { 1.0f, 1.0f };
 };
 

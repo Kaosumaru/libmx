@@ -68,7 +68,7 @@ namespace Sound
         static SoLoud::Soloud& soLoud();
 
     protected:
-        int _playSample(SoLoud::AudioSource* sound, float gain, float pan, float speed, bool looped, int priority);
+        virtual int _playSample(SoLoud::AudioSource* sound, float gain, float pan, float speed, bool looped, int priority);
 
         std::shared_ptr<SoLoud::AudioSource> _chunk = nullptr;
         int _priority = 4;
