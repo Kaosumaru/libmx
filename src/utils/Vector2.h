@@ -14,7 +14,7 @@ namespace MX
 {
 inline glm::vec2 operator*(const glm::vec2& v, const Time::FloatPerSecond& t)
 {
-    return v * t.getPerSecond();
+    return v * (float)t.getPerSecond();
 }
 
 inline bool zero(const glm::vec2& v)
