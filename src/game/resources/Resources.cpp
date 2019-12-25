@@ -61,7 +61,8 @@ const std::shared_ptr<Graphic::TextureImage>& Resources::loadCenteredImage(float
     auto fit = _imageMap.find(image);
     if (fit != _imageMap.end())
     {
-        fit->second->SetCenter({ cx, cy });
+        if (fit->second)
+            fit->second->SetCenter({ cx, cy });
         return fit->second;
     }
 

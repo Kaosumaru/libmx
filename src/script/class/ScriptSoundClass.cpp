@@ -110,7 +110,7 @@ bool ScriptRandomSound::onParse()
     load_property(filenameTemplate, "Filename_template");
 
     char tmp[256];
-    for (unsigned i = framesOffset; i < framesCount; i++)
+    for (unsigned i = framesOffset; i < framesOffset + framesCount; i++)
     {
         sprintf(tmp, filenameTemplate.c_str(), i);
         auto sound = Resources::get().loadSound(tmp);
@@ -124,10 +124,15 @@ bool ScriptRandomSound::onParse()
             _sounds.push_back(sound);
         }
         else
-            assert(false);
+        {
+            spdlog::error("Cannot load sound {} in {}", tmp, object());
+        }
     }
 
-    assert(_sounds.size());
+    if (_sounds.size() == 0)
+    {
+        spdlog::error("No sounds in {}", object());
+    }
 
     return true;
 }
