@@ -306,7 +306,7 @@ void operator&(std::shared_ptr<T>& t, MX::Serialization::Node&& var)
     }
 
 
-#define MXREGISTER_SCRIPT(code)                                \
+#define MXREGISTER_SCRIPT(CODE_VAR)                                \
     namespace                                                  \
     {                                                          \
         struct MXTOKENPASTE2(Autoregister, __LINE__)           \
@@ -314,7 +314,9 @@ void operator&(std::shared_ptr<T>& t, MX::Serialization::Node&& var)
             MXTOKENPASTE2(Autoregister, __LINE__)              \
             ()                                                 \
             {                                                  \
-                Script::onParsed().static_connect([&]() code); \
+                auto fnct = [&]() CODE_VAR ;                    \
+                Script::onParsed().static_connect(fnct); \
+                Script::BeforeFirstParse().static_connect(fnct); \
             }                                                  \
         } MXTOKENPASTE2(autoregister_inst, __LINE__);          \
     }

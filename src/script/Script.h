@@ -35,13 +35,23 @@ public:
 
     static const std::wstring parseString(const std::string& path, const std::wstring& text, const std::wstring& filePath = L"");
 
+    static Signal<void(void)>& BeforeFirstParse()
+    {
+        static Signal<void(void)> parsed;
+        return parsed;
+    }
+
     static Signal<void(void)>& onParsed()
     {
         static Signal<void(void)> parsed;
         return parsed;
     }
 
-    static void Deinit() { onParsed().disconnect_all_slots(); }
+    static void Deinit()
+    {
+        onParsed().disconnect_all_slots();
+        BeforeFirstParse().disconnect_all_slots();
+    }
 
     const Scriptable::Value::pointer& SetObject(const std::string& key, const Scriptable::Value::Map& map = {});
     const Scriptable::Value::pointer& SetPair(const std::string& key, bool value);

@@ -81,6 +81,12 @@ void Script::Clear()
 
 void Script::ParseDirs(const std::list<std::string>& paths, bool reset)
 {
+    static bool first = true;
+    if (first)
+    {
+        BeforeFirstParse()();
+        first = false;
+    }
     static std::set<std::string> _allUsedPaths;
 
     std::list<std::string> previousPaths;
