@@ -27,7 +27,7 @@ protected:
     virtual void OnWait() { }
 
     float _seconds;
-    Time::ManualStopWatchAbsolute _stopWatch;
+    Time::ManualStopWatch _stopWatch;
 };
 
 class EasingWaitCommand : public WaitCommand
