@@ -305,6 +305,16 @@ void operator&(std::shared_ptr<T>& t, MX::Serialization::Node&& var)
         } MXTOKENPASTE2(autoregister_inst, __LINE__);                                                              \
     }
 
+#define MXREGISTER_CLASS_CUSTOM(strname, _FUNC_)                                                               \
+    namespace                                                                                                      \
+    {                                                                                                              \
+        struct MXTOKENPASTE2(Autoregister, __LINE__)                                                               \
+        {                                                                                                          \
+            MXTOKENPASTE2(Autoregister, __LINE__)                                                                  \
+            () { MX::ScriptClassParser::AddCreator(strname, _FUNC_); } \
+        } MXTOKENPASTE2(autoregister_inst, __LINE__);                                                              \
+    }
+
 
 #define MXREGISTER_SCRIPT(CODE_VAR)                                \
     namespace                                                  \
