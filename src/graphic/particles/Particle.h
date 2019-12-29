@@ -63,7 +63,7 @@ namespace Graphic
         glm::vec2 _scale1, _scale2;
         float _angle1 = 0, _angle2 = 0;
         Color _color1, _color2;
-        Time::ManualStopWatchAbsolute _stopWatch;
+        Time::ManualStopWatch _stopWatch;
 
         SpriteActor::Geometry geometry;
     };
