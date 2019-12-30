@@ -2,6 +2,7 @@
 #include "game/resources/Paths.h"
 #include "graphic/images/TextureImage.h"
 #include "graphic/opengl/Utils.h"
+#include "utils/Log.h"
 #include <map>
 #include <memory>
 
@@ -19,6 +20,44 @@ int roundUp(int numToRound, int multiple)
         return numToRound;
 
     return numToRound + multiple - remainder;
+}
+
+template<typename T>
+std::shared_ptr<Graphic::TextureImage> _drawLine(const std::shared_ptr<Graphic::Face>& face, const T& text)
+{
+    int ascender = face->scaled_ascender();
+    auto descender = face->scaled_descender();
+    int width = Graphic::FreetypeUtils::measureLine(face, text);
+
+    int height = ascender - descender;
+
+    
+    width = roundUp(width, 4);
+    height = roundUp(height, 4);
+
+#ifdef _DEBUG
+    bool offSurfaceRendered = false;
+#endif
+    Graphic::SurfaceGrayscale surface(width, height);
+    FT_Vector pen = { 0, ascender };
+    face->draw_text(text.c_str(), pen, [&](int x, int y, uint8_t p) {
+        if (surface.contains(x, y))
+            surface.at(x, y) += p;
+        else
+        {
+#ifdef _DEBUG
+            if (offSurfaceRendered)
+                return;
+            offSurfaceRendered = true;
+            spdlog::warn("FreetypeUtils::drawLine drawing outside boundaries!");
+#endif
+        }
+    });
+
+    auto texture = Graphic::TextureImage::Create(surface);
+    float center_y = 0.0f;
+    texture->SetCenter({ 0.0f, center_y });
+    return texture;
 }
 }
 
@@ -58,42 +97,12 @@ std::shared_ptr<Graphic::Face> Graphic::Face::Create(const std::string& path, un
 
 std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::drawLine(const std::shared_ptr<Face>& face, const std::string& text)
 {
-    int ascender = face->ascender();
-    FT_Vector pen = { 0, ascender };
-
-    int width = measureLine(face, text);
-    int height = ascender - face->descender();
-    width = roundUp(width, 4);
-    height = roundUp(height, 4);
-
-    Graphic::SurfaceGrayscale surface(width, height);
-    face->draw_text(text.c_str(), pen, [&](int x, int y, uint8_t p) {
-        surface.at(x, y) += p;
-    });
-    auto texture = Graphic::TextureImage::Create(surface);
-    texture->SetCenter({ 0.0f, (float)(face->height() - ascender) / 2.0f });
-    return texture;
+    return _drawLine(face, text);
 }
 
 std::shared_ptr<Graphic::TextureImage> Graphic::FreetypeUtils::drawLine(const std::shared_ptr<Face>& face, const std::wstring& text)
 {
-    int ascender = face->ascender();
-    FT_Vector pen = { 0, ascender };
-
-    int width = measureLine(face, text);
-    int height = ascender - face->descender();
-    width = roundUp(width, 4);
-    height = roundUp(height, 4);
-
-    Graphic::SurfaceGrayscale surface(width, height);
-    face->draw_text(text.c_str(), pen, [&](int x, int y, uint8_t p) {
-        if (surface.contains(x, y))
-            surface.at(x, y) += p;
-    });
-
-    auto texture = Graphic::TextureImage::Create(surface);
-    texture->SetCenter({ 0.0f, (float)(face->height() - ascender) / 2.0f });
-    return texture;
+    return _drawLine(face, text);
 }
 
 int Graphic::FreetypeUtils::measureLine(const std::shared_ptr<Face>& face, const std::string& text)

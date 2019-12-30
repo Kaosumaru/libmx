@@ -90,10 +90,32 @@ public:
 
             MX::Rectangle source;
             source.SetWidth(textData.actualWidth());
-            source.SetHeight(textData.actualHeight());
+
+            bool usingAscender = false;
+            if (_pos >= 4 && _pos <= 6 && !textData.isBitmapFont() && !textData.HTML())
+            {
+                // if this is a font rendered via FT, consider descender & ascender when centering;
+                usingAscender = true;
+            }
+
+            if (usingAscender)
+            {
+                source.SetHeight(textData.font()->X_height());
+            }
+            else
+            {
+                source.SetHeight(textData.actualHeight());
+            }
 
             source.NumLayoutIn(Destination::current().rectangle, _pos);
             source.Shift(_offset);
+
+            if (usingAscender)
+            {
+                float aboveX = textData.font()->ascender() - textData.font()->X_height();
+                source.Shift(0, -aboveX);
+                source.SetHeight(textData.actualHeight());
+            }
 
             //clip to int
             float t;

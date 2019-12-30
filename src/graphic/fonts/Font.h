@@ -29,6 +29,8 @@ namespace Graphic
         const auto& face_name() { return _face_name; }
         const auto& face() { return _ftFace; }
         const auto& faceBold() { return _ftFaceBold; }
+        float ascender();
+        float X_height();
 
         void ReloadFace(const std::string& path);
         void ReloadFaceBold(const std::string& path);

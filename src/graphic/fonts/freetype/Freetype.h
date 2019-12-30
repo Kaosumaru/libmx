@@ -155,6 +155,9 @@ namespace Graphic
 
         int ascender() const { return _face->ascender >> 6; }
         int descender() const { return _face->descender >> 6; }
+        int scaled_ascender() const { return _face->size->metrics.ascender >> 6; }
+        int scaled_descender() const { return _face->size->metrics.descender >> 6; }
+
         int height() const { return _face->height >> 6; }
         int x_height()
         {

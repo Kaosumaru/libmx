@@ -50,6 +50,16 @@ void Font::ReloadFaceBold(const std::string& path)
     _ftFaceBold = Face::Create(Paths::get().pathToResource(path), _size);
 }
 
+float Font::ascender()
+{
+    return _ftFace->scaled_ascender();
+}
+
+float Font::X_height()
+{
+    return _ftFace->X_height();
+}
+
 bool Font::empty()
 {
     return !_ftFace;
