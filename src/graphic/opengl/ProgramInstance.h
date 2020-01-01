@@ -29,7 +29,7 @@ protected:
     const Program::pointer& program();
     virtual void onApply() {}
 
-    const char* _name;
+    std::string _name;
     ProgramInstance* _parent;
     GLuint _location = -1;
     bool _dirty = false;

@@ -9,6 +9,7 @@
 #endif
 #include "graphic/particles/Particles.h"
 #include "scene/script/Event.h"
+#include "graphic/script/ScriptableShader.h"
 #include "script/ScriptClassParser.h"
 #include "widgets/WidgetScriptBinding.h"
 #include "widgets/animations/Animations.h"
@@ -47,6 +48,7 @@ void MX::ScriptInitializer::Init()
     MX::Widgets::WidgetAnimationsInit::Init();
 
     MX::Widgets::WidgetScriptBinding::Init();
+    MX::gl::ScriptableProgramInit::Init();
 }
 
 void MX::ScriptInitializer::RegisterShortcuts()

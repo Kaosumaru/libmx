@@ -63,7 +63,7 @@ namespace gl
             return glGetAttribLocation(*this, name);
         }
 
-        GLuint GetUniformLocation(const std::string& name) { return GetAttribLocation(name.c_str()); }
+        GLuint GetUniformLocation(const std::string& name) { return GetUniformLocation(name.c_str()); }
         GLuint GetUniformLocation(const char* name)
         {
             return glGetUniformLocation(*this, name);

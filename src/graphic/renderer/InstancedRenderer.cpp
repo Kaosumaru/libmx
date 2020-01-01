@@ -2,6 +2,7 @@
 #include "graphic/opengl/Uniform.h"
 #include "graphic/renderer/DefaultRenderers.h"
 #include "graphic/renderer/MVP.h"
+#include "utils/Log.h"
 #include <iostream>
 
 using namespace MX;
@@ -52,10 +53,14 @@ InstancedRenderer::InstancedRenderer(const std::shared_ptr<gl::ProgramInstance>&
 {
     _programInstance = instance;
     InitData();
-    std::string out;
+
+    if (!_programInstance || !_programInstance->program())
+    {
+        spdlog::error("InstancedRenderer called without valid shader program!");
+        return;
+    }
 
     auto& program = _programInstance->program();
-    assert(program);
     if (program)
     {
         _mvp_uniform = program->GetUniformLocation("MVP");
@@ -85,7 +90,7 @@ void InstancedRenderer::Flush()
 {
     DrawBatched();
 }
-void InstancedRenderer::Draw(const gl::Texture& tex, const Rectangle& srcArea, const glm::vec2& pos, const glm::vec2& relativeCenter, const glm::vec2& size, const MX::Color& color, float angle)
+void InstancedRenderer::Draw(const gl::Texture& tex, const MX::Rectangle& srcArea, const glm::vec2& pos, const glm::vec2& relativeCenter, const glm::vec2& size, const MX::Color& color, float angle)
 {
     if (tex.getId() != _lastTex || _currentInstance + 4 > _maxInstances)
     {

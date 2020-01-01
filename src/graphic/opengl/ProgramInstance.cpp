@@ -1,4 +1,3 @@
-
 #include "ProgramInstance.h"
 #include "graphic/renderer/DefaultRenderers.h"
 

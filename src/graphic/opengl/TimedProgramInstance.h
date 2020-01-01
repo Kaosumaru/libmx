@@ -1,8 +1,6 @@
 #pragma once
 #include "graphic/opengl/ProgramInstance.h"
 
-#include <vector>
-
 namespace MX::gl
 {
 

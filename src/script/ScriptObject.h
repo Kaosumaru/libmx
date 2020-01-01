@@ -3,6 +3,7 @@
 #include "serialization/Node.h"
 #include <sstream>
 #include <string>
+#include "utils/Log.h"
 
 namespace MX
 {
@@ -140,6 +141,17 @@ public:
     {
         using loader_type = typename PropertyLoader<T>::type;
         return load_property(loader_type(), t, name);
+    }
+
+    template <typename T>
+    const void load_property_required(T& t, const std::string& name)
+    {
+        using loader_type = typename PropertyLoader<T>::type;
+        bool res = load_property(loader_type(), t, name);
+        if (!res)
+        {
+            spdlog::error("Cannot load required property {}!", name);
+        }
     }
 
     template <typename T>

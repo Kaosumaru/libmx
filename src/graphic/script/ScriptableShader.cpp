@@ -1,27 +1,13 @@
-#include "Graphic/Images/MXImage.h"
-#include "Graphic/Images/MXSlice9Image.h"
-#include "MXCompositeDrawers.h"
-#include "MXShaderDrawers.h"
-#include "Utils/MXUtils.h"
+#include "ScriptableShader.h"
+#include "graphic/opengl/TimedProgramInstance.h"
+#include "graphic/renderer/DefaultRenderers.h"
+#include "script/ScriptClassParser.h"
 
-#include "Game/Resources/MXResources.h"
-#include "Graphic/Images/MXSlice9Image.h"
-#include "Script/Class/MXScriptImageClass.h"
-#include "Script/MXScriptClassParser.h"
-#include "Widgets/MXLabel.h"
-#include "Widgets/MXWidget.h"
+#pragma init_seg("lib")
 
-#include "Graphic/Renderers/MXInstancedGLRenderer.h"
-#include "Graphic/Shader/MXShader.h"
-
-#include "MXDrawers.h"
-
-#include "Graphic/MXUtils.h"
-#include "Graphic/Shader/MXShader.h"
-
-#include "Utils/MXDebugGUIManager.h"
 using namespace MX;
-
+using namespace MX::gl;
+#if 0
 template <typename Parent>
 class ShaderizeDrawer : public Parent, public Graphic::ShaderContainerRenderer
 {
@@ -43,7 +29,82 @@ protected:
         Parent::DrawBackground();
     }
 };
+#endif
 
+/*
+namespace
+{
+struct AutoregisterXXXTEST
+{
+    AutoregisterXXXTEST()
+    {
+        MX::ScriptClassParser::AddCreator(L"A.GL.Shader", new MX::OutsideScriptClassCreatorContructor<ScriptableProgramInstance>());
+    }
+} autoregister_instXXXTEST;
+
+static auto test = &autoregister_instXXXTEST;
+}
+#pragma comment(linker, "/include:AutoregisterXXXTEST")
+#pragma comment(linker, "/export:AutoregisterXXXTEST")
+
+*/
+
+ScriptableProgramInstance::ScriptableProgramInstance(LScriptObject& script)
+{
+    std::string fragmentPath;
+    std::string vertexPath;
+
+    std::vector<std::string> children;
+    if (script.load_property(children, "Children") && children.size() > 1)
+    {
+        fragmentPath = children[0];
+        vertexPath = children[1];
+    }
+
+    _program = Graphic::Renderers::get().createProgram(fragmentPath.c_str(), vertexPath.c_str());
+}
+
+
+
+namespace MX::gl
+{
+template <typename T>
+class UniformExpr : public UniformBase, public MX::ScriptObject
+{
+public:
+    UniformExpr(LScriptObject& script)
+        : UniformBase(Context<ProgramInstance>::current_pointer(), "")
+    {
+        script.load_property_required(_name, "n");
+        script.load_property_required(_value, "v");
+    }
+
+protected:
+    void onApply() override
+    {
+        SetUniform(_location, *_value);
+    }
+
+    Scriptable::Value::pointer _value;
+};
+
+
+
+template <typename T>
+class ScriptableUniform : public Uniform<T>, public MX::ScriptObject
+{
+public:
+    ScriptableUniform(LScriptObject& script)
+        : Uniform<T>(Context<ProgramInstance>::current_pointer(), "")
+    {
+        script.load_property_required(UniformBase::_name, "n");
+        script.load_property_required(Uniform<T>::_value, "v");
+    }
+};
+
+}
+
+#if 0
 class DebugShader
 {
 public:
@@ -257,4 +318,28 @@ void MX::Widgets::ShaderDrawersInit::Init()
     ScriptClassParser::AddCreator(L"Shader.Uniform.Timed", new DefaultCachedClassCreatorContructor<ScriptableTimedProgramUniforms, OutsideScriptClassCreatorContructor_Policy>([](auto& prog) { return prog; }));
     ScriptClassParser::AddCreator(L"Shader.Uniform", new DefaultCachedClassCreatorContructor<ScriptableProgramUniforms, OutsideScriptClassCreatorContructor_Policy>([](auto& prog) { return prog; }));
 
+}
+#endif
+
+void ScriptableProgramInit::Init()
+{
+    ScriptClassParser::AddCreator(L"GL.Shader", new OutsideScriptClassCreatorContructor<ScriptableProgramInstance>());
+    ScriptClassParser::AddCreator(L"GL.Shader.Timed", new OutsideScriptClassCreatorContructor<ScriptableTimedProgramInstance>());
+
+    ScriptClassParser::AddCreator(L"GL.Uniform.Int.Exp", new OutsideScriptClassCreatorContructor<UniformExpr<int>>());
+    ScriptClassParser::AddCreator(L"GL.Uniform.Float.Expr", new OutsideScriptClassCreatorContructor<UniformExpr<float>>());
+
+    ScriptClassParser::AddCreator(L"GL.Uniform.Int", new OutsideScriptClassCreatorContructor<ScriptableUniform<int>>());
+    ScriptClassParser::AddCreator(L"GL.Uniform.Float", new OutsideScriptClassCreatorContructor<ScriptableUniform<float>>());
+    ScriptClassParser::AddCreator(L"GL.Uniform.Vec2", new OutsideScriptClassCreatorContructor<ScriptableUniform<glm::vec2>>());
+    ScriptClassParser::AddCreator(L"GL.Uniform.Vec3", new OutsideScriptClassCreatorContructor<ScriptableUniform<glm::vec3>>());
+
+    //MXREGISTER_CLASS(L"GL.Shader", ScriptableProgramInstance)
+    //MXREGISTER_CLASS(L"GL.Shader.Timed", ScriptableTimedProgramInstance)
+    //MXREGISTER_CLASS(L"GL.Uniform.Int.Exp", UniformExpr<int>)
+    //MXREGISTER_CLASS(L"GL.Uniform.Float.Expr", UniformExpr<float>)
+    //MXREGISTER_CLASS(L"GL.Uniform.Int", ScriptableUniform<int>)
+    //MXREGISTER_CLASS(L"GL.Uniform.Float", ScriptableUniform<float>)
+    //MXREGISTER_CLASS(L"GL.Uniform.Vec2", ScriptableUniform<glm::vec2>)
+    //MXREGISTER_CLASS(L"GL.Uniform.Vec3", ScriptableUniform<glm::vec3>)
 }

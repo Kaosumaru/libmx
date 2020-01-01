@@ -70,6 +70,11 @@ public:
         return *_current_static_singleton;
     }
 
+    static T* current_pointer()
+    {
+        return _current_static_singleton;
+    }
+
     static bool isCurrent()
     {
         return _current_static_singleton != 0;
