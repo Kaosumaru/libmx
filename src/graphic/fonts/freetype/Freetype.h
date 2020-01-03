@@ -40,7 +40,7 @@ namespace Graphic
     {
     public:
         friend class Face;
-        Glyph() { }
+        Glyph() {}
         Glyph(const Glyph& other) = delete;
 
         auto& glyph() { return _glyph; }

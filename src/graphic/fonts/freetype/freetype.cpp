@@ -22,7 +22,7 @@ int roundUp(int numToRound, int multiple)
     return numToRound + multiple - remainder;
 }
 
-template<typename T>
+template <typename T>
 std::shared_ptr<Graphic::TextureImage> _drawLine(const std::shared_ptr<Graphic::Face>& face, const T& text)
 {
     int ascender = face->scaled_ascender();
@@ -31,7 +31,6 @@ std::shared_ptr<Graphic::TextureImage> _drawLine(const std::shared_ptr<Graphic::
 
     int height = ascender - descender;
 
-    
     width = roundUp(width, 4);
     height = roundUp(height, 4);
 
