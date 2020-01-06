@@ -31,7 +31,8 @@ protected:
 };
 #endif
 
-/*
+#if 0
+// TODO exports
 namespace
 {
 struct AutoregisterXXXTEST
@@ -47,7 +48,7 @@ static auto test = &autoregister_instXXXTEST;
 #pragma comment(linker, "/include:AutoregisterXXXTEST")
 #pragma comment(linker, "/export:AutoregisterXXXTEST")
 
-*/
+#endif
 
 ScriptableProgramInstance::ScriptableProgramInstance(LScriptObject& script)
 {
@@ -334,12 +335,15 @@ void ScriptableProgramInit::Init()
     ScriptClassParser::AddCreator(L"GL.Uniform.Vec2", new OutsideScriptClassCreatorContructor<ScriptableUniform<glm::vec2>>());
     ScriptClassParser::AddCreator(L"GL.Uniform.Vec3", new OutsideScriptClassCreatorContructor<ScriptableUniform<glm::vec3>>());
 
-    //MXREGISTER_CLASS(L"GL.Shader", ScriptableProgramInstance)
-    //MXREGISTER_CLASS(L"GL.Shader.Timed", ScriptableTimedProgramInstance)
-    //MXREGISTER_CLASS(L"GL.Uniform.Int.Exp", UniformExpr<int>)
-    //MXREGISTER_CLASS(L"GL.Uniform.Float.Expr", UniformExpr<float>)
-    //MXREGISTER_CLASS(L"GL.Uniform.Int", ScriptableUniform<int>)
-    //MXREGISTER_CLASS(L"GL.Uniform.Float", ScriptableUniform<float>)
-    //MXREGISTER_CLASS(L"GL.Uniform.Vec2", ScriptableUniform<glm::vec2>)
-    //MXREGISTER_CLASS(L"GL.Uniform.Vec3", ScriptableUniform<glm::vec3>)
+#if 0
+    // TODO exports
+    MXREGISTER_CLASS(L"GL.Shader", ScriptableProgramInstance)
+    MXREGISTER_CLASS(L"GL.Shader.Timed", ScriptableTimedProgramInstance)
+    MXREGISTER_CLASS(L"GL.Uniform.Int.Exp", UniformExpr<int>)
+    MXREGISTER_CLASS(L"GL.Uniform.Float.Expr", UniformExpr<float>)
+    MXREGISTER_CLASS(L"GL.Uniform.Int", ScriptableUniform<int>)
+    MXREGISTER_CLASS(L"GL.Uniform.Float", ScriptableUniform<float>)
+    MXREGISTER_CLASS(L"GL.Uniform.Vec2", ScriptableUniform<glm::vec2>)
+    MXREGISTER_CLASS(L"GL.Uniform.Vec3", ScriptableUniform<glm::vec3>)
+#endif
 }
