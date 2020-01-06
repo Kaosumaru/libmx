@@ -99,14 +99,10 @@ ParticleSystem::ParticleSystem(LScriptObject& script)
     script.load_property(_relative, "Relative");
     script.load_property(_additiveBlending, "AdditiveBlending");
 
-    script.load_property(_emitter, "Emitter");
-    script.load_property(_creator, "Creator");
-    script.load_property(_generator, "Generator");
+    script.load_property_required(_emitter, "Emitter");
+    script.load_property_required(_creator, "Creator");
+    script.load_property_required(_generator, "Generator");
     script.load_property(_decorator, "Decorator");
-
-    assert(_emitter);
-    assert(_creator);
-    assert(_generator);
 }
 
 ParticleSystem::~ParticleSystem()
