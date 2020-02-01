@@ -7,8 +7,11 @@
 #include "sound/Sample.h"
 #include "sound/Stream.h"
 #include "utils/Random.h"
+#include "utils/Log.h"
+#include "game/saves/Save.h"
 #include <SDL.h>
 #include <iostream>
+#include "spdlog/sinks/stdout_color_sinks.h"
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -18,6 +21,9 @@ using namespace MX;
 
 App::App()
 {
+    spdlog::info("Starting app");
+    spdlog::info("Save path: {}", getSavePath().string());
+
     App::SetCurrent(*this);
     Time::Timer::SetCurrent(_timer);
     ScopeSingleton<FunctorsQueue, RenderQueue>::SetCurrent(_renderQueue);
