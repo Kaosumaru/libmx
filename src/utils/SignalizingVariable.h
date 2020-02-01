@@ -118,6 +118,12 @@ public:
 
     MX::Signal<void(const T& newValue, const T& oldValue)> onValueChanged;
 
+    template <class Archive>
+    void serialize(Archive& ar)
+    {
+        ar(_t);
+    }
+
 protected:
     void __onChangedImpl(const T& newValue, const T& oldValue)
     {

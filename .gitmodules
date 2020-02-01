@@ -19,3 +19,6 @@
 [submodule "deps/slang"]
 	path = deps/slang
 	url = https://github.com/madmann91/slang.git
+[submodule "deps/cereal"]
+	path = deps/cereal
+	url = https://github.com/USCiLab/cereal.git

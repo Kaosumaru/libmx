@@ -22,7 +22,15 @@ add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/litehtml" "${CMAKE_CURRENT_BINA
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/soloud" "${CMAKE_CURRENT_BINARY_DIR}/soloud")
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/slang" "${CMAKE_CURRENT_BINARY_DIR}/slang")
 
-set(MX_INCLUDES ${MX_INCLUDES} ${RPN_Includes} ${CMAKE_CURRENT_LIST_DIR}/deps/MSL/MSL ${CMAKE_CURRENT_LIST_DIR}/deps/RPNParser/RPN ${CMAKE_CURRENT_LIST_DIR}/deps/litehtml ${CMAKE_CURRENT_LIST_DIR}/deps/slang/src)
+set(MX_INCLUDES 
+    ${MX_INCLUDES} 
+    ${RPN_Includes} 
+    ${CMAKE_CURRENT_LIST_DIR}/deps/MSL/MSL 
+    ${CMAKE_CURRENT_LIST_DIR}/deps/RPNParser/RPN 
+    ${CMAKE_CURRENT_LIST_DIR}/deps/litehtml 
+    ${CMAKE_CURRENT_LIST_DIR}/deps/slang/src
+    ${CMAKE_CURRENT_LIST_DIR}/deps/cereal/include 
+    )
 #deps
 
 option(GAME_RELEASE "Build release?" FALSE)
