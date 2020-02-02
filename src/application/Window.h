@@ -52,6 +52,9 @@ public:
     auto& tooltipSystem() { return *_tooltipSystem; }
     auto& timer() { return _timer; }
 
+    void SetSize(float width, float height);
+    void SetFullscreen(bool fs);
+
 protected:
     void OnRender();
     void AfterRender();

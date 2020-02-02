@@ -104,3 +104,23 @@ bool Window::OnLoop()
     _timer->Step();
     return true;
 }
+
+void Window::SetSize(float width, float height)
+{
+    if (_width == width && _height == height)
+        return;
+    _width = width;
+    _height = height;
+    SDL_SetWindowSize(_window.get(), _width, _height);
+
+    //TODO _windowArea is not recreated
+}
+
+void Window::SetFullscreen(bool fs)
+{
+    if (_fullscreen == fs)
+        return;
+    _fullscreen = fs;
+    auto flag = _fullscreen ? SDL_WINDOW_FULLSCREEN : 0;
+    SDL_SetWindowFullscreen(_window.get(), flag);
+}
